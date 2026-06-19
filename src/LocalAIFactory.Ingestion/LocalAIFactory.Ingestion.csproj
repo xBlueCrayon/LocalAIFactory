@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\LocalAIFactory.Core\LocalAIFactory.Core.csproj" />
+    <ProjectReference Include="..\LocalAIFactory.Data\LocalAIFactory.Data.csproj" />
+    <ProjectReference Include="..\LocalAIFactory.Rag\LocalAIFactory.Rag.csproj" />
+    <ProjectReference Include="..\LocalAIFactory.Agent\LocalAIFactory.Agent.csproj" />
+    <ProjectReference Include="..\LocalAIFactory.Workspaces\LocalAIFactory.Workspaces.csproj" />
+  </ItemGroup>
+</Project>
