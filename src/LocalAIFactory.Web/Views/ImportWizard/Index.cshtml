@@ -1,0 +1,90 @@
+@using LocalAIFactory.Core.Enums
+@{
+    ViewData["Title"] = "Import Project";
+    var projects = ViewBag.Projects as List<Project> ?? new List<Project>();
+    var jobs = ViewBag.Jobs as List<LocalAIFactory.Core.Entities.IngestionJob> ?? new List<LocalAIFactory.Core.Entities.IngestionJob>();
+    int running = jobs.Count(j => j.Status == IngestionJobStatus.Running);
+    int pending = jobs.Count(j => j.Status == IngestionJobStatus.Pending);
+    int completed = jobs.Count(j => j.Status == IngestionJobStatus.Completed);
+    int failed = jobs.Count(j => j.Status == IngestionJobStatus.Failed);
+    string Dur(LocalAIFactory.Core.Entities.IngestionJob j)
+    {
+        var start = j.StartedUtc ?? j.CreatedUtc;
+        var end = j.CompletedUtc ?? (j.Status == IngestionJobStatus.Running ? DateTime.UtcNow : start);
+        var ts = end - start;
+        if (ts.TotalSeconds < 1) return "—";
+        if (ts.TotalMinutes < 1) return $"{ts.Seconds}s";
+        if (ts.TotalHours < 1) return $"{ts.Minutes}m {ts.Seconds}s";
+        return $"{(int)ts.TotalHours}h {ts.Minutes}m";
+    }
+}
+
+<h1 class="section-title">Import &amp; monitor</h1>
+<p class="page-sub">Onboard a legacy project from a .zip (up to 1 GB). Imports run in the background — model and vector steps are non-fatal.</p>
+
+<div class="stat-grid mb-4">
+    <div class="stat"><div class="label"><span class="dot"><i class="bi bi-arrow-repeat"></i></span> Running</div><div class="value">@running</div></div>
+    <div class="stat"><div class="label"><span class="dot"><i class="bi bi-hourglass-split"></i></span> Pending</div><div class="value">@pending</div></div>
+    <div class="stat"><div class="label"><span class="dot"><i class="bi bi-check2-circle"></i></span> Completed</div><div class="value">@completed</div></div>
+    <div class="stat"><div class="label"><span class="dot"><i class="bi bi-exclamation-octagon"></i></span> Failed</div><div class="value">@failed</div></div>
+</div>
+
+<div class="card2 mb-3">
+    <div class="card2-head"><h2><i class="bi bi-cloud-arrow-up me-2"></i>New import</h2></div>
+    <div class="card2-body">
+        <form asp-action="Start" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
+            @Html.AntiForgeryToken()
+            <div class="col-md-4">
+                <label class="form-label">Target project</label>
+                <select name="projectId" class="form-select">
+                    <option value="">(create from import / global)</option>
+                    @foreach (var p in projects) { <option value="@p.Id">@p.Name</option> }
+                </select>
+            </div>
+            <div class="col-md-5">
+                <label class="form-label">Project .zip</label>
+                <input type="file" name="zip" accept=".zip" class="form-control" required />
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary w-100"><i class="bi bi-upload me-1"></i>Start import</button>
+            </div>
+            <div class="col-12"><span class="muted">Large uploads are supported (max 1 GB). The status page refreshes automatically as the job progresses.</span></div>
+        </form>
+    </div>
+</div>
+
+<div class="card2">
+    <div class="card2-head"><h2><i class="bi bi-list-task me-2"></i>Recent jobs</h2><span class="sub">last @jobs.Count</span></div>
+    <div class="table-wrap">
+        <table class="table-modern">
+            <thead><tr><th>Job</th><th>File</th><th>Status</th><th>Phase</th><th>Progress</th><th>Duration</th><th>When</th><th></th></tr></thead>
+            <tbody>
+            @if (!jobs.Any())
+            {
+                <tr><td colspan="8" class="empty"><div class="big">No imports yet</div>Upload a project .zip to begin.</td></tr>
+            }
+            @foreach (var j in jobs)
+            {
+                var pct = j.TotalFiles > 0 ? (int)(100.0 * j.ProcessedFiles / j.TotalFiles) : (j.Status == IngestionJobStatus.Completed ? 100 : 0);
+                <tr>
+                    <td class="mono">#@j.Id</td>
+                    <td class="text-truncate" style="max-width:200px">@j.FileName</td>
+                    <td><partial name="_StatusBadge" model="@j.Status.ToString()" /></td>
+                    <td class="muted">@j.Phase</td>
+                    <td style="min-width:160px">
+                        <div class="progress2"><span style="width:@(pct)%"></span></div>
+                        <span class="muted">@j.ProcessedFiles / @j.TotalFiles files · @j.ChunkCount chunks</span>
+                    </td>
+                    <td class="muted">@Dur(j)</td>
+                    <td class="muted">@j.CreatedUtc.ToString("MMM d, HH:mm")</td>
+                    <td class="actions"><a class="btn btn-sm btn-outline-secondary" asp-action="Status" asp-route-jobId="@j.Id">Open</a></td>
+                </tr>
+                @if (!string.IsNullOrWhiteSpace(j.Error))
+                {
+                    <tr><td></td><td colspan="7"><div class="err-row"><i class="bi bi-exclamation-triangle me-1"></i>@j.Error</div></td></tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

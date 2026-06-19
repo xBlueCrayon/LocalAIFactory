@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "Imports";
+    var projects = (List<Project>)ViewBag.Projects;
+    var files = (List<ImportedFile>)ViewBag.Files;
+    var convos = (List<ImportedConversation>)ViewBag.Conversations;
+}
+
+<h3 class="mb-3">Imports</h3>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card"><div class="card-body">
+            <h6>Import a single file</h6>
+            <form asp-action="UploadFile" method="post" enctype="multipart/form-data" class="row g-2">
+                @Html.AntiForgeryToken()
+                <div class="col-md-6"><select name="projectId" class="form-select form-select-sm"><option value="">(no project)</option>@foreach (var p in projects) { <option value="@p.Id">@p.Name</option> }</select></div>
+                <div class="col-md-6"><input type="file" name="file" class="form-control form-control-sm" required /></div>
+                <div class="col-12"><button class="btn btn-sm btn-primary">Upload file</button></div>
+            </form>
+        </div></div>
+    </div>
+    <div class="col-md-6">
+        <div class="card"><div class="card-body">
+            <h6>Import ChatGPT / Claude export</h6>
+            <form asp-action="UploadConversation" method="post" enctype="multipart/form-data" class="row g-2">
+                @Html.AntiForgeryToken()
+                <div class="col-md-6"><select name="projectId" class="form-select form-select-sm"><option value="">(no project)</option>@foreach (var p in projects) { <option value="@p.Id">@p.Name</option> }</select></div>
+                <div class="col-md-6"><input type="file" name="file" class="form-control form-control-sm" accept=".json,.txt" required /></div>
+                <div class="col-12"><button class="btn btn-sm btn-primary">Upload export</button></div>
+            </form>
+            <div class="small-muted mt-1">Accepts conversations.json (ChatGPT) or a Claude export; code blocks become reviewable candidates.</div>
+        </div></div>
+    </div>
+</div>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-7">
+        <h6>Recent imported files</h6>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>File</th><th>Class</th><th>Size</th><th>Status</th></tr></thead>
+            <tbody>
+            @if (!files.Any()) { <tr><td colspan="4" class="text-muted">None.</td></tr> }
+            @foreach (var f in files)
+            {
+                <tr><td class="mono small">@f.RelativePath</td><td class="small">@f.FileClass</td><td class="small">@f.SizeBytes</td><td class="small">@(f.Skipped ? "skipped: " + f.SkipReason : f.Status.ToString())</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-5">
+        <h6>Imported conversations</h6>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Title</th><th>Source</th><th>Msgs</th></tr></thead>
+            <tbody>
+            @if (!convos.Any()) { <tr><td colspan="3" class="text-muted">None.</td></tr> }
+            @foreach (var c in convos)
+            {
+                <tr><td class="small">@c.Title</td><td class="small">@c.Source</td><td class="small">@c.MessageCount</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+@model List<ExtractedCodeBlock>
+@{
+    ViewData["Title"] = "Code Candidates";
+    var projects = ViewBag.Projects as List<Project> ?? new List<Project>();
+    var names = ViewBag.ProjectNames as Dictionary<int, string> ?? new Dictionary<int, string>();
+    int? projectId = ViewBag.ProjectId;
+    KnowledgeStatus? status = ViewBag.Status;
+}
+
+<h1 class="section-title">Imported code candidates</h1>
+<p class="page-sub">Code blocks extracted from imported conversations. Promote the good ones into reusable approved code.</p>
+
+<div class="card2 mb-3">
+    <div class="card2-body">
+        <form method="get" class="filter-bar">
+            <div>
+                <label class="form-label">Project</label>
+                <select name="projectId" class="form-select" onchange="this.form.submit()">
+                    <option value="">All projects</option>
+                    @foreach (var p in projects)
+                    {
+                        <option value="@p.Id" selected="@(projectId == p.Id)">@p.Name</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">Outstanding</option>
+                    @foreach (var s in new[] { KnowledgeStatus.NeedsReview, KnowledgeStatus.Draft, KnowledgeStatus.Approved, KnowledgeStatus.Deprecated })
+                    {
+                        <option value="@s" selected="@(status == s)">@s</option>
+                    }
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card2">
+    <div class="card2-body">
+        <form method="post" asp-action="Bulk" data-bulk>
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="projectId" value="@projectId" />
+            <input type="hidden" name="action" data-bulk-action />
+            <div class="bulk-bar" data-bulk-bar>
+                <span class="count" data-bulk-count>0 selected</span>
+                <span class="sep"></span>
+                <button type="button" class="btn btn-sm btn-success" data-action="promote"><i class="bi bi-arrow-up-circle me-1"></i>Promote</button>
+                <button type="button" class="btn btn-sm btn-warning" data-action="deprecate"><i class="bi bi-slash-circle me-1"></i>Deprecate</button>
+                <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="bi bi-trash me-1"></i>Delete</button>
+                <button type="button" class="btn-clear" data-bulk-clear>Clear</button>
+            </div>
+
+            <div class="table-wrap">
+                <table class="table-modern">
+                    <thead>
+                    <tr>
+                        <th class="col-check"><input type="checkbox" data-bulk-all></th>
+                        <th>Project</th><th>Language</th><th>Code</th><th>Status</th><th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="6" class="empty"><div class="big">No candidates</div>Import a ChatGPT or Claude export to extract code blocks.</td></tr>
+                    }
+                    @foreach (var b in Model)
+                    {
+                        var preview = (b.Content ?? "").Length > 400 ? (b.Content ?? "").Substring(0, 400) + " …" : (b.Content ?? "");
+                        <tr>
+                            <td class="col-check"><input type="checkbox" name="ids" value="@b.Id" data-bulk-item></td>
+                            <td>@(b.ProjectId is int pid && names.TryGetValue(pid, out var nm) ? nm : "(global)")</td>
+                            <td><span class="badge2 slate plain">@(string.IsNullOrWhiteSpace(b.Language) ? "text" : b.Language)</span></td>
+                            <td style="max-width:520px"><pre class="mono" style="margin:0;max-height:120px;overflow:auto;background:#f6f8fa;padding:8px;border-radius:6px">@preview</pre></td>
+                            <td>
+                                <partial name="_StatusBadge" model="@b.Status.ToString()" />
+                                @if (b.PromotedToApprovedCodeSnippetId != null)
+                                {
+                                    <a class="muted" asp-controller="ApprovedCode" asp-action="Details" asp-route-id="@b.PromotedToApprovedCodeSnippetId">#@b.PromotedToApprovedCodeSnippetId</a>
+                                }
+                            </td>
+                            <td class="actions">
+                                @if (b.Status != KnowledgeStatus.Approved)
+                                {
+                                    <button type="submit" formaction="@Url.Action("Promote")" name="id" value="@b.Id" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-up-circle me-1"></i>Promote</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>

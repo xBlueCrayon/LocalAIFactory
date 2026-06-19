@@ -1,0 +1,30 @@
+@model Workspace
+@{
+    ViewData["Title"] = "Workspace";
+    var files = (IReadOnlyList<WorkspaceFile>)ViewBag.Files;
+    var snaps = (IReadOnlyList<WorkspaceSnapshot>)ViewBag.Snapshots;
+    var changes = (IReadOnlyList<WorkspaceChange>)ViewBag.Changes;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h3 class="mb-0">@Model.Name <span class="small-muted">v@(Model.Version)</span></h3>
+    <a class="btn btn-sm btn-outline-secondary" asp-action="Index">All workspaces</a>
+</div>
+<div class="small-muted mb-3">@(Model.IsOriginalImport ? "Original import" : "Working copy") · @Model.Status @(string.IsNullOrEmpty(Model.RootPath) ? "" : "· " + Model.RootPath)</div>
+
+<div class="mb-2">
+    <a class="btn btn-sm btn-outline-primary" asp-action="Snapshots" asp-route-workspaceId="@Model.Id">Snapshots (@snaps.Count)</a>
+    <a class="btn btn-sm btn-outline-primary" asp-action="Changes" asp-route-workspaceId="@Model.Id">Changes (@changes.Count)</a>
+</div>
+
+<h6>Files (@files.Count)</h6>
+<table class="table table-sm table-striped">
+    <thead><tr><th>Path</th><th>Type</th><th>Size</th><th>Hash</th></tr></thead>
+    <tbody>
+    @if (!files.Any()) { <tr><td colspan="4" class="text-muted">No files recorded.</td></tr> }
+    @foreach (var f in files.Take(500))
+    {
+        <tr><td class="mono small">@f.RelativePath</td><td class="small">@f.FileType</td><td class="small">@f.SizeBytes</td><td class="mono small">@(f.Hash is null ? "" : f.Hash.Substring(0, Math.Min(12, f.Hash.Length)))</td></tr>
+    }
+    </tbody>
+</table>

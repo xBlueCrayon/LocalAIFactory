@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LocalAIFactory.Core\LocalAIFactory.Core.csproj" />
+    <ProjectReference Include="..\LocalAIFactory.Data\LocalAIFactory.Data.csproj" />
+  </ItemGroup>
+</Project>

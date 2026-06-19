@@ -1,0 +1,111 @@
+@using LocalAIFactory.Core.Enums
+@model IngestionJob
+@{
+    ViewData["Title"] = "Import status";
+    var skipReasons = ViewBag.SkipReasons as Dictionary<string, int> ?? new Dictionary<string, int>();
+    int importedCount = ViewBag.ImportedCount ?? 0;
+    bool isFinal = Model.Status == IngestionJobStatus.Completed || Model.Status == IngestionJobStatus.Failed;
+    int pct = Model.TotalFiles > 0 ? (int)(100.0 * Model.ProcessedFiles / Model.TotalFiles) : (Model.Status == IngestionJobStatus.Completed ? 100 : 0);
+}
+
+<div class="toolbar-row">
+    <div>
+        <h1 class="section-title">Import #@Model.Id</h1>
+        <p class="page-sub mb-0"><span class="mono">@Model.FileName</span> · @ViewBag.HealthMode mode</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left me-1"></i>All imports</a>
+</div>
+
+<div class="card2 mb-3">
+    <div class="card2-body">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <partial name="_StatusBadge" model="@Model.Status.ToString()" />
+            <span class="muted">Phase: <span id="phase">@Model.Phase</span></span>
+        </div>
+        <div class="progress2 mb-1"><span id="bar" style="width:@(pct)%"></span></div>
+        <div class="muted"><span id="processed">@Model.ProcessedFiles</span> / <span id="total">@Model.TotalFiles</span> files processed</div>
+        <div id="errorRow" class="err-row mt-2 @(string.IsNullOrWhiteSpace(Model.Error) ? "d-none" : "")"><i class="bi bi-exclamation-triangle me-1"></i><span id="errorText">@Model.Error</span></div>
+    </div>
+</div>
+
+<div class="stat-grid mb-3">
+    <div class="stat"><div class="label"><span class="dot"><i class="bi bi-journal-plus"></i></span> Imported</div><div class="value">@importedCount</div><div class="delta">knowledge items</div></div>
+    <div class="stat"><div class="label"><span class="dot"><i class="bi bi-grid-3x3-gap"></i></span> Chunks</div><div class="value" id="chunks">@Model.ChunkCount</div></div>
+    <div class="stat"><div class="label"><span class="dot"><i class="bi bi-diagram-2"></i></span> Embedded</div><div class="value" id="embedded">@Model.EmbeddedCount</div><div class="delta">vector points</div></div>
+    <div class="stat"><div class="label"><span class="dot"><i class="bi bi-funnel"></i></span> Skipped</div><div class="value" id="skipped">@Model.SkippedFiles</div></div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card2">
+            <div class="card2-head"><h2><i class="bi bi-check2-circle me-2"></i>Indexing</h2></div>
+            <div class="card2-body">
+                <dl class="kv">
+                    <dt>Stored (keyword)</dt><dd><span class="badge2 green">Yes</span> — searchable via MSSQL</dd>
+                    <dt>Vector indexed</dt>
+                    <dd>
+                        @if (Model.EmbeddedCount > 0)
+                        {
+                            <span class="badge2 green">Yes</span> <span class="muted">@Model.EmbeddedCount points</span>
+                        }
+                        else
+                        {
+                            <span class="badge2 slate">No</span>
+                            <span class="muted">embeddings @((string)ViewBag.EmbeddingsState == "Online" ? "produced none" : "unavailable / disabled") — keyword search is used</span>
+                        }
+                    </dd>
+                </dl>
+                @if (Model.EmbeddedCount == 0 && Model.ChunkCount > 0)
+                {
+                    <div class="muted" style="font-size:12px"><i class="bi bi-info-circle me-1"></i>This is expected in Minimal/Standard mode. Content is fully usable through keyword search; enabling Qdrant + embeddings later will vector-index it on re-approval.</div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card2">
+            <div class="card2-head"><h2><i class="bi bi-funnel me-2"></i>Skipped files</h2><span class="sub">@Model.SkippedFiles total</span></div>
+            <div class="card2-body">
+                @if (!skipReasons.Any())
+                {
+                    <div class="muted">No files were skipped.</div>
+                }
+                else
+                {
+                    <table class="table-modern">
+                        <thead><tr><th>Reason</th><th>Count</th></tr></thead>
+                        <tbody>
+                        @foreach (var kv in skipReasons.OrderByDescending(k => k.Value))
+                        {
+                            <tr><td>@kv.Key</td><td><span class="badge2 slate plain">@kv.Value</span></td></tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const jobId = @Model.Id;
+    const wasFinal = @(isFinal ? "true" : "false");
+    function setText(id, v){ var e=document.getElementById(id); if(e) e.textContent = v; }
+    async function poll() {
+        try {
+            const r = await fetch('@Url.Action("Progress")?jobId=' + jobId);
+            if (!r.ok) return;
+            const d = await r.json();
+            setText('phase', d.phase); setText('processed', d.processed); setText('total', d.total);
+            setText('skipped', d.skipped); setText('chunks', d.chunks); setText('embedded', d.embedded);
+            const pct = d.total > 0 ? Math.round((d.processed / d.total) * 100) : (d.status === 'Completed' ? 100 : 0);
+            const bar = document.getElementById('bar'); if (bar) bar.style.width = pct + '%';
+            if (d.error) { const er = document.getElementById('errorRow'); er.classList.remove('d-none'); setText('errorText', d.error); }
+            if (d.status === 'Completed' || d.status === 'Failed') { location.reload(); return; }  // reload once to show final breakdown
+            setTimeout(poll, 1500);
+        } catch (e) { setTimeout(poll, 2500); }
+    }
+    if (!wasFinal) poll();  // already-final jobs render statically (no polling, no reload loop)
+</script>
+}

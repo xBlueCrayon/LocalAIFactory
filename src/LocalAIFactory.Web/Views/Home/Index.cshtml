@@ -1,0 +1,205 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    (string cls, string txt) StateBadge(ServiceState s) => s switch
+    {
+        ServiceState.Online => ("green", "Online"),
+        ServiceState.Offline => ("red", "Offline"),
+        ServiceState.Disabled => ("slate", "Disabled"),
+        _ => ("slate", "Checking…")
+    };
+}
+
+<h1 class="section-title">Platform overview</h1>
+<p class="page-sub">Curated knowledge, model orchestration and import activity at a glance.</p>
+
+<div class="stat-grid mb-4">
+    <a class="stat" asp-controller="Projects" asp-action="Index">
+        <div class="label"><span class="dot"><i class="bi bi-folder2"></i></span> Projects</div>
+        <div class="value">@Model.Projects</div>
+    </a>
+    <a class="stat" asp-controller="Knowledge" asp-action="Index">
+        <div class="label"><span class="dot"><i class="bi bi-journal-text"></i></span> Knowledge items</div>
+        <div class="value">@Model.KnowledgeItems</div>
+        <div class="delta">@Model.ApprovedKnowledge approved</div>
+    </a>
+    <a class="stat" asp-controller="BusinessRules" asp-action="Index">
+        <div class="label"><span class="dot"><i class="bi bi-shield-check"></i></span> Business rules</div>
+        <div class="value">@Model.BusinessRules</div>
+    </a>
+    <a class="stat" asp-controller="ApprovedCode" asp-action="Index">
+        <div class="label"><span class="dot"><i class="bi bi-code-square"></i></span> Approved code</div>
+        <div class="value">@Model.ApprovedCode</div>
+    </a>
+    <a class="stat" asp-controller="Imports" asp-action="Index">
+        <div class="label"><span class="dot"><i class="bi bi-inbox"></i></span> Imported files</div>
+        <div class="value">@Model.ImportedFiles</div>
+    </a>
+    <a class="stat" asp-controller="Workspaces" asp-action="Index">
+        <div class="label"><span class="dot"><i class="bi bi-layers"></i></span> Workspaces</div>
+        <div class="value">@Model.Workspaces</div>
+    </a>
+    <a class="stat" asp-controller="Models" asp-action="Index">
+        <div class="label"><span class="dot"><i class="bi bi-cpu"></i></span> Model configs</div>
+        <div class="value">@Model.ModelConfigurations</div>
+    </a>
+    <a class="stat" asp-controller="Chat" asp-action="Index">
+        <div class="label"><span class="dot"><i class="bi bi-chat-dots"></i></span> Chat sessions</div>
+        <div class="value">@Model.ChatSessions</div>
+    </a>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-8">
+        <!-- Review backlog -->
+        <div class="card2 mb-3">
+            <div class="card2-head"><h2><i class="bi bi-clipboard-check me-2"></i>Review backlog</h2><span class="sub">items waiting for approval</span></div>
+            <div class="card2-body">
+                <div class="row g-2">
+                    <div class="col-6 col-md-3">
+                        <a class="stat" asp-controller="Knowledge" asp-action="Index" asp-route-status="NeedsReview">
+                            <div class="label">Knowledge</div><div class="value">@Model.KnowledgeNeedsReview</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a class="stat" asp-controller="BusinessRules" asp-action="Index" asp-route-status="NeedsReview">
+                            <div class="label">Rules</div><div class="value">@Model.RulesNeedsReview</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a class="stat" asp-controller="CodeCandidates" asp-action="Index">
+                            <div class="label">Code candidates</div><div class="value">@Model.CodeCandidates</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a class="stat" asp-controller="ProjectProfiles" asp-action="Index">
+                            <div class="label">Profile sections</div><div class="value">@Model.ProfileSectionsNeedsReview</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent knowledge -->
+        <div class="card2 mb-3">
+            <div class="card2-head"><h2><i class="bi bi-journal-text me-2"></i>Recent knowledge</h2>
+                <div class="right"><a class="btn btn-sm btn-outline-secondary" asp-controller="Knowledge" asp-action="Index">View all</a></div>
+            </div>
+            <div class="table-wrap">
+                <table class="table-modern">
+                    <thead><tr><th>Title</th><th>Source</th><th>Status</th><th>Updated</th></tr></thead>
+                    <tbody>
+                    @if (!Model.RecentKnowledge.Any())
+                    {
+                        <tr><td colspan="4" class="empty">No knowledge yet — import a project or add an item.</td></tr>
+                    }
+                    @foreach (var k in Model.RecentKnowledge)
+                    {
+                        <tr>
+                            <td><a asp-controller="Knowledge" asp-action="Details" asp-route-id="@k.Id">@k.Title</a></td>
+                            <td><span class="muted">@k.SourceType</span></td>
+                            <td><partial name="_StatusBadge" model="@k.Status.ToString()" /></td>
+                            <td class="muted">@k.UpdatedUtc.ToString("MMM d, HH:mm")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Ingestion activity -->
+        <div class="card2">
+            <div class="card2-head"><h2><i class="bi bi-cloud-arrow-up me-2"></i>Recent imports</h2>
+                <div class="right"><a class="btn btn-sm btn-outline-secondary" asp-controller="ImportWizard" asp-action="Index">Import monitor</a></div>
+            </div>
+            <div class="table-wrap">
+                <table class="table-modern">
+                    <thead><tr><th>File</th><th>Status</th><th>Progress</th><th>Created</th></tr></thead>
+                    <tbody>
+                    @if (!Model.RecentImports.Any())
+                    {
+                        <tr><td colspan="4" class="empty">No imports yet.</td></tr>
+                    }
+                    @foreach (var j in Model.RecentImports)
+                    {
+                        var pct = j.TotalFiles > 0 ? (int)(100.0 * j.ProcessedFiles / j.TotalFiles) : (j.Status == IngestionJobStatus.Completed ? 100 : 0);
+                        <tr>
+                            <td class="text-truncate" style="max-width:220px">@j.FileName</td>
+                            <td><partial name="_StatusBadge" model="@j.Status.ToString()" /></td>
+                            <td style="min-width:140px"><div class="progress2"><span style="width:@(pct)%"></span></div><span class="muted">@j.ProcessedFiles / @j.TotalFiles files</span></td>
+                            <td class="muted">@j.CreatedUtc.ToString("MMM d, HH:mm")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Health -->
+        <div class="card2 mb-3">
+            <div class="card2-head"><h2><i class="bi bi-activity me-2"></i>System health</h2><span class="sub">@Model.Health.ModeLabel mode</span></div>
+            <div class="card2-body">
+                @{
+                    var qb = StateBadge(Model.Health.Qdrant);
+                    var ob = StateBadge(Model.Health.Ollama);
+                    var eb = StateBadge(Model.Health.Embeddings);
+                }
+                <dl class="kv">
+                    <dt>Active model</dt><dd>@(string.IsNullOrEmpty(Model.ActiveModel) ? "—" : Model.ActiveModel)</dd>
+                    <dt>Ollama (LLM)</dt><dd><span class="badge2 @ob.cls">@ob.txt</span></dd>
+                    <dt>Vector store</dt><dd><span class="badge2 @qb.cls">@qb.txt</span></dd>
+                    <dt>Embeddings</dt><dd><span class="badge2 @eb.cls">@eb.txt</span></dd>
+                </dl>
+                @if (Model.Health.Qdrant != ServiceState.Online && Model.Health.Qdrant != ServiceState.Disabled)
+                {
+                    <div class="muted" style="font-size:12px"><i class="bi bi-info-circle me-1"></i>Vector store unavailable — search falls back to MSSQL keyword.</div>
+                }
+                @if (Model.Health.LastCheckedUtc is DateTime t)
+                {
+                    <div class="muted" style="font-size:11px;margin-top:4px">Checked @t.ToString("HH:mm:ss") UTC · auto-refreshes</div>
+                }
+            </div>
+        </div>
+
+        <!-- Ingestion stats -->
+        <div class="card2 mb-3">
+            <div class="card2-head"><h2><i class="bi bi-diagram-2 me-2"></i>Ingestion</h2></div>
+            <div class="card2-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge2 blue">@Model.JobsRunning running</span>
+                    <span class="badge2 slate">@Model.JobsPending pending</span>
+                    <span class="badge2 green">@Model.JobsCompleted completed</span>
+                    <span class="badge2 red">@Model.JobsFailed failed</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Approval activity -->
+        <div class="card2">
+            <div class="card2-head"><h2><i class="bi bi-check2-circle me-2"></i>Approval activity</h2></div>
+            <div class="card2-body">
+                @if (!Model.RecentApprovals.Any())
+                {
+                    <div class="muted">No approval activity yet.</div>
+                }
+                else
+                {
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var a in Model.RecentApprovals)
+                        {
+                            <li class="d-flex gap-2 align-items-start mb-2">
+                                <i class="bi bi-dot text-muted"></i>
+                                <div>
+                                    <div style="font-size:13px"><strong>@a.Action</strong> <span class="muted">@a.EntityName</span></div>
+                                    <div class="muted">@(string.IsNullOrEmpty(a.Details) ? "" : a.Details) · @a.CreatedUtc.ToString("MMM d, HH:mm")</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>

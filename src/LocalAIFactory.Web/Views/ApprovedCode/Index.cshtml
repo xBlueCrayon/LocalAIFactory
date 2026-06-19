@@ -1,0 +1,30 @@
+@model List<ApprovedCodeSnippet>
+@{ ViewData["Title"] = "Approved Code"; var projects = (List<Project>)ViewBag.Projects; }
+
+<h3 class="mb-3">Approved code</h3>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <select name="projectId" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">All projects</option>
+            @foreach (var p in projects) { <option value="@p.Id" selected="@(ViewBag.ProjectId as int? == p.Id)">@p.Name</option> }
+        </select>
+    </div>
+</form>
+
+<table class="table table-sm table-striped align-middle">
+    <thead><tr><th>Title</th><th>Language</th><th>Reusable</th><th>Updated</th><th></th></tr></thead>
+    <tbody>
+    @if (!Model.Any()) { <tr><td colspan="5" class="text-muted">No approved code yet. Save useful answers from chat.</td></tr> }
+    @foreach (var s in Model)
+    {
+        <tr>
+            <td><a asp-action="Details" asp-route-id="@s.Id">@s.Title</a></td>
+            <td class="mono">@s.Language</td>
+            <td>@(s.IsReusable ? "Yes" : "No")</td>
+            <td class="small-muted">@s.UpdatedUtc.ToString("g")</td>
+            <td></td>
+        </tr>
+    }
+    </tbody>
+</table>

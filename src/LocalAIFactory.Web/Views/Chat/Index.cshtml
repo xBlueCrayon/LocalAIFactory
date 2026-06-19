@@ -1,0 +1,143 @@
+@using System.Text.Json
+@model ChatPageViewModel
+@{
+    ViewData["Title"] = "Chat";
+    var modelNames = ViewBag.ModelNames as Dictionary<int, string> ?? new Dictionary<int, string>();
+    var runByMsg = ViewBag.PromptRunByMessage as Dictionary<int, int> ?? new Dictionary<int, int>();
+    List<RagContextItem> ParseCtx(string? json)
+    {
+        if (string.IsNullOrWhiteSpace(json)) return new();
+        try { return JsonSerializer.Deserialize<List<RagContextItem>>(json) ?? new(); } catch { return new(); }
+    }
+}
+
+<div class="chat-shell">
+    <div>
+        <a class="btn btn-primary w-100 mb-2" asp-action="Index"><i class="bi bi-plus-lg me-1"></i>New chat</a>
+        <div class="session-list">
+            @if (!Model.Sessions.Any()) { <div class="muted" style="padding:8px">No conversations yet.</div> }
+            @foreach (var s in Model.Sessions)
+            {
+                <a class="@(Model.CurrentSession?.Id == s.Id ? "active" : "")" asp-action="Index" asp-route-sessionId="@s.Id">
+                    <div class="text-truncate">@s.Title</div>
+                    <div class="muted" style="font-size:11px">@s.UpdatedUtc.ToString("MMM d, HH:mm")</div>
+                </a>
+            }
+        </div>
+    </div>
+
+    <div>
+        @if (ViewBag.ChatAvailable == false)
+        {
+            <div class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                <strong>No model is available.</strong> This deployment is running in @ViewBag.HealthMode mode — no reachable local model (Ollama) and no enabled cloud model.
+                Add or enable a model under <a asp-controller="Models" asp-action="Index">Configuration → Models</a>, or start Ollama. You can still browse and curate knowledge; sending a message will return an error until a model is available.
+            </div>
+        }
+        <div class="chat-window mb-2">
+            @if (!Model.Messages.Any())
+            {
+                <div class="muted">
+                    <div style="font-weight:600;color:var(--text);margin-bottom:4px">Ask about your projects, code, SQL or deployment.</div>
+                    Approved business rules and code are injected first. Selecting a cloud model counts as consent to use it.
+                </div>
+            }
+            @foreach (var msg in Model.Messages)
+            {
+                var isUser = msg.Role == ChatRole.User;
+                <div class="msg @(isUser ? "user" : "assistant")">
+                    <div class="role">@msg.Role</div>
+                    @if (isUser)
+                    {
+                        <div class="bubble">@msg.Content</div>
+                    }
+                    else
+                    {
+                        var ctx = ParseCtx(msg.RetrievedContextJson);
+                        var mname = (msg.ModelConfigurationId is int mid && modelNames.TryGetValue(mid, out var nm)) ? nm : "model";
+                        <div class="bubble" data-md>@msg.Content</div>
+                        <div class="meta">
+                            <span><i class="bi bi-cpu me-1"></i>@mname</span>
+                            @if (msg.TokenCount > 0) { <span><i class="bi bi-hash"></i>@msg.TokenCount tokens</span> }
+                            @if (runByMsg.TryGetValue(msg.Id, out var runId)) { <a asp-controller="PromptRuns" asp-action="Details" asp-route-id="@runId"><i class="bi bi-clock-history me-1"></i>Run #@runId</a> }
+                            @if (msg.Rating != MessageRating.None) { <span class="badge2 @(msg.Rating == MessageRating.Useful ? "green" : "red") plain">@msg.Rating</span> }
+                        </div>
+
+                        @if (ctx.Any())
+                        {
+                            <details class="context-panel">
+                                <summary><i class="bi bi-layers-half me-1"></i>Retrieved context · @ctx.Count item(s), approved-first</summary>
+                                @foreach (var c in ctx)
+                                {
+                                    <div class="ctx-item">
+                                        <span class="badge2 @(c.IsApproved ? "green" : "slate") plain">@c.Kind</span>
+                                        <strong class="ms-1">@c.Title</strong>
+                                        <div class="src">@c.Source · score @c.Score.ToString("0.00")</div>
+                                    </div>
+                                }
+                            </details>
+                        }
+
+                        <div class="d-flex gap-1 flex-wrap mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#save-@msg.Id"><i class="bi bi-bookmark-plus me-1"></i>Save to memory</button>
+                            <form asp-action="Rate" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="messageId" value="@msg.Id" />
+                                <button type="submit" name="rating" value="useful" class="btn btn-sm btn-outline-success"><i class="bi bi-hand-thumbs-up"></i></button>
+                                <button type="submit" name="rating" value="wrong" class="btn btn-sm btn-outline-danger"><i class="bi bi-hand-thumbs-down"></i></button>
+                            </form>
+                        </div>
+
+                        <div class="collapse mt-2" id="save-@msg.Id">
+                            <form asp-action="SaveResponse" method="post" class="card2"><div class="card2-body">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="MessageId" value="@msg.Id" />
+                                <input type="hidden" name="ProjectId" value="@Model.CurrentSession?.ProjectId" />
+                                <div class="row g-2 align-items-end">
+                                    <div class="col-md-3"><label class="form-label">Save as</label>
+                                        <select name="Target" class="form-select form-select-sm">
+                                            <option value="Knowledge">Knowledge</option>
+                                            <option value="ApprovedCode">Approved code</option>
+                                            <option value="BusinessRule">Business rule</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-5"><label class="form-label">Title</label><input name="Title" class="form-control form-control-sm" placeholder="Saved from chat" /></div>
+                                    <div class="col-md-2"><label class="form-label">Language</label><input name="Language" class="form-control form-control-sm" value="csharp" /></div>
+                                    <div class="col-md-2"><button class="btn btn-sm btn-primary w-100">Save</button></div>
+                                </div>
+                            </div></form>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <form asp-action="Send" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="SessionId" value="@Model.CurrentSession?.Id" />
+            <div class="row g-2 mb-2">
+                <div class="col-md-6">
+                    <select name="ProjectId" class="form-select form-select-sm">
+                        <option value="">(no project)</option>
+                        @foreach (var p in Model.Projects) { <option value="@p.Id" selected="@(Model.SelectedProjectId == p.Id)">@p.Name</option> }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select name="ModelConfigurationId" class="form-select form-select-sm">
+                        <option value="">Default (task profile)</option>
+                        @foreach (var m in Model.Models) { <option value="@m.Id" selected="@(Model.SelectedModelId == m.Id)">@m.Name (@m.Provider)</option> }
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <textarea name="Message" class="form-control" rows="2" placeholder="Ask about your projects, code, SQL, deployment…" required></textarea>
+                <button class="btn btn-primary px-3"><i class="bi bi-send"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>window.renderMarkdown && window.renderMarkdown();</script>
+}

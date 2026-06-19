@@ -1,0 +1,99 @@
+@model List<BusinessRule>
+@{
+    ViewData["Title"] = "Business Rules";
+    var projects = ViewBag.Projects as List<Project> ?? new List<Project>();
+    int? projectId = ViewBag.ProjectId;
+    string statusVal = ViewBag.Status?.ToString() ?? "";
+}
+
+<h1 class="section-title">Business rules</h1>
+<p class="page-sub">Approved rules are injected <strong>first</strong> into every prompt. Imported projects generate candidate rules for review.</p>
+
+<div class="card2 mb-3">
+    <div class="card2-body">
+        <form method="get" class="filter-bar">
+            <div>
+                <label class="form-label">Project</label>
+                <select name="projectId" class="form-select" onchange="this.form.submit()">
+                    <option value="">All projects</option>
+                    @foreach (var p in projects) { <option value="@p.Id" selected="@(projectId == p.Id)">@p.Name</option> }
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">Any status</option>
+                    @foreach (var s in Enum.GetNames(typeof(BusinessRuleStatus))) { <option value="@s" selected="@(statusVal == s)">@s</option> }
+                </select>
+            </div>
+            <div><label class="form-label">&nbsp;</label><div><button class="btn btn-primary"><i class="bi bi-funnel me-1"></i>Apply</button></div></div>
+        </form>
+    </div>
+</div>
+
+<div class="card2 mb-3">
+    <div class="card2-body">
+        <form method="post" asp-action="Bulk" data-bulk>
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="projectId" value="@projectId" />
+            <input type="hidden" name="status" value="@statusVal" />
+            <input type="hidden" name="action" data-bulk-action />
+            <div class="bulk-bar" data-bulk-bar>
+                <span class="count" data-bulk-count>0 selected</span>
+                <span class="sep"></span>
+                <button type="button" class="btn btn-sm btn-success" data-action="approve"><i class="bi bi-check2 me-1"></i>Approve</button>
+                <button type="button" class="btn btn-sm btn-warning" data-action="deprecate"><i class="bi bi-slash-circle me-1"></i>Deprecate</button>
+                <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="bi bi-trash me-1"></i>Delete</button>
+                <button type="button" class="btn-clear" data-bulk-clear>Clear</button>
+            </div>
+            <div class="table-wrap">
+                <table class="table-modern">
+                    <thead>
+                    <tr>
+                        <th class="col-check"><input type="checkbox" data-bulk-all></th>
+                        <th>Rule</th><th>Status</th><th>Updated</th><th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="5" class="empty"><div class="big">No business rules</div>Add one below, or import a project to extract candidates.</td></tr>
+                    }
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td class="col-check"><input type="checkbox" name="ids" value="@r.Id" data-bulk-item></td>
+                            <td><strong>@r.Title</strong><div class="muted" style="max-width:560px">@r.Content</div></td>
+                            <td><partial name="_StatusBadge" model="@r.Status.ToString()" /></td>
+                            <td class="muted">@r.UpdatedUtc.ToString("MMM d, HH:mm")</td>
+                            <td class="actions">
+                                @if (!r.IsApproved)
+                                {
+                                    <button type="submit" formaction="@Url.Action("Approve")" name="id" value="@r.Id" class="btn btn-sm btn-outline-secondary">Approve</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card2">
+    <div class="card2-head"><h2><i class="bi bi-plus-circle me-2"></i>Add rule</h2></div>
+    <div class="card2-body">
+        <form asp-action="Create" method="post" class="row g-2">
+            @Html.AntiForgeryToken()
+            <div class="col-md-4"><label class="form-label">Project</label>
+                <select name="projectId" class="form-select"><option value="">(global)</option>
+                    @foreach (var p in projects) { <option value="@p.Id">@p.Name</option> }
+                </select>
+            </div>
+            <div class="col-md-8"><label class="form-label">Title</label><input name="title" class="form-control" required /></div>
+            <div class="col-12"><label class="form-label">Rule</label><textarea name="content" rows="2" class="form-control" required></textarea></div>
+            <div class="col-12"><button class="btn btn-primary">Add (needs review)</button></div>
+        </form>
+    </div>
+</div>

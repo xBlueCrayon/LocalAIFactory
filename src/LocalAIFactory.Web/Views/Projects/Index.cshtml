@@ -1,0 +1,35 @@
+@model List<Project>
+@{ ViewData["Title"] = "Projects"; }
+
+<h3 class="mb-3">Projects</h3>
+
+<div class="row">
+    <div class="col-md-7">
+        <table class="table table-sm table-striped">
+            <thead><tr><th>Code</th><th>Name</th><th>Description</th><th></th></tr></thead>
+            <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td class="mono">@p.Code @(p.IsGlobal ? "(global)" : "")</td>
+                    <td>@p.Name</td>
+                    <td class="small-muted">@p.Description</td>
+                    <td><a class="btn btn-sm btn-outline-secondary" asp-controller="Knowledge" asp-action="Index" asp-route-projectId="@p.Id">Knowledge</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-5">
+        <div class="card"><div class="card-body">
+            <h6>Add project</h6>
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <div class="mb-2"><label class="form-label">Code</label><input name="code" class="form-control" required /></div>
+                <div class="mb-2"><label class="form-label">Name</label><input name="name" class="form-control" required /></div>
+                <div class="mb-2"><label class="form-label">Description</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+                <button class="btn btn-primary btn-sm">Create</button>
+            </form>
+        </div></div>
+    </div>
+</div>

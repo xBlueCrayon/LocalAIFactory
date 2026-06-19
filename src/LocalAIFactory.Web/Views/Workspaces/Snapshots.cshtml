@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Snapshots";
+    var workspaces = (IReadOnlyList<Workspace>)ViewBag.Workspaces;
+    var snaps = (IReadOnlyList<WorkspaceSnapshot>)ViewBag.Snapshots;
+    int? wid = ViewBag.WorkspaceId as int?;
+}
+
+<h3 class="mb-1">Snapshots</h3>
+<p class="small-muted">Lightweight source control: capture a snapshot before AI modifications. Phase 2 will diff and roll back against these.</p>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-5">
+        <select name="workspaceId" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">All workspaces</option>
+            @foreach (var w in workspaces) { <option value="@w.Id" selected="@(wid == w.Id)">@w.Name (v@(w.Version))</option> }
+        </select>
+    </div>
+</form>
+
+@if (wid != null)
+{
+    <form asp-action="CreateSnapshot" method="post" class="row g-2 mb-3" style="max-width:620px">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="workspaceId" value="@wid" />
+        <div class="col-md-8"><input name="description" class="form-control form-control-sm" placeholder="Snapshot description (optional)" /></div>
+        <div class="col-md-4"><button class="btn btn-sm btn-primary">Create snapshot</button></div>
+    </form>
+}
+
+<table class="table table-sm table-striped">
+    <thead><tr><th>#</th><th>Description</th><th>By</th><th>Files</th><th>Date</th></tr></thead>
+    <tbody>
+    @if (!snaps.Any()) { <tr><td colspan="5" class="text-muted">No snapshots.</td></tr> }
+    @foreach (var s in snaps)
+    {
+        <tr><td>@s.Id</td><td class="small">@s.Description</td><td class="small">@s.CreatedBy</td><td class="small">@s.FileCount</td><td class="small-muted">@s.CreatedUtc.ToString("g")</td></tr>
+    }
+    </tbody>
+</table>

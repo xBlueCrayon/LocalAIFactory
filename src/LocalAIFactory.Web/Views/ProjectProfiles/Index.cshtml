@@ -1,0 +1,74 @@
+@model List<ProjectProfile>
+@{
+    ViewData["Title"] = "Project Profiles";
+    var projects = ViewBag.Projects as List<Project> ?? new List<Project>();
+    var names = ViewBag.ProjectNames as Dictionary<int, string> ?? new Dictionary<int, string>();
+    var totals = ViewBag.SectionTotals as Dictionary<int, int> ?? new Dictionary<int, int>();
+    var approved = ViewBag.SectionApproved as Dictionary<int, int> ?? new Dictionary<int, int>();
+    int? projectId = ViewBag.ProjectId;
+}
+
+<h1 class="section-title">Project profiles</h1>
+<p class="page-sub">Generated, structured descriptions of each imported system. Approve sections to inject them into retrieval.</p>
+
+<div class="card2 mb-3">
+    <div class="card2-body">
+        <div class="toolbar-row mb-0">
+            <form method="get" class="filter-bar">
+                <div>
+                    <label class="form-label">Project</label>
+                    <select name="projectId" class="form-select" onchange="this.form.submit()">
+                        <option value="">All projects</option>
+                        @foreach (var p in projects)
+                        {
+                            <option value="@p.Id" selected="@(projectId == p.Id)">@p.Name</option>
+                        }
+                    </select>
+                </div>
+            </form>
+            <form method="post" asp-action="Generate" class="filter-bar">
+                @Html.AntiForgeryToken()
+                <div>
+                    <label class="form-label">Generate / regenerate</label>
+                    <div class="d-flex gap-2">
+                        <select name="projectId" class="form-select" required>
+                            <option value="">Choose project…</option>
+                            @foreach (var p in projects)
+                            {
+                                <option value="@p.Id">@p.Name</option>
+                            }
+                        </select>
+                        <button class="btn btn-primary"><i class="bi bi-magic me-1"></i>Generate</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card2">
+    <div class="table-wrap">
+        <table class="table-modern">
+            <thead><tr><th>Project</th><th>Status</th><th>Sections</th><th>Summary</th><th>Updated</th><th></th></tr></thead>
+            <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="6" class="empty"><div class="big">No profiles yet</div>Import a project, then generate its profile.</td></tr>
+            }
+            @foreach (var p in Model)
+            {
+                var total = totals.TryGetValue(p.Id, out var t) ? t : 0;
+                var appr = approved.TryGetValue(p.Id, out var a) ? a : 0;
+                <tr>
+                    <td><strong>@(names.TryGetValue(p.ProjectId, out var nm) ? nm : ("Project #" + p.ProjectId))</strong></td>
+                    <td><partial name="_StatusBadge" model="@p.Status.ToString()" /></td>
+                    <td><span class="badge2 @(total > 0 && appr == total ? "green" : "slate") plain">@appr / @total approved</span></td>
+                    <td class="text-truncate muted" style="max-width:340px">@(p.Summary ?? "—")</td>
+                    <td class="muted">@p.UpdatedUtc.ToString("MMM d, HH:mm")</td>
+                    <td class="actions"><a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@p.Id">Review<i class="bi bi-chevron-right ms-1"></i></a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

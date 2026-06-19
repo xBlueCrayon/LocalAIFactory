@@ -1,0 +1,52 @@
+@model IReadOnlyList<Workspace>
+@{ ViewData["Title"] = "Workspaces"; var projects = (List<Project>)ViewBag.Projects; }
+
+<h3 class="mb-1">Workspaces</h3>
+<p class="small-muted">A workspace is a working copy of an imported project (Original Import, v23, v24…). Phase 1 records metadata, snapshots and proposed changes; on-disk editing and build are enabled in Phase 2.</p>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <select name="projectId" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">All projects</option>
+            @foreach (var p in projects) { <option value="@p.Id" selected="@(ViewBag.ProjectId as int? == p.Id)">@p.Name</option> }
+        </select>
+    </div>
+</form>
+
+<table class="table table-sm table-striped align-middle">
+    <thead><tr><th>Name</th><th>Version</th><th>Origin</th><th>Status</th><th>Created</th><th></th></tr></thead>
+    <tbody>
+    @if (!Model.Any()) { <tr><td colspan="6" class="text-muted">No workspaces yet.</td></tr> }
+    @foreach (var w in Model)
+    {
+        <tr>
+            <td><a asp-action="Details" asp-route-id="@w.Id">@w.Name</a></td>
+            <td>v@(w.Version)</td>
+            <td>@(w.IsOriginalImport ? "Original import" : "Working copy")</td>
+            <td><span class="badge bg-secondary">@w.Status</span></td>
+            <td class="small-muted">@w.CreatedUtc.ToString("g")</td>
+            <td class="text-nowrap">
+                <a class="btn btn-sm btn-outline-secondary" asp-action="Snapshots" asp-route-workspaceId="@w.Id">Snapshots</a>
+                <a class="btn btn-sm btn-outline-secondary" asp-action="Changes" asp-route-workspaceId="@w.Id">Changes</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<div class="card mt-3" style="max-width:680px"><div class="card-body">
+    <h6>Create workspace</h6>
+    <form asp-action="Create" method="post" class="row g-2">
+        @Html.AntiForgeryToken()
+        <div class="col-md-4"><label class="form-label small">Project</label>
+            <select name="projectId" class="form-select form-select-sm" required>
+                <option value="">Choose…</option>
+                @foreach (var p in projects) { <option value="@p.Id">@p.Name</option> }
+            </select>
+        </div>
+        <div class="col-md-5"><label class="form-label small">Name (optional)</label><input name="name" class="form-control form-control-sm" placeholder="auto: Workspace vN" /></div>
+        <div class="col-md-3 form-check mt-4 ms-2"><input class="form-check-input" type="checkbox" name="original" value="true" /><label class="form-check-label small">Original import</label></div>
+        <div class="col-12"><label class="form-label small">Description</label><input name="description" class="form-control form-control-sm" /></div>
+        <div class="col-12"><button class="btn btn-sm btn-primary">Create workspace</button></div>
+    </form>
+</div></div>

@@ -1,0 +1,82 @@
+@model ProjectProfile
+@{
+    ViewData["Title"] = "Profile · " + (ViewBag.ProjectName ?? "");
+    var sections = ViewBag.Sections as List<ProjectProfileSection> ?? new List<ProjectProfileSection>();
+}
+
+<div class="toolbar-row">
+    <div>
+        <h1 class="section-title">@(ViewBag.ProjectName ?? "Project") — profile</h1>
+        <p class="page-sub mb-0">Generation status: <partial name="_StatusBadge" model="@Model.Status.ToString()" /> · updated @Model.UpdatedUtc.ToString("MMM d, yyyy HH:mm")</p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left me-1"></i>All profiles</a>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Summary))
+{
+    <div class="card2 mb-3">
+        <div class="card2-head"><h2><i class="bi bi-card-text me-2"></i>Summary</h2></div>
+        <div class="card2-body"><div data-md>@Model.Summary</div></div>
+    </div>
+}
+
+<div class="card2">
+    <div class="card2-head">
+        <h2><i class="bi bi-list-check me-2"></i>Sections</h2>
+        <span class="sub">@sections.Count section(s)</span>
+    </div>
+    <div class="card2-body">
+        @if (!sections.Any())
+        {
+            <div class="empty"><div class="big">No sections</div>This profile has no generated sections.</div>
+        }
+        else
+        {
+            <form method="post" asp-action="Bulk" data-bulk>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="profileId" value="@Model.Id" />
+                <input type="hidden" name="action" data-bulk-action />
+                <div class="bulk-bar" data-bulk-bar>
+                    <span class="count" data-bulk-count>0 selected</span>
+                    <span class="sep"></span>
+                    <button type="button" class="btn btn-sm btn-success" data-action="approve"><i class="bi bi-check2 me-1"></i>Approve</button>
+                    <button type="button" class="btn btn-sm btn-warning" data-action="deprecate"><i class="bi bi-slash-circle me-1"></i>Deprecate</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="bi bi-trash me-1"></i>Delete</button>
+                    <button type="button" class="btn-clear" data-bulk-clear>Clear</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="table-modern">
+                        <thead>
+                        <tr>
+                            <th class="col-check"><input type="checkbox" data-bulk-all></th>
+                            <th>Section</th><th>Status</th><th>Content</th><th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var s in sections)
+                        {
+                            <tr>
+                                <td class="col-check"><input type="checkbox" name="ids" value="@s.Id" data-bulk-item></td>
+                                <td><strong>@s.Title</strong><div class="muted mono">@s.SectionKey</div></td>
+                                <td><partial name="_StatusBadge" model="@s.Status.ToString()" /></td>
+                                <td style="max-width:520px"><div class="muted" style="max-height:90px;overflow:auto">@(s.Content ?? "—")</div></td>
+                                <td class="actions">
+                                    @if (s.Status != KnowledgeStatus.Approved)
+                                    {
+                                        <button type="submit" formaction="@Url.Action("ApproveSection")" name="sectionId" value="@s.Id" class="btn btn-sm btn-outline-secondary">Approve</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>window.renderMarkdown && window.renderMarkdown();</script>
+}

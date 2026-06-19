@@ -1,0 +1,117 @@
+@model List<KnowledgeListRow>
+@{
+    ViewData["Title"] = "Knowledge";
+    var projects = ViewBag.Projects as List<Project> ?? new List<Project>();
+    int? projectId = ViewBag.ProjectId;
+    string statusVal = ViewBag.Status?.ToString() ?? "";
+    string query = ViewBag.Query as string ?? "";
+}
+
+<h1 class="section-title">Knowledge base</h1>
+<p class="page-sub">Curated knowledge for retrieval. Approved items are injected first into every prompt.</p>
+
+<div class="card2 mb-3">
+    <div class="card2-body">
+        <form method="get" class="filter-bar">
+            <div style="flex:1 1 260px">
+                <label class="form-label">Search</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input name="q" value="@query" class="form-control" placeholder="Search title and content…" />
+                </div>
+            </div>
+            <div>
+                <label class="form-label">Project</label>
+                <select name="projectId" class="form-select" onchange="this.form.submit()">
+                    <option value="">All projects</option>
+                    @foreach (var p in projects) { <option value="@p.Id" selected="@(projectId == p.Id)">@p.Name</option> }
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">Any status</option>
+                    @foreach (var s in Enum.GetNames(typeof(KnowledgeStatus))) { <option value="@s" selected="@(statusVal == s)">@s</option> }
+                </select>
+            </div>
+            <div><label class="form-label">&nbsp;</label><div><button class="btn btn-primary"><i class="bi bi-funnel me-1"></i>Apply</button></div></div>
+        </form>
+    </div>
+</div>
+
+<div class="card2 mb-3">
+    <div class="card2-body">
+        <form method="post" asp-action="Bulk" data-bulk>
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="projectId" value="@projectId" />
+            <input type="hidden" name="status" value="@statusVal" />
+            <input type="hidden" name="action" data-bulk-action />
+            <div class="bulk-bar" data-bulk-bar>
+                <span class="count" data-bulk-count>0 selected</span>
+                <span class="sep"></span>
+                <button type="button" class="btn btn-sm btn-success" data-action="approve"><i class="bi bi-check2 me-1"></i>Approve</button>
+                <button type="button" class="btn btn-sm btn-warning" data-action="deprecate"><i class="bi bi-slash-circle me-1"></i>Deprecate</button>
+                <button type="button" class="btn btn-sm btn-danger" data-action="delete"><i class="bi bi-trash me-1"></i>Delete</button>
+                <button type="button" class="btn-clear" data-bulk-clear>Clear</button>
+            </div>
+            <div class="table-wrap">
+                <table class="table-modern">
+                    <thead>
+                    <tr>
+                        <th class="col-check"><input type="checkbox" data-bulk-all></th>
+                        <th>Title</th><th>Source</th><th>Status</th><th>Updated</th><th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="6" class="empty"><div class="big">No knowledge items</div>Import a project or add an item below.</td></tr>
+                    }
+                    @foreach (var k in Model)
+                    {
+                        <tr>
+                            <td class="col-check"><input type="checkbox" name="ids" value="@k.Id" data-bulk-item></td>
+                            <td><a asp-action="Details" asp-route-id="@k.Id">@k.Title</a></td>
+                            <td class="muted">@k.SourceType</td>
+                            <td><partial name="_StatusBadge" model="@k.Status.ToString()" /></td>
+                            <td class="muted">@k.UpdatedUtc.ToString("MMM d, HH:mm")</td>
+                            <td class="actions">
+                                @if (!k.IsApproved)
+                                {
+                                    <button type="submit" formaction="@Url.Action("Approve")" name="id" value="@k.Id" class="btn btn-sm btn-outline-secondary">Approve</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" formaction="@Url.Action("Deprecate")" name="id" value="@k.Id" class="btn btn-sm btn-outline-secondary">Deprecate</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card2">
+    <div class="card2-head"><h2><i class="bi bi-plus-circle me-2"></i>Add knowledge</h2></div>
+    <div class="card2-body">
+        <form asp-action="Create" method="post" class="row g-2">
+            @Html.AntiForgeryToken()
+            <div class="col-md-4"><label class="form-label">Project</label>
+                <select name="projectId" class="form-select"><option value="">(none)</option>
+                    @foreach (var p in projects) { <option value="@p.Id">@p.Name</option> }
+                </select>
+            </div>
+            <div class="col-md-4"><label class="form-label">Title</label><input name="title" class="form-control" required /></div>
+            <div class="col-md-4"><label class="form-label">Source type</label>
+                <select name="sourceType" class="form-select">
+                    @foreach (var s in Enum.GetNames(typeof(SourceType))) { <option value="@s">@s</option> }
+                </select>
+            </div>
+            <div class="col-12"><label class="form-label">Content</label><textarea name="content" rows="4" class="form-control" required></textarea></div>
+            <div class="col-12"><button class="btn btn-primary">Create (draft)</button></div>
+        </form>
+    </div>
+</div>

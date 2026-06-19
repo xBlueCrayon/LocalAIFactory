@@ -1,0 +1,51 @@
+@model KnowledgeItem
+@{
+    ViewData["Title"] = "Knowledge · " + Model.Title;
+    var history = ViewBag.History as List<AuditLog> ?? new List<AuditLog>();
+}
+
+<div class="toolbar-row">
+    <div>
+        <h1 class="section-title">@Model.Title</h1>
+        <p class="page-sub mb-0">
+            <partial name="_StatusBadge" model="@Model.Status.ToString()" />
+            · @Model.SourceType · updated @Model.UpdatedUtc.ToString("MMM d, yyyy HH:mm")
+            · confidence @Model.Confidence.ToString("0.0")
+        </p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left me-1"></i>Back</a>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="card2">
+            <div class="card2-head"><h2><i class="bi bi-file-text me-2"></i>Content</h2></div>
+            <div class="card2-body"><div data-md>@Model.Content</div></div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card2">
+            <div class="card2-head"><h2><i class="bi bi-clock-history me-2"></i>Approval history</h2></div>
+            <div class="card2-body">
+                @if (!history.Any())
+                {
+                    <div class="muted">No recorded approval activity for this item.</div>
+                }
+                else
+                {
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var h in history)
+                        {
+                            <li class="mb-2">
+                                <div style="font-size:13px"><strong>@h.Action</strong></div>
+                                <div class="muted">@h.CreatedUtc.ToString("MMM d, yyyy HH:mm")@(string.IsNullOrEmpty(h.UserName) ? "" : " · " + h.UserName)</div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { <script>window.renderMarkdown && window.renderMarkdown();</script> }

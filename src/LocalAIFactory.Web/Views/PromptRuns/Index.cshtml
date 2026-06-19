@@ -1,0 +1,56 @@
+@model List<PromptRun>
+@{
+    ViewData["Title"] = "Prompt Runs";
+    var projects = ViewBag.Projects as List<Project> ?? new List<Project>();
+    var names = ViewBag.ProjectNames as Dictionary<int, string> ?? new Dictionary<int, string>();
+    var outCounts = ViewBag.OutputCounts as Dictionary<int, int> ?? new Dictionary<int, int>();
+    int? projectId = ViewBag.ProjectId;
+}
+
+<h1 class="section-title">Prompt runs</h1>
+<p class="page-sub">Execution history for every model call — inspect retrieved context, compare outputs, and mark the best one approved.</p>
+
+<div class="card2 mb-3">
+    <div class="card2-body">
+        <form method="get" class="filter-bar">
+            <div>
+                <label class="form-label">Project</label>
+                <select name="projectId" class="form-select" onchange="this.form.submit()">
+                    <option value="">All projects</option>
+                    @foreach (var p in projects)
+                    {
+                        <option value="@p.Id" selected="@(projectId == p.Id)">@p.Name</option>
+                    }
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card2">
+    <div class="table-wrap">
+        <table class="table-modern">
+            <thead><tr><th>Run</th><th>Project</th><th>Task</th><th>Prompt</th><th>Outputs</th><th>When</th><th></th></tr></thead>
+            <tbody>
+            @if (!Model.Any())
+            {
+                <tr><td colspan="7" class="empty"><div class="big">No runs yet</div>Prompt runs are recorded when you chat or run agent tasks.</td></tr>
+            }
+            @foreach (var r in Model)
+            {
+                var oc = outCounts.TryGetValue(r.Id, out var c) ? c : 0;
+                var prompt = (r.UserPrompt ?? "").Length > 90 ? (r.UserPrompt ?? "").Substring(0, 90) + " …" : (r.UserPrompt ?? "");
+                <tr>
+                    <td class="mono">#@r.Id</td>
+                    <td>@(r.ProjectId is int pid && names.TryGetValue(pid, out var nm) ? nm : "(global)")</td>
+                    <td><span class="badge2 blue plain">@r.TaskType</span></td>
+                    <td class="text-truncate muted" style="max-width:340px">@prompt</td>
+                    <td><span class="badge2 slate plain">@oc</span></td>
+                    <td class="muted">@r.CreatedUtc.ToString("MMM d, HH:mm")</td>
+                    <td class="actions"><a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@r.Id">Inspect<i class="bi bi-chevron-right ms-1"></i></a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

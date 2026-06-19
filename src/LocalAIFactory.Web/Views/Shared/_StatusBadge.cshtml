@@ -1,0 +1,20 @@
+@model string
+@{
+    var s = (Model ?? "").Trim();
+    var key = s.ToLowerInvariant();
+    string cls = key switch
+    {
+        "approved" or "completed" => "green",
+        "needsreview" => "amber",
+        "running" => "blue",
+        "deprecated" or "failed" => "red",
+        "pending" or "draft" or "cancelled" => "slate",
+        _ => "slate"
+    };
+    var label = key switch
+    {
+        "needsreview" => "Needs review",
+        _ => string.IsNullOrEmpty(s) ? "—" : s
+    };
+}
+<span class="badge2 @cls">@label</span>

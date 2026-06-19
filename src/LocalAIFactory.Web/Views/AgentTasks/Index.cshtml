@@ -1,0 +1,16 @@
+@model List<AgentTask>
+@{ ViewData["Title"] = "Agent Tasks"; }
+
+<h3 class="mb-3">Agent Tasks</h3>
+<p class="small-muted">Read-only view of recorded agent tasks. Autonomous multi-step execution is a later phase.</p>
+
+<table class="table table-sm table-striped">
+    <thead><tr><th>#</th><th>Title</th><th>Status</th><th>Created</th></tr></thead>
+    <tbody>
+    @if (!Model.Any()) { <tr><td colspan="4" class="text-muted">No agent tasks yet.</td></tr> }
+    @foreach (var t in Model)
+    {
+        <tr><td>@t.Id</td><td>@t.Title</td><td>@t.Status</td><td class="small-muted">@t.CreatedUtc.ToString("g")</td></tr>
+    }
+    </tbody>
+</table>

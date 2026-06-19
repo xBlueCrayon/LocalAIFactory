@@ -1,0 +1,107 @@
+@using System.Text.Json
+@model PromptRun
+@{
+    ViewData["Title"] = "Run #" + Model.Id;
+    var outputs = ViewBag.Outputs as List<ModelOutput> ?? new List<ModelOutput>();
+    var modelNames = ViewBag.ModelNames as Dictionary<int, string> ?? new Dictionary<int, string>();
+    List<RagContextItem> context = new();
+    if (!string.IsNullOrWhiteSpace(Model.RetrievedContextJson))
+    {
+        try { context = JsonSerializer.Deserialize<List<RagContextItem>>(Model.RetrievedContextJson) ?? new(); } catch { }
+    }
+    string KindClass(ModelOutputKind k) => k switch { ModelOutputKind.Primary => "blue", ModelOutputKind.Validation => "amber", _ => "slate" };
+}
+
+<div class="toolbar-row">
+    <div>
+        <h1 class="section-title">Prompt run #@Model.Id</h1>
+        <p class="page-sub mb-0">
+            <span class="badge2 blue plain">@Model.TaskType</span>
+            · @(ViewBag.ProjectName ?? "(global)") · @Model.CreatedUtc.ToString("MMM d, yyyy HH:mm")
+        </p>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Index"><i class="bi bi-arrow-left me-1"></i>All runs</a>
+</div>
+
+<div class="card2 mb-3">
+    <div class="card2-head"><h2><i class="bi bi-chat-left-text me-2"></i>Prompt</h2></div>
+    <div class="card2-body"><div class="muted" style="white-space:pre-wrap">@(Model.UserPrompt ?? "—")</div></div>
+</div>
+
+<div class="card2 mb-3">
+    <div class="card2-head"><h2><i class="bi bi-layers-half me-2"></i>Retrieved context</h2><span class="sub">@context.Count item(s), approved-first</span></div>
+    <div class="card2-body">
+        @if (!context.Any())
+        {
+            <div class="muted">No project knowledge was retrieved for this run.</div>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="table-modern">
+                    <thead><tr><th>Kind</th><th>Title</th><th>Source</th><th>State</th><th>Score</th></tr></thead>
+                    <tbody>
+                    @foreach (var c in context)
+                    {
+                        <tr>
+                            <td><span class="badge2 slate plain">@c.Kind</span></td>
+                            <td>@c.Title</td>
+                            <td class="muted mono">@c.Source</td>
+                            <td>@if (c.IsApproved) {<span class="badge2 green">Approved</span>} else {<span class="badge2 slate">Draft</span>}</td>
+                            <td class="muted">@c.Score.ToString("0.00")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card2-head" style="border:none;padding-left:2px"><h2><i class="bi bi-columns-gap me-2"></i>Model outputs — compare</h2></div>
+<div class="row g-3">
+    @if (!outputs.Any())
+    {
+        <div class="col-12"><div class="card2"><div class="empty">No model outputs were recorded for this run.</div></div></div>
+    }
+    @foreach (var o in outputs)
+    {
+        var mname = o.ModelConfigurationId is int mid && modelNames.TryGetValue(mid, out var nm) ? nm : "(model)";
+        <div class="col-md-6">
+            <div class="card2 h-100">
+                <div class="card2-head">
+                    <span class="badge2 @KindClass(o.Kind) plain">@o.Kind</span>
+                    <h3 class="ms-1">@mname</h3>
+                    <div class="right">
+                        @if (o.IsApproved)
+                        {
+                            <span class="badge2 green">Approved</span>
+                        }
+                        else
+                        {
+                            <form method="post" asp-action="ApproveOutput">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="outputId" value="@o.Id" />
+                                <input type="hidden" name="runId" value="@Model.Id" />
+                                <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-check2 me-1"></i>Mark approved</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+                <div class="card2-body">
+                    <div class="meta muted mb-2" style="display:flex;gap:12px;flex-wrap:wrap">
+                        <span><i class="bi bi-arrow-down-short"></i>@(o.PromptTokens?.ToString() ?? "—") prompt</span>
+                        <span><i class="bi bi-arrow-up-short"></i>@(o.CompletionTokens?.ToString() ?? "—") completion</span>
+                        <span><i class="bi bi-stopwatch"></i>@(o.LatencyMs?.ToString() ?? "—") ms</span>
+                        @if (o.Rating != MessageRating.None) { <span class="badge2 slate plain">@o.Rating</span> }
+                    </div>
+                    <div data-md>@(o.Content ?? "")</div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>window.renderMarkdown && window.renderMarkdown();</script>
+}
