@@ -81,6 +81,28 @@
       ]
     },
     {
+      "name": "KycAmlApproval",
+      "code": "KYCAML",
+      "type": "localfixture",
+      "bucket": "kyc-aml-approval",
+      "localDir": "kyc-aml-approval",
+      "tier": "standard",
+      "tags": ["csharp", "sql", "kyc", "aml", "approval", "bridge"],
+      "license": "Original synthetic fixture (LocalAIFactory) — not a vendor product clone and not a regulatory artifact.",
+      "expectedCapability": "KYC -> screening -> maker/checker -> transaction-approval surface; bridge answers 'what submits/approves a transaction', 'what touches the screening/alert tables', dependencies of a service, and impact of a schema change into the C# services it reaches.",
+      "expectedGap": "Maker/checker segregation and limit enforcement are partly structural (proc logic) and partly advisory (operating manual); they are not asserted as compliance guarantees.",
+      "approved": true,
+      "proofOfVision": [
+        { "question": "Find usp_ApproveTransaction (SQL extraction)", "mode": "find", "target": "dbo.usp_ApproveTransaction", "minCount": 1 },
+        { "question": "What code submits a transaction for approval?", "mode": "dependents", "target": "dbo.usp_SubmitTransactionForApproval", "mustContain": ["KycAml.Services.TransactionApprovalService.SubmitForApproval"], "minCount": 1 },
+        { "question": "What code applies the checker decision (approves a transaction)?", "mode": "dependents", "target": "dbo.usp_ApproveTransaction", "mustContain": ["KycAml.Services.TransactionApprovalService.ApproveTransaction"], "minCount": 1 },
+        { "question": "What code touches the AML alert table?", "mode": "dependents", "target": "dbo.AmlAlert", "mustContain": ["KycAml.Services.AmlAlertService.RaiseAlert", "KycAml.Services.AmlAlertService.DispositionAlert"], "minCount": 2 },
+        { "question": "What tables/procs does ScreeningService.ScreenCustomer depend on?", "mode": "dependencies", "target": "KycAml.Services.ScreeningService.ScreenCustomer", "mustContain": ["dbo.ScreeningResult"], "minCount": 1 },
+        { "question": "What tables/procs does TransactionApprovalService.ApproveTransaction depend on?", "mode": "dependencies", "target": "KycAml.Services.TransactionApprovalService.ApproveTransaction", "mustContain": ["dbo.usp_ApproveTransaction"], "minCount": 1 },
+        { "question": "What is impacted if the Customer table changes?", "mode": "impact", "target": "dbo.Customer", "mustContain": ["KycAml.Services.OnboardingService.OpenCase", "KycAml.Services.ScreeningService.ScreenCustomer", "KycAml.Services.RiskRatingService.RateCustomer"], "minCount": 3 }
+      ]
+    },
+    {
       "name": "WideWorldImporters",
       "code": "WWI",
       "type": "sqlfiles",
