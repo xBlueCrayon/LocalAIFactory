@@ -21,5 +21,7 @@
        MSSQL at runtime (startup auto-install + admin re-install). Copied to the output content root. -->
   <ItemGroup>
     <Content Include="..\..\knowledge-packs\**\*.json" Link="knowledge-packs\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <!-- R2-ACC-POC-ENTERPRISE: ship the readiness scorecard so the read-only /Readiness page can render it. -->
+    <Content Include="..\..\docs\readiness-scorecard.json" Link="readiness\readiness-scorecard.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

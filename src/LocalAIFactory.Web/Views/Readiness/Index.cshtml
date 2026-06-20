@@ -1,0 +1,72 @@
+@model LocalAIFactory.Web.Controllers.ReadinessController.ScorecardVm
+@{
+    ViewData["Title"] = "Enterprise Readiness";
+    bool missing = ViewBag.Missing == true;
+    string Bar(int s) => s >= 75 ? "bg-success" : s >= 50 ? "bg-info" : s >= 25 ? "bg-warning" : "bg-danger";
+}
+
+<div class="d-flex align-items-start mb-3">
+    <div>
+        <h1 class="h4 mb-1">Enterprise Readiness</h1>
+        <div class="text-muted small">Honest, evidence-linked maturity view. 100% means implemented, tested, demonstrated, documented, and reviewable — scores are deliberately conservative.</div>
+    </div>
+</div>
+
+@if (missing)
+{
+    <div class="alert alert-warning">Readiness scorecard file was not found. It ships in <code>docs/readiness-scorecard.json</code>.</div>
+}
+else
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-3 align-items-center">
+                <div>
+                    <div class="display-6 mb-0">@Model.OverallAverage%</div>
+                    <div class="text-muted small">overall (mean of @Model.Areas.Count areas)</div>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="progress" style="height:14px"><div class="progress-bar @Bar(Model.OverallAverage)" style="width:@Model.OverallAverage%"></div></div>
+                    <div class="text-muted small mt-2">
+                        @Model.Phase · as of @Model.AsOfCommit · last reviewed @Model.LastReviewedUtc
+                    </div>
+                </div>
+            </div>
+            @if (!string.IsNullOrWhiteSpace(Model.HonestyNote))
+            {
+                <div class="text-muted small mt-3"><i class="bi bi-info-circle me-1"></i>@Model.HonestyNote</div>
+            }
+        </div>
+    </div>
+
+    <div class="row g-3">
+        @foreach (var a in Model.Areas.OrderBy(x => x.Id))
+        {
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="fw-semibold">@a.Id. @a.Name</span>
+                            <span class="spacer flex-grow-1"></span>
+                            <span class="badge text-bg-light">@a.CurrentScore%</span>
+                        </div>
+                        <div class="progress mb-2" style="height:8px"><div class="progress-bar @Bar(a.CurrentScore)" style="width:@a.CurrentScore%"></div></div>
+                        <div class="small text-muted mb-1">Confidence: @a.Confidence</div>
+                        @if (a.Evidence.Count > 0)
+                        {
+                            <div class="small"><span class="text-success">Evidence:</span> @string.Join("; ", a.Evidence)</div>
+                        }
+                        @if (a.Blockers.Count > 0)
+                        {
+                            <div class="small"><span class="text-danger">Blockers:</span> @string.Join("; ", a.Blockers)</div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(a.ProofRequiredFor100))
+                        {
+                            <div class="small mt-1"><span class="text-primary">Path to 100%:</span> @a.ProofRequiredFor100</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -189,3 +189,13 @@ desktop.ini
 # ----------------------------------------------------------------------------
 benchmarks/cache/
 benchmarks/reports/
+
+# ----------------------------------------------------------------------------
+# R2-ACC-POC-ENTERPRISE: POC/demo artifacts (smoke-test output, screenshots, logs,
+# scratch dirs) must never be committed. Scripts and docs ARE committed.
+# ----------------------------------------------------------------------------
+*.log
+.tmp*/
+scripts/poc/artifacts/
+scripts/poc/*.png
+scripts/poc/*.html
