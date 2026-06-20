@@ -1,3 +1,17 @@
+# LocalAIFactory
+
+Before performing any repository analysis, planning, architecture work, or implementation:
+
+Read:
+
+1. MASTER_VISION.md
+2. CLAUDE.md
+3. docs/
+
+MASTER_VISION.md is the authoritative source of truth.
+
+If any document conflicts with MASTER_VISION.md, MASTER_VISION.md prevails.
+
 # CLAUDE.md — Operating Guide for Claude Code
 
 This file is the contract for any AI or human contributor working in this repository.
