@@ -6,13 +6,13 @@
   "ParsedArtifacts": 207,
   "Symbols": 1190,
   "Edges": 271,
-  "References": 680,
-  "Unresolved": 351,
+  "References": 687,
+  "Unresolved": 358,
   "EdgesByType": {
-    "DependsOn": 60,
     "References": 130,
-    "Inherits": 29,
-    "Implements": 52
+    "DependsOn": 60,
+    "Implements": 52,
+    "Inherits": 29
   },
   "Convergent": true,
   "Pov": [
@@ -41,14 +41,14 @@
     "FilesNonCode": 73,
     "FilesSkipped": 33,
     "ResolvedReferences": 329,
-    "UnresolvedReferences": 351,
+    "UnresolvedReferences": 358,
     "UnsupportedLanguages": [
       "javascript",
       "razor"
     ]
   },
   "DiscoveryCoverage": 0.9904306220095693,
-  "ResolutionRate": 0.43569131832797425,
+  "ResolutionRate": 0.43084260731319557,
   "GraphAccuracy": 1,
   "RetrievalAccuracy": 1,
   "ImpactAccuracy": 1

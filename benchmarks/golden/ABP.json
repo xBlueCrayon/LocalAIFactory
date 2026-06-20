@@ -6,13 +6,13 @@
   "ParsedArtifacts": 453,
   "Symbols": 2212,
   "Edges": 308,
-  "References": 1245,
-  "Unresolved": 892,
+  "References": 1248,
+  "Unresolved": 895,
   "EdgesByType": {
-    "DependsOn": 43,
-    "References": 153,
     "Inherits": 34,
-    "Implements": 78
+    "Implements": 78,
+    "References": 153,
+    "DependsOn": 43
   },
   "Convergent": true,
   "Pov": [
@@ -55,11 +55,11 @@
     "FilesNonCode": 287,
     "FilesSkipped": 10,
     "ResolvedReferences": 353,
-    "UnresolvedReferences": 892,
+    "UnresolvedReferences": 895,
     "UnsupportedLanguages": []
   },
   "DiscoveryCoverage": 0.9890829694323144,
-  "ResolutionRate": 0.25666666666666665,
+  "ResolutionRate": 0.25602660016625106,
   "GraphAccuracy": 1,
   "RetrievalAccuracy": 1,
   "ImpactAccuracy": 1

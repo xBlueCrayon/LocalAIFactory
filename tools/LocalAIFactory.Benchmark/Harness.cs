@@ -21,9 +21,12 @@ public sealed class Harness
 
     public async Task<RepoResult> RunAsync(AppDbContext db, RepoSpec spec, int projectId, string cacheDir)
     {
-        var files = spec.Type == "sqlfiles"
-            ? await FetchSqlFilesAsync(spec)
-            : CloneAndGatherFiles(spec, cacheDir);
+        var files = spec.Type switch
+        {
+            "sqlfiles" => await FetchSqlFilesAsync(spec),
+            "localfixture" => GatherFixtureFiles(spec, cacheDir),
+            _ => CloneAndGatherFiles(spec, cacheDir)
+        };
 
         // Create immutable artifacts for EVERY discovered file (honest discovery — unsupported/non-code/binary
         // are visible, not silently dropped). Binary files are recorded as skipped (no text read).
@@ -105,6 +108,10 @@ public sealed class Harness
                 var deps = await r.DependentsOfAsync(projectId, pov.Target);
                 count = deps.Count; names = deps.Select(d => d.Symbol.FullName).ToHashSet();
                 break;
+            case "dependencies": // R2-ACC-CAP2: "what does X touch" — used to prove the C#→SQL bridge direction
+                var outs = await r.DependenciesOfAsync(projectId, pov.Target);
+                count = outs.Count; names = outs.Select(d => d.Symbol.FullName).ToHashSet();
+                break;
             case "impact":
                 var imp = await r.ImpactOfAsync(projectId, pov.Target);
                 var all = imp is null ? new List<string>() : imp.Direct.Concat(imp.Transitive).Select(n => n.Symbol.FullName).ToList();
@@ -167,6 +174,26 @@ public sealed class Harness
                 string? content; try { content = File.ReadAllText(f); } catch { content = null; }
                 outp.Add((rel, content, cls));
             }
+        }
+        return outp;
+    }
+
+    // R2-ACC-CAP2: gather a committed synthetic fixture from benchmarks/fixtures/<LocalDir>. No network, no
+    // clone — these are our own small files (e.g. the C#↔SQL bridge fixture), safe to commit and fully pinned.
+    private List<(string rel, string? content, FileClass cls)> GatherFixtureFiles(RepoSpec spec, string cacheDir)
+    {
+        var benchmarksDir = Directory.GetParent(cacheDir)!.FullName; // .../benchmarks
+        var root = Path.Combine(benchmarksDir, "fixtures", spec.LocalDir ?? spec.Code);
+        spec.Sha = "local-fixture";
+        var outp = new List<(string, string?, FileClass)>();
+        if (!Directory.Exists(root)) return outp;
+        foreach (var f in Directory.EnumerateFiles(root, "*", SearchOption.AllDirectories))
+        {
+            var rel = Path.GetRelativePath(root, f).Replace('\\', '/');
+            var cls = _classifier.Classify(rel);
+            if (cls == FileClass.Binary) { outp.Add((rel, null, cls)); continue; }
+            string? content; try { content = File.ReadAllText(f); } catch { content = null; }
+            outp.Add((rel, content, cls));
         }
         return outp;
     }

@@ -29,6 +29,19 @@ DbContextOptions<AppDbContext> BuildOptions() =>
 Console.WriteLine($"== LocalAIFactory Validation Harness ==  provider={(inMemory ? "InMemory" : "SqlServer")}  goldenUpdate={updateGolden}");
 var manifest = Manifest.Load(manifestPath);
 
+// R2-ACC-CAP2: suite tiering. --suite smoke|standard|extended filters by tier (smoke ⊆ standard ⊆ extended).
+// Default (no flag) runs every repo — the existing, safe behaviour. Unapproved repos never run.
+var suite = ArgValue("--suite");
+int Rank(string t) => t?.ToLowerInvariant() switch { "smoke" => 0, "standard" => 1, "extended" => 2, _ => 1 };
+if (!string.IsNullOrWhiteSpace(suite))
+{
+    var max = Rank(suite);
+    manifest.Repos = manifest.Repos.Where(r => r.Approved && Rank(r.Tier) <= max).ToList();
+    Console.WriteLine($"== suite filter: {suite} -> {manifest.Repos.Count} repo(s) ==");
+}
+else
+    manifest.Repos = manifest.Repos.Where(r => r.Approved).ToList();
+
 // Clean, deterministic database for the run.
 await using (var setup = new AppDbContext(BuildOptions()))
 {

@@ -38,13 +38,27 @@ Candidates live in `repo-candidates.json`. A candidate is promoted to `benchmark
 7. **Tier** — assign Smoke / Standard / Extended.
 8. **Approval** — only then add the entry to `benchmarks.json`.
 
-### Suite tiers (planned)
+### Suite tiers (implemented — R2-ACC-CAP2)
 
-- **Smoke** — tiny, fast, runs on every major build.
-- **Standard** — the current baseline; runs before release/major commit.
-- **Extended** — large / slow / multi-language; manual or nightly. Multi-language repos (Python, VB.NET,
-  document-image research) currently run as **gap-only** baselines until the corresponding extractors exist —
-  they prove honest unsupported-file reporting, not extraction capability.
+Each repo carries a `tier`, and `--suite <smoke|standard|extended>` filters by it (smoke ⊆ standard ⊆ extended).
+With no flag, every **approved** repo runs (the existing, safe default). Unapproved repos never run.
+
+```powershell
+dotnet run -c Release -- --inmemory --suite smoke      # fast: tiny pinned fixtures only
+dotnet run -c Release -- --inmemory --suite standard   # smoke + the standard baseline repos
+dotnet run -c Release -- --inmemory --suite extended   # everything (incl. large repos)
+```
+
+- **Smoke** — tiny, fast, runs on every major build. Includes the committed synthetic **`csharp-sql-bridge`**
+  fixture (`benchmarks/fixtures/csharp-sql-bridge/`) that proves the C#↔SQL bridge both directions
+  (SQL→C# via `dependents`/`impact`, C#→SQL via the new `dependencies` PoV mode) — Gold, 4/4.
+- **Standard** — WideWorldImporters, CleanArchitecture, eShopOnWeb (the release baseline).
+- **Extended** — adds large repos (eShopOnAbp). Multi-language repos (Python, VB.NET, document-image research)
+  will join as **gap-only** baselines until their extractors exist — honest unsupported reporting, not capability.
+
+Each repo also records `tags`, `license`, `expectedCapability`, `expectedGap`, and `approved` for governance.
+Local fixtures use `type: "localfixture"` + `localDir` and are our own committed synthetic files (no third-party
+source vendored).
 
 > Honesty rule: a gap-only baseline must never be presented as a capability score. Unsupported files are
 > reported, never hidden.
