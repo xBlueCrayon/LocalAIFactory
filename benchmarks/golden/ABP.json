@@ -1,0 +1,53 @@
+{
+  "Name": "eShopOnAbp",
+  "Bucket": "saas-microservices",
+  "Sha": "7bfed7a322d16b34a5a66208c03486fa5dfacee9",
+  "CandidateFiles": 458,
+  "ParsedArtifacts": 453,
+  "Symbols": 2212,
+  "Edges": 308,
+  "References": 1245,
+  "Unresolved": 892,
+  "EdgesByType": {
+    "DependsOn": 43,
+    "References": 153,
+    "Inherits": 34,
+    "Implements": 78
+  },
+  "Convergent": true,
+  "Pov": [
+    {
+      "Question": "Which classes implement IProductAppService? (ABP app-service pattern)",
+      "Mode": "dependents",
+      "Target": "EShopOnAbp.CatalogService.Products.IProductAppService",
+      "Count": 2,
+      "Passed": true
+    },
+    {
+      "Question": "Show all consumers of IBasketRepository (ABP repository pattern)",
+      "Mode": "dependents",
+      "Target": "EShopOnAbp.BasketService.Entities.IBasketRepository",
+      "Count": 5,
+      "Passed": true
+    },
+    {
+      "Question": "Show all consumers of IPaymentRequestRepository (cross-module dependency)",
+      "Mode": "dependents",
+      "Target": "EShopOnAbp.PaymentService.PaymentRequests.IPaymentRequestRepository",
+      "Count": 11,
+      "Passed": true
+    },
+    {
+      "Question": "What breaks if the Order entity changes? (impact across the ordering service)",
+      "Mode": "impact",
+      "Target": "EShopOnAbp.OrderingService.Orders.Order",
+      "Count": 17,
+      "Passed": true
+    }
+  ],
+  "DiscoveryCoverage": 0.9890829694323144,
+  "ResolutionRate": 0.25666666666666665,
+  "GraphAccuracy": 1,
+  "RetrievalAccuracy": 1,
+  "ImpactAccuracy": 1
+}

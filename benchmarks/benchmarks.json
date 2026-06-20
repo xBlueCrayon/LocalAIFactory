@@ -46,6 +46,21 @@
         { "question": "Show all consumers of IRepository<T>", "mode": "dependents", "target": "Microsoft.eShopWeb.ApplicationCore.Interfaces.IRepository`1", "mustContain": ["Microsoft.eShopWeb.Infrastructure.Data.EfRepository`1"], "minCount": 5 },
         { "question": "Which class implements IBasketService?", "mode": "dependents", "target": "Microsoft.eShopWeb.ApplicationCore.Interfaces.IBasketService", "mustContain": ["Microsoft.eShopWeb.ApplicationCore.Services.BasketService"], "minCount": 2 }
       ]
+    },
+    {
+      "name": "eShopOnAbp",
+      "code": "ABP",
+      "type": "git",
+      "bucket": "saas-microservices",
+      "gitUrl": "https://github.com/abpframework/eShopOnAbp",
+      "sha": "main",
+      "srcDirs": ["services"],
+      "proofOfVision": [
+        { "question": "Which classes implement IProductAppService? (ABP app-service pattern)", "mode": "dependents", "target": "EShopOnAbp.CatalogService.Products.IProductAppService", "mustContain": ["EShopOnAbp.CatalogService.Products.ProductAppService"], "minCount": 2 },
+        { "question": "Show all consumers of IBasketRepository (ABP repository pattern)", "mode": "dependents", "target": "EShopOnAbp.BasketService.Entities.IBasketRepository", "mustContain": ["EShopOnAbp.BasketService.Entities.BasketRepository", "EShopOnAbp.BasketService.Services.BasketAppService"], "minCount": 3 },
+        { "question": "Show all consumers of IPaymentRequestRepository (cross-module dependency)", "mode": "dependents", "target": "EShopOnAbp.PaymentService.PaymentRequests.IPaymentRequestRepository", "minCount": 5 },
+        { "question": "What breaks if the Order entity changes? (impact across the ordering service)", "mode": "impact", "target": "EShopOnAbp.OrderingService.Orders.Order", "mustContain": ["EShopOnAbp.OrderingService.Orders.OrderAppService", "EShopOnAbp.OrderingService.Orders.IOrderRepository"], "minCount": 5 }
+      ]
     }
   ]
 }
