@@ -1,0 +1,4 @@
+document_id,document_ref,gt_class,page_count,gt_text_or_scanned,document_sha256,pred_class,pred_confidence,extractable_text,ocr_required,notes
+DOC-0001,(synthetic; no real document),invoice,2,text,(hash),,,,,template row — no real data
+DOC-0002,(synthetic; no real document),contract,12,scanned,(hash),,,,,template row — no real data
+DOC-0003,(synthetic; no real document),statement,3,mixed,(hash),,,,,template row — no real data

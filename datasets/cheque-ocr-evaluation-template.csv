@@ -1,0 +1,3 @@
+sample_id,image_ref,dpi,gt_courtesy_amount,gt_legal_amount,gt_micr,gt_date,gt_payee,gt_signature_present,gt_signature_class,image_quality,pred_courtesy_amount,pred_legal_amount,pred_micr,car_lar_consistent,pred_signature_present,pred_forgery_risk,triage,human_review_required,reviewer_decision,notes
+SAMPLE-0001,(synthetic; no real image),300,100.00,one hundred,123456789,2026-06-21,Acme Ltd,true,genuine,good,,,,, ,,,Review,true,,template row — no real data
+SAMPLE-0002,(synthetic; no real image),200,250.50,two hundred fifty,987654321,2026-06-21,Beta Co,true,skilled_forgery,fair,,,,, ,,,Reject,true,,template row — no real data
