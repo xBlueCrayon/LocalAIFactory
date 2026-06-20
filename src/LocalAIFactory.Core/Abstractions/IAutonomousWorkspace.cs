@@ -50,3 +50,27 @@ public interface IAutonomousWorkflowPlanner
     // Render a human-readable report of the plan (for review/approval). Pure formatting; no side effects.
     string GenerateReport(AutonomousPlan plan);
 }
+
+// R2-ACC-INDUSTRIAL: a controlled local executor. Dry-run by default; even in execute mode it runs ONLY
+// allowlisted (build/test/read) commands, NEVER denied or approval-gated ones (commit/push/deploy/destructive),
+// captures every command's output, and STOPS on the first failure (no promotion). It cannot commit or push.
+
+// What actually runs a command (injected so it is testable without spawning real processes).
+public delegate (int ExitCode, string Output) CommandRunner(string command, string workingDir);
+
+public sealed record CommandRunRecord(
+    string Command, CommandDecision Decision, bool Executed, int? ExitCode, string? Output, long DurationMs);
+
+public sealed record ControlledRunResult(
+    IReadOnlyList<CommandRunRecord> Records,
+    bool DryRun,
+    bool AllExecutedPassed,   // true if every command that actually ran returned exit 0
+    bool Promoted,            // ALWAYS false here — promotion (commit/push) requires explicit human approval
+    IReadOnlyList<string> SafetyNotes);
+
+public interface IControlledExecutor
+{
+    // Run the given commands. In dry-run nothing executes. In execute mode only Allowed commands run; Denied and
+    // RequiresApproval commands are recorded and skipped; execution halts at the first non-zero exit.
+    ControlledRunResult Run(IReadOnlyList<string> commands, bool execute, string workingDir);
+}

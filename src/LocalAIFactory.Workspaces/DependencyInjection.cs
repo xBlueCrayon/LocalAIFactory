@@ -24,6 +24,7 @@ public static class DependencyInjection
         // R2-ACC-CAP7: controlled autonomous workspace skeleton — command policy + dry-run planner (no execution).
         services.AddSingleton<ICommandPolicy, CommandPolicy>();
         services.AddSingleton<IAutonomousWorkflowPlanner, AutonomousWorkflowPlanner>();
+        services.AddSingleton<IControlledExecutor, ControlledExecutor>(); // R2-ACC-INDUSTRIAL controlled execution
 
         // Workspace management (uses DbContext): scoped.
         services.AddScoped<IWorkspaceManager, WorkspaceManager>();
