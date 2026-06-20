@@ -14,6 +14,7 @@ public class KnowledgeItem
     public double Confidence { get; set; } = 0.5;
     public bool IsApproved { get; set; }
     public bool IsDeprecated { get; set; }
+    public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
 

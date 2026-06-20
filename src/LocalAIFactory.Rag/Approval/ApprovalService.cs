@@ -25,6 +25,7 @@ public sealed class ApprovalService : IApprovalService
         item.Status = KnowledgeStatus.Approved;
         item.IsApproved = true;
         item.IsDeprecated = false;
+        item.Tier = PermanenceTier.Curated; // approval is curation: the item is now human-anchored.
         item.UpdatedUtc = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
         await _audit.LogAsync("ApproveKnowledgeItem", nameof(KnowledgeItem), item.Id.ToString(), item.Title, ct);
@@ -61,6 +62,7 @@ public sealed class ApprovalService : IApprovalService
         if (rule is null) return;
         rule.Status = BusinessRuleStatus.Approved;
         rule.IsApproved = true;
+        rule.Tier = PermanenceTier.Curated;
         rule.ApprovedUtc = DateTime.UtcNow;
         rule.UpdatedUtc = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
@@ -72,6 +74,7 @@ public sealed class ApprovalService : IApprovalService
         var snip = await _db.ApprovedCodeSnippets.FirstOrDefaultAsync(s => s.Id == approvedCodeSnippetId, ct);
         if (snip is null) return;
         snip.IsReusable = true;
+        snip.Tier = PermanenceTier.Curated;
         snip.ApprovedUtc = DateTime.UtcNow;
         snip.UpdatedUtc = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
@@ -92,6 +95,7 @@ public sealed class ApprovalService : IApprovalService
             Explanation = "Promoted from an extracted code block.",
             SourceReference = "ExtractedCodeBlock #" + block.Id,
             IsReusable = true,
+            Tier = PermanenceTier.Curated,
             ApprovedUtc = DateTime.UtcNow
         };
         _db.ApprovedCodeSnippets.Add(snippet);
@@ -109,6 +113,7 @@ public sealed class ApprovalService : IApprovalService
         var section = await _db.ProjectProfileSections.FirstOrDefaultAsync(s => s.Id == sectionId, ct);
         if (section is null) return;
         section.Status = KnowledgeStatus.Approved;
+        section.Tier = PermanenceTier.Curated;
         await _db.SaveChangesAsync(ct);
         await _audit.LogAsync("ApproveProjectProfileSection", nameof(ProjectProfileSection), section.Id.ToString(), section.Title, ct);
     }
@@ -236,7 +241,7 @@ public sealed class ApprovalService : IApprovalService
     private async Task<int> SetEntityStatusAsync(List<int> ids, KnowledgeStatus status, string action, CancellationToken ct)
     {
         var items = await _db.KnowledgeEntities.Where(e => ids.Contains(e.Id)).ToListAsync(ct);
-        foreach (var e in items) e.Status = status;
+        foreach (var e in items) { e.Status = status; if (status == KnowledgeStatus.Approved) e.Tier = PermanenceTier.Curated; }
         await _db.SaveChangesAsync(ct);
         await _audit.LogAsync(action, nameof(KnowledgeEntity), string.Join(",", ids), $"{items.Count} entity(ies)", ct);
         return items.Count;
@@ -245,7 +250,7 @@ public sealed class ApprovalService : IApprovalService
     private async Task<int> SetRelationshipStatusAsync(List<int> ids, KnowledgeStatus status, string action, CancellationToken ct)
     {
         var items = await _db.KnowledgeRelationships.Where(r => ids.Contains(r.Id)).ToListAsync(ct);
-        foreach (var r in items) r.Status = status;
+        foreach (var r in items) { r.Status = status; if (status == KnowledgeStatus.Approved) r.Tier = PermanenceTier.Curated; }
         await _db.SaveChangesAsync(ct);
         await _audit.LogAsync(action, nameof(KnowledgeRelationship), string.Join(",", ids), $"{items.Count} edge(s)", ct);
         return items.Count;
@@ -254,7 +259,7 @@ public sealed class ApprovalService : IApprovalService
     private async Task<int> SetSectionStatusAsync(List<int> ids, KnowledgeStatus status, string action, CancellationToken ct)
     {
         var items = await _db.ProjectProfileSections.Where(s => ids.Contains(s.Id)).ToListAsync(ct);
-        foreach (var s in items) s.Status = status;
+        foreach (var s in items) { s.Status = status; if (status == KnowledgeStatus.Approved) s.Tier = PermanenceTier.Curated; }
         await _db.SaveChangesAsync(ct);
         await _audit.LogAsync(action, nameof(ProjectProfileSection), string.Join(",", ids), $"{items.Count} section(s)", ct);
         return items.Count;

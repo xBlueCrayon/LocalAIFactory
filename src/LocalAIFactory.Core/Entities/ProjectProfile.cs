@@ -27,4 +27,5 @@ public class ProjectProfileSection
     public string? Content { get; set; }
     public KnowledgeStatus Status { get; set; } = KnowledgeStatus.NeedsReview;
     public int OrderIndex { get; set; }
+    public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
 }

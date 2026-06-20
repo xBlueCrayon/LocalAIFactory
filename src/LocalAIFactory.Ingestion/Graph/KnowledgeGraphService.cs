@@ -144,7 +144,8 @@ public sealed class KnowledgeGraphService : IKnowledgeGraphService
             Name = name,
             EntityType = type,
             Status = KnowledgeStatus.NeedsReview,
-            SourceKnowledgeItemId = sourceItemId
+            SourceKnowledgeItemId = sourceItemId,
+            Tier = PermanenceTier.Derived
         };
         _db.KnowledgeEntities.Add(ent);
         await _db.SaveChangesAsync(ct);
@@ -168,7 +169,8 @@ public sealed class KnowledgeGraphService : IKnowledgeGraphService
             Description = desc,
             Status = KnowledgeStatus.NeedsReview,
             Confidence = 0.5,
-            SourceKnowledgeItemId = sourceItemId
+            SourceKnowledgeItemId = sourceItemId,
+            Tier = PermanenceTier.Derived
         });
     }
 

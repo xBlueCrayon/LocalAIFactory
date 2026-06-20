@@ -168,7 +168,8 @@ public sealed class ProjectIngestionService : IProjectIngestionService
                             Content = text,
                             SourceType = _classifier.ToSourceType(fileClass),
                             Status = KnowledgeStatus.NeedsReview,
-                            Confidence = 0.5
+                            Confidence = 0.5,
+                            Tier = PermanenceTier.Derived // machine-extracted, regenerable.
                         };
                         _db.KnowledgeItems.Add(ki);
                         await _db.SaveChangesAsync(ct);
@@ -289,7 +290,8 @@ public sealed class ProjectIngestionService : IProjectIngestionService
                         Title = Truncate(line, 120),
                         Content = line.Trim(),
                         Status = BusinessRuleStatus.NeedsReview,
-                        IsApproved = false
+                        IsApproved = false,
+                        Tier = PermanenceTier.Derived
                     });
                     added++;
                 }
@@ -321,7 +323,8 @@ public sealed class ProjectIngestionService : IProjectIngestionService
                         Title = Truncate(line, 120),
                         Content = line,
                         Status = BusinessRuleStatus.NeedsReview,
-                        IsApproved = false
+                        IsApproved = false,
+                        Tier = PermanenceTier.Derived
                     });
                     mAdded++;
                 }

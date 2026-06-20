@@ -1,3 +1,5 @@
+using LocalAIFactory.Core.Enums;
+
 namespace LocalAIFactory.Core.Entities;
 
 public class ApprovedCodeSnippet
@@ -15,6 +17,7 @@ public class ApprovedCodeSnippet
     public DateTime ApprovedUtc { get; set; } = DateTime.UtcNow;
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
+    public PermanenceTier Tier { get; set; } = PermanenceTier.Curated;
 
     public ICollection<ApprovedCodeSnippetTag> Tags { get; set; } = new List<ApprovedCodeSnippetTag>();
 }

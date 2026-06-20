@@ -14,6 +14,7 @@ public class BusinessRule
     public DateTime? ApprovedUtc { get; set; }
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
+    public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
 
     public ICollection<BusinessRuleTag> Tags { get; set; } = new List<BusinessRuleTag>();
 }

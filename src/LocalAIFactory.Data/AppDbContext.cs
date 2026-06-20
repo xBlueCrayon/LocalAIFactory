@@ -41,6 +41,7 @@ public class AppDbContext : DbContext
     public DbSet<WorkspaceFile> WorkspaceFiles => Set<WorkspaceFile>();
     public DbSet<SystemSetting> SystemSettings => Set<SystemSetting>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<ProposedRevision> ProposedRevisions => Set<ProposedRevision>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -315,6 +316,16 @@ public class AppDbContext : DbContext
             e.Property(x => x.EntityName).HasMaxLength(200);
             e.Property(x => x.EntityId).HasMaxLength(100);
             e.Property(x => x.UserName).HasMaxLength(200);
+        });
+
+        // Phase 2 / KE-002: proposed revisions to curated knowledge (propose-never-overwrite).
+        b.Entity<ProposedRevision>(e =>
+        {
+            e.Property(x => x.TargetEntityType).HasMaxLength(100).IsRequired();
+            e.Property(x => x.ProposedTitle).HasMaxLength(400);
+            e.Property(x => x.ChangeReason).HasMaxLength(1000);
+            e.HasIndex(x => new { x.TargetEntityType, x.TargetEntityId });
+            e.HasIndex(x => x.Status);
         });
     }
 }

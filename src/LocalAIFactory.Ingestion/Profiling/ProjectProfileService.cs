@@ -13,16 +13,31 @@ public sealed class ProjectProfileService : IProjectProfileService
 {
     private readonly AppDbContext _db;
     private readonly IModelExecutionService _model;
+    private readonly IPermanenceGuard _permanence;
 
-    public ProjectProfileService(AppDbContext db, IModelExecutionService model)
+    public ProjectProfileService(AppDbContext db, IModelExecutionService model, IPermanenceGuard permanence)
     {
-        _db = db; _model = model;
+        _db = db; _model = model; _permanence = permanence;
     }
 
     public async Task GenerateAsync(int projectId, int? ingestionJobId, CancellationToken ct = default)
     {
-        var existing = await _db.ProjectProfiles.Where(p => p.ProjectId == projectId).ToListAsync(ct);
-        if (existing.Count > 0) { _db.ProjectProfiles.RemoveRange(existing); await _db.SaveChangesAsync(ct); }
+        // KE-002 propose-never-overwrite: keep one canonical profile, never delete a profile holding
+        // curated sections, regenerate derived sections in place, and route changed curated sections to
+        // a proposed revision instead of overwriting them.
+        var existing = await _db.ProjectProfiles
+            .Include(p => p.Sections)
+            .Where(p => p.ProjectId == projectId)
+            .ToListAsync(ct);
+        var canonical = existing.OrderByDescending(p => p.UpdatedUtc).FirstOrDefault();
+        var removedExtra = false;
+        foreach (var extra in existing.Where(p => p != canonical))
+        {
+            if (extra.Sections.Any(s => _permanence.IsCurated(s.Tier))) continue; // never drop curated work
+            _db.ProjectProfiles.Remove(extra);
+            removedExtra = true;
+        }
+        if (removedExtra) await _db.SaveChangesAsync(ct);
 
         var files = await _db.ImportedFiles.AsNoTracking()
             .Where(f => f.ProjectId == projectId && !f.Skipped)
@@ -47,35 +62,78 @@ public sealed class ProjectProfileService : IProjectProfileService
         catch { overview = ""; }
         if (string.IsNullOrWhiteSpace(overview)) overview = HeuristicOverview(files.Count, files);
 
-        var profile = new ProjectProfile
+        if (canonical is null)
         {
-            ProjectId = projectId,
-            Status = KnowledgeStatus.NeedsReview,
-            Summary = overview,
-            GeneratedByModelConfigurationId = null
-        };
-        _db.ProjectProfiles.Add(profile);
-        await _db.SaveChangesAsync(ct);
+            canonical = new ProjectProfile
+            {
+                ProjectId = projectId,
+                Status = KnowledgeStatus.NeedsReview,
+                Summary = overview,
+                GeneratedByModelConfigurationId = null
+            };
+            _db.ProjectProfiles.Add(canonical);
+            await _db.SaveChangesAsync(ct);
+        }
+        else
+        {
+            // M1: the profile Summary mirrors the "overview" section. If that section has been curated,
+            // preserve the approved content instead of overwriting it with regenerated machine text.
+            var overviewSection = canonical.Sections.FirstOrDefault(s => s.SectionKey == "overview");
+            if (overviewSection is not null && _permanence.IsCurated(overviewSection.Tier))
+                canonical.Summary = overviewSection.Content;
+            else
+                canonical.Summary = overview;
+            canonical.UpdatedUtc = DateTime.UtcNow;
+        }
 
-        var sections = new List<ProjectProfileSection>
+        var regenerated = new (string Key, string Title, string Content, int Order)[]
         {
-            Section(profile.Id, "overview", "Overview", overview, 0),
-            Section(profile.Id, "architecture", "Architecture", Architecture(files), 1),
-            Section(profile.Id, "key_files", "Key Files", KeyFiles(files), 2),
-            Section(profile.Id, "data_sql", "Data & SQL", DataSql(files), 3),
-            Section(profile.Id, "integrations", "Integrations", await IntegrationsAsync(projectId, ct), 4),
-            Section(profile.Id, "deployment", "Deployment", await DeploymentAsync(projectId, ct), 5),
-            Section(profile.Id, "risks", "Risks & Unknowns", "Review imported content and approve the items that are correct. Flag anything that looks outdated or environment-specific.", 6)
+            ("overview", "Overview", overview, 0),
+            ("architecture", "Architecture", Architecture(files), 1),
+            ("key_files", "Key Files", KeyFiles(files), 2),
+            ("data_sql", "Data & SQL", DataSql(files), 3),
+            ("integrations", "Integrations", await IntegrationsAsync(projectId, ct), 4),
+            ("deployment", "Deployment", await DeploymentAsync(projectId, ct), 5),
+            ("risks", "Risks & Unknowns", "Review imported content and approve the items that are correct. Flag anything that looks outdated or environment-specific.", 6)
         };
-        _db.ProjectProfileSections.AddRange(sections);
+
+        var current = await _db.ProjectProfileSections
+            .Where(s => s.ProjectProfileId == canonical.Id)
+            .ToListAsync(ct);
+
+        foreach (var r in regenerated)
+        {
+            var section = current.FirstOrDefault(s => s.SectionKey == r.Key);
+            if (section is null)
+            {
+                _db.ProjectProfileSections.Add(new ProjectProfileSection
+                {
+                    ProjectProfileId = canonical.Id, SectionKey = r.Key, Title = r.Title,
+                    Content = r.Content, Status = KnowledgeStatus.NeedsReview,
+                    Tier = PermanenceTier.Derived, OrderIndex = r.Order
+                });
+            }
+            else if (_permanence.IsCurated(section.Tier))
+            {
+                // Curated section: never overwrite. Raise a proposed revision only if content changed.
+                if (!string.Equals(section.Content ?? "", r.Content, StringComparison.Ordinal))
+                    await _permanence.ProposeRevisionAsync(
+                        nameof(ProjectProfileSection), section.Id, null,
+                        r.Title, r.Content,
+                        "Profile regeneration produced new content for a curated section.",
+                        RevisionSource.Extraction, ct);
+            }
+            else
+            {
+                // Derived section: regenerate in place.
+                section.Title = r.Title;
+                section.Content = r.Content;
+                section.Status = KnowledgeStatus.NeedsReview;
+                section.OrderIndex = r.Order;
+            }
+        }
         await _db.SaveChangesAsync(ct);
     }
-
-    private static ProjectProfileSection Section(int profileId, string key, string title, string content, int order) => new()
-    {
-        ProjectProfileId = profileId, SectionKey = key, Title = title, Content = content,
-        Status = KnowledgeStatus.NeedsReview, OrderIndex = order
-    };
 
     private static string HeuristicOverview(int fileCount, IEnumerable<dynamic> files)
     {

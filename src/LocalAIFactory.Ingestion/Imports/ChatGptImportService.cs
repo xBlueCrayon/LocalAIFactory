@@ -93,7 +93,8 @@ public sealed class ChatGptImportService : IChatGptImportService
                 Content = transcript.ToString(),
                 SourceType = SourceType.ConversationTranscript,
                 Status = KnowledgeStatus.NeedsReview,
-                Confidence = 0.4
+                Confidence = 0.4,
+                Tier = PermanenceTier.Derived // machine-extracted, regenerable.
             };
             _db.KnowledgeItems.Add(ki);
             await _db.SaveChangesAsync(ct);

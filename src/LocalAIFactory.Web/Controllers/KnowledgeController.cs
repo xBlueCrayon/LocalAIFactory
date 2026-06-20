@@ -67,7 +67,8 @@ public class KnowledgeController : Controller
         var ki = new KnowledgeItem
         {
             ProjectId = projectId, Title = title, Content = content,
-            SourceType = sourceType, Status = KnowledgeStatus.Draft, Confidence = 0.6
+            SourceType = sourceType, Status = KnowledgeStatus.Draft, Confidence = 0.6,
+            Tier = PermanenceTier.Curated // human-authored, so human-anchored even before approval.
         };
         _db.KnowledgeItems.Add(ki);
         await _db.SaveChangesAsync(ct);

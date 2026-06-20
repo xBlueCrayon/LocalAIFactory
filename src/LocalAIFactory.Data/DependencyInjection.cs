@@ -1,4 +1,5 @@
 using LocalAIFactory.Core.Abstractions;
+using LocalAIFactory.Data.Permanence;
 using LocalAIFactory.Data.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(cs));
         services.AddScoped<IApiKeyProtector, DataProtectionApiKeyProtector>();
         services.AddScoped<IAuditService, AuditService>();
+        services.AddScoped<IPermanenceGuard, KnowledgePermanenceService>();
         return services;
     }
 }

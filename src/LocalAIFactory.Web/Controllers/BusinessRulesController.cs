@@ -39,7 +39,8 @@ public class BusinessRulesController : Controller
         _db.BusinessRules.Add(new BusinessRule
         {
             ProjectId = projectId, Title = title, Content = content,
-            Status = BusinessRuleStatus.NeedsReview, IsApproved = false
+            Status = BusinessRuleStatus.NeedsReview, IsApproved = false,
+            Tier = PermanenceTier.Curated // human-authored.
         });
         await _db.SaveChangesAsync(ct);
         TempData["Message"] = "Business rule added (needs review).";

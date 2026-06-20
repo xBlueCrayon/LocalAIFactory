@@ -111,3 +111,11 @@ public enum ServiceState { Unknown = 0, Disabled = 1, Online = 2, Offline = 3 }
 
 // Phase 1.2: the deployment tier the app is effectively operating in (auto-detected from live health).
 public enum EnvironmentMode { Minimal = 0, Standard = 1, FullAi = 2 }
+
+// Phase 2 / KE-002: permanence tier. Derived = machine-extracted, freely regenerable. Curated =
+// human-authored or approved, durable, changed only by human approval. Raw = reserved for immutable
+// source artifacts (formalized in KE-007). New column defaults to 0 = Derived.
+public enum PermanenceTier { Derived = 0, Curated = 1, Raw = 2 }
+
+// Phase 2 / KE-002: where a proposed revision to a curated item originated.
+public enum RevisionSource { Extraction = 0, Consolidation = 1, ReEmbedding = 2 }

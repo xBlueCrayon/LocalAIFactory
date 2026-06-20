@@ -12,6 +12,7 @@ public class KnowledgeEntity
     public string? Description { get; set; }
     public KnowledgeStatus Status { get; set; } = KnowledgeStatus.NeedsReview;
     public int? SourceKnowledgeItemId { get; set; }
+    public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 }
 
@@ -29,5 +30,6 @@ public class KnowledgeRelationship
     public KnowledgeStatus Status { get; set; } = KnowledgeStatus.NeedsReview;
     public double Confidence { get; set; } = 0.5;
     public int? SourceKnowledgeItemId { get; set; }
+    public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 }
