@@ -20,15 +20,16 @@ public sealed class FileImportService : IFileImportService
     private readonly IIdentityResolver _identity;
     private readonly ICodeSymbolStore _symbols;
     private readonly ISchemaSymbolStore _schema;
+    private readonly ICodeGraphBuilder _graphBuilder;
     private readonly RagOptions _rag;
 
     public FileImportService(
         AppDbContext db, IFileClassifier classifier, IChunkingService chunking,
         IKnowledgeIndexer indexer, IIdentityResolver identity, ICodeSymbolStore symbols,
-        ISchemaSymbolStore schema, IOptions<RagOptions> rag)
+        ISchemaSymbolStore schema, ICodeGraphBuilder graphBuilder, IOptions<RagOptions> rag)
     {
         _db = db; _classifier = classifier; _chunking = chunking; _indexer = indexer; _identity = identity;
-        _symbols = symbols; _schema = schema; _rag = rag.Value;
+        _symbols = symbols; _schema = schema; _graphBuilder = graphBuilder; _rag = rag.Value;
     }
 
     public async Task<ImportedFile> ImportAsync(int? projectId, string fileName, byte[] content, CancellationToken ct = default)
@@ -86,10 +87,14 @@ public sealed class FileImportService : IFileImportService
         }
 
         // KE-008/KE-009: deterministic structural extraction (best-effort; never fails the import).
+        // KE-010: resolve the artifact's references into the structural graph after extraction.
         if (string.Equals(imported.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase))
             try { await _symbols.UpsertForArtifactAsync(imported.Id, ct); } catch { /* symbols are regenerable */ }
         else if (string.Equals(imported.DetectedLanguage, "sql", StringComparison.OrdinalIgnoreCase))
+        {
             try { await _schema.UpsertForArtifactAsync(imported.Id, ct); } catch { /* symbols are regenerable */ }
+            try { await _graphBuilder.RebuildForArtifactAsync(imported.Id, ct); } catch { /* edges are regenerable */ }
+        }
 
         return imported;
     }

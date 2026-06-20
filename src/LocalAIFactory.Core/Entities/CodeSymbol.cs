@@ -46,4 +46,9 @@ public class CodeSymbol : IPortableEntity
     public string? DetectedLanguage { get; set; } // e.g. "csharp"; the extractor that produced this symbol.
     public string SymbolHash { get; set; } = "";  // change-detection digest (location + signature + attributes).
     public DateTime ExtractedUtc { get; set; } = DateTime.UtcNow;
+
+    // KE-010: case-folded FullName — the kind-agnostic object key. Reference resolution joins
+    // CodeSymbolReference.ReferencedKey to this; KE-011 uses it for exact-identifier lexical lookup. Set in
+    // application code (portable, testable) by the extraction stores, not a SQL computed column.
+    public string NormalizedKey { get; set; } = "";
 }

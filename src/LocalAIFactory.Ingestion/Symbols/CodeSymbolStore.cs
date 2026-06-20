@@ -113,6 +113,7 @@ public sealed class CodeSymbolStore : ICodeSymbolStore
         s.Kind = ex.Kind;
         s.Name = Trunc(ex.Name, MaxName);
         s.FullName = Trunc(ex.FullName, MaxFullName);
+        s.NormalizedKey = s.FullName.ToLowerInvariant(); // KE-010: object key for resolution / KE-011 lexical
         s.Signature = ex.Signature is null ? null : Trunc(ex.Signature, MaxSignature);
         s.Access = ex.Access;
         s.IsPublic = ex.IsPublic;

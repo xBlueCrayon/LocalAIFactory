@@ -30,6 +30,7 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     private readonly IIdentityResolver _identity;
     private readonly ICodeSymbolStore _symbols;
     private readonly ISchemaSymbolStore _schema;
+    private readonly ICodeGraphBuilder _graphBuilder;
     private readonly WorkspacesOptions _ws;
     private readonly RagOptions _rag;
     private readonly ILogger<ProjectIngestionService> _log;
@@ -38,11 +39,11 @@ public sealed class ProjectIngestionService : IProjectIngestionService
         AppDbContext db, IZipExtractionService zip, IFileClassifier classifier, IChunkingService chunking,
         IKnowledgeIndexer indexer, IProjectProfileService profile, IKnowledgeGraphService graph,
         IModelExecutionService model, IIdentityResolver identity, ICodeSymbolStore symbols, ISchemaSymbolStore schema,
-        IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag, ILogger<ProjectIngestionService> log)
+        ICodeGraphBuilder graphBuilder, IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag, ILogger<ProjectIngestionService> log)
     {
         _db = db; _zip = zip; _classifier = classifier; _chunking = chunking; _indexer = indexer;
         _profile = profile; _graph = graph; _model = model; _identity = identity; _symbols = symbols; _schema = schema;
-        _ws = ws.Value; _rag = rag.Value; _log = log;
+        _graphBuilder = graphBuilder; _ws = ws.Value; _rag = rag.Value; _log = log;
     }
 
     private string IncomingDir => Path.Combine(_ws.Root, "_incoming");
@@ -268,6 +269,17 @@ public sealed class ProjectIngestionService : IProjectIngestionService
             await _db.SaveChangesAsync(ct);
             try { await ExtractSymbolsAsync(job.Id, ct); }
             catch (Exception ex) { _log.LogWarning(ex, "Symbol extraction failed for job {Id}", job.Id); }
+
+            // KE-010: resolve references into the structural graph (convergent, project-scoped). Best-effort.
+            job.Phase = IngestionPhase.StructuralGraph;
+            await _db.SaveChangesAsync(ct);
+            try
+            {
+                var g = await _graphBuilder.RebuildForProjectAsync(job.ProjectId, ct);
+                _log.LogInformation("Structural graph for project {Pid}: {Edges} edges, {Unresolved} unresolved references",
+                    job.ProjectId, g.Edges, g.Unresolved);
+            }
+            catch (Exception ex) { _log.LogWarning(ex, "Structural graph build failed for job {Id}", job.Id); }
 
             job.Phase = IngestionPhase.Completed;
             job.Status = IngestionJobStatus.Completed;

@@ -33,6 +33,9 @@ public static class DependencyInjection
         services.AddSingleton<ISqlSchemaExtractorRouter, SqlSchemaExtractorRouter>();
         services.AddScoped<ISchemaSymbolStore, SchemaSymbolStore>();
 
+        // KE-010: deterministic structural graph builder (resolves references into CodeEdges).
+        services.AddScoped<ICodeGraphBuilder, CodeGraphBuilder>();
+
         return services;
     }
 }

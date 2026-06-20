@@ -49,6 +49,7 @@ public class AppDbContext : DbContext
     public DbSet<ScopeApplicability> ScopeApplicabilities => Set<ScopeApplicability>();
     public DbSet<CodeSymbol> CodeSymbols => Set<CodeSymbol>(); // KE-008
     public DbSet<CodeSymbolReference> CodeSymbolReferences => Set<CodeSymbolReference>(); // KE-009
+    public DbSet<CodeEdge> CodeEdges => Set<CodeEdge>(); // KE-010
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -447,10 +448,12 @@ public class AppDbContext : DbContext
             e.Property(x => x.FileLocusKey).HasMaxLength(64);
             e.Property(x => x.DetectedLanguage).HasMaxLength(50);
             e.Property(x => x.SymbolHash).HasMaxLength(64);
+            e.Property(x => x.NormalizedKey).HasMaxLength(512); // KE-010
             e.HasIndex(x => x.Uid).IsUnique();
             e.HasIndex(x => x.FileLocusKey);
             e.HasIndex(x => x.SourceLocusKey);
             e.HasIndex(x => new { x.ProjectId, x.Kind });
+            e.HasIndex(x => new { x.ProjectId, x.NormalizedKey }); // KE-010 resolution / KE-011 lexical
             e.HasOne<ImportedFile>().WithMany().HasForeignKey(x => x.SourceArtifactId).OnDelete(DeleteBehavior.Restrict);
             e.HasOne<CodeSymbol>().WithMany().HasForeignKey(x => x.ParentSymbolId).OnDelete(DeleteBehavior.Restrict);
         });
@@ -472,6 +475,32 @@ public class AppDbContext : DbContext
             e.HasIndex(x => new { x.ProjectId, x.ReferenceKind });
             e.HasOne<CodeSymbol>().WithMany().HasForeignKey(x => x.FromSymbolId).OnDelete(DeleteBehavior.Restrict);
             e.HasOne<ImportedFile>().WithMany().HasForeignKey(x => x.SourceArtifactId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Phase 2 / KE-010: deterministic structural edges (reference/dependency) between CodeSymbols. Sibling
+        // of KnowledgeRelationship; endpoints are CodeSymbols. Convergence keyed on EdgeKey; Uid is portable
+        // (Knowledge Packs). Restrict deletes — the graph builder manages edge lifecycle in code.
+        b.Entity<CodeEdge>(e =>
+        {
+            e.Property(x => x.EdgeKey).HasMaxLength(64);
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => x.EdgeKey).IsUnique();
+            e.HasIndex(x => x.ToSymbolId);   // "what depends on / references X"
+            e.HasIndex(x => x.FromSymbolId);
+            e.HasIndex(x => x.SourceArtifactId);
+            e.HasIndex(x => new { x.ProjectId, x.RelationType });
+            e.HasOne<CodeSymbol>().WithMany().HasForeignKey(x => x.FromSymbolId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne<CodeSymbol>().WithMany().HasForeignKey(x => x.ToSymbolId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne<ImportedFile>().WithMany().HasForeignKey(x => x.SourceArtifactId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // KE-010: the unified structural graph as a read-only view — containment (from ParentSymbolId) UNION
+        // reference edges (from CodeEdges). Keyless; the view itself is created by the migration. KE-011
+        // traverses this single shape so code and schema form one graph.
+        b.Entity<CodeGraphEdge>(e =>
+        {
+            e.HasNoKey();
+            e.ToView("vCodeGraph");
         });
     }
 }

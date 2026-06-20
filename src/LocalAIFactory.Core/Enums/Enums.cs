@@ -96,12 +96,16 @@ public enum IngestionPhase
     Failed = 11,
     // KE-008: deterministic code-symbol extraction. Appended (12) to preserve existing stored values;
     // it runs before Completed despite the higher ordinal (the enum is a label, not a sort key).
-    SymbolExtraction = 12
+    SymbolExtraction = 12,
+    // KE-010: structural graph build (resolve references into CodeEdges). Runs after symbol extraction.
+    StructuralGraph = 13
 }
 
 public enum EntityType { Flag = 0, Workflow = 1, File = 2, Function = 3, ExternalSystem = 4, Table = 5, Job = 6, Api = 7, Module = 8, Other = 9 }
 
-public enum RelationType { BelongsTo = 0, Uses = 1, Calls = 2, Reads = 3, Writes = 4, DependsOn = 5, DeploysTo = 6, IntegratesWith = 7 }
+// KE-010 appends References/PartOf/DefinedIn (8-10) for deterministic structural edges. Append-only to
+// preserve existing stored values.
+public enum RelationType { BelongsTo = 0, Uses = 1, Calls = 2, Reads = 3, Writes = 4, DependsOn = 5, DeploysTo = 6, IntegratesWith = 7, References = 8, PartOf = 9, DefinedIn = 10 }
 
 public enum ModelOutputKind { Primary = 0, Validation = 1, Comparison = 2 }
 
