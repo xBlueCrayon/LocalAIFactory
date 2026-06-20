@@ -180,3 +180,5 @@ desktop.ini
 *.tmp
 *.bak.cs
 *~
+
+**/Properties/launchSettings.json
