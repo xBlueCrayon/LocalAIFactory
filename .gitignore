@@ -1,0 +1,182 @@
+###############################################################################
+# LocalAIFactory .gitignore
+# Stack: ASP.NET 10 / .NET 10 · Visual Studio 2026 · MSSQL · Playwright ·
+#        Ollama · Python · local AI development
+#
+# Notes:
+#   * Directory patterns below have no leading slash, so they match at ANY depth
+#     (e.g. src/LocalAIFactory.Web/bin, src/LocalAIFactory.Web/keys).
+#   * Committed on purpose (do NOT add here): Directory.Build.props,
+#     Directory.Packages.props, appsettings.json, appsettings.Development.json,
+#     Ollama Modelfiles. Only local-override/secret variants are ignored.
+###############################################################################
+
+# ----------------------------------------------------------------------------
+# .NET / ASP.NET 10 build output
+# ----------------------------------------------------------------------------
+bin/
+obj/
+out/
+publish/
+[Pp]ublish/
+build/
+artifacts/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+*.dll.config
+project.lock.json
+project.assets.json
+*.nupkg
+*.snupkg
+
+# ----------------------------------------------------------------------------
+# Visual Studio 2026 / Rider / VS Code
+# ----------------------------------------------------------------------------
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.rsuser
+*.DotSettings.user
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.ncrunch*
+.localhistory/
+*.vsidx
+*.lock
+
+# ----------------------------------------------------------------------------
+# ASP.NET runtime / publish profiles / secrets (NEVER commit secrets)
+# ----------------------------------------------------------------------------
+wwwroot/dist/
+PublishProfiles/*.user
+*.publishsettings
+*.pubxml.user
+*.azurePubxml
+appsettings.Development.local.json
+appsettings.*.local.json
+appsettings.Local.json
+secrets.json
+*.pfx
+*.key
+*.pem
+
+# Data Protection keys (encrypt stored API keys — machine-specific)
+keys/
+
+# ----------------------------------------------------------------------------
+# MSSQL / databases
+# ----------------------------------------------------------------------------
+*.mdf
+*.ldf
+*.ndf
+*.bak
+*.bacpac
+*.dbmdl
+*.jfm
+/data/
+**/data/
+
+# ----------------------------------------------------------------------------
+# LocalAIFactory runtime data
+# ----------------------------------------------------------------------------
+logs/
+*.log
+uploads/
+_incoming/
+workspaces/
+
+# ----------------------------------------------------------------------------
+# Local AI development (model weights, caches, vector store data)
+# Large model artifacts and local stores must never be committed.
+# ----------------------------------------------------------------------------
+models/
+model-cache/
+*.gguf
+*.safetensors
+*.onnx
+*.pt
+*.pth
+*.ckpt
+# Hugging Face / transformers caches
+.huggingface/
+.cache/huggingface/
+# Local Qdrant storage (when bind-mounted into the repo)
+qdrant_storage/
+qdrant/storage/
+.qdrant/
+# Embedding / inference scratch caches
+.embeddings-cache/
+.ai-cache/
+# NOTE: *.bin is intentionally NOT ignored globally (too broad). If you store raw
+# weight blobs in-repo, ignore the specific folder instead, e.g. models/.
+
+# ----------------------------------------------------------------------------
+# Ollama (models live in ~/.ollama by default; ignore only in-repo copies)
+# Keep Modelfiles in source control — they are configuration.
+# ----------------------------------------------------------------------------
+.ollama/
+ollama_models/
+
+# ----------------------------------------------------------------------------
+# Playwright (E2E tests)
+# ----------------------------------------------------------------------------
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+.last-run.json
+# Installed browsers when placed under the project (otherwise in bin/ or global)
+.playwright/
+ms-playwright/
+# Traces / videos / screenshots captured by tests
+**/test-results/**
+*.webm
+
+# ----------------------------------------------------------------------------
+# Python (tooling / scripts / local AI utilities)
+# ----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.python-version
+pip-wheel-metadata/
+
+# ----------------------------------------------------------------------------
+# Test results / coverage
+# ----------------------------------------------------------------------------
+[Tt]est[Rr]esult*/
+[Cc]overage*/
+*.trx
+*.coverage
+*.coveragexml
+BenchmarkDotNet.Artifacts/
+
+# ----------------------------------------------------------------------------
+# OS / editor / misc
+# ----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.bak.cs
+*~
