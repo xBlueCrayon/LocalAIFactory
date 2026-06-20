@@ -9,14 +9,16 @@ param(
   [string]$BackupDir = "./backups",
   [switch]$TrustedConnection = $true,
   [string]$User,
-  [string]$Password
+  [string]$Password,
+  [switch]$Compress   # WITH COMPRESSION is unsupported on Express/LocalDB — off by default for portability.
 )
 $ErrorActionPreference = "Stop"
 if (-not (Test-Path $BackupDir)) { New-Item -ItemType Directory -Force -Path $BackupDir | Out-Null }
 $stamp = (Get-Date).ToString("yyyyMMdd-HHmmss")
 $file = Join-Path (Resolve-Path $BackupDir) "$Database-$stamp.bak"
 $auth = $TrustedConnection -and -not $User ? "-E" : "-U `"$User`" -P `"$Password`""
-$sql = "BACKUP DATABASE [$Database] TO DISK = N'$file' WITH INIT, CHECKSUM, COMPRESSION;"
+$opts = $Compress ? "INIT, CHECKSUM, COMPRESSION" : "INIT, CHECKSUM"
+$sql = "BACKUP DATABASE [$Database] TO DISK = N'$file' WITH $opts;"
 Write-Host "Backing up [$Database] on $ServerInstance -> $file"
 $cmd = "sqlcmd -S `"$ServerInstance`" $auth -C -b -Q `"$sql`""
 Invoke-Expression $cmd
