@@ -74,3 +74,27 @@ public interface IControlledExecutor
     // RequiresApproval commands are recorded and skipped; execution halts at the first non-zero exit.
     ControlledRunResult Run(IReadOnlyList<string> commands, bool execute, string workingDir);
 }
+
+// R2-ACC-20X: the safest possible local fix loop. A single file patch set is applied to an ISOLATED workspace
+// directory, allowlisted checks (build/test) run, and on ANY failure the patch is ROLLED BACK so the workspace
+// is left exactly as found. The loop NEVER commits, pushes or merges — Committed is always false; promotion to
+// a commit is a separate, explicit, human-approved step outside this loop. Default is dry-run (apply nothing).
+public sealed record FilePatch(string RelativePath, string NewContent);
+
+public sealed record FixLoopResult(
+    string ChangeRequestId,
+    bool DryRun,
+    bool PatchApplied,
+    bool ChecksPassed,
+    bool RolledBack,
+    bool Committed,            // ALWAYS false — commit requires explicit human approval outside the loop
+    IReadOnlyList<CommandRunRecord> CheckRecords,
+    IReadOnlyList<string> Notes);
+
+public interface ILocalFixLoop
+{
+    // Apply `patches` to request.TargetRepoPath, run `checks`, roll back on failure. execute=false => dry-run.
+    // `runner` actually runs a check command (injected for testability; a real deployment uses a process runner).
+    FixLoopResult Run(ChangeRequest request, IReadOnlyList<FilePatch> patches,
+        IReadOnlyList<string> checks, bool execute, CommandRunner runner);
+}

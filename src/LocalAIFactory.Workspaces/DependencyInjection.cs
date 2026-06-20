@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddSingleton<ICommandPolicy, CommandPolicy>();
         services.AddSingleton<IAutonomousWorkflowPlanner, AutonomousWorkflowPlanner>();
         services.AddSingleton<IControlledExecutor, ControlledExecutor>(); // R2-ACC-INDUSTRIAL controlled execution
+        services.AddSingleton<ILocalFixLoop, LocalFixLoop>();             // R2-ACC-20X safe local fix loop (rollback on failure)
 
         // Workspace management (uses DbContext): scoped.
         services.AddScoped<IWorkspaceManager, WorkspaceManager>();

@@ -1,0 +1,114 @@
+@model LocalAIFactory.Web.Controllers.SupportController.SupportVm
+@{
+    ViewData["Title"] = "Support & Operations";
+    string Pill(string s) => s switch
+    {
+        "Online" => "text-bg-success",
+        "Offline" => "text-bg-danger",
+        "Disabled" => "text-bg-secondary",
+        _ => "text-bg-warning"
+    };
+    string LicPill(string s) => s switch
+    {
+        "Valid" => "text-bg-success",
+        "GracePeriod" => "text-bg-warning",
+        _ => "text-bg-danger"
+    };
+}
+
+<div class="mb-3">
+    <h1 class="h4 mb-1"><i class="bi bi-heart-pulse me-2"></i>Support &amp; Operations</h1>
+    <div class="text-muted small">Read-only diagnostics for an admin or support engineer. Health is read from the cached snapshot — this page never blocks on an external service.</div>
+</div>
+
+@if (Model.Warnings.Count > 0)
+{
+    <div class="alert alert-warning py-2">
+        <div class="fw-semibold mb-1"><i class="bi bi-exclamation-triangle me-1"></i>Warnings</div>
+        <ul class="mb-0 small">@foreach (var w in Model.Warnings){<li>@w</li>}</ul>
+    </div>
+}
+
+<div class="row g-3">
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <div class="text-muted small text-uppercase mb-2">Build &amp; environment</div>
+            <table class="table table-sm mb-0">
+                <tr><td class="text-muted">Version</td><td class="text-end">@Model.Version</td></tr>
+                <tr><td class="text-muted">Release</td><td class="text-end small">@Model.InformationalVersion</td></tr>
+                <tr><td class="text-muted">Environment</td><td class="text-end">@Model.Environment</td></tr>
+                <tr><td class="text-muted">Framework</td><td class="text-end small">@Model.Framework</td></tr>
+                <tr><td class="text-muted">Machine</td><td class="text-end">@Model.MachineName</td></tr>
+                <tr><td class="text-muted">Uptime</td><td class="text-end">@Model.ProcessUptime</td></tr>
+                <tr><td class="text-muted">Server time (UTC)</td><td class="text-end">@Model.ServerTimeUtc.ToString("yyyy-MM-dd HH:mm:ss")</td></tr>
+            </table>
+        </div></div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <div class="text-muted small text-uppercase mb-2">Edition &amp; license</div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="badge text-bg-primary">@Model.Edition</span>
+                <span class="badge @LicPill(Model.LicenseStatus)">@Model.LicenseStatus</span>
+                <span class="text-muted small ms-auto">@Model.EnabledFeatureCount features</span>
+            </div>
+            <div class="small text-muted">@Model.LicenseReason</div>
+            <div class="small text-muted mt-2"><i class="bi bi-info-circle me-1"></i>Demo-safe: a missing or expired paid license degrades to the Community core; the product never blocks.</div>
+        </div></div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <div class="text-muted small text-uppercase mb-2">Optional services (cached)</div>
+            <div class="mb-2"><span class="badge text-bg-info">@Model.Mode mode</span>
+                <span class="badge @(Model.ChatAvailable ? "text-bg-success" : "text-bg-secondary")">Chat @(Model.ChatAvailable ? "available" : "unavailable")</span></div>
+            <table class="table table-sm mb-2">
+                @foreach (var kv in Model.Health)
+                {
+                    <tr><td class="text-muted">@kv.Key</td><td class="text-end"><span class="badge @Pill(kv.Value)">@kv.Value</span></td></tr>
+                }
+            </table>
+            <div class="small text-muted">Last probed: @(Model.HealthCheckedUtc?.ToString("yyyy-MM-dd HH:mm:ss") + " UTC" ?? "pending")</div>
+        </div></div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+                <span class="text-muted small text-uppercase">Database</span>
+                <span class="badge ms-auto @(Model.DbReachable ? "text-bg-success" : "text-bg-danger")">@(Model.DbReachable ? "Reachable" : "Unreachable")</span>
+            </div>
+            <table class="table table-sm mb-0">
+                @foreach (var kv in Model.Counts)
+                {
+                    <tr><td class="text-muted">@kv.Key</td><td class="text-end">@(kv.Value < 0 ? "unavailable" : kv.Value.ToString("N0"))</td></tr>
+                }
+            </table>
+        </div></div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <div class="text-muted small text-uppercase mb-2">Activity</div>
+            <div class="small mb-2"><span class="text-muted">Last import:</span><br/>@(Model.LastImport ?? "—")</div>
+            <div class="small"><span class="text-muted">Last audit event:</span><br/>@(Model.LastAudit ?? "—")</div>
+        </div></div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100"><div class="card-body">
+            <div class="text-muted small text-uppercase mb-2">Storage</div>
+            @if (Model.DiskDrive is not null && Model.DiskTotalGb is > 0)
+            {
+                var used = Model.DiskTotalGb!.Value - (Model.DiskFreeGb ?? 0);
+                var pct = (int)Math.Round(used / Model.DiskTotalGb!.Value * 100);
+                <div class="d-flex justify-content-between small"><span>@Model.DiskDrive</span><span>@Model.DiskFreeGb GB free / @Model.DiskTotalGb GB</span></div>
+                <div class="progress mt-2" style="height:8px"><div class="progress-bar @(pct >= 90 ? "bg-danger" : pct >= 75 ? "bg-warning" : "bg-success")" style="width:@pct%"></div></div>
+            }
+            else { <div class="text-muted small">Disk information unavailable.</div> }
+        </div></div>
+    </div>
+</div>
+
+<div class="text-muted small mt-3"><i class="bi bi-shield-check me-1"></i>This view performs only lightweight, read-only queries and never calls Qdrant/Ollama synchronously, per the platform's runtime rules.</div>

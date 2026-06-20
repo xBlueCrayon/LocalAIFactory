@@ -63,6 +63,9 @@ builder.Services.AddLocalAIFactoryTerminal();
 // Dashboard query service (SQL-Server-friendly counts + structured logging).
 builder.Services.AddScoped<DashboardService>();
 
+// R2-ACC-20X: deterministic edition/license evaluation (demo-safe — no DRM, degrades to Community core).
+builder.Services.AddSingleton<LocalAIFactory.Core.Licensing.ILicenseVerifier, LocalAIFactory.Core.Licensing.LicenseVerifier>();
+
 builder.Services.AddHostedService<IngestionBackgroundService>();
 builder.Services.AddHostedService<HealthMonitorService>();
 
