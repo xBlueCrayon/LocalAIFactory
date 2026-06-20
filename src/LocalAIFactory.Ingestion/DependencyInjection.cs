@@ -39,6 +39,9 @@ public static class DependencyInjection
         // KE-012: project-scoped consolidation (re-extract from raw, prune orphans, converge the graph).
         services.AddScoped<IStructuralConsolidationService, Maintenance.StructuralConsolidationService>();
 
+        // R2-P0A: per-import coverage / gap reporting (enterprise honesty).
+        services.AddScoped<IImportCoverageService, Coverage.ImportCoverageService>();
+
         return services;
     }
 }

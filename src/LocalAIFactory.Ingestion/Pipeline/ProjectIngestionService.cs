@@ -31,6 +31,7 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     private readonly ICodeSymbolStore _symbols;
     private readonly ISchemaSymbolStore _schema;
     private readonly ICodeGraphBuilder _graphBuilder;
+    private readonly IImportCoverageService _coverage;
     private readonly WorkspacesOptions _ws;
     private readonly RagOptions _rag;
     private readonly ILogger<ProjectIngestionService> _log;
@@ -39,11 +40,11 @@ public sealed class ProjectIngestionService : IProjectIngestionService
         AppDbContext db, IZipExtractionService zip, IFileClassifier classifier, IChunkingService chunking,
         IKnowledgeIndexer indexer, IProjectProfileService profile, IKnowledgeGraphService graph,
         IModelExecutionService model, IIdentityResolver identity, ICodeSymbolStore symbols, ISchemaSymbolStore schema,
-        ICodeGraphBuilder graphBuilder, IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag, ILogger<ProjectIngestionService> log)
+        ICodeGraphBuilder graphBuilder, IImportCoverageService coverage, IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag, ILogger<ProjectIngestionService> log)
     {
         _db = db; _zip = zip; _classifier = classifier; _chunking = chunking; _indexer = indexer;
         _profile = profile; _graph = graph; _model = model; _identity = identity; _symbols = symbols; _schema = schema;
-        _graphBuilder = graphBuilder; _ws = ws.Value; _rag = rag.Value; _log = log;
+        _graphBuilder = graphBuilder; _coverage = coverage; _ws = ws.Value; _rag = rag.Value; _log = log;
     }
 
     private string IncomingDir => Path.Combine(_ws.Root, "_incoming");
@@ -281,6 +282,10 @@ public sealed class ProjectIngestionService : IProjectIngestionService
             }
             catch (Exception ex) { _log.LogWarning(ex, "Structural graph build failed for job {Id}", job.Id); }
 
+            // R2-P0A: compute the honest coverage / gap report for this import. Best-effort.
+            try { await _coverage.ComputeAsync(job.ProjectId, job.Id, ct); }
+            catch (Exception ex) { _log.LogWarning(ex, "Coverage report failed for job {Id}", job.Id); }
+
             job.Phase = IngestionPhase.Completed;
             job.Status = IngestionJobStatus.Completed;
             job.CompletedUtc = DateTime.UtcNow;
@@ -315,7 +320,7 @@ public sealed class ProjectIngestionService : IProjectIngestionService
         {
             ct.ThrowIfCancellationRequested();
             try { await _symbols.UpsertForArtifactAsync(id, ct); }
-            catch (Exception ex) { _log.LogWarning(ex, "C# symbol extraction failed for artifact {Id}", id); }
+            catch (Exception ex) { _log.LogWarning(ex, "C# symbol extraction failed for artifact {Id}", id); await MarkParseErrorAsync(id, ex, ct); }
         }
 
         var sqlIds = await _db.ImportedFiles
@@ -326,8 +331,22 @@ public sealed class ProjectIngestionService : IProjectIngestionService
         {
             ct.ThrowIfCancellationRequested();
             try { await _schema.UpsertForArtifactAsync(id, ct); }
-            catch (Exception ex) { _log.LogWarning(ex, "T-SQL schema extraction failed for artifact {Id}", id); }
+            catch (Exception ex) { _log.LogWarning(ex, "T-SQL schema extraction failed for artifact {Id}", id); await MarkParseErrorAsync(id, ex, ct); }
         }
+    }
+
+    // R2-P0A: record a parse failure on the artifact so the gap report can surface it — never a silent loss.
+    private async Task MarkParseErrorAsync(int artifactId, Exception ex, CancellationToken ct)
+    {
+        try
+        {
+            var art = await _db.ImportedFiles.FirstOrDefaultAsync(f => f.Id == artifactId, ct);
+            if (art is null) return;
+            art.ExtractionStatus = ExtractionStatus.ParseError;
+            art.ExtractionNote = ex.Message.Length > 500 ? ex.Message[..500] : ex.Message;
+            await _db.SaveChangesAsync(ct);
+        }
+        catch { /* never let gap-bookkeeping break ingestion */ }
     }
 
     private async Task ExtractCandidateRulesAsync(int? projectId, List<(int Id, string Content, FileClass Class)> created, CancellationToken ct)

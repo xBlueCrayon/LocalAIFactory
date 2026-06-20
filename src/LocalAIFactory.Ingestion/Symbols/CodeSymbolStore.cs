@@ -101,6 +101,9 @@ public sealed class CodeSymbolStore : ICodeSymbolStore
             if (s.ParentSymbolId != parentId) { s.ParentSymbolId = parentId; changed = true; }
         }
 
+        // R2-P0A: honest extraction outcome for the gap report (parsed-and-empty is NOT a silent zero).
+        art.ExtractionStatus = current.Count > 0 ? ExtractionStatus.Extracted : ExtractionStatus.NoSymbols;
+
         // KE-008.x: persist this artifact's C# type references (staging for KE-010 resolution). Replaced
         // wholesale per artifact (pure staging), exactly like the SQL path. References are owned by the type
         // symbol; resolution to a target is KE-010's job (by simple name, with confidence).

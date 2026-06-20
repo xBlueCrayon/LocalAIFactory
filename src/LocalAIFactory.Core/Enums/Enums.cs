@@ -167,6 +167,15 @@ public enum DemotionReason { Contradiction = 0, FailedOutcome = 1 }
 // live-schema import path; file-based schema imports use Upload/FileSystem with SqlScript classification.
 public enum ArtifactSourceSystem { Upload = 0, FileSystem = 1, GitRepository = 2, Conversation = 3, Database = 4 }
 
+// R2-P0A: the honest outcome of deterministic structural extraction for one artifact. The whole point of
+// gap-reporting is that a user can tell these apart — never a silent zero. Append-only.
+//   NotAttempted — non-code / skipped / no extractor ran.
+//   Extracted    — parsed and produced at least one symbol.
+//   NoSymbols    — parsed fine but legitimately declares nothing (e.g. global-usings, an empty partial).
+//   Unsupported  — a code language with no extractor yet (Python, VB.NET, Razor, …).
+//   ParseError   — the extractor threw / could not parse the file.
+public enum ExtractionStatus { NotAttempted = 0, Extracted = 1, NoSymbols = 2, Unsupported = 3, ParseError = 4 }
+
 // Phase 2 / KE-008: deterministic code-symbol kinds. Language-neutral so other extractors (VB.NET, Razor)
 // map onto the same set. Stored as int — append new kinds at the end to preserve existing values.
 public enum CodeSymbolKind

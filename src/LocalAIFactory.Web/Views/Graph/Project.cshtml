@@ -7,6 +7,7 @@
         <div class="text-muted small">What the engine understood — structural symbols and dependencies.</div>
     </div>
     <span class="ms-auto"></span>
+    <a class="btn btn-outline-secondary btn-sm me-2" asp-controller="Coverage" asp-action="Index" asp-route-projectId="@Model.Project.Id"><i class="bi bi-clipboard-check me-1"></i>Coverage &amp; gaps</a>
     <form asp-action="Search" method="get" class="d-flex gap-2">
         <input type="hidden" name="projectId" value="@Model.Project.Id" />
         <input class="form-control form-control-sm" name="q" placeholder="Ask: identifier, table, interface…" style="min-width:280px" />

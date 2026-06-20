@@ -24,6 +24,9 @@ public class ImportedFile : IPortableEntity
     public string? StoredPath { get; set; }
     public bool Skipped { get; set; }
     public string? SkipReason { get; set; }
+    // R2-P0A: honest per-file extraction outcome (set by the structural stores / pipeline). Feeds the gap report.
+    public ExtractionStatus ExtractionStatus { get; set; } = ExtractionStatus.NotAttempted;
+    public string? ExtractionNote { get; set; } // e.g. a parse-error message — surfaced in the gap report.
     public ImportStatus Status { get; set; } = ImportStatus.Pending;
     public int? KnowledgeItemId { get; set; }
     // KE-004: when a file at the same path is re-imported with changed content, the new artifact points

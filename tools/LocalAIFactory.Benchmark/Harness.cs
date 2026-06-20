@@ -23,21 +23,26 @@ public sealed class Harness
     {
         var files = spec.Type == "sqlfiles"
             ? await FetchSqlFilesAsync(spec)
-            : CloneAndGatherCSharp(spec, cacheDir);
+            : CloneAndGatherFiles(spec, cacheDir);
 
-        // Create immutable artifacts (mirrors the import layer minimally — no model/embeddings needed).
-        foreach (var (rel, content) in files)
+        // Create immutable artifacts for EVERY discovered file (honest discovery — unsupported/non-code/binary
+        // are visible, not silently dropped). Binary files are recorded as skipped (no text read).
+        foreach (var (rel, content, cls) in files)
         {
             var lang = _classifier.DetectLanguage(Path.GetExtension(rel));
-            if (lang is not ("csharp" or "sql")) continue;
+            var binary = cls == FileClass.Binary || content is null;
             db.ImportedFiles.Add(new ImportedFile
             {
                 ProjectId = projectId, RelativePath = rel, FileName = Path.GetFileName(rel),
-                DetectedLanguage = lang, RawText = content, Status = ImportStatus.Processed
+                DetectedLanguage = lang, FileClass = cls, RawText = binary ? null : content,
+                Skipped = binary, SkipReason = binary ? "binary" : null,
+                Status = ImportStatus.Processed
             });
         }
         await db.SaveChangesAsync();
-        var candidates = await db.ImportedFiles.CountAsync(f => f.ProjectId == projectId);
+        // "candidate" = files we CAN analyse (supported languages); discovery is measured over these.
+        var candidates = await db.ImportedFiles.CountAsync(f => f.ProjectId == projectId && !f.Skipped
+            && (f.DetectedLanguage == "csharp" || f.DetectedLanguage == "sql"));
 
         // Build the structural layer via consolidation (extracts from raw + graph + prune). Run twice to
         // prove convergence — repeated maintenance does not change the graph.
@@ -56,13 +61,27 @@ public sealed class Harness
         var edgesByType = await db.CodeEdges.Where(e => e.ProjectId == projectId)
             .GroupBy(e => e.RelationType).Select(grp => new { Type = grp.Key, Count = grp.Count() }).ToListAsync();
 
+        // R2-P0A: compute the honest coverage / gap report (the same service the product uses).
+        var cov = await new LocalAIFactory.Ingestion.Coverage.ImportCoverageService(db, new CodeGraphBuilder(db))
+            .ComputeAsync(projectId);
+        var unsupportedLangs = System.Text.Json.JsonSerializer.Deserialize<List<string>>(cov.UnsupportedLanguagesJson) ?? new();
+
         var result = new RepoResult
         {
             Name = spec.Name, Bucket = spec.Bucket, Sha = spec.Sha ?? "",
             CandidateFiles = candidates, ParsedArtifacts = parsed,
             Symbols = symbols, Edges = g.Edges, References = references, Unresolved = g.Unresolved,
             EdgesByType = edgesByType.ToDictionary(x => x.Type.ToString(), x => x.Count),
-            Convergent = convergent
+            Convergent = convergent,
+            Coverage = new CoverageBlock
+            {
+                FilesDiscovered = cov.FilesDiscovered, FilesImported = cov.FilesImported,
+                FilesExtracted = cov.FilesExtracted, FilesNoSymbols = cov.FilesNoSymbols,
+                FilesUnsupported = cov.FilesUnsupported, FilesParseError = cov.FilesParseError,
+                FilesNonCode = cov.FilesNonCode, FilesSkipped = cov.FilesSkipped,
+                ResolvedReferences = cov.ResolvedReferences, UnresolvedReferences = cov.UnresolvedReferences,
+                UnsupportedLanguages = unsupportedLangs
+            }
         };
 
         var retrieval = new StructuralRetrievalService(db);
@@ -105,20 +124,22 @@ public sealed class Harness
 
     // ---- sources ----
 
-    private static async Task<List<(string rel, string content)>> FetchSqlFilesAsync(RepoSpec spec)
+    private static async Task<List<(string rel, string? content, FileClass cls)>> FetchSqlFilesAsync(RepoSpec spec)
     {
-        var outp = new List<(string, string)>();
+        var outp = new List<(string, string?, FileClass)>();
         foreach (var url in spec.FileUrls ?? Array.Empty<string>())
         {
             var content = await Http.GetStringAsync(url);
             var name = Uri.UnescapeDataString(url[(url.LastIndexOf('/') + 1)..]);
-            outp.Add(($"db/{name}", content));
+            outp.Add(($"db/{name}", content, FileClass.SqlScript));
         }
         spec.Sha = "pinned-ssdt-files";
         return outp;
     }
 
-    private static List<(string rel, string content)> CloneAndGatherCSharp(RepoSpec spec, string cacheDir)
+    // Gather EVERY file under the configured srcDirs (not just *.cs) so the gap report can honestly account for
+    // unsupported, non-code and binary files. Binary files are returned with null content (recorded as skipped).
+    private List<(string rel, string? content, FileClass cls)> CloneAndGatherFiles(RepoSpec spec, string cacheDir)
     {
         var dir = Path.Combine(cacheDir, spec.Code);
         if (!Directory.Exists(Path.Combine(dir, ".git")))
@@ -131,16 +152,20 @@ public sealed class Harness
         }
         spec.Sha = Git(dir, "rev-parse HEAD").Trim();
 
-        var outp = new List<(string, string)>();
+        var sep = Path.DirectorySeparatorChar;
+        var outp = new List<(string, string?, FileClass)>();
         foreach (var sub in spec.SrcDirs ?? new[] { "" })
         {
             var root = Path.Combine(dir, sub);
             if (!Directory.Exists(root)) continue;
-            foreach (var f in Directory.EnumerateFiles(root, "*.cs", SearchOption.AllDirectories))
+            foreach (var f in Directory.EnumerateFiles(root, "*", SearchOption.AllDirectories))
             {
-                if (f.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}") ||
-                    f.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}")) continue;
-                outp.Add((Path.GetRelativePath(dir, f).Replace('\\', '/'), File.ReadAllText(f)));
+                if (f.Contains($"{sep}obj{sep}") || f.Contains($"{sep}bin{sep}") || f.Contains($"{sep}.git{sep}")) continue;
+                var rel = Path.GetRelativePath(dir, f).Replace('\\', '/');
+                var cls = _classifier.Classify(rel);
+                if (cls == FileClass.Binary) { outp.Add((rel, null, cls)); continue; }
+                string? content; try { content = File.ReadAllText(f); } catch { content = null; }
+                outp.Add((rel, content, cls));
             }
         }
         return outp;

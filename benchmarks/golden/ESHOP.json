@@ -31,6 +31,22 @@
       "Passed": true
     }
   ],
+  "Coverage": {
+    "FilesDiscovered": 378,
+    "FilesImported": 345,
+    "FilesExtracted": 207,
+    "FilesNoSymbols": 2,
+    "FilesUnsupported": 63,
+    "FilesParseError": 0,
+    "FilesNonCode": 73,
+    "FilesSkipped": 33,
+    "ResolvedReferences": 329,
+    "UnresolvedReferences": 351,
+    "UnsupportedLanguages": [
+      "javascript",
+      "razor"
+    ]
+  },
   "DiscoveryCoverage": 0.9904306220095693,
   "ResolutionRate": 0.43569131832797425,
   "GraphAccuracy": 1,

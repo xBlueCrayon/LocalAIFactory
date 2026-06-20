@@ -36,6 +36,9 @@ public sealed class RepoResult
     public bool Convergent { get; set; }
     public List<PovResult> Pov { get; set; } = new();
 
+    // R2-P0A: honest coverage / gap metrics (every benchmark report must carry these).
+    public CoverageBlock? Coverage { get; set; }
+
     public double DiscoveryCoverage => CandidateFiles == 0 ? 0 : (double)ParsedArtifacts / CandidateFiles;
 
     // Resolution rate is INFORMATIONAL, not a quality axis: a low value is correct — most references point to
@@ -69,4 +72,20 @@ public sealed class PovResult
     public int Count { get; set; }
     public bool Passed { get; set; }
     public string? Detail { get; set; }
+}
+
+// R2-P0A: the gap report carried by every benchmark — what was and was not understood.
+public sealed class CoverageBlock
+{
+    public int FilesDiscovered { get; set; }
+    public int FilesImported { get; set; }
+    public int FilesExtracted { get; set; }
+    public int FilesNoSymbols { get; set; }
+    public int FilesUnsupported { get; set; }
+    public int FilesParseError { get; set; }
+    public int FilesNonCode { get; set; }
+    public int FilesSkipped { get; set; }
+    public int ResolvedReferences { get; set; }
+    public int UnresolvedReferences { get; set; }
+    public List<string> UnsupportedLanguages { get; set; } = new();
 }

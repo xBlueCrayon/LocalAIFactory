@@ -25,6 +25,7 @@ public class AppDbContext : DbContext
     public DbSet<AgentTask> AgentTasks => Set<AgentTask>();
     public DbSet<AgentStep> AgentSteps => Set<AgentStep>();
     public DbSet<ImportedFile> ImportedFiles => Set<ImportedFile>();
+    public DbSet<ImportCoverageReport> ImportCoverageReports => Set<ImportCoverageReport>(); // R2-P0A
     public DbSet<ImportedConversation> ImportedConversations => Set<ImportedConversation>();
     public DbSet<ImportedConversationMessage> ImportedConversationMessages => Set<ImportedConversationMessage>();
     public DbSet<IngestionJob> IngestionJobs => Set<IngestionJob>();
@@ -427,8 +428,18 @@ public class AppDbContext : DbContext
         b.Entity<ImportedFile>(e =>
         {
             e.Property(x => x.DetectedLanguage).HasMaxLength(50);
+            e.Property(x => x.ExtractionNote).HasMaxLength(1000); // R2-P0A
             e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => new { x.ProjectId, x.ExtractionStatus }); // R2-P0A: fast gap aggregation
         });
+
+        // R2-P0A: per-import coverage / gap report. Append-only honesty record; touches no curated knowledge.
+        b.Entity<ImportCoverageReport>(e =>
+        {
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => new { x.ProjectId, x.CreatedUtc });
+        });
+
         b.Entity<IngestionJob>(e =>
         {
             e.Property(x => x.SourceReference).HasMaxLength(1000);

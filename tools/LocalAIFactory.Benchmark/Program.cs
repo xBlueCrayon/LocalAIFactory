@@ -38,7 +38,7 @@ await using (var setup = new AppDbContext(BuildOptions()))
 
 var harness = new Harness();
 var results = new List<RepoResult>();
-int regressions = 0, povFailures = 0;
+int regressions = 0, povFailures = 0, coverageFailures = 0;
 
 foreach (var spec in manifest.Repos)
 {
@@ -55,6 +55,9 @@ foreach (var spec in manifest.Repos)
 
         Console.WriteLine($"   sha={r.Sha}  files={r.ParsedArtifacts}/{r.CandidateFiles}  symbols={r.Symbols}  edges={r.Edges}  refs={r.References}  resolution={r.ResolutionRate:P0}(informational)  convergent={r.Convergent}");
         Console.WriteLine($"   coverage={r.DiscoveryCoverage:P0}[{r.DiscoveryTier}]  graph={r.GraphAccuracy:P0}[{r.GraphTier}]  retrieval={r.RetrievalAccuracy:P0}[{r.RetrievalTier}]  impact={r.ImpactAccuracy:P0}[{r.ImpactTier}]  => {r.OverallTier}");
+        if (r.Coverage is { } cov)
+            Console.WriteLine($"   gap-report: discovered={cov.FilesDiscovered} extracted={cov.FilesExtracted} no-symbols={cov.FilesNoSymbols} unsupported={cov.FilesUnsupported} parse-errors={cov.FilesParseError} non-code={cov.FilesNonCode} skipped={cov.FilesSkipped}{(cov.UnsupportedLanguages.Count > 0 ? "  unsupported-langs=[" + string.Join(",", cov.UnsupportedLanguages) + "]" : "")}");
+        else { Console.WriteLine("   !! COVERAGE REPORT MISSING — gap reporting is mandatory"); coverageFailures++; }
         foreach (var p in r.Pov)
         {
             Console.WriteLine($"      [{(p.Passed ? "PASS" : "FAIL")}] {p.Question}  (n={p.Count}){(p.Detail is null ? "" : "  -- " + p.Detail)}");
@@ -93,8 +96,9 @@ Console.WriteLine("\n== SUMMARY ==");
 foreach (var r in results)
     Console.WriteLine($"   {r.Name,-22} {r.OverallTier,-7} symbols={r.Symbols,-5} edges={r.Edges,-4} pov={r.Pov.Count(p => p.Passed)}/{r.Pov.Count}");
 
-var exit = (povFailures == 0 && regressions == 0) ? 0 : 1;
-Console.WriteLine($"\nResult: {(exit == 0 ? "PASS" : "FAIL")}  (povFailures={povFailures}, regressions={regressions})");
+// R2-P0A: a benchmark FAILS if gap reporting is missing — hidden blind spots are not acceptable.
+var exit = (povFailures == 0 && regressions == 0 && coverageFailures == 0) ? 0 : 1;
+Console.WriteLine($"\nResult: {(exit == 0 ? "PASS" : "FAIL")}  (povFailures={povFailures}, regressions={regressions}, coverageFailures={coverageFailures})");
 return exit;
 
 // Regression = a tier drop or a previously-passing PoV now failing. Count drift alone is a warning (not fatal),

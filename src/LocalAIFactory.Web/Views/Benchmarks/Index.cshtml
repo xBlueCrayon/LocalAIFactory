@@ -90,8 +90,9 @@ else
                 </div>
                 @if (explore)
                 {
-                    <div class="card-footer bg-transparent border-top-0 pt-0">
-                        <a class="btn btn-sm btn-outline-primary w-100" asp-controller="Graph" asp-action="Project" asp-route-id="@r.ProjectId"><i class="bi bi-diagram-3 me-1"></i>Explore @r.Name</a>
+                    <div class="card-footer bg-transparent border-top-0 pt-0 d-flex gap-2">
+                        <a class="btn btn-sm btn-outline-primary flex-fill" asp-controller="Graph" asp-action="Project" asp-route-id="@r.ProjectId"><i class="bi bi-diagram-3 me-1"></i>Explore</a>
+                        <a class="btn btn-sm btn-outline-secondary flex-fill" asp-controller="Coverage" asp-action="Index" asp-route-projectId="@r.ProjectId"><i class="bi bi-clipboard-check me-1"></i>Coverage</a>
                     </div>
                 }
             </div>

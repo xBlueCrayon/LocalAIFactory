@@ -37,7 +37,9 @@ public sealed class SchemaSymbolStore : ISchemaSymbolStore
         var result = _router.Extract(art.DetectedLanguage, art.RawText);
         if (result.Symbols.Count == 0)
         {
-            // No DDL (e.g. a DML-only seed script). Still clear this artifact's stale references and exit.
+            // No DDL (e.g. a DML-only seed script). Parsed fine, nothing to declare — honest NoSymbols, not a
+            // silent zero. Still clear this artifact's stale references and exit.
+            art.ExtractionStatus = ExtractionStatus.NoSymbols;
             await ReplaceReferencesAsync(art, result.References, ct);
             return 0;
         }
@@ -123,6 +125,8 @@ public sealed class SchemaSymbolStore : ISchemaSymbolStore
                 && parentIdByName.TryGetValue(pf, out var found) ? found : null;
             if (s.ParentSymbolId != pid) { s.ParentSymbolId = pid; changed = true; }
         }
+
+        art.ExtractionStatus = ExtractionStatus.Extracted; // R2-P0A: honest outcome for the gap report
 
         // References: replace this artifact's references wholesale (pure staging for KE-010).
         var fullNameToId = current

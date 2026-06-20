@@ -45,6 +45,19 @@
       "Passed": true
     }
   ],
+  "Coverage": {
+    "FilesDiscovered": 755,
+    "FilesImported": 745,
+    "FilesExtracted": 453,
+    "FilesNoSymbols": 5,
+    "FilesUnsupported": 0,
+    "FilesParseError": 0,
+    "FilesNonCode": 287,
+    "FilesSkipped": 10,
+    "ResolvedReferences": 353,
+    "UnresolvedReferences": 892,
+    "UnsupportedLanguages": []
+  },
   "DiscoveryCoverage": 0.9890829694323144,
   "ResolutionRate": 0.25666666666666665,
   "GraphAccuracy": 1,

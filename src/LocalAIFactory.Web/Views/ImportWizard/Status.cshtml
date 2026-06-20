@@ -8,6 +8,15 @@
     int pct = Model.TotalFiles > 0 ? (int)(100.0 * Model.ProcessedFiles / Model.TotalFiles) : (Model.Status == IngestionJobStatus.Completed ? 100 : 0);
 }
 
+@if (isFinal && Model.Status == IngestionJobStatus.Completed && Model.ProjectId is int covPid)
+{
+    <div class="alert alert-light border d-flex align-items-center">
+        <i class="bi bi-clipboard-check me-2"></i>
+        <span>See exactly what was and was <strong>not</strong> understood in this import.</span>
+        <a class="btn btn-sm btn-outline-secondary ms-auto" asp-controller="Coverage" asp-action="Index" asp-route-projectId="@covPid">Coverage &amp; gap report</a>
+    </div>
+}
+
 <div class="toolbar-row">
     <div>
         <h1 class="section-title">Import #@Model.Id</h1>
