@@ -149,3 +149,7 @@ public enum LocusOutcome { Created = 0, Updated = 1, ProposedRevision = 2, Uncha
 // Phase 2 / KE-005: what an applicability (AppliesTo) link points at. Component reserved for finer-grained
 // targets (e.g. a code symbol) once M2 introduces them.
 public enum ScopeTargetKind { Project = 0, Component = 1 }
+
+// Phase 2 / KE-006: why a knowledge item is being demoted (anti-drift). Sources are KE-025 (contradiction)
+// and KE-028 (failed outcome); the demotion mechanism exists now, the signal wiring lands with them.
+public enum DemotionReason { Contradiction = 0, FailedOutcome = 1 }

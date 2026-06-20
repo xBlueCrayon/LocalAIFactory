@@ -14,10 +14,11 @@ public sealed class IdentityResolver : IIdentityResolver
     private readonly IKnowledgeBackboneService _backbone;
     private readonly IPermanenceGuard _permanence;
     private readonly IContentHasher _hasher;
+    private readonly IQualityService _quality;
 
-    public IdentityResolver(AppDbContext db, IKnowledgeBackboneService backbone, IPermanenceGuard permanence, IContentHasher hasher)
+    public IdentityResolver(AppDbContext db, IKnowledgeBackboneService backbone, IPermanenceGuard permanence, IContentHasher hasher, IQualityService quality)
     {
-        _db = db; _backbone = backbone; _permanence = permanence; _hasher = hasher;
+        _db = db; _backbone = backbone; _permanence = permanence; _hasher = hasher; _quality = quality;
     }
 
     public string ComputeFileLocusKey(int? projectId, string relativePath) => SourceLocus.FileKey(projectId, relativePath);
@@ -81,6 +82,7 @@ public sealed class IdentityResolver : IIdentityResolver
             .ToListAsync(ct);
 
         int added = 0;
+        var affected = new HashSet<int>();
         foreach (var group in rows.GroupBy(r => r.ContentHash).Where(g => g.Count() > 1))
         {
             var ordered = group.OrderBy(r => r.Id).ToList();
@@ -96,10 +98,17 @@ public sealed class IdentityResolver : IIdentityResolver
                     DuplicateOfKnowledgeItemId = canonical.Id, DuplicateOfUid = canonical.Uid,
                     MatchKind = DuplicateMatchKind.Exact, Status = DuplicateStatus.Candidate, Confidence = 1.0
                 });
+                affected.Add(dup.Id);
+                affected.Add(canonical.Id);
                 added++;
             }
         }
-        if (added > 0) await _db.SaveChangesAsync(ct);
+        if (added > 0)
+        {
+            await _db.SaveChangesAsync(ct);
+            // KE-006: corroboration changed for the involved items — recompute their quality band.
+            foreach (var id in affected) await _quality.RecomputeAsync(id, ct);
+        }
         return added;
     }
 }

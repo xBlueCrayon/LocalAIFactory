@@ -13,10 +13,11 @@ public sealed class ApprovalService : IApprovalService
     private readonly IKnowledgeIndexer _indexer;
     private readonly IAuditService _audit;
     private readonly IKnowledgeBackboneService _backbone;
+    private readonly IQualityService _quality;
 
-    public ApprovalService(AppDbContext db, IKnowledgeIndexer indexer, IAuditService audit, IKnowledgeBackboneService backbone)
+    public ApprovalService(AppDbContext db, IKnowledgeIndexer indexer, IAuditService audit, IKnowledgeBackboneService backbone, IQualityService quality)
     {
-        _db = db; _indexer = indexer; _audit = audit; _backbone = backbone;
+        _db = db; _indexer = indexer; _audit = audit; _backbone = backbone; _quality = quality;
     }
 
     public async Task ApproveKnowledgeItemAsync(int knowledgeItemId, CancellationToken ct = default)
@@ -31,6 +32,7 @@ public sealed class ApprovalService : IApprovalService
         await _db.SaveChangesAsync(ct);
         await _audit.LogAsync("ApproveKnowledgeItem", nameof(KnowledgeItem), item.Id.ToString(), item.Title, ct);
         await _backbone.RecordProvenanceAsync(item, ProvenanceMethod.Human, "user", "Approved", ct: ct);
+        await _quality.RecomputeAsync(item.Id, ct); // KE-006: approval can promote the band.
         await _indexer.IndexKnowledgeItemAsync(item.Id, ct);
     }
 

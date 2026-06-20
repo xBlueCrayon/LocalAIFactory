@@ -3,6 +3,7 @@ using LocalAIFactory.Data;
 using LocalAIFactory.Data.Backbone;
 using LocalAIFactory.Data.Identity;
 using LocalAIFactory.Data.Permanence;
+using LocalAIFactory.Data.Quality;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -19,7 +20,8 @@ public class IdentityResolverTests
     {
         var db = NewDb();
         var backbone = new KnowledgeBackboneService(db, new ContentHasher(), new InstanceContext(db));
-        var resolver = new IdentityResolver(db, backbone, new KnowledgePermanenceService(db), new ContentHasher());
+        var resolver = new IdentityResolver(db, backbone, new KnowledgePermanenceService(db), new ContentHasher(),
+            new QualityService(db, new QualityEvaluator()));
         return (resolver, db);
     }
 

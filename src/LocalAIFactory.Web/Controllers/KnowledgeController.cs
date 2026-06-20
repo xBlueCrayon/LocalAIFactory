@@ -16,11 +16,12 @@ public class KnowledgeController : Controller
     private readonly IChunkingService _chunking;
     private readonly IKnowledgeIndexer _indexer;
     private readonly IKnowledgeBackboneService _backbone;
+    private readonly IQualityService _quality;
     private readonly RagOptions _rag;
 
-    public KnowledgeController(AppDbContext db, IApprovalService approval, IChunkingService chunking, IKnowledgeIndexer indexer, IKnowledgeBackboneService backbone, IOptions<RagOptions> rag)
+    public KnowledgeController(AppDbContext db, IApprovalService approval, IChunkingService chunking, IKnowledgeIndexer indexer, IKnowledgeBackboneService backbone, IQualityService quality, IOptions<RagOptions> rag)
     {
-        _db = db; _approval = approval; _chunking = chunking; _indexer = indexer; _backbone = backbone; _rag = rag.Value;
+        _db = db; _approval = approval; _chunking = chunking; _indexer = indexer; _backbone = backbone; _quality = quality; _rag = rag.Value;
     }
 
     public async Task<IActionResult> Index(int? projectId, KnowledgeStatus? status, string? q, CancellationToken ct)
@@ -87,6 +88,7 @@ public class KnowledgeController : Controller
         await _db.SaveChangesAsync(ct);
         await _backbone.RecordInitialAsync(ki, ProvenanceMethod.Human, User?.Identity?.Name ?? "user",
             "Created via Knowledge UI", ct: ct);
+        await _quality.RecomputeAsync(ki.Id, ct); // KE-006
         int idx = 0;
         foreach (var chunk in _chunking.Chunk(content, _rag.MaxChunkChars, _rag.ChunkOverlap))
             _db.KnowledgeChunks.Add(new KnowledgeChunk { KnowledgeItemId = ki.Id, ChunkIndex = idx++, Content = chunk, TokenCount = _chunking.EstimateTokens(chunk) });
@@ -110,6 +112,7 @@ public class KnowledgeController : Controller
         await _backbone.RecordEditAsync(item,
             string.IsNullOrWhiteSpace(reason) ? "Edited via Knowledge UI" : reason!.Trim(),
             ProvenanceMethod.Human, User?.Identity?.Name ?? "user", ct);
+        await _quality.RecomputeAsync(id, ct); // KE-006
         // Re-chunk and re-index so retrieval reflects the new content.
         var oldChunks = await _db.KnowledgeChunks.Where(c => c.KnowledgeItemId == id).ToListAsync(ct);
         _db.KnowledgeChunks.RemoveRange(oldChunks);

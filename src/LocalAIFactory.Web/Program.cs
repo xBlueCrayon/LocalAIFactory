@@ -1,6 +1,7 @@
 using System.Globalization;
 using LocalAIFactory.Agent;
 using LocalAIFactory.Core.Abstractions;
+using LocalAIFactory.Core.Entities;
 using LocalAIFactory.Data;
 using LocalAIFactory.Data.Backbone;
 using LocalAIFactory.Data.Identity;
@@ -76,6 +77,13 @@ using (var scope = app.Services.CreateScope())
             sp.GetRequiredService<IInstanceContext>());
         // KE-004: assign source-locus keys to pre-existing file-linked items (idempotent).
         await SourceLocusBackfill.RunAsync(db);
+        // KE-006: one-time quality-band backfill (guarded by a marker; batched, idempotent).
+        if (!await db.SystemSettings.AnyAsync(s => s.Key == "KE006.QualityBackfilled"))
+        {
+            await sp.GetRequiredService<IQualityService>().RecomputeAllAsync(null);
+            db.SystemSettings.Add(new SystemSetting { Key = "KE006.QualityBackfilled", Value = "true" });
+            await db.SaveChangesAsync();
+        }
         logger.LogInformation("Database migrated, seeded, and knowledge backbone backfilled.");
     }
     catch (Exception ex)
