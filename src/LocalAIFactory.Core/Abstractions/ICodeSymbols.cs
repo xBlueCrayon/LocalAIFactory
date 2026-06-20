@@ -18,23 +18,44 @@ public sealed record ExtractedSymbol(
     int ComplexitySignal,
     string? ParentFullName);
 
+// KE-008.x: a deterministic, syntax-only type reference one symbol makes to another, captured by SIMPLE name
+// (C# cannot produce a fully-qualified name without a semantic model). FromFullName is the owning symbol's
+// display FullName; ReferencedName is the simple type name (generic arity/args stripped); NamespaceHint is the
+// owner's enclosing namespace, used by the resolver to disambiguate same-named types. Resolved to a CodeSymbol
+// by KE-010's language-dispatched resolver; unresolved references are counted, never fabricated.
+public sealed record ExtractedCodeReference(
+    CodeReferenceKind Kind,
+    string FromFullName,
+    string ReferencedName,
+    string? NamespaceHint);
+
+// KE-008: the result of extracting one source artifact — symbols plus the references they make. References
+// are empty for extractors that do not yet capture them.
+public sealed record CodeExtractionResult(
+    IReadOnlyList<ExtractedSymbol> Symbols,
+    IReadOnlyList<ExtractedCodeReference> References)
+{
+    public static readonly CodeExtractionResult Empty =
+        new(Array.Empty<ExtractedSymbol>(), Array.Empty<ExtractedCodeReference>());
+}
+
 // KE-008: a per-language, deterministic, syntax-only symbol extractor. Pluggable by design — VB.NET,
 // Razor, etc. implement the same contract and register without any pipeline redesign. Implementations
-// MUST be pure (same input -> same output) and MUST NOT resolve dependencies or build a semantic model
-// (that is KE-010's concern).
+// MUST be pure (same input -> same output) and MUST NOT resolve dependencies or build a semantic model.
+// References (KE-008.x) are by simple name; resolution to symbols is KE-010's concern.
 public interface ICodeSymbolExtractor
 {
     // The DetectedLanguage value this extractor handles (e.g. "csharp").
     string Language { get; }
-    IReadOnlyList<ExtractedSymbol> Extract(string content);
+    CodeExtractionResult Extract(string content);
 }
 
 // KE-008: routes content to the extractor registered for a DetectedLanguage. Unknown/unsupported
-// languages return false / an empty set — never throw.
+// languages return false / Empty — never throw.
 public interface ICodeSymbolExtractorRouter
 {
     bool CanExtract(string? detectedLanguage);
-    IReadOnlyList<ExtractedSymbol> Extract(string? detectedLanguage, string content);
+    CodeExtractionResult Extract(string? detectedLanguage, string content);
 }
 
 // KE-008: persists/reconciles symbols for one artifact. Convergent upsert keyed on SourceLocusKey —

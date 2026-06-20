@@ -16,8 +16,8 @@ public sealed class CodeSymbolExtractorRouter : ICodeSymbolExtractorRouter
     public bool CanExtract(string? detectedLanguage)
         => !string.IsNullOrEmpty(detectedLanguage) && _byLanguage.ContainsKey(detectedLanguage);
 
-    public IReadOnlyList<ExtractedSymbol> Extract(string? detectedLanguage, string content)
+    public CodeExtractionResult Extract(string? detectedLanguage, string content)
         => !string.IsNullOrEmpty(detectedLanguage) && _byLanguage.TryGetValue(detectedLanguage, out var ex)
             ? ex.Extract(content)
-            : Array.Empty<ExtractedSymbol>();
+            : CodeExtractionResult.Empty;
 }

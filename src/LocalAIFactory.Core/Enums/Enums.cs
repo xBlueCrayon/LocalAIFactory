@@ -105,7 +105,9 @@ public enum EntityType { Flag = 0, Workflow = 1, File = 2, Function = 3, Externa
 
 // KE-010 appends References/PartOf/DefinedIn (8-10) for deterministic structural edges. Append-only to
 // preserve existing stored values.
-public enum RelationType { BelongsTo = 0, Uses = 1, Calls = 2, Reads = 3, Writes = 4, DependsOn = 5, DeploysTo = 6, IntegratesWith = 7, References = 8, PartOf = 9, DefinedIn = 10 }
+public enum RelationType { BelongsTo = 0, Uses = 1, Calls = 2, Reads = 3, Writes = 4, DependsOn = 5, DeploysTo = 6, IntegratesWith = 7, References = 8, PartOf = 9, DefinedIn = 10,
+    // KE-008.x: precise deterministic C# structural edges (from the syntactic base-list). Append-only.
+    Inherits = 11, Implements = 12 }
 
 public enum ModelOutputKind { Primary = 0, Validation = 1, Comparison = 2 }
 
@@ -187,7 +189,14 @@ public enum CodeReferenceKind
     ProcedureReference = 1, // an EXEC of another procedure
     ForeignKeyReference = 2, // a FOREIGN KEY constraint's referenced table/column
     TriggerTable = 3,       // the table a trigger is defined on
-    ColumnReference = 4     // a referenced column (e.g. FK referenced column)
+    ColumnReference = 4,    // a referenced column (e.g. FK referenced column)
+    // KE-008.x: C# deterministic, syntax-only type references (resolved by simple name). Append-only.
+    BaseType = 5,                  // class X : BaseY
+    InterfaceImplementation = 6,   // class X : IFoo
+    ConstructorParameterType = 7,  // ctor(IFoo foo) — dependency injection
+    FieldType = 8,                 // private IFoo _foo;
+    PropertyType = 9,              // public IFoo Foo { get; }
+    ParameterType = 10             // method/return parameter type
 }
 
 // Phase 2 / KE-008: syntactic accessibility of a code symbol (best-effort from modifiers; no semantic model).

@@ -91,10 +91,12 @@ public sealed class FileImportService : IFileImportService
         if (string.Equals(imported.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase))
             try { await _symbols.UpsertForArtifactAsync(imported.Id, ct); } catch { /* symbols are regenerable */ }
         else if (string.Equals(imported.DetectedLanguage, "sql", StringComparison.OrdinalIgnoreCase))
-        {
             try { await _schema.UpsertForArtifactAsync(imported.Id, ct); } catch { /* symbols are regenerable */ }
+
+        // KE-008.x/KE-010: resolve the artifact's references into the structural graph (best-effort).
+        if (string.Equals(imported.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(imported.DetectedLanguage, "sql", StringComparison.OrdinalIgnoreCase))
             try { await _graphBuilder.RebuildForArtifactAsync(imported.Id, ct); } catch { /* edges are regenerable */ }
-        }
 
         return imported;
     }

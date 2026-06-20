@@ -14,18 +14,31 @@ public sealed class CSharpSymbolExtractor : ICodeSymbolExtractor
 {
     public string Language => "csharp";
 
-    public IReadOnlyList<ExtractedSymbol> Extract(string content)
+    public CodeExtractionResult Extract(string content)
     {
         var outp = new List<ExtractedSymbol>();
-        if (string.IsNullOrWhiteSpace(content)) return outp;
+        var refs = new List<ExtractedCodeReference>();
+        if (string.IsNullOrWhiteSpace(content)) return CodeExtractionResult.Empty;
 
         var root = CSharpSyntaxTree.ParseText(content).GetRoot();
         foreach (var member in root.ChildNodes().OfType<MemberDeclarationSyntax>())
-            Visit(member, container: null, containerIsType: false, containerIsInterface: false, outp);
-        return outp;
+            Visit(member, container: null, containerIsType: false, containerIsInterface: false, outp, refs);
+        return new CodeExtractionResult(outp, refs);
     }
 
-    private static void Visit(MemberDeclarationSyntax m, string? container, bool containerIsType, bool containerIsInterface, List<ExtractedSymbol> outp)
+    // KE-008.x: BCL/primitive type names we never emit references for (bounds reference volume at scale; these
+    // are practically never in-corpus). Generic arity is stripped before this check.
+    private static readonly HashSet<string> Skip = new(StringComparer.Ordinal)
+    {
+        "void","var","object","string","bool","byte","sbyte","char","short","ushort","int","uint","long","ulong",
+        "float","double","decimal","nint","nuint","dynamic","Object","String","Boolean","Int16","Int32","Int64",
+        "UInt16","UInt32","UInt64","Byte","SByte","Char","Single","Double","Decimal","DateTime","DateTimeOffset",
+        "TimeSpan","Guid","Task","ValueTask","List","IList","IEnumerable","ICollection","IReadOnlyList",
+        "IReadOnlyCollection","Dictionary","IDictionary","HashSet","ISet","Array","Span","ReadOnlySpan","Memory",
+        "Nullable","Func","Action","Tuple","ValueTuple","CancellationToken","Exception","Type","Stream","Uri"
+    };
+
+    private static void Visit(MemberDeclarationSyntax m, string? container, bool containerIsType, bool containerIsInterface, List<ExtractedSymbol> outp, List<ExtractedCodeReference> refs)
     {
         switch (m)
         {
@@ -35,7 +48,7 @@ public sealed class CSharpSymbolExtractor : ICodeSymbolExtractor
                 var full = Combine(container, name);
                 outp.Add(Make(CodeSymbolKind.Namespace, name, full, null, CodeAccess.NotApplicable, false, ns, container));
                 foreach (var child in ns.Members)
-                    Visit(child, full, containerIsType: false, containerIsInterface: false, outp);
+                    Visit(child, full, containerIsType: false, containerIsInterface: false, outp, refs);
                 break;
             }
             case EnumDeclarationSyntax en:
@@ -70,15 +83,16 @@ public sealed class CSharpSymbolExtractor : ICodeSymbolExtractor
                 var (acc, pub) = Access(t.Modifiers, containerIsType ? CodeAccess.Private : CodeAccess.Internal);
                 outp.Add(Make(kind, t.Identifier.Text, full, null, acc, pub, t, container));
                 var isInterface = kind == CodeSymbolKind.Interface;
+                CollectTypeReferences(t, kind, full, container, refs);
                 foreach (var child in t.Members)
-                    VisitMember(child, full, isInterface, outp);
+                    VisitMember(child, full, isInterface, outp, refs);
                 break;
             }
         }
     }
 
     // Members of a type (one level): may include nested types (recurse) or leaf members.
-    private static void VisitMember(MemberDeclarationSyntax m, string typeFullName, bool inInterface, List<ExtractedSymbol> outp)
+    private static void VisitMember(MemberDeclarationSyntax m, string typeFullName, bool inInterface, List<ExtractedSymbol> outp, List<ExtractedCodeReference> refs)
     {
         switch (m)
         {
@@ -86,7 +100,7 @@ public sealed class CSharpSymbolExtractor : ICodeSymbolExtractor
             case EnumDeclarationSyntax:
             case DelegateDeclarationSyntax:
             case TypeDeclarationSyntax:
-                Visit(m, typeFullName, containerIsType: true, containerIsInterface: inInterface, outp);
+                Visit(m, typeFullName, containerIsType: true, containerIsInterface: inInterface, outp, refs);
                 break;
 
             case ConstructorDeclarationSyntax ctor:
@@ -151,6 +165,100 @@ public sealed class CSharpSymbolExtractor : ICodeSymbolExtractor
 
     private static string Combine(string? container, string name)
         => string.IsNullOrEmpty(container) ? name : container + "." + name;
+
+    // KE-008.x: collect Priority-1 type references a type makes — base class, implemented interfaces, and the
+    // types used by its constructor parameters, fields, properties and method parameters. ALL attributed to
+    // the TYPE (the consumer) by simple name, so "what consumes IFoo" returns the class, not its members.
+    private static void CollectTypeReferences(TypeDeclarationSyntax t, CodeSymbolKind kind, string typeFullName, string? nsHint, List<ExtractedCodeReference> refs)
+    {
+        if (t.BaseList is not null)
+        {
+            bool baseTaken = false;
+            bool canHaveBaseClass = kind is CodeSymbolKind.Class or CodeSymbolKind.Record; // structs/interfaces: bases are interfaces
+            foreach (var bt in t.BaseList.Types)
+            {
+                var name = OuterName(bt.Type);
+                if (name is null) continue;
+                // Deterministic heuristic: a class/record's first non-interface base entry is the base class.
+                CodeReferenceKind rk;
+                if (canHaveBaseClass && !baseTaken && !LooksLikeInterface(name)) { rk = CodeReferenceKind.BaseType; baseTaken = true; }
+                else rk = CodeReferenceKind.InterfaceImplementation;
+                AddRef(refs, rk, typeFullName, name, nsHint);
+                foreach (var arg in TypeArgNames(bt.Type)) AddRef(refs, CodeReferenceKind.InterfaceImplementation, typeFullName, arg, nsHint);
+            }
+        }
+
+        foreach (var member in t.Members)
+        {
+            switch (member)
+            {
+                case ConstructorDeclarationSyntax ctor:
+                    foreach (var p in ctor.ParameterList.Parameters)
+                        foreach (var n in TypeNames(p.Type)) AddRef(refs, CodeReferenceKind.ConstructorParameterType, typeFullName, n, nsHint);
+                    break;
+                case FieldDeclarationSyntax field:
+                    foreach (var n in TypeNames(field.Declaration.Type)) AddRef(refs, CodeReferenceKind.FieldType, typeFullName, n, nsHint);
+                    break;
+                case PropertyDeclarationSyntax prop:
+                    foreach (var n in TypeNames(prop.Type)) AddRef(refs, CodeReferenceKind.PropertyType, typeFullName, n, nsHint);
+                    break;
+                case MethodDeclarationSyntax method:
+                    foreach (var p in method.ParameterList.Parameters)
+                        foreach (var n in TypeNames(p.Type)) AddRef(refs, CodeReferenceKind.ParameterType, typeFullName, n, nsHint);
+                    break;
+            }
+        }
+    }
+
+    private static void AddRef(List<ExtractedCodeReference> refs, CodeReferenceKind kind, string from, string name, string? nsHint)
+    {
+        if (!Skip.Contains(name)) refs.Add(new ExtractedCodeReference(kind, from, name, nsHint));
+    }
+
+    private static bool LooksLikeInterface(string name) => name.Length >= 2 && name[0] == 'I' && char.IsUpper(name[1]);
+
+    // Outermost simple type name (generic arity/args stripped, qualified -> rightmost). Null for predefined types.
+    private static string? OuterName(TypeSyntax? t) => t switch
+    {
+        IdentifierNameSyntax id => id.Identifier.Text,
+        GenericNameSyntax g => g.Identifier.Text,
+        QualifiedNameSyntax q => OuterName(q.Right),
+        AliasQualifiedNameSyntax a => OuterName(a.Name),
+        NullableTypeSyntax n => OuterName(n.ElementType),
+        ArrayTypeSyntax a => OuterName(a.ElementType),
+        _ => null
+    };
+
+    private static IEnumerable<string> TypeArgNames(TypeSyntax? t)
+    {
+        if (t is GenericNameSyntax g)
+            foreach (var a in g.TypeArgumentList.Arguments)
+                foreach (var n in TypeNames(a)) yield return n;
+    }
+
+    // All meaningful simple type names within a type expression (outer + nested generic args, recursively).
+    private static IEnumerable<string> TypeNames(TypeSyntax? t)
+    {
+        switch (t)
+        {
+            case IdentifierNameSyntax id: yield return id.Identifier.Text; break;
+            case GenericNameSyntax g:
+                yield return g.Identifier.Text;
+                foreach (var a in g.TypeArgumentList.Arguments)
+                    foreach (var n in TypeNames(a)) yield return n;
+                break;
+            case QualifiedNameSyntax q:
+                foreach (var n in TypeNames(q.Right)) yield return n; break;
+            case AliasQualifiedNameSyntax al:
+                foreach (var n in TypeNames(al.Name)) yield return n; break;
+            case NullableTypeSyntax nu:
+                foreach (var n in TypeNames(nu.ElementType)) yield return n; break;
+            case ArrayTypeSyntax ar:
+                foreach (var n in TypeNames(ar.ElementType)) yield return n; break;
+            case TupleTypeSyntax tup:
+                foreach (var el in tup.Elements) foreach (var n in TypeNames(el.Type)) yield return n; break;
+        }
+    }
 
     private static string WithArity(string name, TypeParameterListSyntax? tps)
     {

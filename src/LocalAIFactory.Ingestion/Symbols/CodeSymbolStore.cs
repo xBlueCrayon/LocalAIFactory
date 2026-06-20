@@ -35,7 +35,8 @@ public sealed class CodeSymbolStore : ICodeSymbolStore
         if (art is null || art.Skipped || string.IsNullOrEmpty(art.RawText)) return 0;
         if (!_router.CanExtract(art.DetectedLanguage)) return 0;
 
-        var extracted = _router.Extract(art.DetectedLanguage, art.RawText);
+        var result = _router.Extract(art.DetectedLanguage, art.RawText);
+        var extracted = result.Symbols;
         var fileLocus = SourceLocus.FileKey(art.ProjectId, art.RelativePath);
         var now = DateTime.UtcNow;
 
@@ -99,9 +100,47 @@ public sealed class CodeSymbolStore : ICodeSymbolStore
                 && parentMap.TryGetValue(pf, out var pid) ? pid : null;
             if (s.ParentSymbolId != parentId) { s.ParentSymbolId = parentId; changed = true; }
         }
+
+        // KE-008.x: persist this artifact's C# type references (staging for KE-010 resolution). Replaced
+        // wholesale per artifact (pure staging), exactly like the SQL path. References are owned by the type
+        // symbol; resolution to a target is KE-010's job (by simple name, with confidence).
+        await ReplaceReferencesAsync(art, current, result.References, fileLocus, now, ct);
+
         if (changed) await _db.SaveChangesAsync(ct);
 
         return current.Count;
+    }
+
+    private async Task ReplaceReferencesAsync(
+        ImportedFile art, List<CodeSymbol> current, IReadOnlyList<ExtractedCodeReference> refs,
+        string fileLocus, DateTime now, CancellationToken ct)
+    {
+        var stale = await _db.CodeSymbolReferences.Where(r => r.SourceArtifactId == art.Id).ToListAsync(ct);
+        if (stale.Count > 0) _db.CodeSymbolReferences.RemoveRange(stale);
+
+        if (refs.Count > 0)
+        {
+            var idByFullName = current
+                .GroupBy(s => s.FullName, StringComparer.Ordinal)
+                .ToDictionary(g => g.Key, g => g.First().Id, StringComparer.Ordinal);
+            foreach (var r in refs)
+            {
+                if (!idByFullName.TryGetValue(r.FromFullName, out var fromId)) continue;
+                _db.CodeSymbolReferences.Add(new CodeSymbolReference
+                {
+                    ProjectId = art.ProjectId,
+                    FromSymbolId = fromId,
+                    SourceArtifactId = art.Id,
+                    ReferenceKind = r.Kind,
+                    ReferencedSchema = (r.NamespaceHint ?? "").ToLowerInvariant(), // namespace hint for disambiguation
+                    ReferencedObject = r.ReferencedName,
+                    ReferencedKey = r.ReferencedName.ToLowerInvariant(),           // simple-name key (C# resolution)
+                    FileLocusKey = fileLocus,
+                    ExtractedUtc = now
+                });
+            }
+        }
+        await _db.SaveChangesAsync(ct);
     }
 
     private static bool IsContainer(CodeSymbolKind k)

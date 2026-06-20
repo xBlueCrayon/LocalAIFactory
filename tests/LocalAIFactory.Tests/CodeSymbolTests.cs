@@ -52,7 +52,7 @@ namespace Acme.Banking
     [Fact]
     public void Extractor_finds_namespace_type_and_member_kinds()
     {
-        var syms = new CSharpSymbolExtractor().Extract(Sample);
+        var syms = new CSharpSymbolExtractor().Extract(Sample).Symbols;
 
         Assert.Contains(syms, s => s.Kind == CodeSymbolKind.Namespace && s.FullName == "Acme.Banking");
         Assert.Contains(syms, s => s.Kind == CodeSymbolKind.Class && s.FullName == "Acme.Banking.Account");
@@ -72,7 +72,7 @@ namespace Acme.Banking
     [Fact]
     public void Extractor_computes_complexity_from_decision_points()
     {
-        var syms = new CSharpSymbolExtractor().Extract(Sample);
+        var syms = new CSharpSymbolExtractor().Extract(Sample).Symbols;
         // Deposit: base 1 + one `if`.
         Assert.Equal(2, syms.Single(s => s.Name == "Deposit").ComplexitySignal);
         // Withdraw: base 1 + `if` + `||` => 3.
@@ -83,7 +83,7 @@ namespace Acme.Banking
     public void Extractor_distinguishes_overloads_by_signature()
     {
         const string code = "namespace N { class C { void M(int a){} void M(string a){} void M(){} } }";
-        var ms = new CSharpSymbolExtractor().Extract(code).Where(s => s.Name == "M").ToList();
+        var ms = new CSharpSymbolExtractor().Extract(code).Symbols.Where(s => s.Name == "M").ToList();
         Assert.Equal(3, ms.Count);
         Assert.Equal(3, ms.Select(m => m.Signature).Distinct().Count());
     }
@@ -92,7 +92,7 @@ namespace Acme.Banking
     public void Extractor_does_not_throw_on_malformed_code()
     {
         // Error-tolerant parsing: a truncated file still yields the symbols it does declare.
-        var syms = new CSharpSymbolExtractor().Extract("namespace N { public class Broken { public void M( ");
+        var syms = new CSharpSymbolExtractor().Extract("namespace N { public class Broken { public void M( ").Symbols;
         Assert.Contains(syms, s => s.FullName == "N.Broken");
     }
 
