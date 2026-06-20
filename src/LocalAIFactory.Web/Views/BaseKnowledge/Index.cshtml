@@ -1,0 +1,117 @@
+@using LocalAIFactory.Core.Enums
+@using LocalAIFactory.Core.ViewModels
+@model List<BaseKnowledgeRow>
+@inject LocalAIFactory.Core.Abstractions.ICurrentUserService Me
+@{
+    ViewData["Title"] = "Base Knowledge";
+    var packs = ViewBag.Packs as List<InstalledPackRow> ?? new();
+    var categories = ViewBag.Categories as List<string> ?? new();
+    string? q = ViewBag.Query; string? cat = ViewBag.Category;
+    var scope = ViewBag.Scope as KnowledgeScope?;
+}
+
+<div class="d-flex align-items-center mb-3">
+    <div>
+        <h1 class="h4 mb-1">Base Knowledge</h1>
+        <div class="text-muted small">Baseline professional knowledge shipped with the platform — distinct from imported project knowledge. Each item is curated, versioned, and protected from silent overwrite.</div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header d-flex align-items-center">
+        <span><i class="bi bi-box-seam me-1"></i>Installed Knowledge Packs</span>
+        <span class="spacer flex-grow-1"></span>
+        @if (Me.IsAdmin)
+        {
+            <form asp-action="Install" method="post" class="m-0">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-sm btn-primary" type="submit"><i class="bi bi-arrow-repeat me-1"></i>Install / Update</button>
+            </form>
+        }
+    </div>
+    <div class="card-body p-0">
+        @if (packs.Count == 0)
+        {
+            <div class="p-3 text-muted">No knowledge pack installed yet.@(Me.IsAdmin ? " Click \"Install / Update\" to install the Professional Base Knowledge Pack." : "")</div>
+        }
+        else
+        {
+            <table class="table table-sm mb-0">
+                <thead><tr><th>Pack</th><th>Version</th><th>Items</th><th>Installed (UTC)</th><th>Status</th></tr></thead>
+                <tbody>
+                @foreach (var p in packs)
+                {
+                    <tr>
+                        <td>@p.Name</td>
+                        <td><span class="badge text-bg-light">v@p.Version</span></td>
+                        <td>@p.ItemCount</td>
+                        <td class="text-muted small">@p.InstalledUtc.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td><span class="badge @(p.Status == KnowledgePackStatus.Installed ? "text-bg-success" : "text-bg-secondary")">@p.Status</span></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-md-4">
+        <label class="form-label small text-muted mb-1">Search</label>
+        <input name="q" value="@q" class="form-control form-control-sm" placeholder="e.g. RBAC, MSSQL, direct debit" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label small text-muted mb-1">Category</label>
+        <select name="category" class="form-select form-select-sm">
+            <option value="">All categories</option>
+            @foreach (var c in categories)
+            {
+                <option value="@c" selected="@(c == cat)">@c</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label small text-muted mb-1">Scope</label>
+        <select name="scope" class="form-select form-select-sm">
+            <option value="">Any scope</option>
+            @foreach (var s in new[] { KnowledgeScope.Global, KnowledgeScope.Standards, KnowledgeScope.Regulatory, KnowledgeScope.Team })
+            {
+                <option value="@s" selected="@(scope == s)">@s</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-sm btn-outline-primary w-100" type="submit"><i class="bi bi-search me-1"></i>Filter</button>
+    </div>
+</form>
+
+<div class="text-muted small mb-2">@Model.Count baseline item(s)@(string.IsNullOrEmpty(cat) ? "" : $" in {cat}")@(string.IsNullOrWhiteSpace(q) ? "" : $" matching \"{q}\"").</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr><th>Title</th><th>Origin</th><th>Category</th><th>Type</th><th>Scope</th><th>Confidence</th><th>Status</th><th>Last reviewed</th></tr>
+            </thead>
+            <tbody>
+            @foreach (var k in Model)
+            {
+                <tr>
+                    <td><a asp-action="Details" asp-route-id="@k.Id">@k.Title</a></td>
+                    <td><span class="badge text-bg-info"><i class="bi bi-patch-check me-1"></i>Baseline</span></td>
+                    <td>@(k.Category ?? "—")</td>
+                    <td class="text-muted small">@k.KnowledgeType</td>
+                    <td class="text-muted small">@k.Scope</td>
+                    <td><span class="badge text-bg-light">@k.Confidence.ToString("0.0")</span></td>
+                    <td><partial name="_StatusBadge" model="@k.Status.ToString()" /></td>
+                    <td class="text-muted small">@(k.LastReviewedUtc?.ToString("yyyy-MM-dd") ?? "—")</td>
+                </tr>
+            }
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="8" class="text-muted p-3">No baseline knowledge matches the filter.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

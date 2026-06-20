@@ -36,6 +36,13 @@ public class KnowledgeItem : IPortableEntity
     public DateTime? EffectiveUtc { get; set; }
     public DateTime? ExpiryUtc { get; set; }
 
+    // R2-ACC-B1: provenance of baseline knowledge shipped via a Knowledge Pack. Null = not from a pack
+    // (imported project knowledge, user-authored, or machine-generated). Non-null ⇒ baseline pack item.
+    public int? KnowledgePackId { get; set; }
+    public KnowledgePack? KnowledgePack { get; set; }
+    // R2-ACC-B1: when this item's content was last professionally reviewed (carried from the pack item).
+    public DateTime? LastReviewedUtc { get; set; }
+
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
 

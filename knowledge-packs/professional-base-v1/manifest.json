@@ -1,0 +1,26 @@
+{
+  "packUid": "0a510000-0001-4000-8000-000000000001",
+  "name": "Professional Base Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Baseline professional knowledge shipped with LocalAIFactory: practical, original summaries and patterns across software engineering, CRUD-over-MSSQL, databases, Python/AI/RAG, security, governance, control-style standards, finance/accounting/banking, operations, product/admin patterns, and reporting. Designed to strengthen every repository analysis, support, documentation, and autonomous-engineering workflow.",
+  "license": "Original professional summaries and practical patterns authored for LocalAIFactory. Free to deploy and modify within the application. No third-party source is vendored.",
+  "createdUtc": "2026-06-20",
+  "lastReviewedUtc": "2026-06-20",
+  "itemCount": 134,
+  "files": [
+    "software-engineering.json",
+    "crud-web-mssql.json",
+    "database-sql.json",
+    "python-ai-data.json",
+    "security-access-control.json",
+    "governance-project-management.json",
+    "standards-controls.json",
+    "finance-accounting-banking.json",
+    "sysadmin-operations.json",
+    "product-patterns.json",
+    "reporting-templates.json"
+  ],
+  "legalLimitations": "This pack contains ORIGINAL practical summaries only. It does NOT reproduce ISO/IEC, PMBOK, or any other proprietary or paid standard text verbatim, and it does not assert official certification or compliance. Governance and control-style items are practical summaries, not substitutes for the licensed standards or for formal legal, regulatory, or compliance advice. Finance/accounting/banking items describe general domain concepts and are not jurisdiction-specific advice.",
+  "sourcePolicy": "Original professional summaries and practical patterns only. No proprietary ISO, PMBOK, or paid standard text copied verbatim. Every item carries an explicit limitation note and a confidence score.",
+  "reviewStatus": "Approved"
+}

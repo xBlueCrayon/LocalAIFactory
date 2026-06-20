@@ -39,6 +39,9 @@ public static class DependencyInjection
         // KE-011: deterministic structural retrieval (MSSQL-only; no vectors/model required).
         services.AddScoped<IStructuralRetrievalService, Retrieval.StructuralRetrievalService>();
 
+        // R2-ACC-B1: Professional Base Knowledge Pack installer (MSSQL-only; vectors optional/best-effort).
+        services.AddScoped<IKnowledgePackInstaller, KnowledgePacks.KnowledgePackInstaller>();
+
         return services;
     }
 }

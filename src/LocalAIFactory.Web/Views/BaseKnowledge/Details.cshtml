@@ -1,0 +1,70 @@
+@using LocalAIFactory.Core.Entities
+@using LocalAIFactory.Core.Enums
+@using LocalAIFactory.Core.ViewModels
+@model KnowledgeItem
+@{
+    ViewData["Title"] = Model.Title;
+    var pack = ViewBag.Pack as KnowledgePack;
+    var tags = ViewBag.Tags as List<string> ?? new();
+    var prov = ViewBag.Provenance as List<ProvenanceRow> ?? new();
+    var cat = tags.FirstOrDefault(t => t.StartsWith("cat:"))?.Substring(4);
+}
+
+<div class="mb-3">
+    <a asp-action="Index" class="text-decoration-none small"><i class="bi bi-arrow-left me-1"></i>Base Knowledge</a>
+</div>
+
+<div class="d-flex align-items-start mb-2">
+    <h1 class="h4 mb-0">@Model.Title</h1>
+    <span class="ms-2 badge text-bg-info"><i class="bi bi-patch-check me-1"></i>Baseline</span>
+    <partial name="_StatusBadge" model="@Model.Status.ToString()" />
+</div>
+
+<div class="mb-3 d-flex flex-wrap gap-2 align-items-center text-muted small">
+    @if (cat is not null) { <span class="badge text-bg-light">@cat</span> }
+    <span><i class="bi bi-tag me-1"></i>@Model.KnowledgeType</span>
+    <span><i class="bi bi-diagram-2 me-1"></i>@Model.Scope</span>
+    <span><i class="bi bi-graph-up me-1"></i>Confidence @Model.Confidence.ToString("0.0")</span>
+    @if (Model.LastReviewedUtc is { } lr) { <span><i class="bi bi-calendar-check me-1"></i>Reviewed @lr.ToString("yyyy-MM-dd")</span> }
+    @if (pack is not null) { <span><i class="bi bi-box-seam me-1"></i>@pack.Name v@pack.Version</span> }
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div data-md>@Model.Content</div>
+    </div>
+</div>
+
+@if (tags.Count > 0)
+{
+    <div class="mb-3">
+        @foreach (var t in tags.Where(t => !t.StartsWith("cat:")))
+        {
+            <span class="badge rounded-pill text-bg-light me-1">@t</span>
+        }
+    </div>
+}
+
+<div class="card">
+    <div class="card-header"><i class="bi bi-clock-history me-1"></i>Provenance</div>
+    <div class="card-body p-0">
+        <table class="table table-sm mb-0">
+            <thead><tr><th>Method</th><th>Actor</th><th>Reason</th><th>When (UTC)</th></tr></thead>
+            <tbody>
+            @foreach (var p in prov)
+            {
+                <tr>
+                    <td><span class="badge text-bg-secondary">@p.Method</span></td>
+                    <td class="small">@p.Actor</td>
+                    <td class="small text-muted">@p.Reason</td>
+                    <td class="small text-muted">@p.CreatedUtc.ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
+            }
+            @if (prov.Count == 0)
+            {
+                <tr><td colspan="4" class="text-muted p-3">No provenance recorded.</td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -179,8 +179,15 @@ public enum AuditEventType
 {
     AuthSuccess = 0, AuthDenied = 1, ImportStarted = 2, ImportCompleted = 3, ProjectViewed = 4,
     SymbolQueried = 5, DependencyViewed = 6, ImpactQueried = 7, CoverageViewed = 8, AccessGranted = 9,
-    AccessRevoked = 10, RoleChanged = 11, UserDisabled = 12, ConsolidationStarted = 13, ConsolidationCompleted = 14
+    AccessRevoked = 10, RoleChanged = 11, UserDisabled = 12, ConsolidationStarted = 13, ConsolidationCompleted = 14,
+    // R2-ACC-B1: a Knowledge Pack was installed/updated (admin-only action). Appended to preserve values.
+    KnowledgePackInstalled = 15
 }
+
+// R2-ACC-B1: lifecycle of an installed Knowledge Pack row. Installed = current; Superseded = an older
+// version replaced by a newer install; Failed = an install that did not complete (kept for the audit trail).
+// Append-only stored value.
+public enum KnowledgePackStatus { Installed = 0, Superseded = 1, Failed = 2 }
 
 // R2-P0A: the honest outcome of deterministic structural extraction for one artifact. The whole point of
 // gap-reporting is that a user can tell these apart — never a silent zero. Append-only.

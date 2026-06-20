@@ -49,6 +49,13 @@ public sealed record RecentApprovalRow(string Action, string? EntityName, string
 // KnowledgeItem.Content column is NEVER selected/materialized for the list view.
 public sealed record KnowledgeListRow(int Id, string Title, SourceType SourceType, KnowledgeStatus Status, DateTime UpdatedUtc, bool IsApproved);
 
+// R2-ACC-B1: lightweight rows for the Base Knowledge screen. The large Content column is filtered on
+// (server-side) but never SELECTed for the list. Category comes from the item's "cat:" tag.
+public sealed record BaseKnowledgeRow(int Id, string Title, string? Category, KnowledgeType KnowledgeType,
+    KnowledgeScope Scope, double Confidence, KnowledgeStatus Status, DateTime? LastReviewedUtc);
+public sealed record InstalledPackRow(int Id, Guid Uid, string Name, string Version, int ItemCount,
+    DateTime InstalledUtc, KnowledgePackStatus Status);
+
 // KE-003: read-only history rows for the Knowledge details page. Projected in SQL so the large
 // ContentSnapshot column is never materialized for these lists.
 public sealed record KnowledgeVersionRow(int VersionNumber, string ChangeReason, ProvenanceMethod Method, string Actor, DateTime CreatedUtc);

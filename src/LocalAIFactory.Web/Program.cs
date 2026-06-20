@@ -91,6 +91,22 @@ using (var scope = app.Services.CreateScope())
             db.SystemSettings.Add(new SystemSetting { Key = "KE006.QualityBackfilled", Value = "true" });
             await db.SaveChangesAsync();
         }
+        // R2-ACC-B1: install the Professional Base Knowledge Pack (idempotent; best-effort, never blocks startup).
+        try
+        {
+            var packPath = LocalAIFactory.Web.Services.KnowledgePackLocator.FindBaseV1(builder.Configuration, builder.Environment.ContentRootPath);
+            if (packPath is not null)
+            {
+                var res = await sp.GetRequiredService<IKnowledgePackInstaller>().InstallAsync(packPath, "system (startup)");
+                if (res.Success)
+                    logger.LogInformation("Base knowledge pack '{Name}' v{Version}: {Created} created, {Updated} updated, {Unchanged} unchanged, {Proposed} proposed (current={Cur}).",
+                        res.Name, res.Version, res.Created, res.Updated, res.Unchanged, res.ProposedRevisions, res.AlreadyCurrent);
+                else
+                    logger.LogWarning("Base knowledge pack install reported {N} error(s); first: {E}", res.Errors.Count, res.Errors.FirstOrDefault());
+            }
+            else logger.LogInformation("No base knowledge pack found to install (optional).");
+        }
+        catch (Exception ex) { logger.LogError(ex, "Base knowledge pack install failed (non-fatal)."); }
         logger.LogInformation("Database migrated, seeded, and knowledge backbone backfilled.");
     }
     catch (Exception ex)

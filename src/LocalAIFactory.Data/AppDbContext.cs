@@ -55,6 +55,7 @@ public class AppDbContext : DbContext
     public DbSet<CodeSymbolReference> CodeSymbolReferences => Set<CodeSymbolReference>(); // KE-009
     public DbSet<CodeEdge> CodeEdges => Set<CodeEdge>(); // KE-010
     public DbSet<RetrievalEvent> RetrievalEvents => Set<RetrievalEvent>(); // KE-011
+    public DbSet<KnowledgePack> KnowledgePacks => Set<KnowledgePack>(); // R2-ACC-B1
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -554,6 +555,25 @@ public class AppDbContext : DbContext
             e.Property(x => x.Mode).HasMaxLength(40);
             e.HasIndex(x => x.Uid).IsUnique();
             e.HasIndex(x => new { x.ProjectId, x.CreatedUtc });
+        });
+
+        // R2-ACC-B1: Knowledge Pack install anchor + KnowledgeItem origin link. Additive; baseline items are
+        // ordinary KnowledgeItems distinguished only by a non-null KnowledgePackId.
+        b.Entity<KnowledgePack>(e =>
+        {
+            e.Property(x => x.Name).HasMaxLength(200).IsRequired();
+            e.Property(x => x.Version).HasMaxLength(50).IsRequired();
+            e.Property(x => x.Description).HasMaxLength(2000);
+            e.Property(x => x.License).HasMaxLength(1000);
+            e.Property(x => x.SourceManifestHash).HasMaxLength(64);
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => x.Name);
+        });
+        b.Entity<KnowledgeItem>(e =>
+        {
+            e.HasIndex(x => x.KnowledgePackId);
+            e.HasOne(x => x.KnowledgePack).WithMany().HasForeignKey(x => x.KnowledgePackId)
+                .OnDelete(DeleteBehavior.Restrict); // a pack cannot be deleted out from under its items
         });
     }
 }

@@ -17,4 +17,9 @@
     <ProjectReference Include="..\LocalAIFactory.Workspaces\LocalAIFactory.Workspaces.csproj" />
     <ProjectReference Include="..\LocalAIFactory.Terminal\LocalAIFactory.Terminal.csproj" />
   </ItemGroup>
+  <!-- R2-ACC-B1: ship the Professional Base Knowledge Pack alongside the app so it can be installed into
+       MSSQL at runtime (startup auto-install + admin re-install). Copied to the output content root. -->
+  <ItemGroup>
+    <Content Include="..\..\knowledge-packs\**\*.json" Link="knowledge-packs\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
