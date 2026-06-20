@@ -91,14 +91,16 @@ public sealed class FileImportService : IFileImportService
 
         // KE-008/KE-009: deterministic structural extraction (best-effort; never fails the import).
         // KE-010: resolve the artifact's references into the structural graph after extraction.
-        if (string.Equals(imported.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase))
+        var lang = imported.DetectedLanguage;
+        bool isCode = string.Equals(lang, "csharp", StringComparison.OrdinalIgnoreCase)
+                      || string.Equals(lang, "python", StringComparison.OrdinalIgnoreCase); // R2-ACC-CAP3
+        if (isCode)
             try { await _symbols.UpsertForArtifactAsync(imported.Id, ct); } catch { /* symbols are regenerable */ }
-        else if (string.Equals(imported.DetectedLanguage, "sql", StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals(lang, "sql", StringComparison.OrdinalIgnoreCase))
             try { await _schema.UpsertForArtifactAsync(imported.Id, ct); } catch { /* symbols are regenerable */ }
 
         // KE-008.x/KE-010: resolve the artifact's references into the structural graph (best-effort).
-        if (string.Equals(imported.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(imported.DetectedLanguage, "sql", StringComparison.OrdinalIgnoreCase))
+        if (isCode || string.Equals(lang, "sql", StringComparison.OrdinalIgnoreCase))
             try { await _graphBuilder.RebuildForArtifactAsync(imported.Id, ct); } catch { /* edges are regenerable */ }
 
         return imported;

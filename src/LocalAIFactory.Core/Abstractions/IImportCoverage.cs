@@ -12,13 +12,14 @@ public sealed record ConfidenceBand(string Band, int Count);
 // gap report so a user can see which languages are analyzed and which are not — no silent assumptions.
 public static class CoverageLanguages
 {
-    // Languages with a real extractor.
-    public static readonly HashSet<string> Supported = new(StringComparer.OrdinalIgnoreCase) { "csharp", "sql" };
+    // Languages with a real extractor. R2-ACC-CAP3: Python is now structurally supported (deterministic
+    // indentation parser — classes/functions/async + FastAPI routes + SQL-string bridge).
+    public static readonly HashSet<string> Supported = new(StringComparer.OrdinalIgnoreCase) { "csharp", "sql", "python" };
 
     // Code languages we detect but do NOT extract yet (honest "unsupported", not "empty").
     public static readonly HashSet<string> UnsupportedCode = new(StringComparer.OrdinalIgnoreCase)
     {
-        "vbnet", "fsharp", "python", "javascript", "typescript", "java", "kotlin", "cpp", "go", "ruby", "php", "razor"
+        "vbnet", "fsharp", "javascript", "typescript", "java", "kotlin", "cpp", "go", "ruby", "php", "razor"
     };
 
     public static bool IsSupported(string? lang) => lang != null && Supported.Contains(lang);

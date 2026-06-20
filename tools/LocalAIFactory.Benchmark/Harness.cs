@@ -44,8 +44,9 @@ public sealed class Harness
         }
         await db.SaveChangesAsync();
         // "candidate" = files we CAN analyse (supported languages); discovery is measured over these.
+        // R2-ACC-CAP3: Python is now a supported, extracted language.
         var candidates = await db.ImportedFiles.CountAsync(f => f.ProjectId == projectId && !f.Skipped
-            && (f.DetectedLanguage == "csharp" || f.DetectedLanguage == "sql"));
+            && (f.DetectedLanguage == "csharp" || f.DetectedLanguage == "sql" || f.DetectedLanguage == "python"));
 
         // Build the structural layer via consolidation (extracts from raw + graph + prune). Run twice to
         // prove convergence — repeated maintenance does not change the graph.
@@ -211,7 +212,8 @@ public sealed class Harness
     }
 
     private static CodeSymbolStore CodeStore(AppDbContext db) =>
-        new(db, new CodeSymbolExtractorRouter(new[] { new CSharpSymbolExtractor() }));
+        new(db, new CodeSymbolExtractorRouter(new LocalAIFactory.Core.Abstractions.ICodeSymbolExtractor[]
+            { new CSharpSymbolExtractor(), new PythonSymbolExtractor() })); // R2-ACC-CAP3
     private static SchemaSymbolStore SchemaStore(AppDbContext db) =>
         new(db, new SqlSchemaExtractorRouter(new[] { new TSqlSchemaExtractor() }));
 }

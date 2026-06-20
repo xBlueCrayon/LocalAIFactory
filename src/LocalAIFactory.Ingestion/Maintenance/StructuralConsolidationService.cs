@@ -40,7 +40,7 @@ public sealed class StructuralConsolidationService : IStructuralConsolidationSer
         // 1. Re-extract every live artifact from raw (rebuildable-from-raw). Per-artifact failures are isolated.
         var artifacts = await _db.ImportedFiles
             .Where(f => f.ProjectId == projectId && !f.Skipped && f.RawText != null
-                        && (f.DetectedLanguage == "csharp" || f.DetectedLanguage == "sql"))
+                        && (f.DetectedLanguage == "csharp" || f.DetectedLanguage == "python" || f.DetectedLanguage == "sql"))
             .Select(f => new { f.Id, f.DetectedLanguage })
             .ToListAsync(ct);
 
@@ -49,7 +49,8 @@ public sealed class StructuralConsolidationService : IStructuralConsolidationSer
             ct.ThrowIfCancellationRequested();
             try
             {
-                if (a.DetectedLanguage == "csharp") await _symbols.UpsertForArtifactAsync(a.Id, ct);
+                // R2-ACC-CAP3: C# and Python both go through the code-symbol store (router dispatches by language).
+                if (a.DetectedLanguage == "csharp" || a.DetectedLanguage == "python") await _symbols.UpsertForArtifactAsync(a.Id, ct);
                 else await _schema.UpsertForArtifactAsync(a.Id, ct);
             }
             catch { /* one bad artifact must not abort consolidation */ }

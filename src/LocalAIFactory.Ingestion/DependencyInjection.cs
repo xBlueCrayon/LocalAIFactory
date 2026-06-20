@@ -23,8 +23,9 @@ public static class DependencyInjection
         services.AddScoped<IFileImportService, FileImportService>();
         services.AddScoped<IChatGptImportService, ChatGptImportService>();
 
-        // KE-008: pluggable code-symbol extraction (C# now; VB.NET/Razor register here later).
+        // KE-008: pluggable code-symbol extraction (C# + Python now; VB.NET/Razor register here later).
         services.AddSingleton<ICodeSymbolExtractor, CSharpSymbolExtractor>();
+        services.AddSingleton<ICodeSymbolExtractor, PythonSymbolExtractor>(); // R2-ACC-CAP3
         services.AddSingleton<ICodeSymbolExtractorRouter, CodeSymbolExtractorRouter>();
         services.AddScoped<ICodeSymbolStore, CodeSymbolStore>();
 

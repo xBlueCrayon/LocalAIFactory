@@ -1,3 +1,4 @@
+using LocalAIFactory.Core.Abstractions;
 using LocalAIFactory.Core.Entities;
 using LocalAIFactory.Core.Enums;
 using LocalAIFactory.Data;
@@ -24,41 +25,43 @@ public class ImportCoverageTests
     public async Task Report_classifies_every_file_into_a_visible_bucket()
     {
         var db = NewDb();
-        // 1 supported-with-symbols (C#), 1 supported-no-symbols (C# global usings), 1 unsupported (python),
-        // 1 non-code (json), 1 skipped (binary), 1 SQL with symbols.
+        // 1 supported-with-symbols (C#), 1 supported-no-symbols (C# global usings), 1 supported Python (R2-ACC-CAP3),
+        // 1 unsupported (JS), 1 non-code (json), 1 skipped (binary), 1 SQL with symbols.
         db.ImportedFiles.AddRange(
             Art("src/Account.cs", "csharp", "namespace N { public class Account { } }"),
             Art("src/GlobalUsings.cs", "csharp", "global using System;"),
-            Art("svc/app.py", "python", "def main(): pass"),
+            Art("svc/app.py", "python", "def main():\n    return 1"),
+            Art("web/app.js", "javascript", "function f(){ return 1; }"),
             Art("app.json", "json", "{}"),
             Art("logo.png", "binary", null, skipped: true, reason: "binary"),
             Art("db/schema.sql", "sql", "CREATE TABLE dbo.X (Id INT);"));
         await db.SaveChangesAsync();
 
-        // Extract the supported files so symbol-presence reflects reality.
-        var ids = await db.ImportedFiles.Where(f => f.DetectedLanguage == "csharp").Select(f => f.Id).ToListAsync();
-        var cs = new CodeSymbolStore(db, new CodeSymbolExtractorRouter(new[] { new CSharpSymbolExtractor() }));
+        // Extract the supported files (C# + Python now) so symbol-presence reflects reality.
+        var ids = await db.ImportedFiles.Where(f => f.DetectedLanguage == "csharp" || f.DetectedLanguage == "python").Select(f => f.Id).ToListAsync();
+        var cs = new CodeSymbolStore(db, new CodeSymbolExtractorRouter(new ICodeSymbolExtractor[] { new CSharpSymbolExtractor(), new PythonSymbolExtractor() }));
         foreach (var id in ids) await cs.UpsertForArtifactAsync(id);
         var sqlId = await db.ImportedFiles.Where(f => f.DetectedLanguage == "sql").Select(f => f.Id).FirstAsync();
         await new SchemaSymbolStore(db, new SqlSchemaExtractorRouter(new[] { new TSqlSchemaExtractor() })).UpsertForArtifactAsync(sqlId);
 
         var r = await NewService(db).ComputeAsync(1);
 
-        Assert.Equal(6, r.FilesDiscovered);
-        Assert.Equal(5, r.FilesImported);          // binary skipped
-        Assert.Equal(2, r.FilesExtracted);         // Account.cs + schema.sql
+        Assert.Equal(7, r.FilesDiscovered);
+        Assert.Equal(6, r.FilesImported);          // binary skipped
+        Assert.Equal(3, r.FilesExtracted);         // Account.cs + schema.sql + app.py (Python now supported)
         Assert.Equal(1, r.FilesNoSymbols);         // GlobalUsings.cs
-        Assert.Equal(1, r.FilesUnsupported);       // app.py
+        Assert.Equal(1, r.FilesUnsupported);       // app.js (still unsupported)
         Assert.Equal(1, r.FilesNonCode);           // app.json
         Assert.Equal(1, r.FilesSkipped);           // logo.png
-        Assert.Contains("python", r.UnsupportedLanguagesJson);
+        Assert.Contains("javascript", r.UnsupportedLanguagesJson);
+        Assert.DoesNotContain("\"python\"", r.UnsupportedLanguagesJson); // python is supported now
     }
 
     [Fact]
     public async Task Unsupported_languages_are_never_hidden_as_empty()
     {
         var db = NewDb();
-        db.ImportedFiles.Add(Art("svc/handler.py", "python", "def f(): pass"));
+        db.ImportedFiles.Add(Art("web/handler.js", "javascript", "function f(){}")); // still-unsupported language
         await db.SaveChangesAsync();
 
         var r = await NewService(db).ComputeAsync(1);

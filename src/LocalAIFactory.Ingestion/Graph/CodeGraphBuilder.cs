@@ -92,20 +92,19 @@ public sealed class CodeGraphBuilder : ICodeGraphBuilder
         {
             if (!fromById.TryGetValue(r.FromSymbolId, out var from)) { unresolved++; continue; }
 
-            // Resolve target + confidence, dispatched by the referencing symbol's language.
+            // Resolve target + confidence. SQL-object access (the C#/Python↔SQL bridge) resolves to a SQL symbol
+            // by canonical key regardless of source language; C# type references resolve by simple name; other
+            // languages' references resolve by canonical key (e.g. T-SQL FROM/EXEC).
             (int Id, string Locus)? target;
             double confidence;
-            if (string.Equals(from.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase))
+            if (r.ReferenceKind == CodeReferenceKind.SqlObjectAccess)
             {
-                if (r.ReferenceKind == CodeReferenceKind.SqlObjectAccess)
-                {
-                    // R2-ACC-CAP1: C#→SQL bridge — resolve the canonical "schema.object" key to a SQL symbol.
-                    target = targetByKey.TryGetValue(r.ReferencedKey, out var sj) ? sj : null;
-                    confidence = r.Confidence ?? 0.7;
-                }
-                else
-                    (target, confidence) = ResolveCSharp(r, csByName);
+                // R2-ACC-CAP1/CAP3: resolve the canonical "schema.object" key to a SQL symbol (any source language).
+                target = targetByKey.TryGetValue(r.ReferencedKey, out var sj) ? sj : null;
+                confidence = r.Confidence ?? 0.7;
             }
+            else if (string.Equals(from.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase))
+                (target, confidence) = ResolveCSharp(r, csByName);
             else
             { target = targetByKey.TryGetValue(r.ReferencedKey, out var sq) ? sq : null; confidence = 1.0; }
 

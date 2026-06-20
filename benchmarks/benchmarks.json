@@ -20,6 +20,25 @@
       ]
     },
     {
+      "name": "PythonSqlBridge",
+      "code": "PYBRIDGE",
+      "type": "localfixture",
+      "bucket": "python-sql-bridge",
+      "localDir": "python-bridge",
+      "tier": "smoke",
+      "tags": ["python", "sql", "bridge", "fastapi"],
+      "license": "Original synthetic fixture (LocalAIFactory) — not third-party source.",
+      "expectedCapability": "Deterministic Python extraction (classes/async/FastAPI routes) + Python↔SQL bridge via SQL strings.",
+      "expectedGap": "Indentation-based parser; dynamic SQL/imports not modelled as edges.",
+      "approved": true,
+      "proofOfVision": [
+        { "question": "Find the InvoiceService class (Python extraction)", "mode": "find", "target": "InvoiceService", "minCount": 1 },
+        { "question": "What Python accesses dbo.Invoices? (SQL -> Python)", "mode": "dependents", "target": "dbo.Invoices", "mustContain": ["InvoiceService.get_invoices"], "minCount": 1 },
+        { "question": "What SQL does InvoiceService.get_invoices touch? (Python -> SQL)", "mode": "dependencies", "target": "InvoiceService.get_invoices", "mustContain": ["dbo.Invoices"], "minCount": 1 },
+        { "question": "What Python runs dbo.usp_PostInvoice? (SQL -> Python)", "mode": "dependents", "target": "dbo.usp_PostInvoice", "mustContain": ["InvoiceService.post_invoice"], "minCount": 1 }
+      ]
+    },
+    {
       "name": "WideWorldImporters",
       "code": "WWI",
       "type": "sqlfiles",

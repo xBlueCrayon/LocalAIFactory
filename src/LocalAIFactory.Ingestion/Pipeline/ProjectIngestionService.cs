@@ -347,15 +347,16 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     // Per-artifact failures are isolated so one malformed file can't abort the others.
     private async Task ExtractSymbolsAsync(int jobId, CancellationToken ct)
     {
-        var csharpIds = await _db.ImportedFiles
-            .Where(f => f.IngestionJobId == jobId && !f.Skipped && f.DetectedLanguage == "csharp" && f.RawText != null)
+        // R2-ACC-CAP3: C# and Python both route through the code-symbol store (the router dispatches by language).
+        var codeIds = await _db.ImportedFiles
+            .Where(f => f.IngestionJobId == jobId && !f.Skipped && (f.DetectedLanguage == "csharp" || f.DetectedLanguage == "python") && f.RawText != null)
             .Select(f => f.Id)
             .ToListAsync(ct);
-        foreach (var id in csharpIds)
+        foreach (var id in codeIds)
         {
             ct.ThrowIfCancellationRequested();
             try { await _symbols.UpsertForArtifactAsync(id, ct); }
-            catch (Exception ex) { _log.LogWarning(ex, "C# symbol extraction failed for artifact {Id}", id); await MarkParseErrorAsync(id, ex, ct); }
+            catch (Exception ex) { _log.LogWarning(ex, "Code symbol extraction failed for artifact {Id}", id); await MarkParseErrorAsync(id, ex, ct); }
         }
 
         var sqlIds = await _db.ImportedFiles
