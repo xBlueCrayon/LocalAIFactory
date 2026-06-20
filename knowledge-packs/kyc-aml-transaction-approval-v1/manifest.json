@@ -1,0 +1,14 @@
+{
+  "packUid": "0a510000-0021-4000-8000-000000000001",
+  "name": "KYC AML Transaction Approval v1",
+  "version": "1.0.0",
+  "description": "Awareness-level summaries of customer due-diligence, screening, transaction monitoring, and high-risk transaction approval concepts for engineers building banking middleware. Each item describes common control patterns at a conceptual level to inform software design and validation. Nothing here is legal, regulatory, or compliance advice, and screening or monitoring detection is never a legal determination.",
+  "license": "Original professional summaries authored for LocalAIFactory. No third-party text reproduced verbatim.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 16,
+  "files": ["kyc-cdd-edd.json", "aml-screening-approval.json"],
+  "legalLimitations": "These are practical, awareness-level summaries only and are NOT legal, regulatory, financial, or investment advice, nor a compliance claim. They describe common control patterns conceptually. KYC/AML obligations are highly jurisdiction-specific; a screening hit or monitoring alert is a signal to review, not a legal determination of wrongdoing. All rules must be confirmed against current applicable laws, regulator guidance, scheme rules, and the institution's own approved compliance procedures before use.",
+  "sourcePolicy": "Original summaries only. No proprietary/official text copied verbatim. Every item carries a limitation note and confidence.",
+  "reviewStatus": "Approved"
+}

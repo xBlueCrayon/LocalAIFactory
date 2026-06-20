@@ -1,0 +1,14 @@
+{
+  "packUid": "0a510000-0022-4000-8000-000000000001",
+  "name": "Market Intelligence and Forecasting v1",
+  "version": "1.0.0",
+  "description": "Analytical summaries covering market-data governance, signal architecture, forecasting discipline, and model governance for engineers building market-intelligence features. Each item describes patterns for producing and governing analytical signals responsibly at a conceptual level. Nothing here is financial or investment advice, and no item should be read as a recommendation to buy or sell.",
+  "license": "Original professional summaries authored for LocalAIFactory. No third-party text reproduced verbatim.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 16,
+  "files": ["market-data-and-signals.json", "forecasting-and-governance.json"],
+  "legalLimitations": "These are practical, analytical summaries only and are NOT financial, investment, legal, or regulatory advice. They describe how to build and govern analytical intelligence and forecasting features. No item provides a recommendation to buy or sell any asset, no outcome is guaranteed, and past performance does not predict future results. Jurisdiction-specific rules on financial promotions, advice, and market data licensing must be confirmed against current applicable regulations and data-provider terms before use.",
+  "sourcePolicy": "Original summaries only. No proprietary/official text copied verbatim. Every item carries a limitation note and confidence.",
+  "reviewStatus": "Approved"
+}

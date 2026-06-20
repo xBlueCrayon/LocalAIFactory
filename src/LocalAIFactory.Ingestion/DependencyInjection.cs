@@ -24,6 +24,8 @@ public static class DependencyInjection
         services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
         services.AddScoped<IFileImportService, FileImportService>();
         services.AddScoped<IChatGptImportService, ChatGptImportService>();
+        // R2-ACC-20X: deterministic chat-export -> knowledge-proposal extractor (proposals only, never auto-approved).
+        services.AddSingleton<IChatKnowledgeExtractor, ChatKnowledgeExtractor>();
 
         // KE-008: pluggable code-symbol extraction (C# + Python now; VB.NET/Razor register here later).
         services.AddSingleton<ICodeSymbolExtractor, CSharpSymbolExtractor>();

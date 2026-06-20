@@ -1,0 +1,14 @@
+{
+  "packUid": "0a510000-0020-4000-8000-000000000001",
+  "name": "Financial Institution Operations v1",
+  "version": "1.0.0",
+  "description": "Practical operational summaries for a banking / management-company middleware estate, covering the customer and account lifecycle, segregation of duties, approval workflows, reconciliation, and operational risk. Each item is an original professional summary intended to support engineers building and validating operational software. Items are awareness-level only and are not a substitute for an institution's own approved procedures.",
+  "license": "Original professional summaries authored for LocalAIFactory. No third-party text reproduced verbatim.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 16,
+  "files": ["operations.json", "controls-and-risk.json"],
+  "legalLimitations": "These are practical summaries only and are NOT legal, regulatory, financial, or investment advice, nor a compliance claim of any kind. They describe common operational patterns at a conceptual level. Jurisdiction-specific and institution-specific rules must always be confirmed against the relevant current rulebooks, regulator guidance, and the institution's own approved procedures before use.",
+  "sourcePolicy": "Original summaries only. No proprietary/official text copied verbatim. Every item carries a limitation note and confidence.",
+  "reviewStatus": "Approved"
+}
