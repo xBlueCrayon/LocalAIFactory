@@ -169,6 +169,10 @@ pip-wheel-metadata/
 # ----------------------------------------------------------------------------
 [Tt]est[Rr]esult*/
 [Cc]overage*/
+# PREFINAL-CLEANUP: the [Cc]overage*/ rule (for test-coverage OUTPUT) was silently swallowing real SOURCE
+# folders named "Coverage" under src/ (ImportCoverageService.cs, Views/Coverage/Index.cshtml). Re-include them.
+!src/**/[Cc]overage/
+!src/**/[Cc]overage/**
 *.trx
 *.coverage
 *.coveragexml

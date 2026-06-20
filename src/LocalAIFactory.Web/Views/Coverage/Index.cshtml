@@ -1,0 +1,117 @@
+@model LocalAIFactory.Web.Controllers.CoverageController.CoverageVm
+@{
+    ViewData["Title"] = "Coverage & Gaps";
+    var r = Model.Report;
+}
+
+<div class="d-flex align-items-center mb-3">
+    <div>
+        <h4 class="mb-1"><i class="bi bi-clipboard-check me-2"></i>Coverage &amp; Gap Report <span class="text-muted fs-6">@ViewBag.ProjectName</span></h4>
+        <div class="text-muted small">What LocalAIFactory understood — and, honestly, what it did not. No silent blind spots.</div>
+    </div>
+    <span class="ms-auto"></span>
+    <a class="btn btn-outline-secondary btn-sm" asp-controller="Graph" asp-action="Project" asp-route-id="@ViewBag.ProjectId"><i class="bi bi-diagram-3 me-1"></i>Explore graph</a>
+</div>
+
+@if (r is null)
+{
+    <div class="alert alert-info"><i class="bi bi-info-circle me-1"></i>No coverage report yet — import a repository to generate one.</div>
+    return;
+}
+
+@{ var cov = r.FileCoverage; var covClass = cov >= 0.95 ? "text-bg-success" : cov >= 0.8 ? "text-bg-warning" : "text-bg-danger"; }
+
+<!-- Trust banner -->
+<div class="card mb-3 border-@(r.HasUnsupported || r.HasParseErrors ? "warning" : "success")">
+    <div class="card-body d-flex align-items-center flex-wrap gap-3">
+        <div>
+            <div class="fs-2 fw-semibold">@cov.ToString("P0")</div>
+            <div class="text-muted small">of analyzable files extracted</div>
+        </div>
+        <div class="vr"></div>
+        <div class="small">
+            @if (r.HasUnsupported) { <div class="text-warning"><i class="bi bi-exclamation-triangle me-1"></i><strong>@r.FilesUnsupported</strong> files in unsupported languages were <strong>not analyzed</strong>.</div> }
+            @if (r.HasParseErrors) { <div class="text-danger"><i class="bi bi-x-octagon me-1"></i><strong>@r.FilesParseError</strong> files failed to parse.</div> }
+            @if (!r.HasUnsupported && !r.HasParseErrors) { <div class="text-success"><i class="bi bi-check-circle me-1"></i>Every supported file was parsed; no unsupported code or parse errors.</div> }
+            @if (r.ProjectScopedOnly) { <div class="text-muted"><i class="bi bi-info-circle me-1"></i>Analysis is <strong>project-scoped</strong> — cross-repository, shared-library and cross-database links are not yet resolved.</div> }
+        </div>
+    </div>
+</div>
+
+<!-- File buckets -->
+<div class="row text-center g-2 mb-3">
+    @foreach (var (label, val, cls) in new[] {
+        ("discovered", r.FilesDiscovered, "secondary"), ("extracted", r.FilesExtracted, "success"),
+        ("no symbols", r.FilesNoSymbols, "light"), ("unsupported", r.FilesUnsupported, r.FilesUnsupported>0?"warning":"light"),
+        ("parse errors", r.FilesParseError, r.FilesParseError>0?"danger":"light"), ("non-code", r.FilesNonCode, "light"),
+        ("skipped", r.FilesSkipped, "light") })
+    {
+        <div class="col"><div class="card"><div class="card-body py-2">
+            <div class="fs-4 fw-semibold">@val</div><div class="text-muted small">@label</div>
+        </div></div></div>
+    }
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card h-100"><div class="card-body">
+            <h6 class="text-uppercase small text-muted mb-3">Language breakdown</h6>
+            <table class="table table-sm align-middle mb-0">
+                <thead><tr><th>Language</th><th>Files</th><th>Extracted</th><th>Symbols</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var l in Model.Languages)
+                {
+                    <tr>
+                        <td>@l.Language</td><td>@l.Files</td><td>@l.Extracted</td><td>@l.Symbols</td>
+                        <td>@if (l.Supported) { <span class="badge text-bg-success">supported</span> } else { <span class="badge text-bg-warning">not analyzed</span> }</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div></div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-3"><div class="card-body">
+            <h6 class="text-uppercase small text-muted mb-3">Reference resolution <span class="text-muted text-lowercase">(informational)</span></h6>
+            <div>Extracted references: <strong>@r.ReferenceCount</strong> · resolved to edges: <strong>@r.ResolvedReferences</strong> · unresolved: <strong>@r.UnresolvedReferences</strong></div>
+            <div class="text-muted small mt-1">A low resolution rate (@r.ResolutionRate.ToString("P0")) is normal — most references point to external framework/BCL types that are deliberately out of corpus. Never fabricated.</div>
+        </div></div>
+        <div class="card"><div class="card-body">
+            <h6 class="text-uppercase small text-muted mb-3">Edge confidence</h6>
+            @if (!Model.Confidence.Any()) { <div class="text-muted small">No edges.</div> }
+            @foreach (var c in Model.Confidence)
+            {
+                <div class="d-flex justify-content-between border-bottom py-1"><span>@c.Band</span><span class="fw-semibold">@c.Count</span></div>
+            }
+        </div></div>
+    </div>
+</div>
+
+@if (Model.SkipReasons.Any() || Model.ParseErrors.Any() || r.HasUnsupported)
+{
+    <div class="row g-3 mt-1">
+        @if (r.HasUnsupported)
+        {
+            <div class="col-md-4"><div class="card h-100"><div class="card-body">
+                <h6 class="text-uppercase small text-muted mb-2"><i class="bi bi-exclamation-triangle text-warning me-1"></i>Unsupported languages</h6>
+                @foreach (var l in Model.Languages.Where(x => !x.Supported && x.Files > 0))
+                { <div class="d-flex justify-content-between border-bottom py-1"><span>@l.Language</span><span class="badge text-bg-warning">@l.Files files</span></div> }
+                <div class="text-muted small mt-2">These files were imported but not structurally analyzed.</div>
+            </div></div></div>
+        }
+        @if (Model.SkipReasons.Any())
+        {
+            <div class="col-md-4"><div class="card h-100"><div class="card-body">
+                <h6 class="text-uppercase small text-muted mb-2">Skipped files</h6>
+                @foreach (var s in Model.SkipReasons) { <div class="d-flex justify-content-between border-bottom py-1"><span>@s.Reason</span><span class="fw-semibold">@s.Count</span></div> }
+            </div></div></div>
+        }
+        @if (Model.ParseErrors.Any())
+        {
+            <div class="col-md-4"><div class="card h-100"><div class="card-body">
+                <h6 class="text-uppercase small text-muted mb-2"><i class="bi bi-x-octagon text-danger me-1"></i>Parse errors</h6>
+                @foreach (var p in Model.ParseErrors.Take(15)) { <div class="border-bottom py-1 small"><div class="text-truncate" title="@p.Path">@p.Path</div><div class="text-muted">@p.Note</div></div> }
+            </div></div></div>
+        }
+    </div>
+}
