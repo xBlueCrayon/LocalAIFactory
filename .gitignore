@@ -23,6 +23,9 @@ build/
 artifacts/
 [Dd]ebug/
 [Rr]elease/
+# R2-ACC-INDUSTRIAL: scripts/release/ is SOURCE (release scripts), not build output — keep it tracked.
+!scripts/release/
+!scripts/release/**
 x64/
 x86/
 [Aa][Rr][Mm]/

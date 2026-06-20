@@ -1,0 +1,3 @@
+LICENSE PLACEHOLDER — replace with the actual license before any external/commercial distribution.
+This pilot build is provided for evaluation. No warranty. See docs/Compliance-Disclaimers.md and
+docs/Edition-and-Licensing-Strategy.md. Not certified or affiliated with SAP/Sage/Oracle/Cisco/Microsoft Dynamics.
