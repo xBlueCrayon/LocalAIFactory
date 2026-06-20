@@ -514,6 +514,7 @@ public class AppDbContext : DbContext
             e.Property(x => x.ReferencedColumn).HasMaxLength(256);
             e.Property(x => x.ReferencedKey).HasMaxLength(512);
             e.Property(x => x.FileLocusKey).HasMaxLength(64);
+            e.Property(x => x.Evidence).HasMaxLength(500); // R2-ACC-CAP1
             e.HasIndex(x => x.FromSymbolId);
             e.HasIndex(x => x.SourceArtifactId);
             e.HasIndex(x => x.ReferencedKey);
@@ -528,6 +529,7 @@ public class AppDbContext : DbContext
         b.Entity<CodeEdge>(e =>
         {
             e.Property(x => x.EdgeKey).HasMaxLength(64);
+            e.Property(x => x.Evidence).HasMaxLength(500); // R2-ACC-CAP1
             e.HasIndex(x => x.Uid).IsUnique();
             e.HasIndex(x => x.EdgeKey).IsUnique();
             e.HasIndex(x => x.ToSymbolId);   // "what depends on / references X"

@@ -96,7 +96,16 @@ public sealed class CodeGraphBuilder : ICodeGraphBuilder
             (int Id, string Locus)? target;
             double confidence;
             if (string.Equals(from.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase))
-                (target, confidence) = ResolveCSharp(r, csByName);
+            {
+                if (r.ReferenceKind == CodeReferenceKind.SqlObjectAccess)
+                {
+                    // R2-ACC-CAP1: C#→SQL bridge — resolve the canonical "schema.object" key to a SQL symbol.
+                    target = targetByKey.TryGetValue(r.ReferencedKey, out var sj) ? sj : null;
+                    confidence = r.Confidence ?? 0.7;
+                }
+                else
+                    (target, confidence) = ResolveCSharp(r, csByName);
+            }
             else
             { target = targetByKey.TryGetValue(r.ReferencedKey, out var sq) ? sq : null; confidence = 1.0; }
 
@@ -114,6 +123,7 @@ public sealed class CodeGraphBuilder : ICodeGraphBuilder
                 edge.RelationType = rel;
                 edge.SourceArtifactId = r.SourceArtifactId;
                 edge.Confidence = confidence;
+                edge.Evidence = r.Evidence; // R2-ACC-CAP1
             }
             else
             {
@@ -126,6 +136,7 @@ public sealed class CodeGraphBuilder : ICodeGraphBuilder
                     SourceArtifactId = r.SourceArtifactId,
                     EdgeKey = edgeKey,
                     Confidence = confidence,
+                    Evidence = r.Evidence, // R2-ACC-CAP1
                     Status = KnowledgeStatus.Approved,
                     Tier = PermanenceTier.Derived
                 });
@@ -168,6 +179,7 @@ public sealed class CodeGraphBuilder : ICodeGraphBuilder
         CodeReferenceKind.BaseType => RelationType.Inherits,
         CodeReferenceKind.InterfaceImplementation => RelationType.Implements,
         CodeReferenceKind.ConstructorParameterType => RelationType.DependsOn, // DI dependency
+        CodeReferenceKind.SqlObjectAccess => RelationType.AccessesSql, // R2-ACC-CAP1: C#→SQL bridge
         _ => RelationType.References
     };
 

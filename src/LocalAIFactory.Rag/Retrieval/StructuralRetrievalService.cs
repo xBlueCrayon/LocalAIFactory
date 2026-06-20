@@ -51,7 +51,7 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
         // Incoming reference edges: things that reference the target(s).
         var edges = await _db.CodeEdges
             .Where(e => e.ProjectId == projectId && targetIds.Contains(e.ToSymbolId))
-            .Select(e => new { e.FromSymbolId, e.RelationType, e.Confidence })
+            .Select(e => new { e.FromSymbolId, e.RelationType, e.Confidence, e.Evidence })
             .ToListAsync(ct);
 
         var fromSyms = await _db.CodeSymbols.Where(s => edges.Select(x => x.FromSymbolId).Contains(s.Id)).ToListAsync(ct);
@@ -59,7 +59,7 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
 
         var result = edges
             .Where(e => hitById.ContainsKey(e.FromSymbolId))
-            .Select(e => new GraphNeighbor(hitById[e.FromSymbolId], e.RelationType, "reference", "incoming", e.Confidence))
+            .Select(e => new GraphNeighbor(hitById[e.FromSymbolId], e.RelationType, "reference", "incoming", e.Confidence, e.Evidence))
             .ToList();
         await LogAsync(projectId, identifier, "dependents", result.Count, ct);
         return result;
@@ -76,12 +76,12 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
         // Outgoing reference edges: what the target references.
         var edges = await _db.CodeEdges
             .Where(e => e.ProjectId == projectId && targetIds.Contains(e.FromSymbolId))
-            .Select(e => new { e.ToSymbolId, e.RelationType, e.Confidence })
+            .Select(e => new { e.ToSymbolId, e.RelationType, e.Confidence, e.Evidence })
             .ToListAsync(ct);
         var toSyms = await _db.CodeSymbols.Where(s => edges.Select(x => x.ToSymbolId).Contains(s.Id)).ToListAsync(ct);
         var hitById = (await BuildHitsAsync(toSyms, ct)).ToDictionary(h => h.Id);
         outgoing.AddRange(edges.Where(e => hitById.ContainsKey(e.ToSymbolId))
-            .Select(e => new GraphNeighbor(hitById[e.ToSymbolId], e.RelationType, "reference", "outgoing", e.Confidence)));
+            .Select(e => new GraphNeighbor(hitById[e.ToSymbolId], e.RelationType, "reference", "outgoing", e.Confidence, e.Evidence)));
 
         // Containment: the target's parent (PartOf).
         var parentIds = targets.Where(t => t.ParentSymbolId is int).Select(t => t.ParentSymbolId!.Value).ToHashSet();

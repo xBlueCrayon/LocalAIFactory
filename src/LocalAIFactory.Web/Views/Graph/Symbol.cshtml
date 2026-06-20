@@ -24,11 +24,17 @@
             @if (!Model.Dependents.Any()) { <div class="text-muted small">Nothing depends on this symbol.</div> }
             @foreach (var d in Model.Dependents)
             {
-                <div class="d-flex align-items-center border-bottom py-1">
-                    <a asp-action="Symbol" asp-route-projectId="@Model.ProjectId" asp-route-id="@d.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:260px" title="@d.Symbol.FullName">@d.Symbol.FullName</a>
-                    <span class="ms-auto"></span>
-                    <span class="badge @GraphLabels.RelationBadge(d.RelationType)" title="@d.EdgeSource">@d.RelationType</span>
-                    <span class="badge text-bg-dark ms-1" title="@(d.Confidence >= 1.0 ? "deterministic" : "syntax-only name resolution")">@d.Confidence.ToString("0.00")</span>
+                <div class="border-bottom py-1">
+                    <div class="d-flex align-items-center">
+                        <a asp-action="Symbol" asp-route-projectId="@Model.ProjectId" asp-route-id="@d.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:240px" title="@d.Symbol.FullName">@d.Symbol.FullName</a>
+                        <span class="ms-auto"></span>
+                        <span class="badge @GraphLabels.RelationBadge(d.RelationType)" title="@d.EdgeSource">@GraphLabels.Relation(d.RelationType)</span>
+                        <span class="badge text-bg-dark ms-1" title="@(d.Confidence >= 1.0 ? "deterministic" : "syntax-only string/name evidence")">@d.Confidence.ToString("0.00")</span>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(d.Evidence))
+                    {
+                        <div class="small text-muted mt-1"><i class="bi bi-link-45deg me-1"></i><code class="small">@d.Evidence</code></div>
+                    }
                 </div>
             }
         </div></div>
@@ -39,13 +45,30 @@
             @if (!Model.Dependencies.Any()) { <div class="text-muted small">This symbol references nothing in the corpus.</div> }
             @foreach (var d in Model.Dependencies)
             {
-                <div class="d-flex align-items-center border-bottom py-1">
-                    <a asp-action="Symbol" asp-route-projectId="@Model.ProjectId" asp-route-id="@d.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:260px" title="@d.Symbol.FullName">@d.Symbol.FullName</a>
-                    <span class="ms-auto"></span>
-                    <span class="badge @GraphLabels.RelationBadge(d.RelationType)" title="@d.EdgeSource">@d.RelationType</span>
-                    <span class="badge text-bg-dark ms-1" title="@(d.Confidence >= 1.0 ? "deterministic" : "syntax-only name resolution")">@d.Confidence.ToString("0.00")</span>
+                <div class="border-bottom py-1">
+                    <div class="d-flex align-items-center">
+                        <a asp-action="Symbol" asp-route-projectId="@Model.ProjectId" asp-route-id="@d.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:240px" title="@d.Symbol.FullName">@d.Symbol.FullName</a>
+                        <span class="ms-auto"></span>
+                        <span class="badge @GraphLabels.RelationBadge(d.RelationType)" title="@d.EdgeSource">@GraphLabels.Relation(d.RelationType)</span>
+                        <span class="badge text-bg-dark ms-1" title="@(d.Confidence >= 1.0 ? "deterministic" : "syntax-only string/name evidence")">@d.Confidence.ToString("0.00")</span>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(d.Evidence))
+                    {
+                        <div class="small text-muted mt-1"><i class="bi bi-link-45deg me-1"></i><code class="small">@d.Evidence</code></div>
+                    }
                 </div>
             }
         </div></div>
     </div>
 </div>
+
+@{ var hasBridge = Model.Dependents.Concat(Model.Dependencies).Any(n => n.RelationType == LocalAIFactory.Core.Enums.RelationType.AccessesSql); }
+@if (hasBridge)
+{
+    <div class="alert alert-info small mt-3 mb-0">
+        <i class="bi bi-info-circle me-1"></i><strong>C#↔SQL bridge:</strong> "accesses SQL" edges are deterministic,
+        syntax-only matches of a SQL object named in a string literal to a SQL symbol in this project. Confidence is
+        below 1.0 by design (string evidence, not a semantic model); the snippet shown is the evidence. Dynamic SQL,
+        external objects, and unresolved names are not fabricated — they simply produce no edge.
+    </div>
+}

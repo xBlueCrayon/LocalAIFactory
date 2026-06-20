@@ -27,7 +27,8 @@ public sealed record GraphNeighbor(
     RelationType RelationType,
     string EdgeSource,   // "containment" | "reference"
     string Direction,    // "incoming" (depends on the query) | "outgoing" (the query depends on it)
-    double Confidence = 1.0);
+    double Confidence = 1.0,
+    string? Evidence = null);   // R2-ACC-CAP1: SQL string snippet for a C#↔SQL bridge edge (else null)
 
 // KE-011: a node in an impact/blast-radius result, with the hop distance, the edge that reached it, and
 // the edge confidence (lowest along the path is the honest floor; here the immediate edge's confidence).

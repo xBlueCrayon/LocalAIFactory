@@ -137,7 +137,11 @@ public sealed class CodeSymbolStore : ICodeSymbolStore
                     ReferenceKind = r.Kind,
                     ReferencedSchema = (r.NamespaceHint ?? "").ToLowerInvariant(), // namespace hint for disambiguation
                     ReferencedObject = r.ReferencedName,
-                    ReferencedKey = r.ReferencedName.ToLowerInvariant(),           // simple-name key (C# resolution)
+                    // C# type refs resolve by simple name; SqlObjectAccess refs already carry a canonical
+                    // "schema.object" key that matches a SQL CodeSymbol.NormalizedKey (R2-ACC-CAP1).
+                    ReferencedKey = r.ReferencedName.ToLowerInvariant(),
+                    Confidence = r.Confidence,
+                    Evidence = r.Evidence,
                     FileLocusKey = fileLocus,
                     ExtractedUtc = now
                 });

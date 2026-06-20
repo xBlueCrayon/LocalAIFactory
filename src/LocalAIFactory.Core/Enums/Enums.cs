@@ -107,7 +107,10 @@ public enum EntityType { Flag = 0, Workflow = 1, File = 2, Function = 3, Externa
 // preserve existing stored values.
 public enum RelationType { BelongsTo = 0, Uses = 1, Calls = 2, Reads = 3, Writes = 4, DependsOn = 5, DeploysTo = 6, IntegratesWith = 7, References = 8, PartOf = 9, DefinedIn = 10,
     // KE-008.x: precise deterministic C# structural edges (from the syntactic base-list). Append-only.
-    Inherits = 11, Implements = 12 }
+    Inherits = 11, Implements = 12,
+    // R2-ACC-CAP1: C#↔SQL bridge — a C# symbol accesses a SQL object (table/view/proc/function) detected in a
+    // SQL string literal. Confidence < 1.0 (syntactic string evidence, not semantic). Append-only.
+    AccessesSql = 13 }
 
 public enum ModelOutputKind { Primary = 0, Validation = 1, Comparison = 2 }
 
@@ -227,7 +230,11 @@ public enum CodeReferenceKind
     ConstructorParameterType = 7,  // ctor(IFoo foo) — dependency injection
     FieldType = 8,                 // private IFoo _foo;
     PropertyType = 9,              // public IFoo Foo { get; }
-    ParameterType = 10             // method/return parameter type
+    ParameterType = 10,            // method/return parameter type
+    // R2-ACC-CAP1: C#↔SQL bridge — a SQL object (table/view/proc) named in a SQL string literal inside a C#
+    // member (raw SQL, FromSqlRaw/ExecuteSqlRaw, Dapper, ADO.NET CommandText, EXEC). ReferencedKey carries the
+    // canonical "schema.object"; resolution joins it to a SQL CodeSymbol's NormalizedKey. Append-only.
+    SqlObjectAccess = 11
 }
 
 // Phase 2 / KE-008: syntactic accessibility of a code symbol (best-effort from modifiers; no semantic model).

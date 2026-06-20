@@ -33,6 +33,10 @@ public class CodeEdge : IPortableEntity
     // SourceLocusKeys (never ephemeral CodeSymbol.Id) so the edge survives re-import with its Uid.
     public string EdgeKey { get; set; } = "";
 
+    // R2-ACC-CAP1 (C#↔SQL bridge): a short snippet of the SQL string that evidences a C#→SQL edge (null for
+    // ordinary deterministic edges). Carried from the resolving CodeSymbolReference for UI/report display.
+    public string? Evidence { get; set; }
+
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 }
 

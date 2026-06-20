@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using LocalAIFactory.Core.Abstractions;
 using LocalAIFactory.Core.Enums;
 using Microsoft.CodeAnalysis;
@@ -107,7 +108,9 @@ public sealed class CSharpSymbolExtractor : ICodeSymbolExtractor
             {
                 var sig = Params(ctor.ParameterList);
                 var (acc, pub) = Access(ctor.Modifiers, inInterface ? CodeAccess.Public : CodeAccess.Private);
-                outp.Add(Make(CodeSymbolKind.Constructor, ".ctor", Combine(typeFullName, ".ctor"), sig, acc, pub, ctor, typeFullName, Cyclomatic(ctor)));
+                var full = Combine(typeFullName, ".ctor");
+                outp.Add(Make(CodeSymbolKind.Constructor, ".ctor", full, sig, acc, pub, ctor, typeFullName, Cyclomatic(ctor)));
+                CollectSqlReferences(ctor, full, refs);
                 break;
             }
             case MethodDeclarationSyntax method:
@@ -115,13 +118,17 @@ public sealed class CSharpSymbolExtractor : ICodeSymbolExtractor
                 var meta = WithArity(method.Identifier.Text, method.TypeParameterList);
                 var sig = Params(method.ParameterList) + " : " + method.ReturnType;
                 var (acc, pub) = Access(method.Modifiers, inInterface ? CodeAccess.Public : CodeAccess.Private);
-                outp.Add(Make(CodeSymbolKind.Method, method.Identifier.Text, Combine(typeFullName, meta), sig, acc, pub, method, typeFullName, Cyclomatic(method)));
+                var full = Combine(typeFullName, meta);
+                outp.Add(Make(CodeSymbolKind.Method, method.Identifier.Text, full, sig, acc, pub, method, typeFullName, Cyclomatic(method)));
+                CollectSqlReferences(method, full, refs); // R2-ACC-CAP1: C#→SQL bridge
                 break;
             }
             case PropertyDeclarationSyntax prop:
             {
                 var (acc, pub) = Access(prop.Modifiers, inInterface ? CodeAccess.Public : CodeAccess.Private);
-                outp.Add(Make(CodeSymbolKind.Property, prop.Identifier.Text, Combine(typeFullName, prop.Identifier.Text), prop.Type.ToString(), acc, pub, prop, typeFullName, Cyclomatic(prop)));
+                var full = Combine(typeFullName, prop.Identifier.Text);
+                outp.Add(Make(CodeSymbolKind.Property, prop.Identifier.Text, full, prop.Type.ToString(), acc, pub, prop, typeFullName, Cyclomatic(prop)));
+                CollectSqlReferences(prop, full, refs);
                 break;
             }
             case IndexerDeclarationSyntax indexer:
@@ -282,6 +289,67 @@ public sealed class CSharpSymbolExtractor : ICodeSymbolExtractor
         if (intern) return (CodeAccess.Internal, false);
         if (priv) return (CodeAccess.Private, false);
         return (dflt, dflt == CodeAccess.Public);
+    }
+
+    // R2-ACC-CAP1: C#↔SQL bridge. Deterministic, syntax-only detection of SQL objects named inside SQL string
+    // literals within a member (raw SQL, FromSqlRaw/ExecuteSqlRaw, Dapper, ADO.NET CommandText, EXEC). Emits a
+    // SqlObjectAccess reference per distinct object with a canonical "schema.object" key (matched later to a SQL
+    // CodeSymbol.NormalizedKey), a confidence by detection kind, and a short evidence snippet. Names that do not
+    // resolve to a real SQL symbol are simply counted as unresolved — never fabricated.
+    private static readonly Regex SqlSignal = new(@"\b(SELECT|INSERT|UPDATE|DELETE|MERGE|EXEC|FROM|JOIN)\b",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex SqlTableRx = new(@"\b(?:FROM|JOIN|INTO|UPDATE)\s+(?:(\[?\w+\]?)\s*\.\s*)?(\[?\w+\]?)",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex SqlExecRx = new(@"\bEXEC(?:UTE)?\s+(?:(\[?\w+\]?)\s*\.\s*)?(\[?[\w]+\]?)",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly HashSet<string> SqlNoise = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "select","from","where","join","inner","left","right","outer","cross","on","as","set","values","into",
+        "and","or","not","null","exec","execute","update","insert","delete","merge","group","order","by","having",
+        "with","case","when","then","else","end","union","top","distinct","count","sum","min","max","avg"
+    };
+
+    private static void CollectSqlReferences(SyntaxNode member, string ownerFullName, List<ExtractedCodeReference> refs)
+    {
+        // Best-effort, never throws. A pathological string must not break extraction.
+        try
+        {
+            var found = new Dictionary<string, (double conf, string evidence)>(StringComparer.OrdinalIgnoreCase);
+            foreach (var lit in member.DescendantNodes())
+            {
+                string? text = lit switch
+                {
+                    LiteralExpressionSyntax l when l.IsKind(SyntaxKind.StringLiteralExpression) => l.Token.ValueText,
+                    InterpolatedStringExpressionSyntax i => i.ToString(),
+                    _ => null
+                };
+                if (text is null || text.Length < 6 || !SqlSignal.IsMatch(text)) continue;
+                var evidence = Snippet(text);
+                foreach (Match m in SqlExecRx.Matches(text)) Add(found, m, 0.9, evidence);
+                foreach (Match m in SqlTableRx.Matches(text)) Add(found, m, 0.75, evidence);
+            }
+            foreach (var (key, v) in found)
+                refs.Add(new ExtractedCodeReference(CodeReferenceKind.SqlObjectAccess, ownerFullName, key, null, v.conf, v.evidence));
+        }
+        catch { /* bridge detection is best-effort */ }
+    }
+
+    private static void Add(Dictionary<string, (double conf, string evidence)> found, Match m, double conf, string evidence)
+    {
+        var schema = Strip(m.Groups[1].Value);
+        var obj = Strip(m.Groups[2].Value);
+        if (obj.Length < 2 || SqlNoise.Contains(obj)) return;          // skip keywords / aliases / noise
+        var key = (string.IsNullOrEmpty(schema) ? "dbo" : schema.ToLowerInvariant()) + "." + obj.ToLowerInvariant();
+        if (!found.TryGetValue(key, out var cur) || conf > cur.conf) found[key] = (conf, evidence);
+    }
+
+    private static string Strip(string s) => s.Replace("[", "").Replace("]", "").Trim();
+
+    private static string Snippet(string text)
+    {
+        var one = text.Replace('\r', ' ').Replace('\n', ' ').Replace('\t', ' ').Trim();
+        while (one.Contains("  ")) one = one.Replace("  ", " ");
+        return one.Length <= 160 ? one : one.Substring(0, 160) + "…";
     }
 
     // Syntactic cyclomatic complexity: 1 + decision points. Deterministic; counts branch-introducing

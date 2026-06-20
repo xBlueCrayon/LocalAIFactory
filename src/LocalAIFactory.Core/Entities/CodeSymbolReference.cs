@@ -34,5 +34,10 @@ public class CodeSymbolReference
     // Groups a file's references for provenance/debugging (mirrors CodeSymbol.FileLocusKey).
     public string FileLocusKey { get; set; } = "";
 
+    // R2-ACC-CAP1 (C#↔SQL bridge): detection certainty for SQL-string references (null for deterministic
+    // SQL/C# references whose confidence the resolver sets), and a short evidence snippet of the SQL string.
+    public double? Confidence { get; set; }
+    public string? Evidence { get; set; }
+
     public DateTime ExtractedUtc { get; set; } = DateTime.UtcNow;
 }

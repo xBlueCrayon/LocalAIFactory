@@ -27,7 +27,11 @@ public sealed record ExtractedCodeReference(
     CodeReferenceKind Kind,
     string FromFullName,
     string ReferencedName,
-    string? NamespaceHint);
+    string? NamespaceHint,
+    // R2-ACC-CAP1: bridge metadata. Confidence is the detection certainty for SQL-string references (null =
+    // use the resolver default). Evidence is a short snippet of the SQL string that produced the reference.
+    double? Confidence = null,
+    string? Evidence = null);
 
 // KE-008: the result of extracting one source artifact — symbols plus the references they make. References
 // are empty for extractors that do not yet capture them.

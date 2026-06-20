@@ -175,6 +175,15 @@ public static class GraphLabels
     {
         RelationType.Implements => "text-bg-success", RelationType.Inherits => "text-bg-primary",
         RelationType.DependsOn => "text-bg-warning", RelationType.References => "text-bg-secondary",
+        RelationType.AccessesSql => "text-bg-info", // R2-ACC-CAP1: C#↔SQL bridge
         RelationType.PartOf => "text-bg-light", _ => "text-bg-light"
+    };
+
+    // R2-ACC-CAP1: friendly relation name (used by the dependency/bridge views).
+    public static string Relation(RelationType r) => r switch
+    {
+        RelationType.AccessesSql => "accesses SQL", RelationType.Implements => "implements",
+        RelationType.Inherits => "inherits", RelationType.DependsOn => "depends on",
+        RelationType.References => "references", RelationType.PartOf => "part of", _ => r.ToString()
     };
 }
