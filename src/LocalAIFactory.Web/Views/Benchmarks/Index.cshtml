@@ -1,0 +1,65 @@
+@model List<LocalAIFactory.Web.Controllers.BenchmarksController.BenchmarkRow>
+@{
+    ViewData["Title"] = "Benchmarks";
+    string TierStyle(string t) => t switch {
+        "Gold" => "background:#d4af37;color:#1a1a1a", "Silver" => "background:#9aa0a6;color:#111",
+        "Bronze" => "background:#cd7f32;color:#fff", _ => "background:#444;color:#ddd" };
+}
+
+<div class="d-flex align-items-center mb-3">
+    <div>
+        <h4 class="mb-1"><i class="bi bi-trophy me-2"></i>Capability Benchmarks</h4>
+        <div class="text-muted small">Deterministic Bronze / Silver / Gold scores from the Validation Harness — proven on MSSQL alone, no model or vectors. Trust first, then explore.</div>
+    </div>
+    <span class="spacer ms-auto"></span>
+    <a class="btn btn-outline-secondary btn-sm" asp-controller="Graph" asp-action="Index"><i class="bi bi-diagram-3 me-1"></i>Explore the graph</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info"><i class="bi bi-info-circle me-1"></i>No benchmark report yet. Run the Validation Harness
+        (<code>dotnet run --project tools/LocalAIFactory.Benchmark -- --update-golden</code>) to populate this dashboard.</div>
+}
+else
+{
+    <div class="row g-3">
+    @foreach (var r in Model)
+    {
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <h5 class="card-title mb-0">@r.Name</h5>
+                        <span class="badge ms-auto" style="@TierStyle(r.Overall)">@r.Overall</span>
+                    </div>
+                    <div class="text-muted small mb-3"><i class="bi bi-tag me-1"></i>@r.Bucket
+                        @if (r.Convergent) { <span class="ms-2 text-success"><i class="bi bi-check-circle"></i> convergent</span> }</div>
+
+                    <div class="row text-center mb-3">
+                        <div class="col"><div class="fs-5 fw-semibold">@r.Symbols</div><div class="text-muted small">symbols</div></div>
+                        <div class="col"><div class="fs-5 fw-semibold">@r.Edges</div><div class="text-muted small">edges</div></div>
+                        <div class="col"><div class="fs-5 fw-semibold">@r.PovPass/@r.PovTotal</div><div class="text-muted small">proofs</div></div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-1 mb-3">
+                        <span class="badge rounded-pill" style="@TierStyle(r.Discovery)">discovery @r.Discovery</span>
+                        <span class="badge rounded-pill" style="@TierStyle(r.Graph)">graph @r.Graph</span>
+                        <span class="badge rounded-pill" style="@TierStyle(r.Retrieval)">retrieval @r.Retrieval</span>
+                        <span class="badge rounded-pill" style="@TierStyle(r.Impact)">impact @r.Impact</span>
+                    </div>
+
+                    <ul class="list-unstyled small mb-0">
+                        @foreach (var p in r.Pov)
+                        {
+                            <li class="mb-1">
+                                @if (p.Passed) { <i class="bi bi-check-circle-fill text-success me-1"></i> } else { <i class="bi bi-x-circle-fill text-danger me-1"></i> }
+                                @p.Question <span class="text-muted">(n=@p.Count)</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
+}

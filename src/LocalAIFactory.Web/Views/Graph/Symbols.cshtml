@@ -1,0 +1,34 @@
+@model List<LocalAIFactory.Core.Abstractions.SymbolHit>
+@using LocalAIFactory.Web.Controllers
+@{ ViewData["Title"] = "Symbol Explorer"; var pid = (int)ViewBag.ProjectId; }
+
+<h4 class="mb-1"><i class="bi bi-search me-2"></i>Symbol Explorer <span class="text-muted fs-6">@ViewBag.Project</span></h4>
+<div class="text-muted small mb-3">Exact-identifier lookup over the indexed graph.</div>
+
+<form asp-action="Symbols" method="get" class="d-flex gap-2 mb-3">
+    <input type="hidden" name="projectId" value="@pid" />
+    <input class="form-control" name="q" value="@ViewBag.Query" placeholder="e.g. IOrderRepository, Sales.Customers, BasketService" autofocus />
+    <button class="btn btn-primary"><i class="bi bi-search me-1"></i>Find</button>
+</form>
+
+@if (Model.Any())
+{
+    <div class="card"><div class="table-responsive"><table class="table table-hover align-middle mb-0">
+        <thead><tr><th>Symbol</th><th>Kind</th><th>Language</th><th>Location</th></tr></thead>
+        <tbody>
+        @foreach (var h in Model)
+        {
+            <tr>
+                <td><a asp-action="Symbol" asp-route-projectId="@pid" asp-route-id="@h.Id" class="text-decoration-none"><i class="bi @GraphLabels.KindIcon(h.Kind) me-1"></i>@h.FullName</a></td>
+                <td><span class="badge text-bg-light">@GraphLabels.Kind(h.Kind)</span></td>
+                <td class="text-muted small">@h.DetectedLanguage</td>
+                <td class="text-muted small">@h.ArtifactPath:@h.StartLine</td>
+            </tr>
+        }
+        </tbody>
+    </table></div></div>
+}
+else if (!string.IsNullOrWhiteSpace((string?)ViewBag.Query))
+{
+    <div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-1"></i>No symbol matched “@ViewBag.Query”.</div>
+}

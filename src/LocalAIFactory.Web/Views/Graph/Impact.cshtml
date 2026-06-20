@@ -1,0 +1,54 @@
+@model LocalAIFactory.Core.Abstractions.ImpactResult
+@using LocalAIFactory.Web.Controllers
+@{ ViewData["Title"] = "Impact Analysis"; var pid = (int)ViewBag.ProjectId; }
+
+<h4 class="mb-1"><i class="bi bi-radioactive me-2"></i>Impact Analysis <span class="text-muted fs-6">@ViewBag.Project</span></h4>
+<div class="text-muted small mb-3">What breaks if this changes — transitive blast radius over the dependency graph.</div>
+
+<form asp-action="Impact" method="get" class="d-flex gap-2 mb-3">
+    <input type="hidden" name="projectId" value="@pid" />
+    <input class="form-control" name="q" value="@ViewBag.Query" placeholder="e.g. Sales.Customers, IApplicationDbContext" autofocus />
+    <button class="btn btn-danger"><i class="bi bi-radioactive me-1"></i>Analyze</button>
+</form>
+
+@if (Model is null)
+{
+    @if (!string.IsNullOrWhiteSpace((string?)ViewBag.Query))
+    {
+        <div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-1"></i>“@ViewBag.Query” not found in this project.</div>
+    }
+}
+else
+{
+    <div class="alert alert-light border">
+        <strong>@Model.Target.FullName</strong>
+        <span class="text-muted">— @(Model.Direct.Count + Model.Transitive.Count) affected symbols across @Model.MaxDepthReached hop(s)@(Model.Truncated ? ", truncated" : "")</span>
+    </div>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card h-100"><div class="card-body">
+                <h6 class="text-uppercase small text-muted mb-3">Direct (1 hop) — @Model.Direct.Count</h6>
+                @foreach (var n in Model.Direct)
+                {
+                    <div class="d-flex align-items-center border-bottom py-1">
+                        <a asp-action="Symbol" asp-route-projectId="@pid" asp-route-id="@n.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:280px" title="@n.Symbol.FullName">@n.Symbol.FullName</a>
+                        <span class="badge @GraphLabels.RelationBadge(n.RelationType) ms-auto">@n.RelationType</span>
+                    </div>
+                }
+            </div></div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100"><div class="card-body">
+                <h6 class="text-uppercase small text-muted mb-3">Transitive (2+ hops) — @Model.Transitive.Count</h6>
+                @if (!Model.Transitive.Any()) { <div class="text-muted small">No transitive impact.</div> }
+                @foreach (var n in Model.Transitive)
+                {
+                    <div class="d-flex align-items-center border-bottom py-1">
+                        <a asp-action="Symbol" asp-route-projectId="@pid" asp-route-id="@n.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:240px" title="@n.Symbol.FullName">@n.Symbol.FullName</a>
+                        <span class="badge text-bg-light ms-auto">d@(n.Depth) via @n.ViaFullName.Split('.').Last()</span>
+                    </div>
+                }
+            </div></div>
+        </div>
+    </div>
+}

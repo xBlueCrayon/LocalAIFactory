@@ -1,0 +1,31 @@
+@model List<LocalAIFactory.Web.Controllers.GraphController.ProjectRow>
+@{ ViewData["Title"] = "Explore"; }
+
+<h4 class="mb-1"><i class="bi bi-diagram-3 me-2"></i>Explore the Structural Graph</h4>
+<div class="text-muted small mb-3">Pick an analyzed repository to explore its symbols, dependencies and impact — answered from MSSQL alone.</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info"><i class="bi bi-info-circle me-1"></i>No analyzed projects yet. Import a repository via
+        <a asp-controller="ImportWizard" asp-action="Index">Import Project</a>.</div>
+}
+else
+{
+    <div class="row g-3">
+    @foreach (var p in Model)
+    {
+        <div class="col-md-4">
+            <a class="card h-100 text-decoration-none shadow-sm" asp-action="Project" asp-route-id="@p.Id">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">@p.Name</h5>
+                    <div class="text-muted small mb-3">@p.Code</div>
+                    <div class="row text-center">
+                        <div class="col"><div class="fs-5 fw-semibold">@p.Symbols</div><div class="text-muted small">symbols</div></div>
+                        <div class="col"><div class="fs-5 fw-semibold">@p.Edges</div><div class="text-muted small">edges</div></div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+    </div>
+}

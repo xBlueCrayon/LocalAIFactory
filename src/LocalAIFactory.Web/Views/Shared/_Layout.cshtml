@@ -17,6 +17,10 @@
     <aside class="sidebar">
         <div class="brand"><span class="logo"><i class="bi bi-hexagon-fill"></i></span> LocalAIFactory</div>
 
+        <div class="nav-section">Pilot</div>
+        <a class="nav-link @Active("Benchmarks")" asp-controller="Benchmarks" asp-action="Index"><span class="ico"><i class="bi bi-trophy"></i></span> Benchmarks</a>
+        <a class="nav-link @Active("Graph")" asp-controller="Graph" asp-action="Index"><span class="ico"><i class="bi bi-diagram-3"></i></span> Explore Graph</a>
+
         <div class="nav-section">Workspace</div>
         <a class="nav-link @Active("Home")" asp-controller="Home" asp-action="Index"><span class="ico"><i class="bi bi-grid-1x2"></i></span> Dashboard</a>
         <a class="nav-link @Active("Chat")" asp-controller="Chat" asp-action="Index"><span class="ico"><i class="bi bi-chat-dots"></i></span> Chat</a>

@@ -1,0 +1,57 @@
+@model LocalAIFactory.Web.Controllers.GraphController.OverviewVm
+@{ ViewData["Title"] = Model.Project.Name; }
+
+<div class="d-flex align-items-center mb-3">
+    <div>
+        <h4 class="mb-1"><i class="bi bi-folder2-open me-2"></i>@Model.Project.Name <span class="text-muted fs-6">@Model.Project.Code</span></h4>
+        <div class="text-muted small">What the engine understood — structural symbols and dependencies.</div>
+    </div>
+    <span class="ms-auto"></span>
+    <form asp-action="Search" method="get" class="d-flex gap-2">
+        <input type="hidden" name="projectId" value="@Model.Project.Id" />
+        <input class="form-control form-control-sm" name="q" placeholder="Ask: identifier, table, interface…" style="min-width:280px" />
+        <button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>
+    </form>
+</div>
+
+<div class="row text-center g-3 mb-3">
+    <div class="col"><div class="card"><div class="card-body py-3"><div class="fs-3 fw-semibold">@Model.Symbols</div><div class="text-muted small">symbols</div></div></div></div>
+    <div class="col"><div class="card"><div class="card-body py-3"><div class="fs-3 fw-semibold">@Model.Edges</div><div class="text-muted small">graph edges</div></div></div></div>
+    <div class="col"><div class="card"><div class="card-body py-3"><div class="fs-3 fw-semibold">@Model.References</div><div class="text-muted small">references</div></div></div></div>
+    <div class="col"><div class="card"><div class="card-body py-3"><div class="fs-6">@string.Join(", ", Model.ByLanguage.Select(l => $"{l.Key} {l.Value}"))</div><div class="text-muted small">languages</div></div></div></div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h6 class="text-muted text-uppercase small mb-3">Symbols by kind</h6>
+            @foreach (var k in Model.ByKind.OrderByDescending(x => x.Value))
+            {
+                <div class="d-flex justify-content-between border-bottom py-1"><span>@k.Key</span><span class="fw-semibold">@k.Value</span></div>
+            }
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h6 class="text-muted text-uppercase small mb-3">Dependencies by type</h6>
+            @if (!Model.ByRelation.Any()) { <div class="text-muted small">No reference edges.</div> }
+            @foreach (var r in Model.ByRelation.OrderByDescending(x => x.Value))
+            {
+                <div class="d-flex justify-content-between border-bottom py-1"><span>@r.Key</span><span class="fw-semibold">@r.Value</span></div>
+            }
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100"><div class="card-body">
+            <h6 class="text-muted text-uppercase small mb-3">Most depended-upon</h6>
+            @if (!Model.Top.Any()) { <div class="text-muted small">No edges yet.</div> }
+            @foreach (var t in Model.Top)
+            {
+                <div class="d-flex justify-content-between border-bottom py-1">
+                    <a asp-action="Symbol" asp-route-projectId="@Model.Project.Id" asp-route-id="@t.Id" class="text-truncate text-decoration-none" style="max-width:220px" title="@t.FullName">@t.FullName</a>
+                    <span class="badge text-bg-secondary">@t.IncomingCount</span>
+                </div>
+            }
+        </div></div>
+    </div>
+</div>

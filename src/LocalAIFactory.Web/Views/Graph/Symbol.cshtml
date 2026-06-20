@@ -1,0 +1,45 @@
+@model LocalAIFactory.Web.Controllers.GraphController.SymbolVm
+@using LocalAIFactory.Web.Controllers
+@{ ViewData["Title"] = Model.Symbol.Name; }
+
+<div class="d-flex align-items-center mb-3">
+    <div>
+        <h4 class="mb-1"><i class="bi @GraphLabels.KindIcon(Model.Symbol.Kind) me-2"></i>@Model.Symbol.FullName</h4>
+        <div class="text-muted small">
+            <span class="badge text-bg-light">@GraphLabels.Kind(Model.Symbol.Kind)</span>
+            @Model.Symbol.DetectedLanguage · @Model.Symbol.SourceLocusKey.Substring(0, 8)
+            @if (Model.Symbol.Signature != null) { <span>· <code>@Model.Symbol.Signature</code></span> }
+        </div>
+    </div>
+    <span class="ms-auto"></span>
+    <a class="btn btn-outline-danger btn-sm" asp-action="Impact" asp-route-projectId="@Model.ProjectId" asp-route-q="@Model.Symbol.FullName"><i class="bi bi-radioactive me-1"></i>Impact analysis</a>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card h-100"><div class="card-body">
+            <h6 class="text-uppercase small text-muted mb-3"><i class="bi bi-box-arrow-in-down-left me-1"></i>Dependents — who depends on this (@Model.Dependents.Count)</h6>
+            @if (!Model.Dependents.Any()) { <div class="text-muted small">Nothing depends on this symbol.</div> }
+            @foreach (var d in Model.Dependents)
+            {
+                <div class="d-flex align-items-center border-bottom py-1">
+                    <span class="text-truncate" style="max-width:300px" title="@d.Symbol.FullName">@d.Symbol.FullName</span>
+                    <span class="badge @GraphLabels.RelationBadge(d.RelationType) ms-auto">@d.RelationType</span>
+                </div>
+            }
+        </div></div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100"><div class="card-body">
+            <h6 class="text-uppercase small text-muted mb-3"><i class="bi bi-box-arrow-up-right me-1"></i>Dependencies — what this touches (@Model.Dependencies.Count)</h6>
+            @if (!Model.Dependencies.Any()) { <div class="text-muted small">This symbol references nothing in the corpus.</div> }
+            @foreach (var d in Model.Dependencies)
+            {
+                <div class="d-flex align-items-center border-bottom py-1">
+                    <span class="text-truncate" style="max-width:300px" title="@d.Symbol.FullName">@d.Symbol.FullName</span>
+                    <span class="badge @GraphLabels.RelationBadge(d.RelationType) ms-auto">@d.RelationType</span>
+                </div>
+            }
+        </div></div>
+    </div>
+</div>
