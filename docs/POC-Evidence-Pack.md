@@ -164,3 +164,24 @@ T-SQL extractors and the existing graph to deliver the most compelling banking-m
 ("change this stored procedure → exact C# blast radius, and vice-versa"), directly activating the
 payments/leasing/Mauritius knowledge already shipped. The Python extractor should follow (it unlocks the
 OCR/PDF and multi-language benchmark work).
+
+## Addendum — R2-ACC-CAPABILITY-MAX (capability sprint, delivered)
+
+The recommended bridge and several follow-ons were then **built and proven** (all tests + benchmark green):
+
+- **C#↔SQL bridge** (`e96515d`) — deterministic SQL-in-C# detection resolved to schema symbols as `AccessesSql`
+  edges; both-direction blast radius; confidence + evidence; 5 tests; **benchmark fixture Gold 4/4**.
+- **Benchmark tiering** (`d1ccd25`) — Smoke/Standard/Extended + `--suite`; governance metadata; the C#↔SQL
+  fixture proves both directions.
+- **Python extractor** (`4cc919d`) — pure-C#, no runtime; classes/async/FastAPI routes + **Python↔SQL bridge**;
+  Python now a *supported* coverage language; 6 tests; **Python fixture Gold 4/4**.
+- **PDF + cheque-OCR risk prototypes, deployment hardening, autonomous-workspace skeleton** (`2ab6966`) —
+  PDF analyzer (hash/classify/provenance) + extractive summarizer; cheque risk-triage (detection≠verification,
+  human-review-required, never a fraud verdict); docker-compose/scripts (validated, no secrets); command
+  allow/deny policy + dry-run planner (executes nothing); 31 tests.
+
+Test count rose from 157 → **199**; benchmark remains **PASS** over 6 pinned items. Readiness rose ≈45% → ≈49%
+(see `Enterprise-Readiness-Scorecard.md` and `Gap-Closure-Roadmap-To-100.md`) — only where shipped evidence
+improved; nothing reached 100. Honest boundary: OCR/PDF/forecasting remain prototypes/design (no real CV/parser
+engine), legacy VB6/Oracle parsing and a cross-repository estate model are not yet built, and no production
+deployment or autonomous execution loop exists.

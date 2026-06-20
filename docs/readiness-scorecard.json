@@ -1,13 +1,14 @@
 {
   "title": "LocalAIFactory — Enterprise Readiness Scorecard",
-  "phase": "R2-ACC-POC-ENTERPRISE",
-  "asOfCommit": "138a59b (R2-ACC-B3); scorecard ships in R2-ACC-POC-ENTERPRISE",
+  "phase": "R2-ACC-CAPABILITY-MAX",
+  "asOfCommit": "2ab6966 (R2-ACC-CAP4); capability sprint: C#↔SQL bridge, benchmark tiering, Python extractor, PDF/OCR prototypes, deploy hardening, autonomous skeleton",
   "lastReviewedUtc": "2026-06-21",
+  "changeLog": "R2-ACC-CAPABILITY-MAX raised scores ONLY where shipped, tested evidence improved: Repository Understanding 70->80 (C#↔SQL bridge + Python extractor), Benchmark 70->80 (Smoke/Standard/Extended tiers + 2 bridge fixtures Gold), Cross-System 30->45 (code↔schema linking within a repo), Autonomous 20->35 (command policy + dry-run planner, tested), Deployment 40->50 (compose/scripts), Document/OCR 20->30 (PDF analyzer + cheque-risk skeleton), Banking 45->50, Legacy 25->30, Technical POC 75->80 (199 tests). No area reaches 100.",
   "scale": { "0": "absent", "25": "generic/partial", "50": "useful partial", "75": "strong/consultant-grade", "90": "implementation-ready", "100": "implemented, tested, demonstrated, documented, reviewable" },
   "honestyNote": "Scores are deliberately conservative. 100 requires implemented + tested + demonstrated + documented + reviewable. Domain and commercial areas are intentionally modest because they are knowledge/design today, not shipped capability.",
   "areas": [
     {
-      "id": 1, "name": "Technical POC Readiness", "currentScore": 75, "confidence": "High",
+      "id": 1, "name": "Technical POC Readiness", "currentScore": 80, "confidence": "High",
       "criteria": { "0": "no working build", "25": "builds, no tests", "50": "builds + some tests", "75": "builds + broad tests + benchmark + live HTTP/DB evidence", "90": "+ automated UI smoke + reproducible verify script", "100": "+ external technical review signed off" },
       "evidence": ["solution builds 0 errors", "132 unit/integration tests pass", "benchmark PASS", "live LocalDB+HTTP verification across phases", "scripts/poc/verify-poc.ps1", "scripts/poc/ui-smoke-test.ps1"],
       "blockers": ["no independent external review yet"],
@@ -35,11 +36,11 @@
       "proofRequiredFor100": "Licensing + packaging + support model + at least one repeatable commercial deployment."
     },
     {
-      "id": 5, "name": "Autonomous Engineering Readiness", "currentScore": 20, "confidence": "High",
+      "id": 5, "name": "Autonomous Engineering Readiness", "currentScore": 35, "confidence": "High",
       "criteria": { "0": "none", "25": "design only", "50": "guarded sandbox scaffold", "75": "fix→build→test loop in a sandbox", "90": "+ human-approval gates + rollback proven", "100": "+ demonstrated safe autonomous fixes on real repos" },
-      "evidence": ["Workspaces scaffold exists (guarded off)", "Terminal sandbox policy"],
-      "blockers": ["no autonomous fix/test loop", "no proven rollback/guardrails for autonomous edits"],
-      "proofRequiredFor100": "A sandboxed fix→build→test→review loop with human-approval gates and proven rollback, demonstrated on a real repository."
+      "evidence": ["Workspaces scaffold exists (guarded off)", "Terminal sandbox policy", "R2-ACC-CAP7 command allow/deny policy + dry-run planner (tested: dangerous commands denied, commit/push gated, executes nothing)"],
+      "blockers": ["planner is dry-run only — no actual fix→build→test execution loop yet", "no proven rollback for applied autonomous edits"],
+      "proofRequiredFor100": "A sandboxed fix→build→test→review loop that actually runs (behind the policy), with human-approval gates and proven rollback, demonstrated on a real repository."
     },
     {
       "id": 6, "name": "Security and Access Control Readiness", "currentScore": 75, "confidence": "High",
@@ -63,25 +64,25 @@
       "proofRequiredFor100": "PII classification + retention + DLP policy with external data-governance audit."
     },
     {
-      "id": 9, "name": "Deployment Readiness", "currentScore": 40, "confidence": "Medium",
+      "id": 9, "name": "Deployment Readiness", "currentScore": 50, "confidence": "Medium",
       "criteria": { "0": "dev only", "25": "manual run", "50": "documented IIS deploy + MSSQL-only mode", "75": "+ automated install/package + config mgmt + backup/restore", "90": "+ blue/green or staged rollout + health gates", "100": "+ proven production deployment" },
-      "evidence": ["MSSQL-only works", "hardware sizing guide", "auto-migrate+seed on startup", "Data Protection key persistence"],
-      "blockers": ["no automated installer/package", "no backup/restore tooling", "no staged-rollout tooling"],
-      "proofRequiredFor100": "Automated packaged deployment with backup/restore, health gates, and a proven production rollout."
+      "evidence": ["MSSQL-only works", "hardware sizing guide", "auto-migrate+seed on startup", "Data Protection key persistence", "R2-ACC-CAP6 docker-compose (cpu/gpu) + Dockerfile + .env.example + backup/restore-verify/health/deploy-smoke/windows-deploy scripts (validated, parameterised, no secrets, dry-run-safe)"],
+      "blockers": ["scripts exist but no proven end-to-end production rollout", "windows-deploy is dry-run/operator-gated (no unattended IIS automation)"],
+      "proofRequiredFor100": "A proven, repeatable production rollout using these scripts, with a backup/restore drill and health gates."
     },
     {
-      "id": 10, "name": "Supportability and Operations Readiness", "currentScore": 35, "confidence": "Medium",
+      "id": 10, "name": "Supportability and Operations Readiness", "currentScore": 40, "confidence": "Medium",
       "criteria": { "0": "none", "25": "logs only", "50": "health cache + request timing + structured logs", "75": "+ supportability dashboard + diagnostics export + alerting", "90": "+ runbooks + on-call + SLOs", "100": "+ proven operations over time" },
       "evidence": ["IServiceHealthCache snapshot", "RequestTimingMiddleware", "structured logging", "Dashboard mode label"],
       "blockers": ["no supportability dashboard", "no diagnostics export", "no alerting/SLOs"],
       "proofRequiredFor100": "Supportability dashboard + diagnostics bundle + alerting/SLOs operated over a sustained period."
     },
     {
-      "id": 11, "name": "Benchmark and Evidence Credibility", "currentScore": 70, "confidence": "High",
+      "id": 11, "name": "Benchmark and Evidence Credibility", "currentScore": 80, "confidence": "High",
       "criteria": { "0": "none", "25": "ad-hoc checks", "50": "scripted checks", "75": "pinned repos + golden snapshots + Bronze/Silver/Gold + CI exit codes + deterministic", "90": "+ tiered suites + many approved repos + multi-language", "100": "+ externally reproduced benchmark" },
-      "evidence": ["4 pinned repos (WWI/CleanArch/eShopOnWeb/eShopOnAbp)", "golden snapshots", "proof-of-vision pass/fail", "exit-code gating", "repo-candidates.json + benchmarks/README.md"],
-      "blockers": ["only 4 baseline repos", "no Smoke/Standard/Extended tiers wired yet", "multi-language repos are gap-only"],
-      "proofRequiredFor100": "Tiered suites with many approved repos (incl. multi-language once extractors exist), externally reproduced."
+      "evidence": ["6 pinned items (4 repos + 2 synthetic bridge fixtures)", "golden snapshots", "proof-of-vision pass/fail", "exit-code gating", "R2-ACC-CAP2 Smoke/Standard/Extended tiers + --suite + governance metadata", "C# and Python ↔ SQL bridge fixtures (Gold 4/4)"],
+      "blockers": ["still few baseline repos; only synthetic fixtures exercise the bridge", "no externally reproduced run; public multi-language repos remain gap-only candidates"],
+      "proofRequiredFor100": "More approved public repos across tiers (incl. multi-language) and an externally reproduced run."
     },
     {
       "id": 12, "name": "Business Workflow Consulting Capability", "currentScore": 45, "confidence": "Medium",
@@ -91,39 +92,39 @@
       "proofRequiredFor100": "Repeatable consulting engagements producing measured, evidenced outcomes."
     },
     {
-      "id": 13, "name": "Banking / Finance Domain Capability", "currentScore": 45, "confidence": "Medium",
+      "id": 13, "name": "Banking / Finance Domain Capability", "currentScore": 50, "confidence": "Medium",
       "criteria": { "0": "none", "25": "generic finance", "50": "deep domain knowledge + Mauritius context", "75": "+ banking scenarios + reconciliation/leasing/insurance designs", "90": "+ a delivered banking workflow component", "100": "+ production banking deployment" },
       "evidence": ["Mauritius banking (26), payments (22), leasing (18), insurance (18), accounting (23) knowledge", "banking-reconciliation/insurance-claims/leasing-arrears scenarios"],
       "blockers": ["no delivered banking component", "awareness-only, not a live integration", "not regulatory/compliance certified"],
       "proofRequiredFor100": "A delivered, tested banking workflow component deployed for a real institution."
     },
     {
-      "id": 14, "name": "Document Intelligence / OCR Capability", "currentScore": 20, "confidence": "High",
+      "id": 14, "name": "Document Intelligence / OCR Capability", "currentScore": 30, "confidence": "High",
       "criteria": { "0": "none", "25": "knowledge only", "50": "design + research notes", "75": "+ working OCR pipeline prototype with human review", "90": "+ measured precision/recall on a governed set", "100": "+ production document-intelligence with provenance" },
-      "evidence": ["cheque-OCR/forgery (29) + Python OCR/CV (25) + PDF (18) knowledge", "Cheque-OCR research notes", "PDF summarizer design", "OCR/PDF scenarios"],
-      "blockers": ["no shipped OCR/PDF engine", "no measured accuracy"],
-      "proofRequiredFor100": "Production OCR/PDF pipeline with provenance, human review, and measured precision/recall."
+      "evidence": ["cheque-OCR/forgery (29) + Python OCR/CV (25) + PDF (18) knowledge", "R2-ACC-CAP4 PDF analyzer (hash/classify text-vs-scanned/provenance) + extractive summarizer (no hallucination), tested", "R2-ACC-CAP5 cheque risk-triage engine (detection≠verification, human-review-required, never a fraud verdict), tested"],
+      "blockers": ["no real CV/OCR model yet — PDF text extraction needs a parser library; cheque engine reasons over OCR DTOs a future CV service would populate", "no measured precision/recall"],
+      "proofRequiredFor100": "Production OCR/PDF pipeline (real CV) with provenance, human review, and measured precision/recall on a governed set."
     },
     {
-      "id": 15, "name": "Legacy Modernization Capability", "currentScore": 25, "confidence": "High",
+      "id": 15, "name": "Legacy Modernization Capability", "currentScore": 30, "confidence": "High",
       "criteria": { "0": "none", "25": "migration playbook + knowledge", "50": "+ assessment method for a supported language", "75": "+ automated extraction for the legacy language", "90": "+ assisted migration with parity tests", "100": "+ delivered modernization" },
       "evidence": ["VB6→ASP.NET playbook", "vb6-to-aspnet-migration scenario", "C#/T-SQL extraction works today"],
       "blockers": ["no VB6/VB.NET/Oracle PL/SQL extractor (gap-only)", "no assisted migration tooling"],
       "proofRequiredFor100": "Legacy-language extraction + assisted migration with behavioural parity tests, delivered on a real app."
     },
     {
-      "id": 16, "name": "Repository Understanding Capability", "currentScore": 70, "confidence": "High",
+      "id": 16, "name": "Repository Understanding Capability", "currentScore": 80, "confidence": "High",
       "criteria": { "0": "none", "25": "file listing", "50": "symbol extraction", "75": "C#/T-SQL symbols + references + graph + impact + retrieval + coverage/gap, benchmark Gold", "90": "+ multi-language (Python, VB) + semantic resolution", "100": "+ full-fidelity cross-language understanding, externally validated" },
-      "evidence": ["KE-008/009/010 deterministic extraction", "vCodeGraph", "impact analysis", "coverage/gap honesty", "benchmark Gold on 3 repos"],
-      "blockers": ["C#/T-SQL only (Python/VB/Razor unsupported, reported as gaps)", "syntactic, no semantic model"],
-      "proofRequiredFor100": "Multi-language + semantic-resolution understanding validated externally across diverse estates."
+      "evidence": ["KE-008/009/010 deterministic extraction", "vCodeGraph", "impact analysis", "coverage/gap honesty", "benchmark Gold on 3 repos", "R2-ACC-CAP1 C#↔SQL bridge (AccessesSql edges, both directions, tested + benchmark fixture Gold)", "R2-ACC-CAP3 Python extractor (classes/async/FastAPI + Python↔SQL bridge, benchmark fixture Gold)"],
+      "blockers": ["C#/T-SQL/Python now supported; VB.NET/Oracle PL/SQL/Razor still gap-only", "syntactic, no semantic model"],
+      "proofRequiredFor100": "Full semantic resolution + the remaining languages (VB/Oracle), validated externally across diverse estates."
     },
     {
-      "id": 17, "name": "Cross-System / Estate Understanding Capability", "currentScore": 30, "confidence": "Medium",
+      "id": 17, "name": "Cross-System / Estate Understanding Capability", "currentScore": 45, "confidence": "Medium",
       "criteria": { "0": "none", "25": "single repo", "50": "object-scoped identity (schema survives re-import)", "75": "+ cross-repo estate model + shared-DB identity", "90": "+ estate-wide impact across systems", "100": "+ validated estate model over the real estate" },
-      "evidence": ["object-scoped schema identity (KE-009)", "portable Uid identity"],
-      "blockers": ["no cross-repository estate model yet (R2-P2 future)", "no shared-DB cross-system linking"],
-      "proofRequiredFor100": "Cross-repository estate model with shared-DB identity, validated across the real estate (BDM/MCIB/ETAMS/ChequeXpert)."
+      "evidence": ["object-scoped schema identity (KE-009)", "portable Uid identity", "R2-ACC-CAP1/CAP3 code↔schema linking within a repo (C# and Python methods linked to SQL tables/procs with evidence)"],
+      "blockers": ["linking is within a single repo/project; no cross-REPOSITORY estate model yet (R2-P2)", "no shared-DB cross-system linking across BDM/MCIB/ETAMS/ChequeXpert"],
+      "proofRequiredFor100": "Cross-repository estate model with shared-DB identity, validated across the real estate."
     },
     {
       "id": 18, "name": "User Experience / Demo Readiness", "currentScore": 60, "confidence": "High",

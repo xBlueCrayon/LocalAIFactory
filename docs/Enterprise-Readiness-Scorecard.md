@@ -4,7 +4,9 @@ Companion to [`readiness-scorecard.json`](readiness-scorecard.json) (the authori
 `/Readiness` page. Scores are conservative; 100% means implemented + tested + demonstrated + documented +
 reviewable. See [`Readiness-Maturity-Model.md`](Readiness-Maturity-Model.md) for the scoring discipline.
 
-**As of:** commit `138a59b` (R2-ACC-B3); scorecard ships in R2-ACC-POC-ENTERPRISE. **Reviewed:** 2026-06-21.
+**As of:** R2-ACC-CAPABILITY-MAX (capability sprint). **Reviewed:** 2026-06-21. The table below is the
+pre-sprint baseline; the **authoritative current scores** live in `readiness-scorecard.json` and render at
+`/Readiness`. The capability sprint raised specific scores — see the update note at the foot of this file.
 
 | # | Area | Score | Confidence | Headline evidence | Top blocker |
 |---|---|---:|---|---|---|
@@ -31,7 +33,25 @@ reviewable. See [`Readiness-Maturity-Model.md`](Readiness-Maturity-Model.md) for
 | 21 | Enterprise ERP / Infra Advisory | 40 | Med | ERP/infra scenarios+comparison | advisory only |
 | 22 | Vendor-Style Solution Design | 40 | Med | playbooks+scenarios+rubric | designs not yet delivered |
 
-**Overall mean ≈ 45%** — a strong technical POC / early pilot with a clear, honest path forward. Core
-engineering (security, repository understanding, ingestion, audit, governance, benchmark) is the most mature;
-domain *implementation*, deployment/ops, and commercial/autonomous areas are deliberately low until shipped
-and proven. The per-area `proofRequiredFor100` in the JSON defines exactly what raises each score.
+**Overall mean ≈ 45%** (pre-sprint) → **≈ 49%** after R2-ACC-CAPABILITY-MAX — a strong technical POC / early
+pilot with a clear, honest path forward. Core engineering (security, repository understanding, ingestion,
+audit, governance, benchmark) is the most mature; domain *implementation*, deployment/ops, and
+commercial/autonomous areas remain deliberately low until shipped and proven. The per-area
+`proofRequiredFor100` in the JSON defines exactly what raises each score.
+
+## R2-ACC-CAPABILITY-MAX update (scores raised only where shipped, tested evidence improved)
+
+| # | Area | Before → After | Why (shipped + tested) |
+|---|---|---|---|
+| 16 | Repository Understanding | 70 → **80** | C#↔SQL bridge (AccessesSql edges, both directions) + Python extractor; benchmark fixtures Gold |
+| 11 | Benchmark & Evidence | 70 → **80** | Smoke/Standard/Extended tiers + `--suite` + 2 bridge fixtures (Gold 4/4) + governance metadata |
+| 17 | Cross-System / Estate | 30 → **45** | code↔schema linking within a repo (C#/Python methods → SQL objects with evidence) |
+| 5 | Autonomous Engineering | 20 → **35** | command allow/deny policy + dry-run planner (tested: dangerous commands denied, commit/push gated, executes nothing) |
+| 9 | Deployment | 40 → **50** | docker-compose (cpu/gpu), Dockerfile, `.env.example`, backup/restore-verify/health/smoke/windows-deploy scripts (validated) |
+| 14 | Document Intelligence / OCR | 20 → **30** | PDF analyzer (hash/classify/provenance) + extractive summarizer + cheque risk-triage engine (all tested) |
+| 13 | Banking / Finance | 45 → **50** | "stored proc → C# blast radius" now demonstrable via the bridge fixture |
+| 15 | Legacy Modernization | 25 → **30** | Python added as a supported language (VB6/Oracle still gap-only) |
+| 10 | Supportability & Ops | 35 → **40** | health-check + deploy-smoke scripts |
+| 1 | Technical POC | 75 → **80** | 199 tests, bridge UI evidence, two more benchmark fixtures |
+
+No area reached 100. Nothing was raised without shipped, tested evidence. See `Gap-Closure-Roadmap-To-100.md`.
