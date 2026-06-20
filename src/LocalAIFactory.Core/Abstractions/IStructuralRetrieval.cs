@@ -20,15 +20,18 @@ public sealed record SymbolHit(
     string? ParentFullName);
 
 // KE-011: one edge in an answer — the related symbol, the relationship, where the edge came from
-// (containment vs reference), and its direction relative to the queried object.
+// (containment vs reference), its direction relative to the queried object, and the edge confidence
+// (1.0 = deterministic, e.g. SQL FK / containment; < 1.0 = syntax-only name resolution, e.g. C# refs).
 public sealed record GraphNeighbor(
     SymbolHit Symbol,
     RelationType RelationType,
     string EdgeSource,   // "containment" | "reference"
-    string Direction);   // "incoming" (depends on the query) | "outgoing" (the query depends on it)
+    string Direction,    // "incoming" (depends on the query) | "outgoing" (the query depends on it)
+    double Confidence = 1.0);
 
-// KE-011: a node in an impact/blast-radius result, with the hop distance and the edge that reached it.
-public sealed record ImpactNode(SymbolHit Symbol, RelationType RelationType, int Depth, string ViaFullName);
+// KE-011: a node in an impact/blast-radius result, with the hop distance, the edge that reached it, and
+// the edge confidence (lowest along the path is the honest floor; here the immediate edge's confidence).
+public sealed record ImpactNode(SymbolHit Symbol, RelationType RelationType, int Depth, string ViaFullName, double Confidence = 1.0);
 
 // KE-011: the full blast radius of a change to a target, split into direct (1 hop) and transitive (>1).
 public sealed record ImpactResult(

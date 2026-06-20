@@ -1,21 +1,34 @@
 using System.Text.Json;
+using LocalAIFactory.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LocalAIFactory.Web.Controllers;
 
 // P2 Pilot UX — Benchmark Dashboard. Trust first: this is the first screen of the pilot. It surfaces the
 // Validation Harness's authoritative Bronze/Silver/Gold scores so a user sees proven capability before
 // exploring. Reads the harness report (benchmarks/reports/latest.json); shows an empty state if absent.
+// P2.1: cards and proofs link into the matching imported project so "trust -> explore" flows without
+// the user having to discover the Explore nav.
 public sealed class BenchmarksController : Controller
 {
     private readonly IWebHostEnvironment _env;
-    public BenchmarksController(IWebHostEnvironment env) => _env = env;
+    private readonly AppDbContext _db;
+    public BenchmarksController(IWebHostEnvironment env, AppDbContext db) { _env = env; _db = db; }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(CancellationToken ct)
     {
         var path = LocateReport(_env.ContentRootPath);
         if (path is null || !System.IO.File.Exists(path))
             return View(new List<BenchmarkRow>());
+
+        // Map a benchmark repo name -> an imported project that has structural symbols (so cards can deep-link).
+        var projects = await _db.Projects.Select(p => new { p.Id, p.Name }).ToListAsync(ct);
+        var withSymbols = (await _db.CodeSymbols.Select(s => s.ProjectId).Distinct().ToListAsync(ct))
+            .Where(x => x.HasValue).Select(x => x!.Value).ToHashSet();
+        int? ProjectIdFor(string name) => projects
+            .Where(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase) && withSymbols.Contains(p.Id))
+            .Select(p => (int?)p.Id).FirstOrDefault();
 
         var rows = new List<BenchmarkRow>();
         try
@@ -34,13 +47,16 @@ public sealed class BenchmarksController : Controller
                 var graph = Tier("graph", Get("GraphAccuracy"));
                 var retrieval = Tier("retrieval", Get("RetrievalAccuracy"));
                 var impact = Tier("impact", Get("ImpactAccuracy"));
+                var name = GetS("Name");
                 rows.Add(new BenchmarkRow(
-                    GetS("Name"), GetS("Bucket"), GetS("Sha"),
+                    name, GetS("Bucket"), GetS("Sha"), ProjectIdFor(name),
                     GetI("Symbols"), GetI("Edges"), GetI("References"),
                     povPass, pov.Count, r.TryGetProperty("Convergent", out var c) && c.GetBoolean(),
                     discovery, graph, retrieval, impact, Lowest(discovery, graph, retrieval, impact),
                     pov.Select(p => new PovRow(
                         p.GetProperty("Question").GetString() ?? "",
+                        p.TryGetProperty("Mode", out var m) ? m.GetString() ?? "" : "",
+                        p.TryGetProperty("Target", out var tg) ? tg.GetString() ?? "" : "",
                         p.TryGetProperty("Passed", out var b) && b.GetBoolean(),
                         p.TryGetProperty("Count", out var n) ? n.GetInt32() : 0)).ToList()));
             }
@@ -69,8 +85,8 @@ public sealed class BenchmarksController : Controller
         _ => v >= 0.95 ? "Gold" : v >= 0.85 ? "Silver" : v > 0 ? "Bronze" : "None"
     };
 
-    public record BenchmarkRow(string Name, string Bucket, string Sha, int Symbols, int Edges, int References,
-        int PovPass, int PovTotal, bool Convergent, string Discovery, string Graph, string Retrieval,
+    public record BenchmarkRow(string Name, string Bucket, string Sha, int? ProjectId, int Symbols, int Edges,
+        int References, int PovPass, int PovTotal, bool Convergent, string Discovery, string Graph, string Retrieval,
         string Impact, string Overall, List<PovRow> Pov);
-    public record PovRow(string Question, bool Passed, int Count);
+    public record PovRow(string Question, string Mode, string Target, bool Passed, int Count);
 }

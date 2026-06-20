@@ -51,7 +51,7 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
         // Incoming reference edges: things that reference the target(s).
         var edges = await _db.CodeEdges
             .Where(e => e.ProjectId == projectId && targetIds.Contains(e.ToSymbolId))
-            .Select(e => new { e.FromSymbolId, e.RelationType })
+            .Select(e => new { e.FromSymbolId, e.RelationType, e.Confidence })
             .ToListAsync(ct);
 
         var fromSyms = await _db.CodeSymbols.Where(s => edges.Select(x => x.FromSymbolId).Contains(s.Id)).ToListAsync(ct);
@@ -59,7 +59,7 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
 
         var result = edges
             .Where(e => hitById.ContainsKey(e.FromSymbolId))
-            .Select(e => new GraphNeighbor(hitById[e.FromSymbolId], e.RelationType, "reference", "incoming"))
+            .Select(e => new GraphNeighbor(hitById[e.FromSymbolId], e.RelationType, "reference", "incoming", e.Confidence))
             .ToList();
         await LogAsync(projectId, identifier, "dependents", result.Count, ct);
         return result;
@@ -76,12 +76,12 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
         // Outgoing reference edges: what the target references.
         var edges = await _db.CodeEdges
             .Where(e => e.ProjectId == projectId && targetIds.Contains(e.FromSymbolId))
-            .Select(e => new { e.ToSymbolId, e.RelationType })
+            .Select(e => new { e.ToSymbolId, e.RelationType, e.Confidence })
             .ToListAsync(ct);
         var toSyms = await _db.CodeSymbols.Where(s => edges.Select(x => x.ToSymbolId).Contains(s.Id)).ToListAsync(ct);
         var hitById = (await BuildHitsAsync(toSyms, ct)).ToDictionary(h => h.Id);
         outgoing.AddRange(edges.Where(e => hitById.ContainsKey(e.ToSymbolId))
-            .Select(e => new GraphNeighbor(hitById[e.ToSymbolId], e.RelationType, "reference", "outgoing")));
+            .Select(e => new GraphNeighbor(hitById[e.ToSymbolId], e.RelationType, "reference", "outgoing", e.Confidence)));
 
         // Containment: the target's parent (PartOf).
         var parentIds = targets.Where(t => t.ParentSymbolId is int).Select(t => t.ParentSymbolId!.Value).ToHashSet();
@@ -103,17 +103,17 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
 
         // Preload the project's edges and lightweight nodes once, then BFS in memory (bounded, deterministic).
         var edges = await _db.CodeEdges.Where(e => e.ProjectId == projectId)
-            .Select(e => new { e.FromSymbolId, e.ToSymbolId, e.RelationType }).ToListAsync(ct);
+            .Select(e => new { e.FromSymbolId, e.ToSymbolId, e.RelationType, e.Confidence }).ToListAsync(ct);
         var nodes = await _db.CodeSymbols.Where(s => s.ProjectId == projectId)
             .Select(s => new { s.Id, s.FullName, s.Kind, s.ParentSymbolId }).ToListAsync(ct);
         var nodeById = nodes.ToDictionary(n => n.Id);
 
-        // Incoming adjacency: target -> [(dependent, relation)].
-        var incoming = new Dictionary<int, List<(int From, RelationType Rel)>>();
+        // Incoming adjacency: target -> [(dependent, relation, confidence)].
+        var incoming = new Dictionary<int, List<(int From, RelationType Rel, double Conf)>>();
         foreach (var e in edges)
         {
             if (!incoming.TryGetValue(e.ToSymbolId, out var list)) incoming[e.ToSymbolId] = list = new();
-            list.Add((e.FromSymbolId, e.RelationType));
+            list.Add((e.FromSymbolId, e.RelationType, e.Confidence));
         }
 
         // Seed: the target(s), plus the owning object of any member target (a column pulls in its table).
@@ -122,7 +122,7 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
             if (IsMember(t.Kind) && t.ParentSymbolId is int pid) seed.Add(pid);
 
         var visited = new HashSet<int>(seed);
-        var found = new List<(int Id, RelationType Rel, int Depth, string Via)>();
+        var found = new List<(int Id, RelationType Rel, int Depth, string Via, double Conf)>();
         var frontier = new HashSet<int>(seed);
         int depth = 1, maxReached = 0; bool truncated = false;
 
@@ -133,11 +133,11 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
             {
                 if (!incoming.TryGetValue(toId, out var deps)) continue;
                 var viaName = nodeById.TryGetValue(toId, out var vn) ? vn.FullName : "";
-                foreach (var (fromId, rel) in deps)
+                foreach (var (fromId, rel, conf) in deps)
                 {
                     if (visited.Contains(fromId)) continue;
                     visited.Add(fromId);
-                    found.Add((fromId, rel, depth, viaName));
+                    found.Add((fromId, rel, depth, viaName, conf));
                     next.Add(fromId);
                     // member dependents (a FK/constraint) flow up to their owning table so impact propagates.
                     if (nodeById.TryGetValue(fromId, out var fn) && IsMember(fn.Kind) && fn.ParentSymbolId is int p && !visited.Contains(p))
@@ -158,7 +158,7 @@ public sealed class StructuralRetrievalService : IStructuralRetrievalService
         var targetHit = (await BuildHitsAsync(new List<CodeSymbol> { targets[0] }, ct)).First();
 
         var impactNodes = found.Where(f => hitById.ContainsKey(f.Id))
-            .Select(f => new ImpactNode(hitById[f.Id], f.Rel, f.Depth, f.Via)).ToList();
+            .Select(f => new ImpactNode(hitById[f.Id], f.Rel, f.Depth, f.Via, f.Conf)).ToList();
 
         await LogAsync(projectId, identifier, "impact", impactNodes.Count, ct);
         return new ImpactResult(

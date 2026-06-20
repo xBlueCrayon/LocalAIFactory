@@ -96,6 +96,18 @@ public sealed class GraphController : Controller
         return View(impact);
     }
 
+    // Deep-link by identifier (used by clickable Proof-of-Vision examples): resolve the symbol and land on
+    // its Dependency Explorer; fall back to Search when ambiguous/not found.
+    public async Task<IActionResult> Lookup(int projectId, string? q, CancellationToken ct)
+    {
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            var hits = await _retrieval.FindByIdentifierAsync(projectId, q!, 1, ct);
+            if (hits.Count > 0) return RedirectToAction(nameof(Symbol), new { projectId, id = hits[0].Id });
+        }
+        return RedirectToAction(nameof(Search), new { projectId, q });
+    }
+
     // Retrieval Search — unified cited lookup (the Proof-of-Vision query box).
     public async Task<IActionResult> Search(int projectId, string? q, CancellationToken ct)
     {

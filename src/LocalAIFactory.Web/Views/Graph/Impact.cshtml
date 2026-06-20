@@ -4,6 +4,7 @@
 
 <h4 class="mb-1"><i class="bi bi-radioactive me-2"></i>Impact Analysis <span class="text-muted fs-6">@ViewBag.Project</span></h4>
 <div class="text-muted small mb-3">What breaks if this changes — transitive blast radius over the dependency graph.</div>
+@await Html.PartialAsync("_ProjectNav", (pid, "impact"))
 
 <form asp-action="Impact" method="get" class="d-flex gap-2 mb-3">
     <input type="hidden" name="projectId" value="@pid" />
@@ -24,6 +25,7 @@ else
         <strong>@Model.Target.FullName</strong>
         <span class="text-muted">— @(Model.Direct.Count + Model.Transitive.Count) affected symbols across @Model.MaxDepthReached hop(s)@(Model.Truncated ? ", truncated" : "")</span>
     </div>
+    @await Html.PartialAsync("_RelationLegend")
     <div class="row g-3">
         <div class="col-md-6">
             <div class="card h-100"><div class="card-body">
@@ -31,8 +33,10 @@ else
                 @foreach (var n in Model.Direct)
                 {
                     <div class="d-flex align-items-center border-bottom py-1">
-                        <a asp-action="Symbol" asp-route-projectId="@pid" asp-route-id="@n.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:280px" title="@n.Symbol.FullName">@n.Symbol.FullName</a>
-                        <span class="badge @GraphLabels.RelationBadge(n.RelationType) ms-auto">@n.RelationType</span>
+                        <a asp-action="Symbol" asp-route-projectId="@pid" asp-route-id="@n.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:240px" title="@n.Symbol.FullName">@n.Symbol.FullName</a>
+                        <span class="ms-auto"></span>
+                        <span class="badge @GraphLabels.RelationBadge(n.RelationType)">@n.RelationType</span>
+                        <span class="badge text-bg-dark ms-1" title="@(n.Confidence >= 1.0 ? "deterministic" : "syntax-only")">@n.Confidence.ToString("0.00")</span>
                     </div>
                 }
             </div></div>

@@ -13,6 +13,7 @@
         <button class="btn btn-primary btn-sm"><i class="bi bi-search"></i></button>
     </form>
 </div>
+@await Html.PartialAsync("_ProjectNav", (Model.Project.Id, "overview"))
 
 <div class="row text-center g-3 mb-3">
     <div class="col"><div class="card"><div class="card-body py-3"><div class="fs-3 fw-semibold">@Model.Symbols</div><div class="text-muted small">symbols</div></div></div></div>
@@ -47,9 +48,11 @@
             @if (!Model.Top.Any()) { <div class="text-muted small">No edges yet.</div> }
             @foreach (var t in Model.Top)
             {
+                var parts = t.FullName.Split('.');
+                var shortName = parts.Length > 2 ? "…" + string.Join('.', parts[^2..]) : t.FullName;
                 <div class="d-flex justify-content-between border-bottom py-1">
-                    <a asp-action="Symbol" asp-route-projectId="@Model.Project.Id" asp-route-id="@t.Id" class="text-truncate text-decoration-none" style="max-width:220px" title="@t.FullName">@t.FullName</a>
-                    <span class="badge text-bg-secondary">@t.IncomingCount</span>
+                    <a asp-action="Symbol" asp-route-projectId="@Model.Project.Id" asp-route-id="@t.Id" class="text-decoration-none text-truncate" style="max-width:220px;direction:rtl;text-align:left" title="@t.FullName">@shortName</a>
+                    <span class="badge text-bg-secondary" title="@t.IncomingCount dependents">@t.IncomingCount</span>
                 </div>
             }
         </div></div>

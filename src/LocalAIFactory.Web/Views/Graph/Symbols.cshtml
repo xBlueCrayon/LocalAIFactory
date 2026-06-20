@@ -3,7 +3,8 @@
 @{ ViewData["Title"] = "Symbol Explorer"; var pid = (int)ViewBag.ProjectId; }
 
 <h4 class="mb-1"><i class="bi bi-search me-2"></i>Symbol Explorer <span class="text-muted fs-6">@ViewBag.Project</span></h4>
-<div class="text-muted small mb-3">Exact-identifier lookup over the indexed graph.</div>
+<div class="text-muted small mb-3">Exact-identifier lookup over the indexed graph. Try a type, table, interface or service name.</div>
+@await Html.PartialAsync("_ProjectNav", (pid, "symbols"))
 
 <form asp-action="Symbols" method="get" class="d-flex gap-2 mb-3">
     <input type="hidden" name="projectId" value="@pid" />

@@ -1,0 +1,9 @@
+@model (int ProjectId, string Active)
+@{ string A(string n) => Model.Active == n ? "active" : ""; }
+@* P2.1 — persistent within-project sub-navigation so the four screens are reachable without the back button. *@
+<ul class="nav nav-pills mb-3 small">
+    <li class="nav-item"><a class="nav-link @A("overview")" asp-controller="Graph" asp-action="Project" asp-route-id="@Model.ProjectId"><i class="bi bi-grid me-1"></i>Overview</a></li>
+    <li class="nav-item"><a class="nav-link @A("symbols")" asp-controller="Graph" asp-action="Symbols" asp-route-projectId="@Model.ProjectId"><i class="bi bi-search me-1"></i>Symbols</a></li>
+    <li class="nav-item"><a class="nav-link @A("impact")" asp-controller="Graph" asp-action="Impact" asp-route-projectId="@Model.ProjectId"><i class="bi bi-radioactive me-1"></i>Impact</a></li>
+    <li class="nav-item"><a class="nav-link @A("search")" asp-controller="Graph" asp-action="Search" asp-route-projectId="@Model.ProjectId"><i class="bi bi-chat-square-text me-1"></i>Search</a></li>
+</ul>

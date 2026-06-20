@@ -4,15 +4,27 @@
     string TierStyle(string t) => t switch {
         "Gold" => "background:#d4af37;color:#1a1a1a", "Silver" => "background:#9aa0a6;color:#111",
         "Bronze" => "background:#cd7f32;color:#fff", _ => "background:#444;color:#ddd" };
+    string AxisTip(string a) => a switch {
+        "discovery" => "Discovery — share of source files the engine parsed into symbols.",
+        "graph" => "Graph — the dependency graph is convergent (stable) and answers the proof questions correctly.",
+        "retrieval" => "Retrieval — exact-identifier and 'what depends on X' questions return the expected results.",
+        "impact" => "Impact — 'what breaks if X changes' returns the correct blast radius.", _ => "" };
 }
 
-<div class="d-flex align-items-center mb-3">
-    <div>
-        <h4 class="mb-1"><i class="bi bi-trophy me-2"></i>Capability Benchmarks</h4>
-        <div class="text-muted small">Deterministic Bronze / Silver / Gold scores from the Validation Harness — proven on MSSQL alone, no model or vectors. Trust first, then explore.</div>
+<div class="mb-4">
+    <h4 class="mb-1"><i class="bi bi-trophy me-2"></i>Capability Benchmarks</h4>
+    <p class="text-muted mb-2" style="max-width:820px">
+        LocalAIFactory maps the structure of a codebase — every class, table, interface and their dependencies —
+        <strong>deterministically, from MSSQL alone</strong>, with no AI model or vector database required. These cards
+        are the <strong>Validation Harness</strong> running three real open-source repositories and proving it can answer
+        impact and dependency questions correctly. <strong>Click a card to explore that repository yourself.</strong>
+    </p>
+    <div class="small text-muted">
+        Tiers (lowest axis wins):
+        <span class="badge ms-1" style="@TierStyle("Gold")">Gold</span> proven on every axis ·
+        <span class="badge" style="@TierStyle("Silver")">Silver</span> strong ·
+        <span class="badge" style="@TierStyle("Bronze")">Bronze</span> works, with a coverage or accuracy gap.
     </div>
-    <span class="spacer ms-auto"></span>
-    <a class="btn btn-outline-secondary btn-sm" asp-controller="Graph" asp-action="Index"><i class="bi bi-diagram-3 me-1"></i>Explore the graph</a>
 </div>
 
 @if (!Model.Any())
@@ -25,15 +37,22 @@ else
     <div class="row g-3">
     @foreach (var r in Model)
     {
+        var explore = r.ProjectId is int pid;
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm @(explore ? "border-primary-subtle" : "")">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
-                        <h5 class="card-title mb-0">@r.Name</h5>
+                        <h5 class="card-title mb-0">
+                            @if (explore) { <a class="text-decoration-none stretched-link-not" asp-controller="Graph" asp-action="Project" asp-route-id="@r.ProjectId">@r.Name</a> }
+                            else { @r.Name }
+                        </h5>
                         <span class="badge ms-auto" style="@TierStyle(r.Overall)">@r.Overall</span>
                     </div>
-                    <div class="text-muted small mb-3"><i class="bi bi-tag me-1"></i>@r.Bucket
-                        @if (r.Convergent) { <span class="ms-2 text-success"><i class="bi bi-check-circle"></i> convergent</span> }</div>
+                    <div class="text-muted small mb-3">
+                        <i class="bi bi-tag me-1"></i>@r.Bucket
+                        @if (r.Convergent) { <span class="ms-2 text-success" title="Re-running the analysis produces an identical graph."><i class="bi bi-check-circle"></i> convergent</span> }
+                        @if (!string.IsNullOrEmpty(r.Sha)) { <span class="ms-2" title="Pinned commit / source snapshot"><i class="bi bi-git"></i> @(r.Sha.Length > 10 ? r.Sha.Substring(0,10) : r.Sha)</span> }
+                    </div>
 
                     <div class="row text-center mb-3">
                         <div class="col"><div class="fs-5 fw-semibold">@r.Symbols</div><div class="text-muted small">symbols</div></div>
@@ -41,23 +60,40 @@ else
                         <div class="col"><div class="fs-5 fw-semibold">@r.PovPass/@r.PovTotal</div><div class="text-muted small">proofs</div></div>
                     </div>
 
-                    <div class="d-flex flex-wrap gap-1 mb-3">
-                        <span class="badge rounded-pill" style="@TierStyle(r.Discovery)">discovery @r.Discovery</span>
-                        <span class="badge rounded-pill" style="@TierStyle(r.Graph)">graph @r.Graph</span>
-                        <span class="badge rounded-pill" style="@TierStyle(r.Retrieval)">retrieval @r.Retrieval</span>
-                        <span class="badge rounded-pill" style="@TierStyle(r.Impact)">impact @r.Impact</span>
+                    <div class="d-flex flex-wrap gap-1 mb-2">
+                        <span class="badge rounded-pill" style="@TierStyle(r.Discovery)" title="@AxisTip("discovery")">discovery @r.Discovery</span>
+                        <span class="badge rounded-pill" style="@TierStyle(r.Graph)" title="@AxisTip("graph")">graph @r.Graph</span>
+                        <span class="badge rounded-pill" style="@TierStyle(r.Retrieval)" title="@AxisTip("retrieval")">retrieval @r.Retrieval</span>
+                        <span class="badge rounded-pill" style="@TierStyle(r.Impact)" title="@AxisTip("impact")">impact @r.Impact</span>
                     </div>
+                    @if (r.Overall == "Bronze")
+                    {
+                        <div class="small text-muted mb-2"><i class="bi bi-info-circle me-1"></i>Bronze: some source files contain no type declarations (e.g. global-usings), lowering file coverage. All proofs still pass.</div>
+                    }
 
+                    <div class="small text-muted text-uppercase mb-1" style="font-size:.7rem;letter-spacing:.05em">Proof of vision @(explore ? "— click to run" : "")</div>
                     <ul class="list-unstyled small mb-0">
                         @foreach (var p in r.Pov)
                         {
                             <li class="mb-1">
                                 @if (p.Passed) { <i class="bi bi-check-circle-fill text-success me-1"></i> } else { <i class="bi bi-x-circle-fill text-danger me-1"></i> }
-                                @p.Question <span class="text-muted">(n=@p.Count)</span>
+                                @if (explore && !string.IsNullOrEmpty(p.Target))
+                                {
+                                    var act = p.Mode == "impact" ? "Impact" : "Lookup";
+                                    <a class="text-decoration-none" asp-controller="Graph" asp-action="@act" asp-route-projectId="@r.ProjectId" asp-route-q="@p.Target">@p.Question</a>
+                                }
+                                else { @p.Question }
+                                <span class="text-muted">(n=@p.Count)</span>
                             </li>
                         }
                     </ul>
                 </div>
+                @if (explore)
+                {
+                    <div class="card-footer bg-transparent border-top-0 pt-0">
+                        <a class="btn btn-sm btn-outline-primary w-100" asp-controller="Graph" asp-action="Project" asp-route-id="@r.ProjectId"><i class="bi bi-diagram-3 me-1"></i>Explore @r.Name</a>
+                    </div>
+                }
             </div>
         </div>
     }

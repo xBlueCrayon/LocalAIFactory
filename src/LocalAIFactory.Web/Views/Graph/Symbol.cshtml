@@ -14,6 +14,8 @@
     <span class="ms-auto"></span>
     <a class="btn btn-outline-danger btn-sm" asp-action="Impact" asp-route-projectId="@Model.ProjectId" asp-route-q="@Model.Symbol.FullName"><i class="bi bi-radioactive me-1"></i>Impact analysis</a>
 </div>
+@await Html.PartialAsync("_ProjectNav", (Model.ProjectId, ""))
+@await Html.PartialAsync("_RelationLegend")
 
 <div class="row g-3">
     <div class="col-md-6">
@@ -23,8 +25,10 @@
             @foreach (var d in Model.Dependents)
             {
                 <div class="d-flex align-items-center border-bottom py-1">
-                    <span class="text-truncate" style="max-width:300px" title="@d.Symbol.FullName">@d.Symbol.FullName</span>
-                    <span class="badge @GraphLabels.RelationBadge(d.RelationType) ms-auto">@d.RelationType</span>
+                    <a asp-action="Symbol" asp-route-projectId="@Model.ProjectId" asp-route-id="@d.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:260px" title="@d.Symbol.FullName">@d.Symbol.FullName</a>
+                    <span class="ms-auto"></span>
+                    <span class="badge @GraphLabels.RelationBadge(d.RelationType)" title="@d.EdgeSource">@d.RelationType</span>
+                    <span class="badge text-bg-dark ms-1" title="@(d.Confidence >= 1.0 ? "deterministic" : "syntax-only name resolution")">@d.Confidence.ToString("0.00")</span>
                 </div>
             }
         </div></div>
@@ -36,8 +40,10 @@
             @foreach (var d in Model.Dependencies)
             {
                 <div class="d-flex align-items-center border-bottom py-1">
-                    <span class="text-truncate" style="max-width:300px" title="@d.Symbol.FullName">@d.Symbol.FullName</span>
-                    <span class="badge @GraphLabels.RelationBadge(d.RelationType) ms-auto">@d.RelationType</span>
+                    <a asp-action="Symbol" asp-route-projectId="@Model.ProjectId" asp-route-id="@d.Symbol.Id" class="text-truncate text-decoration-none" style="max-width:260px" title="@d.Symbol.FullName">@d.Symbol.FullName</a>
+                    <span class="ms-auto"></span>
+                    <span class="badge @GraphLabels.RelationBadge(d.RelationType)" title="@d.EdgeSource">@d.RelationType</span>
+                    <span class="badge text-bg-dark ms-1" title="@(d.Confidence >= 1.0 ? "deterministic" : "syntax-only name resolution")">@d.Confidence.ToString("0.00")</span>
                 </div>
             }
         </div></div>
