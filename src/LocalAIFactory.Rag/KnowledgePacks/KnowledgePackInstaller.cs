@@ -41,7 +41,7 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
     public async Task<KnowledgePackInstallResult> InstallAsync(string packDirectory, string actor, CancellationToken ct = default)
     {
         // ---- 1. Load + validate the whole pack in memory (no DB writes yet) ----
-        var (manifest, items, manifestHash, errors) = await LoadAndValidateAsync(packDirectory, ct);
+        var (manifest, items, sourceTitles, manifestHash, errors) = await LoadAndValidateAsync(packDirectory, ct);
         if (errors.Count > 0)
         {
             _log.LogWarning("Knowledge pack install rejected ({Count} validation error(s)): {First}", errors.Count, errors[0]);
@@ -86,7 +86,7 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
             {
                 ct.ThrowIfCancellationRequested();
                 var uid = Guid.Parse(dto.Uid!);
-                var content = Render(dto);
+                var content = Render(dto, sourceTitles);
                 var incomingHash = _hasher.Compute(content);
                 var existing = await _db.KnowledgeItems.FirstOrDefaultAsync(k => k.Uid == uid, ct);
 
@@ -194,18 +194,19 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
 
     // ---------------- load + validate ----------------
 
-    private async Task<(PackManifestDto? manifest, List<PackItemDto> items, string hash, List<string> errors)>
+    private async Task<(PackManifestDto? manifest, List<PackItemDto> items, Dictionary<string, string> sourceTitles, string hash, List<string> errors)>
         LoadAndValidateAsync(string packDirectory, CancellationToken ct)
     {
         var errors = new List<string>();
         var items = new List<PackItemDto>();
+        var sourceTitles = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         if (!Directory.Exists(packDirectory))
-            return (null, items, "", new List<string> { $"Pack directory not found: {packDirectory}" });
+            return (null, items, sourceTitles, "", new List<string> { $"Pack directory not found: {packDirectory}" });
 
         var manifestPath = Path.Combine(packDirectory, "manifest.json");
         if (!File.Exists(manifestPath))
-            return (null, items, "", new List<string> { "manifest.json not found in pack directory." });
+            return (null, items, sourceTitles, "", new List<string> { "manifest.json not found in pack directory." });
 
         PackManifestDto? manifest;
         string manifestText;
@@ -214,17 +215,50 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
             manifestText = await File.ReadAllTextAsync(manifestPath, ct);
             manifest = JsonSerializer.Deserialize<PackManifestDto>(manifestText, Json);
         }
-        catch (Exception ex) { return (null, items, "", new List<string> { "manifest.json is not valid JSON: " + ex.Message }); }
+        catch (Exception ex) { return (null, items, sourceTitles, "", new List<string> { "manifest.json is not valid JSON: " + ex.Message }); }
 
-        if (manifest is null) return (null, items, "", new List<string> { "manifest.json deserialized to null." });
+        if (manifest is null) return (null, items, sourceTitles, "", new List<string> { "manifest.json deserialized to null." });
         if (string.IsNullOrWhiteSpace(manifest.PackUid) || !Guid.TryParse(manifest.PackUid, out _))
             errors.Add("manifest.packUid is missing or not a valid GUID.");
         if (string.IsNullOrWhiteSpace(manifest.Name)) errors.Add("manifest.name is required.");
         if (string.IsNullOrWhiteSpace(manifest.Version)) errors.Add("manifest.version is required.");
         if (manifest.Files is null || manifest.Files.Count == 0) errors.Add("manifest.files is empty.");
 
-        // Hash covers manifest + every category file so a re-install can detect "nothing changed".
+        // Hash covers manifest + the source registry + every category file so a re-install detects any change.
         var hashSb = new StringBuilder(manifestText);
+
+        // R2-ACC-B2 (v1.2): source registry. Validated for required metadata + unique sourceUids; items may
+        // then reference these sources. Optional — a pack without a registry behaves exactly as v1.
+        var registeredSources = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (!string.IsNullOrWhiteSpace(manifest.SourceRegistry))
+        {
+            var regPath = Path.Combine(packDirectory, manifest.SourceRegistry!);
+            if (!File.Exists(regPath)) errors.Add($"Source registry not found: {manifest.SourceRegistry}");
+            else
+            {
+                SourceRegistryDto? reg = null;
+                try { var regText = await File.ReadAllTextAsync(regPath, ct); hashSb.Append(' ').Append(regText); reg = JsonSerializer.Deserialize<SourceRegistryDto>(regText, Json); }
+                catch (Exception ex) { errors.Add($"{manifest.SourceRegistry} is not valid JSON: {ex.Message}"); }
+                if (reg?.Sources is null || reg.Sources.Count == 0) errors.Add($"{manifest.SourceRegistry} has no sources.");
+                foreach (var s in reg?.Sources ?? new List<SourceDto>())
+                {
+                    var w = $"source '{s.SourceUid ?? s.Title ?? "?"}'";
+                    if (string.IsNullOrWhiteSpace(s.SourceUid)) errors.Add($"{w}: sourceUid is required.");
+                    else if (!registeredSources.Add(s.SourceUid)) errors.Add($"{w}: duplicate sourceUid.");
+                    if (string.IsNullOrWhiteSpace(s.Title)) errors.Add($"{w}: title is required.");
+                    if (string.IsNullOrWhiteSpace(s.SourceType)) errors.Add($"{w}: sourceType is required.");
+                    if (string.IsNullOrWhiteSpace(s.Publisher)) errors.Add($"{w}: publisher is required.");
+                    if (string.IsNullOrWhiteSpace(s.AllowedUse)) errors.Add($"{w}: allowedUse is required.");
+                    if (string.IsNullOrWhiteSpace(s.ReliabilityLevel)) errors.Add($"{w}: reliabilityLevel is required.");
+                    if (string.IsNullOrWhiteSpace(s.LimitationNote)) errors.Add($"{w}: limitationNote is required.");
+                    if (s.SummaryAllowed is null) errors.Add($"{w}: summaryAllowed is required.");
+                    if (s.VerbatimCopyAllowed is null) errors.Add($"{w}: verbatimCopyAllowed is required.");
+                    if (!string.IsNullOrWhiteSpace(s.SourceUid) && !string.IsNullOrWhiteSpace(s.Title))
+                        sourceTitles[s.SourceUid] = $"{s.Title} — {s.Publisher}";
+                }
+            }
+        }
+
         var seenUids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var file in manifest.Files ?? new List<string>())
@@ -249,11 +283,15 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
                 if (!string.IsNullOrWhiteSpace(it.KnowledgeType) && !Enum.TryParse<KnowledgeType>(it.KnowledgeType, true, out _)) errors.Add($"{where}: unknown knowledgeType '{it.KnowledgeType}'.");
                 if (!string.IsNullOrWhiteSpace(it.Scope) && !Enum.TryParse<KnowledgeScope>(it.Scope, true, out _)) errors.Add($"{where}: unknown scope '{it.Scope}'.");
                 if (!string.IsNullOrWhiteSpace(it.SourceType) && !Enum.TryParse<SourceType>(it.SourceType, true, out _)) errors.Add($"{where}: unknown sourceType '{it.SourceType}'.");
+                // R2-ACC-B2: every referenced source must be registered (research-derived claims stay attributable).
+                foreach (var sref in it.Sources ?? new List<string>())
+                    if (!string.IsNullOrWhiteSpace(sref) && !registeredSources.Contains(sref))
+                        errors.Add($"{where}: references unregistered source '{sref}'.");
                 items.Add(it);
             }
         }
 
-        return (manifest, items, _hasher.Compute(hashSb.ToString()), errors);
+        return (manifest, items, sourceTitles, _hasher.Compute(hashSb.ToString()), errors);
     }
 
     // ---------------- write helpers ----------------
@@ -285,6 +323,9 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
     {
         var names = new List<string>();
         if (!string.IsNullOrWhiteSpace(dto.Category)) names.Add("cat:" + dto.Category.Trim());
+        if (!string.IsNullOrWhiteSpace(dto.Jurisdiction)) names.Add("jur:" + dto.Jurisdiction.Trim());
+        foreach (var sref in dto.Sources ?? new List<string>())
+            if (!string.IsNullOrWhiteSpace(sref)) names.Add("src:" + sref.Trim());
         foreach (var t in dto.Tags ?? new List<string>())
             if (!string.IsNullOrWhiteSpace(t)) names.Add(t.Trim());
 
@@ -324,13 +365,21 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
 
     // ---------------- rendering + parsing ----------------
 
-    private static string Render(PackItemDto i)
+    private static string Render(PackItemDto i, Dictionary<string, string> sourceTitles)
     {
         var sb = new StringBuilder();
         sb.Append((i.Description ?? "").Trim());
+        if (!string.IsNullOrWhiteSpace(i.Jurisdiction)) sb.Append("\n\n**Jurisdiction:** ").Append(i.Jurisdiction!.Trim());
         if (!string.IsNullOrWhiteSpace(i.Applicability)) sb.Append("\n\n**Applicability:** ").Append(i.Applicability!.Trim());
         if (!string.IsNullOrWhiteSpace(i.Example)) sb.Append("\n\n**Example:** ").Append(i.Example!.Trim());
         if (!string.IsNullOrWhiteSpace(i.Limitation)) sb.Append("\n\n**Limitation:** ").Append(i.Limitation!.Trim());
+        // Attribution: list the registered sources this item draws on (titles resolved from the registry).
+        var refs = (i.Sources ?? new List<string>()).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+        if (refs.Count > 0)
+        {
+            sb.Append("\n\n**Sources:** ");
+            sb.Append(string.Join("; ", refs.Select(s => sourceTitles.TryGetValue(s, out var t) ? $"{t} [{s}]" : s)));
+        }
         return sb.ToString();
     }
 
@@ -363,9 +412,35 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
         public string? LastReviewedUtc { get; set; }
         public int ItemCount { get; set; }
         public List<string>? Files { get; set; }
+        public string? SourceRegistry { get; set; }   // R2-ACC-B2: optional source-registry filename
         public string? LegalLimitations { get; set; }
         public string? SourcePolicy { get; set; }
         public string? ReviewStatus { get; set; }
+    }
+
+    // R2-ACC-B2: source registry — governance/attribution for research- and standards-derived knowledge.
+    private sealed class SourceRegistryDto
+    {
+        public string? RegistryUid { get; set; }
+        public List<SourceDto>? Sources { get; set; }
+    }
+
+    private sealed class SourceDto
+    {
+        public string? SourceUid { get; set; }
+        public string? Title { get; set; }
+        public string? SourceType { get; set; }
+        public string? Publisher { get; set; }
+        public string? Jurisdiction { get; set; }
+        public string? Url { get; set; }
+        public string? RetrievedUtc { get; set; }
+        public string? LicenseNote { get; set; }
+        public string? AllowedUse { get; set; }
+        public bool? SummaryAllowed { get; set; }
+        public bool? VerbatimCopyAllowed { get; set; }
+        public string? ReliabilityLevel { get; set; }
+        public string? VerificationStatus { get; set; }
+        public string? LimitationNote { get; set; }
     }
 
     private sealed class PackCategoryFileDto
@@ -391,5 +466,7 @@ public sealed class KnowledgePackInstaller : IKnowledgePackInstaller
         public string? LastReviewedUtc { get; set; }
         public string? ReviewStatus { get; set; }
         public List<string>? Tags { get; set; }
+        public List<string>? Sources { get; set; }      // R2-ACC-B2: referenced source registry uids
+        public string? Jurisdiction { get; set; }        // R2-ACC-B2: e.g. "Mauritius"
     }
 }

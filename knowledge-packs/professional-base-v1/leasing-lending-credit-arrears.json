@@ -1,0 +1,466 @@
+{
+  "category": "Leasing, Lending, Credit and Arrears",
+  "items": [
+    {
+      "uid": "c2050000-0000-4000-8000-000000000001",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Loan origination lifecycle",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Loan origination is the end-to-end process from application capture through underwriting, approval, documentation, and disbursement that creates a new credit facility on the lender's books. Typical stages include application intake, identity and affordability checks, credit assessment and scoring, approval against a delegated authority matrix, agreement signing, and funding. Each stage produces auditable artefacts (decision, terms, limits, collateral references) that downstream servicing and reporting systems depend upon. A well-modelled origination flow records both the offered and the accepted terms so that the booked contract is reconstructable.",
+      "applicability": "Applies to systems that capture and book new lending or leasing facilities and must persist contract terms, decision rationale, and authority approvals for servicing and audit.",
+      "example": "An applicant requests a 5-year 600,000 vehicle loan; after scoring and affordability checks it is approved at 11.5% nominal under a manager's delegated limit, documented, and disbursed, booking principal of 600,000 with the first installment due one month after value date.",
+      "limitation": "Origination steps, mandatory checks, and authority limits are institution- and product-specific and are governed by local lending policy and regulation; treat this as a general workflow pattern, not advice or a compliant control set.",
+      "confidence": 0.95,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "lending",
+        "origination",
+        "underwriting",
+        "credit",
+        "lifecycle"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000002",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Amortization of a loan",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Amortization is the gradual reduction of a loan's principal balance over its term through scheduled installments that combine interest and principal. In a level-payment (annuity) loan, each installment is constant while the interest portion falls and the principal portion rises as the outstanding balance declines. The interest for a period is computed on the opening outstanding balance, and the principal component is the installment less that interest. The schedule fully repays principal by maturity when payments are made as agreed.",
+      "applicability": "Applies to any servicing or middleware component that computes installment schedules, allocates payments, or reconstructs expected balances for lending and finance-lease contracts.",
+      "example": "On a 10,000 loan at 1% per month over 24 months the level payment is about 470.73. Month 1 interest is 100.00 (1% of 10,000), principal repaid is 370.73, and the closing balance is 9,629.27; month 2 interest is 96.29 on the new balance.",
+      "limitation": "Day-count conventions, rounding rules, fee capitalization, and rate types (fixed/variable) materially change schedules and must be confirmed per product; this is a general computational pattern, not advice.",
+      "confidence": 0.95,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "amortization",
+        "installment",
+        "interest",
+        "principal",
+        "schedule"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000003",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Capital versus interest split",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Every loan installment is decomposed into a capital (principal) component that reduces the amount owed and an interest component that is the charge for use of the funds over the period. Interest is the lender's income; capital repayment is a balance-sheet movement that does not affect profit and loss. Correctly separating the two is essential for income recognition, customer statements, early-settlement quotes, and impairment computations. The split is derived from the agreed rate, the day-count basis, and the opening outstanding balance for the period.",
+      "applicability": "Relevant wherever a payment must be allocated to ledger accounts, interest income must be recognized, or a settlement/redemption figure must be produced.",
+      "example": "A 470.73 installment on a balance of 10,000 at 1% per month posts 100.00 to interest income and 370.73 as a reduction of the loan principal control account.",
+      "limitation": "Income-recognition timing (accrual vs. cash, effective-interest method) and the treatment of fees within the rate are accounting-framework specific and require qualified accounting judgment; not advice.",
+      "confidence": 0.95,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "capital",
+        "interest",
+        "principal",
+        "allocation",
+        "income"
+      ],
+      "sources": [
+        "src-ifrs"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000004",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Installment schedule structure",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "An installment (repayment) schedule is the ordered set of expected payments for a facility, each row carrying a due date, total due, interest portion, principal portion, and expected closing balance. The schedule is the authoritative expectation against which actual receipts are matched to determine whether an account is current or in arrears. Schedules may include grace periods, balloon or bullet payments, step-up or step-down profiles, and irregular first or last periods. Persisting the schedule at booking makes servicing deterministic and auditable.",
+      "applicability": "Applies to servicing engines that drive billing, dunning, and arrears detection by comparing posted receipts against scheduled due dates and amounts.",
+      "example": "A schedule with 24 monthly rows lists row 7 as due 2026-01-15, total 470.73, interest 78.10, principal 392.63, expected closing balance 7,417.42; a receipt short of 470.73 by the due date marks the row partially unpaid.",
+      "limitation": "Schedule regeneration after rate changes, restructures, or partial prepayments must follow product rules; behaviour is system-specific and should be validated against the servicing platform.",
+      "confidence": 0.94,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "schedule",
+        "installment",
+        "billing",
+        "servicing",
+        "due-date"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000005",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Outstanding balance",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "The outstanding (principal) balance is the amount of capital still owed on a facility at a point in time, distinct from the total amount payable, which also includes future interest. It decreases as principal is repaid and may increase when fees or unpaid interest are capitalized. The outstanding balance is the base on which periodic interest is computed and the headline figure for exposure, settlement, and reporting. Accrued-but-unpaid interest is normally tracked separately from the principal balance.",
+      "applicability": "Relevant to exposure reporting, interest accrual, redemption quotations, and reconciliation of a loan sub-ledger to its general-ledger control account.",
+      "example": "After 6 of 24 installments on a 10,000 loan the outstanding principal balance is 7,810.05; a settlement quote adds accrued interest since the last due date and any applicable fees to this figure.",
+      "limitation": "Whether capitalized fees and accrued interest are included in 'balance' differs across products and reports; confirm the exact definition used by the source system before relying on a figure.",
+      "confidence": 0.95,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "outstanding",
+        "balance",
+        "exposure",
+        "principal",
+        "settlement"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000006",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Arrears concept",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Arrears are the amounts contractually due that remain unpaid as of the reporting date, accumulated across one or more missed or partial installments. The arrears balance is distinct from the total outstanding balance: it measures only the shortfall against what should already have been paid. Arrears typically aggregate unpaid principal, interest, fees, and any penalty charges, and are the primary trigger for collection activity. An account moves into arrears the moment a scheduled amount is not received in full by its due date.",
+      "applicability": "Applies to dunning, collections prioritization, and management reporting that distinguishes total exposure from the overdue shortfall.",
+      "example": "A customer pays only 300 against a 470.73 installment and skips the next installment entirely; arrears accumulate to 641.46 (170.73 plus 470.73) even though the loan's outstanding balance is much larger.",
+      "limitation": "How partial payments, fees, and tolerances are allocated to arrears is policy-driven and varies by institution; do not assume a universal arrears computation.",
+      "confidence": 0.95,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "arrears",
+        "overdue",
+        "collections",
+        "delinquency",
+        "shortfall"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000007",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Days past due (DPD)",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Days past due (DPD) measures how many calendar days have elapsed since the oldest unpaid contractual amount fell due, and is the standard quantitative indicator of delinquency severity. DPD is commonly bucketed (for example 1-30, 31-60, 61-90, 90+) to drive collection treatment and to feed credit-risk and impairment staging. The clock typically starts at the earliest unsettled due date and resets only when arrears are cleared, not when the latest installment is paid. Materiality thresholds may require the overdue amount to exceed a floor before DPD is counted.",
+      "applicability": "Used by collections routing, delinquency reporting, and as an input to staging and default-classification logic.",
+      "example": "An installment due 2026-04-15 is unpaid on the 2026-06-21 reporting date, giving 67 DPD, which places the account in the 61-90 bucket for collections escalation.",
+      "limitation": "DPD calculation rules, materiality floors, and counting conventions affect downstream staging and default classification, which are accounting/regulatory interpretations that vary and require qualified accounting/regulatory judgment; not advice.",
+      "confidence": 0.93,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "dpd",
+        "delinquency",
+        "buckets",
+        "arrears",
+        "ageing"
+      ],
+      "sources": [
+        "src-ifrs",
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000008",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Impairment staging concept (ECL)",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Under an expected-credit-loss model, financial assets are commonly allocated to stages reflecting changes in credit risk since initial recognition: broadly, a performing stage with 12-month expected losses, an underperforming stage with lifetime expected losses following a significant increase in credit risk, and a credit-impaired stage. Movement between stages is driven by qualitative and quantitative indicators such as significant increase in credit risk, watch-list status, and days past due. The stage determines the loss-allowance horizon and how interest revenue is recognized on the carrying amount.",
+      "applicability": "Relevant to credit-risk and finance systems that classify exposures for loss-allowance computation and that surface stage transitions for review and reporting.",
+      "example": "A loan that breaches a 30-DPD significant-increase indicator may move from a 12-month to a lifetime expected-loss stage; on becoming credit-impaired, interest is recognized on the net carrying amount rather than the gross balance.",
+      "limitation": "Impairment staging is an accounting/regulatory interpretation (e.g. IFRS 9 expected credit loss) that varies by framework, policy, and judgment and requires qualified accounting/regulatory judgment; this is an educational summary, not advice.",
+      "confidence": 0.9,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "impairment",
+        "ecl",
+        "staging",
+        "ifrs9",
+        "credit-risk"
+      ],
+      "sources": [
+        "src-ifrs"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000009",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Default classification concept",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Default classification flags an obligor or facility as no longer performing according to its contractual terms, commonly when the obligor is unlikely to pay in full without recourse to actions such as realizing collateral, or when a material exposure is past due beyond a defined threshold (often around 90 days). Default may be assessed at the obligor level so that contagion across facilities is captured, and may include a cure or probation period before a return to performing status. The classification drives non-performing reporting, provisioning, and regulatory treatment.",
+      "applicability": "Applies to credit-risk engines and reporting that identify non-performing exposures and feed provisioning and supervisory returns.",
+      "example": "A material exposure that reaches 90 DPD, or where bankruptcy is filed, is flagged as in default; even after the customer resumes payments it may remain classified until a probation period elapses with no further arrears.",
+      "limitation": "Default classification is an accounting/regulatory interpretation (default thresholds, unlikely-to-pay triggers, cure periods) that varies by framework and supervisor and requires qualified accounting/regulatory judgment; not advice.",
+      "confidence": 0.9,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "default",
+        "non-performing",
+        "classification",
+        "credit-risk",
+        "provisioning"
+      ],
+      "sources": [
+        "src-ifrs",
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000010",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Loan restructure and forbearance",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "A restructure modifies the original contractual terms of a facility, for example by extending the term, reducing the rate, granting a payment holiday, or capitalizing arrears, often to assist a borrower in financial difficulty. When granted due to difficulty, the modification is typically treated as forbearance and is flagged for closer monitoring rather than treated as a fresh performing loan. Restructuring usually regenerates the installment schedule and may require derecognition or modification-accounting treatment depending on how substantial the change is. The arrears position and risk classification do not automatically reset on restructure.",
+      "applicability": "Relevant to servicing systems that re-terms facilities and to risk reporting that must distinguish forborne exposures from organically performing ones.",
+      "example": "A borrower with 3 months of arrears agrees to capitalize the overdue 1,412 into principal and extend the term by 6 months; the schedule is regenerated, the facility is flagged forborne, and it remains under enhanced monitoring.",
+      "limitation": "Whether a restructure is a modification or a derecognition, and how it affects staging and default classification, is an accounting/regulatory interpretation that varies and requires qualified accounting/regulatory judgment; not advice.",
+      "confidence": 0.9,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "restructure",
+        "forbearance",
+        "modification",
+        "payment-holiday",
+        "monitoring"
+      ],
+      "sources": [
+        "src-ifrs",
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000011",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Collateral and security",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Collateral is an asset pledged by a borrower that the lender can realize to recover amounts owed if the facility defaults, reducing the lender's loss given default. Common forms include mortgages over property, charges over vehicles or equipment, cash deposits, and floating charges over receivables. Effective security requires a valid, perfected legal interest, a current valuation, and an appropriate haircut to reflect realization risk and volatility. Collateral coverage is the ratio of security value to exposure and is a core input to credit decisioning and loss estimation.",
+      "applicability": "Applies to systems that register security interests, hold valuations, and compute loan-to-value or coverage ratios for decisioning and provisioning.",
+      "example": "A 600,000 vehicle loan is secured by the financed vehicle valued at 750,000; applying a 30% haircut gives eligible collateral of 525,000 and a coverage ratio below 100%, leaving an unsecured residual exposure.",
+      "limitation": "Eligibility, haircuts, perfection requirements, and the effect of collateral on impairment and capital are regulatory/accounting interpretations that vary and require qualified judgment; not advice.",
+      "confidence": 0.93,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "collateral",
+        "security",
+        "ltv",
+        "haircut",
+        "recovery"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000012",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Guarantees and sureties",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "A guarantee is a commitment by a third party (the guarantor or surety) to meet the borrower's obligations if the borrower fails to pay, providing the lender with an additional source of recovery distinct from physical collateral. Guarantees may be limited or unlimited, several or joint-and-several, and their value depends on the guarantor's own creditworthiness and the enforceability of the undertaking. As a contingent claim, a guarantee creates exposure for the guarantor that itself may need monitoring. Personal, corporate, and bank guarantees differ markedly in reliability and legal treatment.",
+      "applicability": "Relevant to systems that record credit-risk mitigants, link guarantors to facilities, and track contingent exposures for both borrower and guarantor.",
+      "example": "A small-business loan of 200,000 is supported by a joint-and-several personal guarantee from two directors; the recoverable value is constrained by the directors' net worth and is recorded as a mitigant subject to enforceability checks.",
+      "limitation": "The recognition of guarantees as eligible risk mitigants and their effect on provisioning and capital is a regulatory/accounting interpretation that varies and requires qualified judgment; not legal or financial advice.",
+      "confidence": 0.92,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "guarantee",
+        "surety",
+        "credit-mitigant",
+        "contingent",
+        "recovery"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000013",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Lease schedule and finance lease",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "A lease grants the lessee use of an asset in exchange for periodic rentals, with a finance lease transferring substantially all the risks and rewards of ownership while an operating lease does not. A finance lease is economically similar to a secured loan: the rentals are split between a finance-charge (interest) element and a reduction of the net investment in the lease, producing a schedule analogous to a loan amortization. The lessor records a receivable equal to the net investment, and the lessee may recognize a right-of-use asset and a lease liability. The classification depends on the substance of the arrangement, not merely its legal form.",
+      "applicability": "Applies to leasing platforms that generate rental schedules, separate finance income from capital recovery, and classify contracts as finance or operating leases.",
+      "example": "A 36-month equipment lease with rentals of 1,200 and an implicit rate of 0.9% per month allocates the first rental into roughly 360 finance charge and 840 reduction of the net investment, mirroring a loan amortization row.",
+      "limitation": "Lease classification, the lessee/lessor accounting model, and the implicit-rate determination are accounting interpretations that vary by framework and require qualified accounting judgment; not advice.",
+      "confidence": 0.9,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "leasing",
+        "finance-lease",
+        "rentals",
+        "schedule",
+        "net-investment"
+      ],
+      "sources": [
+        "src-ifrs"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000014",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Residual value in leasing",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Residual value is the estimated worth of a leased asset at the end of the lease term, used to size rentals and to determine end-of-term options such as purchase, return, or re-lease. A higher assumed residual lowers periodic rentals because less of the asset's value must be recovered over the term, but it shifts risk to whoever bears the residual: a guaranteed residual is borne by the lessee or a third party, while an unguaranteed residual is borne by the lessor. Inaccurate residual estimates create gains or losses when the asset is finally disposed of or returned. Residuals are periodically reviewed against market values.",
+      "applicability": "Relevant to lease pricing engines, end-of-term processing, and residual-risk reporting for asset-finance and vehicle-leasing portfolios.",
+      "example": "A 36-month vehicle lease on a 750,000 car assumes a residual of 300,000; rentals recover only 450,000 plus finance charge, and at term end the lessor bears any shortfall if the car sells for less than 300,000.",
+      "limitation": "Residual estimation, its split between guaranteed and unguaranteed portions, and the resulting accounting are interpretation- and framework-specific and require qualified accounting judgment; not advice.",
+      "confidence": 0.91,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "residual-value",
+        "leasing",
+        "asset-finance",
+        "end-of-term",
+        "pricing"
+      ],
+      "sources": [
+        "src-ifrs"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000015",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Credit monitoring and watch lists",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Credit monitoring is the ongoing assessment of a facility or obligor after disbursement to detect deterioration early, using triggers such as missed payments, rating downgrades, covenant breaches, excess utilization, and adverse external information. Accounts showing warning signs are placed on a watch list for enhanced review ahead of formal default. Effective monitoring combines behavioural indicators from the servicing system with periodic reviews and external data, and it feeds significant-increase-in-credit-risk assessments. Early identification preserves recovery options and reduces ultimate loss.",
+      "applicability": "Applies to portfolio-management and risk systems that compute early-warning indicators, maintain watch lists, and schedule periodic credit reviews.",
+      "example": "A facility that breaches a financial covenant and shows two consecutive late payments is auto-flagged to the watch list, triggering an out-of-cycle review and a reassessment of whether credit risk has significantly increased.",
+      "limitation": "Whether monitoring triggers constitute a significant increase in credit risk or affect staging/default is an accounting/regulatory interpretation that varies and requires qualified accounting/regulatory judgment; not advice.",
+      "confidence": 0.92,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "monitoring",
+        "watch-list",
+        "early-warning",
+        "covenants",
+        "credit-risk"
+      ],
+      "sources": [
+        "src-ifrs",
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000016",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Collections workflow",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "A collections workflow is the structured sequence of activities a lender follows to recover overdue amounts, typically escalating from soft reminders to formal demands, restructuring offers, and ultimately legal action or collateral realization. Treatment is usually segmented by delinquency severity (DPD bucket), exposure size, and risk so that effort is proportionate to expected recovery. Each contact and promise-to-pay is logged to drive next-action timing and to provide an audit trail. The workflow aims to cure arrears early while preserving the customer relationship where appropriate.",
+      "applicability": "Applies to collections and dunning systems that route accounts to treatment strategies, schedule contacts, and record outcomes for performance and audit.",
+      "example": "An account at 5 DPD receives an automated reminder; at 30 DPD it escalates to an agent call with a promise-to-pay; at 90 DPD with no cure it is referred for legal action and collateral assessment.",
+      "limitation": "Permitted collection practices, contact rules, and consumer-protection constraints are jurisdiction- and policy-specific; treat this as a generic workflow pattern, not advice on lawful collections conduct.",
+      "confidence": 0.92,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "collections",
+        "dunning",
+        "workflow",
+        "recovery",
+        "arrears"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000017",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Exception handling in servicing",
+      "knowledgeType": "BusinessRule",
+      "scope": "Global",
+      "description": "Loan and lease servicing must define deterministic rules for exceptions that the standard schedule does not cover: overpayments, underpayments, early settlements, reversed or bounced payments, suspense balances, fee waivers, and value-date corrections. Each exception type should have a defined allocation order (for example fees, then interest, then principal), an authorization level, and a reversible audit entry so balances remain reconstructable. Unallocated receipts are normally parked in a suspense account until matched, and ambiguous cases are routed for manual review rather than silently absorbed. Clear exception handling prevents arrears and balance figures from drifting.",
+      "applicability": "Applies to payment-processing and servicing logic that must allocate non-standard receipts, manage suspense, and preserve an auditable, reversible posting history.",
+      "example": "A customer overpays an installment by 200; the rule applies the excess to the next due interest and principal per the allocation order, or parks it in suspense if no eligible due item exists, logging a reversible entry either way.",
+      "limitation": "Allocation hierarchies, suspense treatment, and waiver authorities are policy-specific and may affect income recognition and arrears; confirm rules against the servicing platform and accounting policy, not assumptions. Not advice.",
+      "confidence": 0.91,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "exception",
+        "suspense",
+        "allocation",
+        "servicing",
+        "reconciliation"
+      ]
+    },
+    {
+      "uid": "c2050000-0000-4000-8000-000000000018",
+      "category": "Leasing, Lending, Credit and Arrears",
+      "title": "Reporting controls for credit portfolios",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Credit-portfolio reporting must be controlled so that figures for exposure, arrears, ageing, staging, and provisions are complete, consistent, and reconcilable to the general ledger. Core controls include sub-ledger to GL reconciliation, completeness checks that every facility is represented, consistency between DPD buckets and staging, point-in-time snapshots for reproducibility, and segregation of duties between those who book and those who report. Reports should be dated, versioned, and traceable to the underlying records so that supervisory and management figures can be defended. Anomalies such as a portfolio total not tying to the control account are exceptions requiring investigation before sign-off.",
+      "applicability": "Applies to reporting and reconciliation layers that produce delinquency, exposure, and provisioning figures for management and supervisory consumption.",
+      "example": "A month-end run reconciles the loan sub-ledger total to GL control account 1200, confirms every active facility has a DPD and stage, and flags a 1,250 break for investigation before the non-performing report is signed off.",
+      "limitation": "The classification, staging, and provisioning figures these controls validate rest on accounting/regulatory interpretation (e.g. impairment staging, default classification) that varies and requires qualified accounting/regulatory judgment; not advice.",
+      "confidence": 0.92,
+      "sourceType": "Documentation",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "reporting",
+        "controls",
+        "reconciliation",
+        "provisioning",
+        "portfolio"
+      ],
+      "sources": [
+        "src-ifrs",
+        "src-bom"
+      ]
+    }
+  ]
+}

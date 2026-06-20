@@ -1,0 +1,751 @@
+{
+  "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+  "items": [
+    {
+      "uid": "c2070000-0000-4000-8000-000000000001",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Cheque image ingestion pipeline",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "Cheque processing begins with controlled ingestion of scanned or photographed cheque images into a deterministic pipeline before any recognition or fraud check. A robust pipeline validates the image format, captures provenance (source device, timestamp, operator or channel), and routes each item through staged steps: pre-processing, field extraction, consistency checks, and scoring. Each stage must emit structured intermediate results and a confidence value so that downstream review and audit can reconstruct exactly how a decision was reached. Failures in any stage should degrade gracefully into a manual-review queue rather than silently passing or rejecting an item.",
+      "applicability": "Designing the end-to-end flow for inward/outward cheque clearing, remote deposit capture, or a ChequeXpert/Parascript-style recognition front end.",
+      "example": "An inbound TIFF is logged with a capture ID, deskewed, binarized, and passed to CAR/LAR and MICR extractors; each extractor returns a value plus a confidence, and items below threshold are queued for an operator.",
+      "limitation": "Ingestion never establishes that a cheque is genuine or fraudulent; it only prepares evidence. Recognition output is probabilistic and must record confidence and evidence; high-risk or low-confidence items require human review, and detection must be kept separate from any verification or payment decision. False-positive and false-negative risk exists at every automated stage.",
+      "confidence": 0.9,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "cheque",
+        "ingestion",
+        "pipeline",
+        "ocr",
+        "architecture"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000002",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "TIFF and scanned-image handling for cheques",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Cheque images are commonly captured as TIFF (frequently multi-page or bi-tonal with CCITT Group 4 compression) or as image attachments in clearing exchange formats. Correct handling requires reading the embedded resolution and photometric-interpretation metadata, normalizing colour space, and preserving the original master image unaltered for audit while operating on derived working copies. Front and rear faces are usually distinct images and must be tracked as a pair, because the rear can carry endorsements and security features relevant to fraud review.",
+      "applicability": "Reading cheque images from clearing systems, remote-deposit channels, or archive stores during import and recognition.",
+      "example": "A bi-tonal Group 4 TIFF is decoded, its 200 dpi resolution tag is read to scale field crops correctly, and the untouched original is retained alongside a normalized grayscale working copy.",
+      "limitation": "Image decoding does not validate authenticity; metadata can be absent or wrong and must not be trusted as proof of capture conditions. Retaining cheque images means retaining personal and financial data, so storage, access, and retention must follow data-protection obligations. Any downstream fraud signal remains probabilistic and subject to false positives and false negatives.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "tiff",
+        "image-format",
+        "cheque",
+        "ingestion"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000003",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Scan resolution: 200 dpi versus 300 dpi considerations",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Capture resolution materially affects recognition quality. Many cheque clearing exchanges standardize on 200 dpi bi-tonal images, while 300 dpi grayscale provides more detail for handwriting and signature analysis at the cost of larger files and greater storage. Higher resolution generally improves the legibility of fine strokes but does not by itself improve recognition unless pre-processing and models are tuned for the chosen resolution. The pipeline should record the actual resolution of each image and adapt crop scaling and thresholds accordingly rather than assuming a fixed dpi.",
+      "applicability": "Choosing capture standards for a deposit channel or tuning a recognition engine to the resolution actually produced by upstream scanners.",
+      "example": "Signature-analysis features are computed on a 300 dpi grayscale copy where available, while MICR and CAR/LAR fields are read from the 200 dpi clearing image, with field crops scaled by the per-image dpi tag.",
+      "limitation": "Resolution is an input-quality factor, not an accuracy guarantee; no recognition or fraud accuracy figure is implied by any dpi choice. Decisions on low-resolution images carry higher false-positive and false-negative risk and should be confidence-scored and routed to human review when uncertain. Detection must remain separate from verification.",
+      "confidence": 0.85,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "resolution",
+        "dpi",
+        "image-quality",
+        "ocr"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000004",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Grayscale conversion and binarization",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Most recognition steps operate on a grayscale or binary (black-and-white) representation derived from the captured image. Binarization separates foreground ink from background paper, and adaptive or local methods (which compute a threshold per region) typically outperform a single global threshold on cheques with coloured backgrounds, watermarks, or uneven lighting. The choice of method should preserve thin handwritten strokes and printed micro-features while suppressing background patterns, because over-aggressive thresholding can erase faint signature or amount strokes.",
+      "applicability": "Pre-processing cheque crops before CAR/LAR, MICR, date, payee, or signature analysis.",
+      "example": "An adaptive (locally computed) threshold is applied to the courtesy-amount box so a faint pen stroke survives, whereas a fixed global threshold would have dropped it into the background.",
+      "limitation": "Binarization can both create and destroy evidence: a poor threshold may introduce artefacts that later look like anomalies, or remove genuine strokes, raising false-positive and false-negative risk. The original image must be retained so that any flagged item can be re-examined by a human reviewer. Pre-processing output is never proof of authenticity.",
+      "confidence": 0.86,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "binarization",
+        "grayscale",
+        "preprocessing",
+        "ocr"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000005",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Skew correction (deskewing)",
+      "knowledgeType": "FixPattern",
+      "scope": "Global",
+      "description": "Scanned or photographed cheques are frequently rotated by a few degrees, which degrades line and field segmentation. Deskewing estimates the dominant text or border angle (using techniques such as projection profiles, Hough-transform line detection, or analysis of the MICR baseline) and rotates the image to horizontal before field extraction. Correcting skew early improves the reliability of every later step, because field bounding boxes and reading order assume an axis-aligned image.",
+      "applicability": "Normalizing cheque orientation immediately after decoding and before field segmentation and recognition.",
+      "example": "The MICR baseline is detected at +3.2 degrees; the image is rotated to level so the amount box and MICR line align to expected coordinates, improving extraction stability.",
+      "limitation": "Rotation resamples pixels and can subtly alter stroke appearance, so the original is preserved for review and any signature analysis should account for resampling. Deskewing does not authenticate the cheque and contributes no fraud conclusion. Mis-estimated angles can cascade into recognition errors, so low-confidence extractions should be flagged for human review.",
+      "confidence": 0.86,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "deskew",
+        "skew-correction",
+        "preprocessing",
+        "ocr"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000006",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Noise removal and background suppression",
+      "knowledgeType": "FixPattern",
+      "scope": "Global",
+      "description": "Cheque images carry noise from scanner speckle, JPEG compression, security backgrounds, watermarks, and pre-printed guilloche patterns. Noise removal applies filtering (for example median or morphological operations) and background suppression to isolate the foreground content a recognizer needs, while taking care not to remove legitimate ink. The goal is to improve signal-to-noise for the specific field being read, which is why field-specific cleaning (amount box, MICR band, signature panel) usually outperforms a single global filter.",
+      "applicability": "Cleaning extracted field crops prior to CAR/LAR, MICR, date, payee, or signature processing.",
+      "example": "A morphological opening removes isolated speckle from the courtesy-amount crop without thinning the digit strokes, improving subsequent digit segmentation.",
+      "limitation": "Over-cleaning can erase genuine evidence (a faint alteration, an overwrite, or a thin stroke), and under-cleaning can leave artefacts that mimic anomalies; both raise false-positive and false-negative risk. Cleaned images are working copies only and must never replace the retained original used for human review. No cleaning step establishes authenticity or fraud.",
+      "confidence": 0.85,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "noise-removal",
+        "preprocessing",
+        "filtering",
+        "ocr"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000007",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Courtesy Amount Recognition (CAR)",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Courtesy Amount Recognition (CAR) reads the numeric amount written in the small box on a cheque (for example 1,250.00). It involves locating the amount box, segmenting digits and separators, and recognizing handwritten or machine-printed numerals, then normalizing the result to a canonical numeric value with currency awareness. CAR is one of the two amount readings on a cheque and is most useful when cross-checked against the written legal amount.",
+      "applicability": "Extracting the numeric payable amount during automated cheque capture and clearing.",
+      "example": "The courtesy box is read as the digits 1, 2, 5, 0, point, 0, 0 and normalized to a value of 1250.00 with a per-field confidence score attached.",
+      "limitation": "Handwritten-amount recognition is inherently uncertain and produces false positives and false negatives; every CAR result must carry a confidence score and supporting evidence. Low-confidence or financially material readings require human review, and CAR alone is not a payment authorization. No recognition-accuracy percentage is asserted.",
+      "confidence": 0.84,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "car",
+        "amount-recognition",
+        "ocr",
+        "cheque"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000008",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Legal Amount Recognition (LAR)",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Legal Amount Recognition (LAR) reads the amount written in words on a cheque (for example 'One thousand two hundred fifty and 00/100') and converts it to a numeric value. LAR must handle cursive handwriting, varied phrasing, language and locale conventions, and the fraction-of-currency suffix. Because words are harder to read than digits but harder to alter convincingly, LAR provides an independent amount estimate that complements CAR.",
+      "applicability": "Extracting the written-words amount during automated cheque capture for cross-validation against the courtesy amount.",
+      "example": "The legal line is parsed to 1250.00 from the words 'one thousand two hundred fifty', and the parsed value plus a confidence score is stored for the CAR/LAR consistency check.",
+      "limitation": "Cursive legal-amount reading is highly uncertain and prone to both false positives and false negatives; results must be confidence-scored with evidence retained. Material or low-confidence readings require human review, and LAR is not by itself proof of the intended amount. No accuracy figure is asserted, and locale/language coverage is a known constraint.",
+      "confidence": 0.82,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "lar",
+        "amount-recognition",
+        "handwriting",
+        "ocr"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000009",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "CAR/LAR consistency check",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "A core control in cheque processing is comparing the courtesy (numeric) amount against the legal (written) amount and requiring them to agree within a defined tolerance before the amount is trusted. When CAR and LAR disagree, or when either reading is low-confidence, the item is routed to manual review rather than auto-processed. This cross-check turns two independently uncertain readings into a stronger combined signal and is also a fraud-relevant control because amount alteration often affects only one field.",
+      "applicability": "Validating the payable amount during automated capture and deciding whether an item can clear without operator intervention.",
+      "example": "CAR returns 1250.00 and LAR returns 1250.00 with high confidence, so the amount is accepted; if LAR returned 1350.00, the mismatch forces a human review with both crops shown.",
+      "limitation": "Agreement raises confidence but is not proof of correctness or authenticity, and disagreement is not proof of fraud; both arise from probabilistic recognition with false-positive and false-negative risk. The combined result must record confidence and evidence, and disagreements or low confidence require human review. Detection of a mismatch must be kept separate from any decision to dishonour a cheque.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "car",
+        "lar",
+        "consistency-check",
+        "control"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000010",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "MICR line handling",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "The MICR (Magnetic Ink Character Recognition) line at the bottom of a cheque encodes routing/bank, account, cheque number, and amount fields in standardized fonts (E-13B or CMC-7). It can be read magnetically by dedicated readers or optically from the image, and the optical read must respect the field structure and special symbols that delimit each segment. MICR data is the primary machine-readable routing information and is usually the most reliable cheque field, but optical reads can still misclassify characters and must be validated.",
+      "applicability": "Extracting routing, account, and cheque-number fields for clearing, matching, and downstream validation.",
+      "example": "The MICR band is segmented on its delimiter symbols and parsed into routing, account, and serial fields, each carrying a confidence; a check-digit or format validation flags an implausible read.",
+      "limitation": "Even MICR reads can be wrong, and MICR content can be manipulated on fraudulent items, so a successful parse is not proof of authenticity. Results require confidence scoring and validation, and anomalies must be routed to human review rather than auto-trusted. MICR fields contain account data and are personal/financial information subject to data-protection controls.",
+      "confidence": 0.87,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "micr",
+        "e-13b",
+        "cmc-7",
+        "ocr"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000011",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Date field extraction",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Date extraction locates and reads the cheque date, which may be handwritten or printed and follows locale-specific formats and day/month/year ordering. The extractor must normalize to a canonical date and apply business rules such as detecting stale-dated or post-dated items, which are operational and sometimes fraud-relevant signals. Ambiguous formats (for example numeric dates where day and month could be swapped) must be resolved against the known locale rather than guessed.",
+      "applicability": "Reading and validating the cheque date during automated capture and applying stale/post-dated rules.",
+      "example": "A handwritten date is read and normalized to 2026-06-21; a rule flags the item as post-dated because the cheque date is later than the processing date.",
+      "limitation": "Handwritten-date recognition is uncertain, and format ambiguity raises false-positive and false-negative risk; readings must carry confidence and be reviewed by a human when uncertain or business-critical. A date flag is an operational signal, not proof of fraud, and detection must be separated from any decision to return the item. Date values can be personal data and are subject to data-protection handling.",
+      "confidence": 0.83,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "date-extraction",
+        "field-extraction",
+        "ocr",
+        "cheque"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000012",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Payee name extraction",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Payee extraction reads the 'pay to the order of' line to recover the beneficiary name, which may be handwritten or printed and can include titles, business names, and abbreviations. The recognized text is normalized and may be matched against expected beneficiary records for verification or positive-pay style controls. Because the payee line is a common alteration target, extraction quality and any matching logic are relevant to both straight-through processing and fraud screening.",
+      "applicability": "Reading the beneficiary name during capture and optionally matching it against an issuer's expected-payee list.",
+      "example": "The payee line is read as a business name and compared against a positive-pay file; a mismatch routes the item to review with the payee crop attached.",
+      "limitation": "Name recognition and matching are uncertain and locale-sensitive, producing false positives and false negatives; results must be confidence-scored with evidence retained and reviewed by a human when material. A payee mismatch is a signal, not proof of fraud, and detection must be separated from verification. Payee names are personal data and must be processed under data-protection obligations.",
+      "confidence": 0.82,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "payee",
+        "field-extraction",
+        "positive-pay",
+        "ocr"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000013",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Handwriting recognition limitations",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Offline handwriting recognition on cheques reads ink from a static image without stroke-timing information, which makes cursive and unconstrained writing substantially harder than reading machine print. Accuracy depends on writing style, pen and paper, image quality, language, and how well the training data represents the population being processed. Practical systems therefore treat handwriting results as estimates with confidence and rely on cross-field checks (such as CAR/LAR agreement) rather than any single handwritten field.",
+      "applicability": "Setting expectations and confidence thresholds wherever cheque fields are handwritten, especially amounts, dates, and payee names.",
+      "example": "A cursive legal-amount line yields a low-confidence reading; rather than auto-clearing, the system relies on CAR/LAR agreement and routes the residual uncertainty to an operator.",
+      "limitation": "Handwriting recognition is intrinsically uncertain with material false-positive and false-negative risk and no guaranteed accuracy; no accuracy percentage is asserted. Low-confidence reads must be human-reviewed, and results must record confidence and evidence. Recognition is detection of content only and never establishes authenticity or fraud.",
+      "confidence": 0.85,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "handwriting",
+        "limitations",
+        "ocr",
+        "confidence"
+      ],
+      "sources": [
+        "src-research-ocr"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000014",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Signature region detection",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Signature detection is the task of locating the signature region on a cheque and confirming a signature is present, as distinct from judging whether it is genuine. It typically uses the expected signature-panel location plus image analysis to segment the signature strokes from the printed box and background. Reliable detection and clean segmentation are prerequisites for any later verification, because a poorly cropped or missed signature undermines every downstream comparison.",
+      "applicability": "Locating and isolating the signature on a cheque before any verification or forgery analysis.",
+      "example": "The signature panel is segmented from its printed box and background, producing a clean signature crop that is passed to the verification step with a detection confidence.",
+      "limitation": "Detecting and segmenting a signature says nothing about whether it is authentic; detection must be kept strictly separate from verification. Missed or poorly segmented signatures create false-positive and false-negative risk downstream, so detection confidence must be recorded and low-confidence cases reviewed. Signature images are biometric-adjacent personal data and require data-protection controls.",
+      "confidence": 0.84,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "signature",
+        "detection",
+        "segmentation",
+        "computer-vision"
+      ],
+      "sources": [
+        "src-research-cv-signature",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000015",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Signature verification versus forgery detection",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Signature verification asks whether a questioned signature matches a claimed identity's reference signatures, producing a similarity or match score. Forgery detection is the broader question of whether a signature was produced fraudulently, which verification can inform but cannot answer on its own. Treating these as the same task is a common and dangerous conflation: a low match score is evidence to investigate, not a finding of forgery, and a high score does not prove genuineness.",
+      "applicability": "Designing the comparison stage that scores a cheque signature against held reference specimens and feeds a review workflow.",
+      "example": "A questioned signature scores low against three reference specimens; the system records 'verification: low similarity, evidence attached' and routes to review rather than labelling it 'forged'.",
+      "limitation": "An automated system must never claim a signature is forged or assert a legally conclusive finding; it produces probabilistic scores only, with inherent false-positive and false-negative risk. High-risk decisions require human review by qualified staff, every score must record confidence and evidence, and detection must remain separate from verification and from any payment or legal decision.",
+      "confidence": 0.86,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "signature",
+        "verification",
+        "forgery",
+        "scoring"
+      ],
+      "sources": [
+        "src-research-cv-signature"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000016",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Writer-independent versus writer-dependent verification",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "Writer-dependent verification trains or calibrates a separate model per signer using that signer's reference specimens, which can be accurate when enough genuine samples exist but does not generalize to new signers without enrolment. Writer-independent verification learns a general notion of similarity and difference across many signers, so it can compare a questioned signature to references for a signer it never trained on. Production cheque systems often favour writer-independent approaches because most signers have only a few reference specimens and new accounts appear continually.",
+      "applicability": "Choosing the signature-verification strategy given how many reference specimens are realistically available per account.",
+      "example": "With only two reference signatures per customer, a writer-independent model compares the questioned signature to the references at scoring time rather than training a bespoke per-customer model.",
+      "limitation": "Both approaches are probabilistic and carry false-positive and false-negative risk; neither proves forgery or genuineness, and no accuracy figure is asserted. Few or low-quality reference specimens degrade reliability, so high-risk cases require human review and every result records confidence and evidence. Reference and questioned signatures are personal data subject to data-protection controls.",
+      "confidence": 0.83,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "signature",
+        "writer-independent",
+        "writer-dependent",
+        "verification"
+      ],
+      "sources": [
+        "src-research-cv-signature",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000017",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Genuine, random, and skilled forgeries",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "Signature-verification literature distinguishes genuine signatures from two forgery types: random forgeries, where the impostor uses a different (often their own) signature with no knowledge of the target, and skilled forgeries, where the impostor has seen and practised the target signature. Random forgeries are generally easier to separate from genuine signatures than skilled forgeries, which can closely mimic the genuine shape. Evaluation that only considers random forgeries can therefore overstate how well a system resists realistic attacks.",
+      "applicability": "Defining the threat model and evaluation protocol for a signature-verification component.",
+      "example": "A model that separates genuine from random forgeries well still shows substantial overlap on skilled forgeries, so the threshold is set conservatively and uncertain cases are escalated.",
+      "limitation": "No model reliably distinguishes skilled forgeries from genuine signatures, so the system must never assert forgery or a conclusive finding; outputs are probabilistic with real false-positive and false-negative risk. Skilled-forgery cases especially require human review, recorded confidence, and retained evidence. Detection must stay separate from verification and from legal conclusions.",
+      "confidence": 0.84,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "signature",
+        "forgery",
+        "skilled-forgery",
+        "threat-model"
+      ],
+      "sources": [
+        "src-research-cv-signature"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000018",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Signature feature extraction",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Offline signature analysis derives features from the static signature image, ranging from hand-crafted descriptors (geometric ratios, stroke density, directional and texture features) to learned embeddings from deep networks. Good features are robust to natural intra-signer variation (a person never signs identically twice) while remaining sensitive to the differences that distinguish a different writer. Because only the final ink is available offline, dynamic information such as pen pressure, speed, and stroke order is absent, which fundamentally limits what offline features can capture.",
+      "applicability": "Building the representation that a signature-verification comparator consumes during cheque processing.",
+      "example": "A signature crop is converted into a fixed-length embedding so that two genuine signatures from the same signer lie close together while a different writer's signature lies farther away.",
+      "limitation": "Features capture appearance, not intent or authenticity, and skilled forgeries can produce similar features, so feature similarity is not proof of genuineness or forgery. Offline features carry inherent false-positive and false-negative risk; results must be confidence-scored, evidenced, and human-reviewed for high-risk cases. Signature data is personal data requiring data-protection controls.",
+      "confidence": 0.83,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "signature",
+        "feature-extraction",
+        "embeddings",
+        "computer-vision"
+      ],
+      "sources": [
+        "src-research-cv-signature",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000019",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Siamese networks and metric learning for signatures",
+      "knowledgeType": "GlossaryTerm",
+      "scope": "Global",
+      "description": "A Siamese network is a metric-learning architecture in which two identical sub-networks share weights and map a pair of inputs into an embedding space where a distance reflects similarity. For signatures it is trained so that pairs from the same signer are pulled together and pairs from different signers are pushed apart, enabling writer-independent comparison of a questioned signature against references at scoring time. This pairwise framing suits signature verification because it learns 'same versus different' rather than fixed per-signer classes.",
+      "applicability": "Implementing a writer-independent signature comparator that scores a questioned signature against a few reference specimens.",
+      "example": "The questioned and reference signatures are embedded by the shared network; their embedding distance becomes a similarity score with an attached confidence for the review workflow.",
+      "limitation": "A similarity score is probabilistic and does not prove genuineness or forgery; skilled forgeries can yield small distances, preserving false-positive and false-negative risk, and no accuracy figure is asserted. High-risk decisions require human review, with confidence and evidence recorded, and detection kept separate from verification. Training and inference data are personal data subject to data-protection controls.",
+      "confidence": 0.82,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "siamese-network",
+        "metric-learning",
+        "signature",
+        "deep-learning"
+      ],
+      "sources": [
+        "src-research-cv-signature",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000020",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "CNN-based document image analysis",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Convolutional neural networks (CNNs) are widely used for document image tasks such as field localization, character and digit recognition, and signature embedding, because they learn spatial features directly from pixels. In cheque processing a CNN may underpin amount-digit recognition, signature-region detection, or feature extraction for verification. Their effectiveness depends heavily on training data that represents the deployment population, on consistent pre-processing, and on calibration so that output scores can be interpreted as confidences.",
+      "applicability": "Selecting model families for recognition, detection, and feature-extraction stages in a cheque pipeline.",
+      "example": "A CNN trained on representative cheque crops localizes the courtesy-amount box and produces digit candidates, each with a calibrated confidence used by the review logic.",
+      "limitation": "CNN outputs are probabilistic and can fail on out-of-distribution images, carrying false-positive and false-negative risk; no accuracy figure is asserted. Models can encode bias from unrepresentative data, so high-risk decisions require human review and outputs must record confidence and evidence. CNN inference on cheque images processes personal/financial data subject to data-protection controls, and recognition is never proof of authenticity.",
+      "confidence": 0.83,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "cnn",
+        "deep-learning",
+        "document-analysis",
+        "computer-vision"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-research-cv-signature",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000021",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Anomaly detection for cheque fraud",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "Beyond field recognition, fraud screening can flag anomalies such as amount overwrites, inconsistent fonts, altered MICR, duplicate deposits, or signatures that deviate from references. Because genuine fraud examples are rare and varied, anomaly and outlier methods that learn what 'normal' looks like are often combined with rule-based controls to surface items for review. The output is a prioritized set of suspicious items and reasons, not a verdict, and it should be tuned to the cost trade-off between missed fraud and operational review load.",
+      "applicability": "Building a screening layer that ranks cheques for fraud review using anomaly signals and business rules.",
+      "example": "An item is flagged because its courtesy amount shows overwrite artefacts and its signature score is low; the reasons and crops are bundled for an analyst to review.",
+      "limitation": "An anomaly flag is a prioritization signal and never proof of fraud or a legally conclusive finding; outputs are probabilistic with significant false-positive and false-negative risk. Flagged items require human review, must record confidence and the supporting evidence, and detection must stay separate from any decision to dishonour or report. Screening over personal/financial data is subject to data-protection controls.",
+      "confidence": 0.82,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "anomaly-detection",
+        "fraud-screening",
+        "cheque",
+        "risk"
+      ],
+      "sources": [
+        "src-research-cv-signature",
+        "src-research-ocr",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000022",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Confidence scoring and thresholds",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Every recognition, verification, and anomaly output must carry a calibrated confidence so the pipeline can decide between auto-processing, escalation, and rejection. Thresholds should be set from the business cost of errors and validated on held-out data, and calibration ensures a score of, say, 0.9 actually behaves like high confidence rather than an arbitrary number. Confidence is the control surface that lets a system route uncertain items to humans instead of guessing.",
+      "applicability": "Defining how each stage's score is produced, calibrated, and used to gate straight-through processing versus review.",
+      "example": "Items with amount-read confidence below the configured threshold, or with CAR/LAR disagreement, are routed to manual review; only high-confidence, consistent items auto-clear.",
+      "limitation": "A confidence score is an estimate, not a guarantee, and poor calibration can mask false-positive and false-negative risk; thresholds must be monitored and revalidated over time. High-confidence outputs still do not prove authenticity or forgery, so high-risk decisions require human review and evidence must be retained. Confidence must accompany, not replace, the recorded evidence.",
+      "confidence": 0.85,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "confidence",
+        "calibration",
+        "thresholds",
+        "control"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-research-cv-signature"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000023",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Human review workflow for high-risk items",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "High-risk, low-confidence, or flagged cheques must be routed to a human reviewer who is shown the original image, the extracted fields, the scores, and the reasons for escalation. The workflow should make the automated output advisory, require an explicit human decision for consequential actions, and capture that decision and its rationale. A well-designed review interface presents evidence (crops, reference signatures, mismatch details) so the reviewer can make an informed judgement rather than rubber-stamping a model output.",
+      "applicability": "Designing the operator queue and decision UI for cheque exceptions and suspected fraud.",
+      "example": "A flagged item opens with the original cheque, the questioned and reference signatures side by side, the CAR/LAR values, and the anomaly reasons, and the reviewer records an accept/reject decision with a note.",
+      "limitation": "Automation must support, not replace, human judgement for high-risk decisions, which require qualified human review; the system must never auto-declare fraud or a conclusive forgery. Every escalation records confidence and evidence, and detection remains separate from the human verification decision. The reviewer handles personal/financial data subject to access controls and data-protection obligations.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "human-review",
+        "workflow",
+        "exceptions",
+        "governance"
+      ],
+      "sources": [
+        "src-research-cv-signature",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000024",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "False positive and false negative risk",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Every automated cheque decision faces a trade-off between false positives (genuine items flagged or rejected) and false negatives (fraudulent or wrong items passed). Lowering a threshold to catch more fraud increases customer-impacting false alarms and review load, while raising it reduces friction but lets more bad items through. These error rates are population-dependent and shift over time, so they must be measured continuously rather than assumed fixed, and the chosen operating point must reflect the relative cost of each error type.",
+      "applicability": "Setting and monitoring operating points for recognition, verification, and fraud-screening decisions.",
+      "example": "Tightening the signature-score threshold reduces missed mismatches but increases genuine signatures sent to review; the trade-off is tracked and the operating point chosen with the business.",
+      "limitation": "No threshold eliminates both error types, and a low error rate on test data does not prove field performance; no accuracy figure is asserted. Because false positives and false negatives are unavoidable, high-risk decisions require human review with recorded confidence and evidence, and automated output is never proof of fraud or genuineness. Detection must remain separate from verification.",
+      "confidence": 0.85,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "false-positive",
+        "false-negative",
+        "risk",
+        "evaluation"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-research-cv-signature"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000025",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Audit trail for cheque and fraud decisions",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Cheque processing and fraud screening must produce an append-only audit trail that records the inputs, model versions, scores, thresholds, evidence shown, the human decision, and timestamps for each item. This supports dispute resolution, model governance, and any later investigation by letting reviewers reconstruct exactly why an item was processed, flagged, or rejected. The audit record should reference (not duplicate) the retained original image and capture who decided what and on what basis.",
+      "applicability": "Implementing logging and record-keeping around automated and human cheque decisions.",
+      "example": "For a rejected item the audit stores the model version, CAR/LAR values and confidences, signature score, escalation reason, the reviewer's identity and decision, and a link to the original image.",
+      "limitation": "An audit trail records how a decision was made but does not itself make the decision correct or prove fraud; the underlying signals remain probabilistic with false-positive and false-negative risk. High-risk decisions still require human review, with confidence and evidence recorded, and detection kept separate from verification. Audit records contain personal/financial data and must be access-controlled and retained under data-protection obligations.",
+      "confidence": 0.87,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "audit-trail",
+        "governance",
+        "accountability",
+        "fraud"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000026",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Legal admissibility caution",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "An automated signature or document-fraud score is operational evidence for triage, not a forensic finding. Conclusions about forgery in a legal context are the province of qualified forensic document examiners and the courts, which apply their own standards of evidence and method. Software should therefore frame outputs as 'requires review' or 'possible anomaly' and avoid any wording that implies a definitive forgery determination or legal conclusion.",
+      "applicability": "Wording of system outputs, reports, and case files where fraud or forgery may later be contested.",
+      "example": "A report states 'signature similarity below review threshold; manual examination recommended' rather than 'signature is forged', preserving the distinction between a screening signal and a forensic finding.",
+      "limitation": "The system must never claim automatic fraud proof or a legally conclusive forgery determination; such conclusions require qualified human and forensic judgement. Outputs are probabilistic with false-positive and false-negative risk, must record confidence and evidence, and high-risk matters require human review. Detection remains separate from verification, and any legal use is outside the system's authority.",
+      "confidence": 0.86,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "legal",
+        "admissibility",
+        "forensics",
+        "caution"
+      ],
+      "sources": [
+        "src-research-cv-signature",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000027",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Model evaluation for cheque and signature systems",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Evaluating recognition and verification components requires task-appropriate metrics and protocols: field-level read accuracy and error analysis for OCR, and threshold-aware measures (such as false-accept versus false-reject behaviour across operating points) for signature verification. Evaluation must use data that represents the deployment population and must include skilled forgeries for signatures, because a protocol limited to easy negatives overstates performance. Results should be reported as ranges with the evaluation conditions stated, never as a single headline number divorced from its dataset.",
+      "applicability": "Designing and reporting validation for OCR and signature-verification components before and during deployment.",
+      "example": "A signature model is evaluated across thresholds and reported with its false-accept/false-reject trade-off on a representative set including skilled forgeries, with the evaluation conditions documented.",
+      "limitation": "Evaluation numbers are dataset- and protocol-dependent and do not guarantee field performance, so no accuracy percentage is asserted and ongoing monitoring is required. Strong evaluation still does not make any output proof of fraud or genuineness; high-risk decisions require human review with confidence and evidence recorded. Detection must be evaluated separately from verification.",
+      "confidence": 0.84,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "evaluation",
+        "metrics",
+        "validation",
+        "model-governance"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-research-cv-signature"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000028",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Dataset labeling strategy",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Building training and evaluation data for cheque OCR and signature verification requires careful labelling: ground-truth field values, signer identity and genuine/forgery labels, and clear handling of ambiguous cases. Labels should be produced with documented guidelines, inter-annotator checks for hard fields, and strict separation of signers between training and test sets so writer-independent claims are not inflated by leakage. Where real cheques are used, data must be minimized, secured, and lawfully processed, and synthetic or consented data should be preferred where feasible.",
+      "applicability": "Curating datasets to train and validate recognition and verification models for cheque processing.",
+      "example": "Cheque crops are labelled with ground-truth amounts and signer IDs under written guidelines, with the same signer never appearing in both training and test splits to prevent leakage.",
+      "limitation": "Label noise and unrepresentative data propagate into false-positive and false-negative risk at run time, and no labelling effort makes downstream output proof of fraud or genuineness. High-risk decisions still require human review with confidence and evidence recorded, and detection labelling is kept distinct from verification labelling. Real cheque data is personal/financial data that must be processed under data-protection obligations.",
+      "confidence": 0.83,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "dataset",
+        "labeling",
+        "data-leakage",
+        "model-governance"
+      ],
+      "sources": [
+        "src-research-ocr",
+        "src-research-cv-signature",
+        "src-dpo-mu"
+      ]
+    },
+    {
+      "uid": "c2070000-0000-4000-8000-000000000029",
+      "category": "Cheque OCR, Signature Forgery Detection and Document Fraud",
+      "title": "Privacy and data protection for cheque data",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Cheque images and their extracted fields contain personal and financial data, including names, account numbers, amounts, and signatures, and signatures in particular are sensitive identity data. Processing must follow data-protection principles: a lawful basis, purpose limitation, data minimization, controlled access, retention limits, and secure storage, with special care for signature specimens used in verification. Where personal data is processed in Mauritius, obligations under the Mauritius Data Protection Act apply and should be verified against current guidance from the Data Protection Office.",
+      "applicability": "Governing how cheque images, extracted fields, and signature specimens are stored, accessed, retained, and used across the pipeline.",
+      "example": "Signature reference specimens are stored encrypted with role-based access, used only for verification, and retained for a defined period, with access logged for audit.",
+      "limitation": "This is awareness, not legal advice: actual obligations must be confirmed under the applicable data-protection law and current regulator guidance. Privacy controls do not make any fraud or forgery output conclusive; outputs remain probabilistic with false-positive and false-negative risk, high-risk decisions require human review, and confidence and evidence must be recorded. Detection must remain separate from verification.",
+      "confidence": 0.85,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "privacy",
+        "data-protection",
+        "personal-data",
+        "governance"
+      ],
+      "sources": [
+        "src-dpo-mu"
+      ]
+    }
+  ]
+}

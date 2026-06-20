@@ -1,0 +1,577 @@
+{
+  "category": "Payments, Transfers, Settlement and Reconciliation",
+  "items": [
+    {
+      "uid": "c2040000-0000-4000-8000-000000000001",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Payment initiation and the instruction lifecycle",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "A payment instruction enters the middleware through a defined initiation channel (file upload, API, host-to-host feed, or operator capture) and is assigned a unique end-to-end instruction identifier that persists for its entire lifetime. The instruction then moves through an explicit state machine — for example Received, Validated, Authorized, Submitted, Settled, and either Completed or Rejected — with every transition timestamped and attributed. Modelling initiation as an explicit, append-only lifecycle rather than mutable status flags makes the payment auditable and lets every downstream system reference the same identifier. The instruction identifier should be generated at the boundary so that retries and resubmissions can be correlated to the original.",
+      "applicability": "Foundational for any BDM-style direct-debit or transfer engine that must ingest instructions from multiple channels and track each one to a terminal state with full traceability.",
+      "example": "A batch of 5,000 direct-debit collection instructions is ingested; each row receives an end-to-end id such as BDM-20260621-000042-0001, is written to the instruction table in Received state, and a transition event is logged before validation begins.",
+      "limitation": "The exact set of states, channel options, and identifier formats are scheme- and jurisdiction-specific and must follow the current operational rulebook for the relevant payment scheme.",
+      "confidence": 0.92,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "payment-initiation",
+        "lifecycle",
+        "state-machine",
+        "instruction-id",
+        "direct-debit"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000002",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Payment validation: syntactic, semantic and business-rule layers",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Validation should be layered and fail fast: a syntactic layer checks structure and mandatory fields, a semantic layer checks that values are individually valid (a parseable account number, a known currency, a date within the allowed window), and a business-rule layer checks cross-field and contextual constraints (active mandate, account not blocked, amount within limits). Each rejected item must carry a precise, machine-readable reason code rather than a generic failure, so that operations and downstream parties can act on it. Validating early — before authorization and submission — prevents invalid instructions from consuming settlement capacity or polluting the core banking feed.",
+      "applicability": "Applies to every inbound payment or collection file in a BDM-style engine, where a single malformed or non-compliant row must be isolated without failing the whole batch.",
+      "example": "A collection row references mandate M-7781 which is in Cancelled state; the semantic layer passes (well-formed mandate id) but the business-rule layer rejects it with reason code AC04/Mandate-Cancelled and routes the item to the exception queue.",
+      "limitation": "Mandatory-field sets, allowed value ranges, and reason-code vocabularies differ by scheme; confirm against the current scheme rulebook and core-banking constraints.",
+      "confidence": 0.91,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "validation",
+        "business-rules",
+        "reason-codes",
+        "data-quality",
+        "fail-fast"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000003",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Payment authorization and limit enforcement",
+      "knowledgeType": "BusinessRule",
+      "scope": "Global",
+      "description": "Authorization is the control that converts a validated instruction into one approved for submission, applying entitlement, mandate, and limit checks at the point of release. It enforces that the initiating party is permitted to debit the target account (via a valid mandate or authority), that per-transaction, daily, and batch limits are respected, and that any required second approval has been obtained. Authorization decisions must be recorded with the identity of the approver, the limits evaluated, and the outcome, because they are the primary line of defence against unauthorized debits and fraud.",
+      "applicability": "Critical in direct-debit middleware where the originator pulls funds from a debtor account: the authority to collect must be verified at release time, not merely at file ingestion.",
+      "example": "A 250,000 collection is held because the mandate's per-collection ceiling is 100,000; the engine raises a limit-breach exception and requires an authorized override before the item can move to Submitted.",
+      "limitation": "Limit structures, override rights, and mandate-authority semantics are institution- and scheme-specific and must follow current operational and regulatory rules.",
+      "confidence": 0.9,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "authorization",
+        "limits",
+        "entitlements",
+        "fraud-control",
+        "release"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000004",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Direct-debit mandate lifecycle",
+      "knowledgeType": "BusinessRule",
+      "scope": "Global",
+      "description": "A direct-debit mandate is the standing authority a debtor grants a creditor to collect funds, and it has its own lifecycle independent of any single collection: Requested, Active, Suspended, Amended, Cancelled, and Expired. The mandate carries the debtor and creditor identities, the debtor account, the creditor scheme reference, a unique mandate reference, the signature or authorization evidence, and validity dates. Every collection must be linked to a mandate that is Active on the collection date, and any amendment (for example a changed debtor account) must produce a new mandate version while preserving the original reference and history. Treating the mandate as a versioned, auditable master record prevents collections under stale or revoked authority.",
+      "applicability": "Core to BDM-style systems whose central asset is the mandate book; collection eligibility, cancellation handling, and dispute resolution all depend on accurate mandate state.",
+      "example": "Debtor changes bank account; the mandate M-7781 is amended, producing version 2 with the new account effective 2026-07-01, while version 1 remains in history so collections before that date remain reconcilable.",
+      "limitation": "Mandate data elements, amendment rules, and required evidence vary by scheme (e.g., paper vs. electronic mandates) and jurisdiction; verify against the current rulebook.",
+      "confidence": 0.91,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "mandate",
+        "direct-debit",
+        "lifecycle",
+        "versioning",
+        "authority"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000005",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Claim generation for scheduled collections",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "Claim generation is the scheduled process that materializes due collections from active mandates into concrete payment instructions (claims) for a given collection date. It evaluates each mandate's frequency, amount, next-due date, and end conditions, then emits one claim per due occurrence, advancing the mandate's schedule only after the claim is durably persisted. The process must be idempotent for a given (mandate, due-date) pair so that re-running it after a partial failure does not duplicate claims. Generated claims then flow through the same validation, authorization, and submission pipeline as ad-hoc payments.",
+      "applicability": "Directly relevant to recurring BDM collections (loan instalments, utility bills, insurance premiums) where claims must be produced reliably on a cycle and never double-generated.",
+      "example": "On the monthly run, mandate M-7781 due on the 5th produces claim CLM-20260705-7781-01; a mid-run crash and restart finds the claim already persisted for that (mandate, due-date) key and skips re-creation.",
+      "limitation": "Frequency rules, calendar handling (non-business-day shifts), and advance-notification requirements are scheme-specific; apply the current operational rulebook.",
+      "confidence": 0.89,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "claim-generation",
+        "scheduling",
+        "idempotency",
+        "recurring",
+        "mandate"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000006",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Mandate cancellation and revocation handling",
+      "knowledgeType": "BusinessRule",
+      "scope": "Global",
+      "description": "Cancellation moves a mandate to a terminal Cancelled state and must immediately stop future claim generation while preserving the full mandate history for audit and dispute purposes. Cancellation can be initiated by the debtor (revocation), the creditor (closure), or the system (expiry or repeated rejection), and the source and effective date must be recorded. In-flight claims already submitted under the mandate need an explicit policy — typically allowed to complete or recalled depending on scheme rules — because cancellation is not retroactive to instructions already in settlement. A cancelled mandate must never be silently reactivated; resuming collection requires a new mandate.",
+      "applicability": "Essential where debtors exercise the right to revoke and the engine must guarantee no further pulls occur after the effective cancellation date.",
+      "example": "Debtor revokes M-7781 effective immediately; claim generation for the next cycle is suppressed, the mandate is flagged Cancelled with reason Debtor-Revoked, and an already-submitted claim for the current cycle is handled per the recall policy.",
+      "limitation": "Revocation timing, in-flight handling, and recall rights differ by scheme and jurisdiction; confirm current operational and legal rules before implementing recall behaviour.",
+      "confidence": 0.89,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "mandate",
+        "cancellation",
+        "revocation",
+        "recall",
+        "audit"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000007",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Rejection and return reason codes",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Rejections and returns must be expressed as a controlled vocabulary of reason codes, each mapping to a defined operational meaning and a follow-up action, rather than free text. Codes typically distinguish technical rejections (malformed, duplicate, invalid account) from financial returns (insufficient funds, account closed, mandate cancelled, debtor disputed). A canonical internal code set should be maintained with bidirectional mappings to the external scheme codes carried in inbound response files, so the engine can translate between its own taxonomy and each scheme's. Persisting both the raw scheme code and the normalized internal code preserves fidelity for audit while enabling consistent downstream logic.",
+      "applicability": "Used throughout a BDM engine to drive retry decisions, dunning, mandate suspension, and reconciliation categorization based on why an item failed.",
+      "example": "An inbound return carries scheme code AC04 (account closed); the engine maps it to internal RET-ACCT-CLOSED, marks the claim Returned, suspends the mandate pending update, and excludes it from automatic retry.",
+      "limitation": "Reason-code sets and their exact semantics are defined by each scheme and change over time; the mapping table must be maintained against current scheme specifications.",
+      "confidence": 0.9,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "reason-codes",
+        "rejection",
+        "returns",
+        "mapping",
+        "taxonomy"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000008",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Posting to core banking and the dual-ledger discipline",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "When a payment affects account balances, the middleware posts a structured, balanced entry to the core banking ledger and records its own mirror entry so the two can later be reconciled. Each posting must be idempotent, identified by the instruction id plus a posting type, so that a retry after an ambiguous timeout does not double-post. Postings should follow double-entry discipline (debits equal credits) and reference postable leaf accounts, with the core banking system remaining the system of record for balances. The middleware retains the posting reference returned by core banking to anchor reconciliation and to support reversal if the payment is later returned.",
+      "applicability": "Relevant wherever a BDM collection or transfer must move money in the core ledger and the middleware must prove that what it intended to post matches what core banking actually booked.",
+      "example": "A successful collection posts Debit Debtor Account / Credit Creditor Settlement Suspense; core banking returns posting ref GL-88231, which the middleware stores against claim CLM-20260705-7781-01 for later reconciliation.",
+      "limitation": "Core banking interfaces, posting models (real-time vs. batch), and reversal mechanics are platform-specific; do not assume a universal posting API or timing.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "core-banking",
+        "posting",
+        "double-entry",
+        "idempotency",
+        "ledger"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000009",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Settlement and the clearing-to-settlement distinction",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "Clearing is the exchange and validation of payment information between parties, while settlement is the actual movement of funds that discharges the obligation, and the two are distinct events that may occur at different times. Settlement may be gross (each transaction settled individually) or net (positions netted across a window and a single net figure settled), with net settlement reducing liquidity needs but concentrating timing and settlement risk. The engine must track each instruction's settlement status separately from its clearing status, hold funds in a settlement suspense account between the two, and only treat a payment as final when settlement is confirmed irrevocable. Settlement finality — the point after which a payment cannot be unwound — is a critical control boundary for risk and accounting.",
+      "applicability": "Important for BDM-style middleware that submits collection batches to a clearing party and must reconcile expected versus confirmed settlement, including net positions.",
+      "example": "A batch of 5,000 collections clears intraday; at the settlement cycle the net credit of 4.2m is confirmed to the creditor's settlement account, at which point the batch is marked Settled and the suspense balance is cleared.",
+      "limitation": "Settlement timing, netting models, finality rules, and cut-offs are defined by each clearing/settlement system and jurisdiction; verify against current scheme rules.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "settlement",
+        "clearing",
+        "netting",
+        "finality",
+        "suspense"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000010",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Reconciliation: three-way matching and breaks",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Reconciliation confirms that the engine's records, the core banking postings, and the scheme/settlement confirmations all agree, typically as a three-way match keyed on instruction id, amount, and date. Items that do not match cleanly are reconciliation breaks and must be classified — for example missing in core, missing in scheme, amount mismatch, or status mismatch — and routed for investigation rather than auto-cleared. Reconciliation should be run per cycle and produce a control total proving that opening balance plus movements equals closing balance, so that no value is silently lost or created. A break is an exception, not a failure of the run; the run must complete and report all breaks even when individual items mismatch.",
+      "applicability": "A daily necessity in BDM operations to prove that collected, returned, and settled amounts tie out across the engine, core banking, and the clearing system.",
+      "example": "Claim CLM-20260705-7781-01 appears Settled in the engine and present in the scheme file but has no core-banking posting; reconciliation flags a Missing-In-Core break and assigns it to the operations queue.",
+      "limitation": "Matching keys, tolerances, and break categories depend on the data available from each system and on scheme conventions; tune them to the specific operational environment.",
+      "confidence": 0.9,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "reconciliation",
+        "three-way-match",
+        "breaks",
+        "control-total",
+        "exceptions"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000011",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Exception handling and the exception queue",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "Every item that cannot proceed automatically — validation failure, limit breach, return, or reconciliation break — should be diverted to a structured exception queue rather than being dropped or blocking the batch. Each exception carries a category, a reason code, the responsible team, an age, and an audit trail of actions taken, enabling prioritization by risk and value. The pipeline must continue processing healthy items while exceptions are worked, and resolution actions (resubmit, repair, write-off, escalate) must be controlled and logged. Treating exceptions as first-class, trackable work items prevents silent loss and provides the metrics needed to manage operational risk.",
+      "applicability": "Central to BDM operations where high-volume batches always contain a tail of failures that must be triaged without halting the run.",
+      "example": "A limit-breach exception on a 250,000 collection is queued with category Authorization, owner Payments-Ops, and SLA 4 hours; an operator either obtains an override or rejects it, and the action is appended to the exception's audit trail.",
+      "limitation": "Exception categories, ownership, and SLAs are organization-specific; align them with the institution's operating model and regulatory expectations.",
+      "confidence": 0.89,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "exception-handling",
+        "queue",
+        "triage",
+        "operational-risk",
+        "sla"
+      ],
+      "sources": [
+        "src-research-business"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000012",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Maker-checker-approver segregation of duties",
+      "knowledgeType": "BusinessRule",
+      "scope": "Global",
+      "description": "Sensitive payment actions should require at least two distinct identities — a maker who initiates and a checker who independently verifies — with a separate approver tier for high-value or high-risk actions. The same user must never both create and approve the same item, and the system must enforce this server-side rather than relying on UI hints. Each step records who acted, when, and what they saw, producing a defensible control trail that satisfies segregation-of-duties expectations. Maker-checker applies not only to individual payments but also to mandate changes, limit overrides, and configuration changes that affect payment behaviour.",
+      "applicability": "A baseline control in BDM middleware for releasing batches, overriding limits, amending mandates, and any action that can move money or weaken a control.",
+      "example": "Maker uploads a creditor file and submits for release; the engine blocks self-approval, so a different checker reviews totals and counts and approves, and a third approver signs off because the batch value exceeds the 1m threshold.",
+      "limitation": "The number of tiers, thresholds, and which actions require dual control are policy decisions that vary by institution and risk appetite; confirm against current internal controls.",
+      "confidence": 0.92,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "maker-checker",
+        "segregation-of-duties",
+        "approval",
+        "dual-control",
+        "controls"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000013",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "SFTP file exchange and transport integrity",
+      "knowledgeType": "Standard",
+      "scope": "Global",
+      "description": "Bulk payment exchange with banks and schemes is commonly performed over SFTP using agreed directory conventions, file-naming patterns, and a control-file or trigger-file handshake so a partner only consumes a file once it is fully written. Transport integrity should be protected with checksums or hashes and, where required, message-level signing or PGP encryption, so tampering or truncation is detectable on receipt. The engine must guard against partial reads (atomic move into the pickup directory), enforce idempotent pickup by tracking processed filenames, and archive both raw inbound and outbound files for audit. Connection credentials and host keys must be managed securely and rotated under change control.",
+      "applicability": "Directly applicable to BDM engines that drop outbound collection files and collect inbound response/return files from a bank or clearing partner on a schedule.",
+      "example": "The engine writes collections.20260621.tmp, computes a SHA-256, then atomically renames it to collections.20260621.csv and drops collections.20260621.ctl containing the row count and hash so the partner validates before processing.",
+      "limitation": "File formats, naming conventions, handshakes, and encryption requirements are defined per partner agreement and may use other transports (AS2, MQ, API); confirm the current interface spec.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "sftp",
+        "file-exchange",
+        "integrity",
+        "control-file",
+        "encryption"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000014",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Response and return file processing",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Inbound response files report the fate of previously submitted items and must be parsed, validated against the original batch, and applied to update each item's status, never blindly trusted. Processing should match each response line back to its original instruction id, translate the scheme reason code into the internal taxonomy, and apply the corresponding business action (mark settled, mark returned, suspend mandate, trigger retry or dunning). The processor must be idempotent so that re-receiving or re-processing the same response file does not double-apply outcomes, and it must reconcile counts — every submitted item should eventually be accounted for in a response. Unmatched response lines are themselves exceptions requiring investigation.",
+      "applicability": "Core to BDM collection cycles where success, return, and reject outcomes arrive in scheme response files that must drive mandate, retry, and ledger consequences.",
+      "example": "A return file marks CLM-20260705-7781-01 as AC04; the processor matches it by instruction id, sets the claim Returned, reverses the core posting, suspends the mandate, and increments the processed-count check.",
+      "limitation": "Response-file layouts, timing, and completeness guarantees vary by scheme; verify matching keys and reason-code semantics against the current interface specification.",
+      "confidence": 0.89,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "response-file",
+        "returns",
+        "matching",
+        "idempotency",
+        "status-update"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000015",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Duplicate detection and idempotency keys",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Payment systems must defend against duplicates at two levels: accidental re-submission of an entire file or batch, and re-creation of an individual instruction. A natural idempotency key — for example originator reference plus debtor account plus amount plus due date, or a partner-supplied end-to-end id — should be enforced with a unique constraint so a re-run is rejected or absorbed rather than processed twice. File-level controls (file hash, batch reference, and a processed-files register) prevent an operator from ingesting the same file twice. Because retries are a normal part of resilient processing, idempotency is what makes 'at-least-once' delivery safe by turning it into 'effectively once'.",
+      "applicability": "Essential in BDM engines where a re-sent file or a retried API call must never cause a customer to be debited twice.",
+      "example": "An operator re-uploads collections.20260621.csv after a timeout; the processed-files register already holds its hash, so the engine rejects the upload as a duplicate batch and points to the original run id.",
+      "limitation": "The correct idempotency key depends on what uniquely identifies a payment in the given scheme and data set; choosing too narrow a key risks false duplicates and too wide a key risks missed ones.",
+      "confidence": 0.91,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "duplicate-detection",
+        "idempotency",
+        "unique-key",
+        "deduplication",
+        "resilience"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000016",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Cut-off times and value dating",
+      "knowledgeType": "BusinessRule",
+      "scope": "Global",
+      "description": "Each payment scheme and settlement cycle has cut-off times after which submitted items roll to the next processing window or value date, and the engine must apply these deterministically. Instructions received before the cut-off settle in the current cycle; those after it are date-stamped to the next eligible business day, accounting for weekends, holidays, and scheme calendars. The engine should compute and store the intended value date at acceptance so downstream parties, customers, and reconciliation all share the same expectation. Cut-off handling must be timezone-aware and use a single authoritative business calendar to avoid items being mis-dated across regions.",
+      "applicability": "Important for BDM collection windows where late submission must clearly roll to the next cycle and customers must be told the correct collection date.",
+      "example": "A batch submitted at 16:05 against a 16:00 cut-off is automatically value-dated to the next business day; because the next day is a public holiday, the calendar shifts it one further day and stamps the claims accordingly.",
+      "limitation": "Cut-off times, calendars, and value-dating rules are scheme- and jurisdiction-specific and change (e.g., holiday schedules); they must track current operational rules.",
+      "confidence": 0.89,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "cut-off",
+        "value-date",
+        "business-calendar",
+        "scheduling",
+        "timezone"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000017",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Audit trail and append-only event history",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Every state change, decision, and operator action on a payment, claim, or mandate must be recorded in an append-only audit trail that captures who, what, when, from-state, to-state, and the reason or reference. The audit trail must be immutable in normal operation — corrections are made by new compensating events, never by editing history — so it can serve as evidence in disputes, investigations, and regulatory examination. Audit records should be queryable by instruction id, mandate, operator, and time window, and retained for the period required by policy and regulation. Because payments move money, the absence of a complete trail is itself a control deficiency.",
+      "applicability": "Mandatory in BDM middleware for proving authority to collect, demonstrating dual control, and reconstructing exactly what happened to any disputed collection.",
+      "example": "Disputing a collection, an investigator pulls the trail for CLM-20260705-7781-01 and sees: Received (system), Validated (system), Authorized (checker jdoe), Submitted (system), Returned AC04 (response processor), Mandate-Suspended (system).",
+      "limitation": "Retention periods, required fields, and tamper-evidence expectations are set by regulation and internal policy and vary by jurisdiction; confirm current requirements.",
+      "confidence": 0.93,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "audit-trail",
+        "append-only",
+        "immutability",
+        "evidence",
+        "retention"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000018",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Operational dashboard and processing visibility",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "Operations need a near-real-time view of batch progress, queue depths, exception ages, settlement confirmation status, and reconciliation breaks so they can intervene before SLAs are missed. The dashboard should surface counts and values by state, highlight stalled batches and aging exceptions, and show whether each expected inbound file and settlement confirmation has arrived. To avoid coupling visibility to availability, dashboards should read from durable application state and cached snapshots rather than blocking on external systems on the request path. Clear, actionable metrics — not raw logs — let operators triage by risk and value during the working window.",
+      "applicability": "Directly useful in BDM control rooms that must watch collection cycles, chase missing response files, and clear breaks before the daily close.",
+      "example": "The dashboard shows 5,000 submitted, 4,920 settled, 60 returned, and 20 in exception with the oldest exception aged 3h12m, plus a red flag that the 14:00 response file from the bank has not yet arrived.",
+      "limitation": "The right metrics, thresholds, and refresh cadence depend on the operating model and volumes; tune them and avoid synchronous external calls that can hang the view.",
+      "confidence": 0.87,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "dashboard",
+        "monitoring",
+        "visibility",
+        "metrics",
+        "operations"
+      ],
+      "sources": [
+        "src-research-business"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000019",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Retry logic and backoff for returns and transient failures",
+      "knowledgeType": "BusinessRule",
+      "scope": "Global",
+      "description": "Retry policy must distinguish transient technical failures (timeouts, connectivity, temporary downstream unavailability) from financial returns (insufficient funds), because they call for different strategies. Technical failures warrant automatic, bounded retries with exponential backoff and a maximum attempt count, after which the item escalates to an exception. Financial returns such as insufficient funds may permit a limited, scheme-compliant re-presentation schedule (for example a small number of retries spaced by agreed intervals), whereas hard returns such as account-closed or mandate-cancelled must never be retried. Every retry must reuse the original idempotency key so a late success from an earlier attempt does not combine with a retry to double-debit.",
+      "applicability": "Important in BDM collections where insufficient-funds returns are common and a controlled re-presentation cycle materially improves collection rates without breaching scheme limits.",
+      "example": "An insufficient-funds return on CLM-20260705-7781-01 triggers one scheme-compliant re-presentation five business days later under the same instruction id; a second insufficient-funds return ends the cycle and raises a dunning exception.",
+      "limitation": "Maximum re-presentation counts, intervals, and which reason codes are retryable are strictly scheme-defined and change; never exceed the current scheme's re-presentation rules.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "retry",
+        "backoff",
+        "re-presentation",
+        "returns",
+        "idempotency"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000020",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Failure recovery and safe batch restart",
+      "knowledgeType": "ArchitectureDecision",
+      "scope": "Global",
+      "description": "Payment processing must be recoverable: a crash mid-batch should leave the system in a state that can be resumed without re-processing completed items or losing in-flight ones. This requires durable checkpointing of progress, transactional state transitions, and idempotent steps so a restart converges to the same outcome as an uninterrupted run. Outbound submissions should be tracked with a definite sent/acknowledged status so the engine can determine, after a crash, whether an ambiguous item actually reached the partner before deciding to resend. Recovery procedures must be tested and documented, including how to reconcile after a recovery to prove no value was duplicated or dropped.",
+      "applicability": "Critical for BDM batch engines processing thousands of collections where an infrastructure failure must not cause missed or duplicated debits.",
+      "example": "The engine crashes after submitting 3,000 of 5,000 claims; on restart it reads the checkpoint, confirms the outbound file was acknowledged, skips the 3,000 already in Submitted, and resumes from item 3,001 without regenerating earlier ones.",
+      "limitation": "Recovery guarantees depend on the durability of the underlying store and on partner acknowledgement semantics; design and test against the actual infrastructure rather than assumed guarantees.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "failure-recovery",
+        "checkpointing",
+        "restart",
+        "idempotency",
+        "resilience"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000021",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Data lineage from initiation to settlement",
+      "knowledgeType": "Requirement",
+      "scope": "Global",
+      "description": "Data lineage is the ability to trace any payment forwards and backwards across every system it touches — initiation channel, validation, authorization, submission file, response file, core posting, and settlement confirmation — using stable correlation identifiers. Each transformation (file row to claim, claim to ledger entry, scheme code to internal code) should preserve and link the source and target identifiers so a single query reconstructs the full chain. Strong lineage is what makes reconciliation breaks explainable, supports dispute resolution, and demonstrates control effectiveness to auditors and regulators. Without it, a value discrepancy cannot be attributed to a specific step, and root-cause analysis degrades into guesswork.",
+      "applicability": "Underpins reconciliation, audit, and dispute handling in BDM middleware where one collection's history may span the engine, the bank file interface, and core banking.",
+      "example": "Investigating a 2.00 settlement discrepancy, an analyst follows lineage from settlement confirmation to the netted batch, to claim CLM-20260705-7781-01, to its core posting GL-88231, and to the originating mandate amendment that changed the amount.",
+      "limitation": "Lineage is only as complete as the identifiers each system preserves; gaps in partner data or legacy interfaces limit traceability and may require compensating reconciliation controls.",
+      "confidence": 0.88,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "data-lineage",
+        "traceability",
+        "correlation-id",
+        "audit",
+        "root-cause"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    },
+    {
+      "uid": "c2040000-0000-4000-8000-000000000022",
+      "category": "Payments, Transfers, Settlement and Reconciliation",
+      "title": "Transfer routing and beneficiary validation",
+      "knowledgeType": "BusinessRule",
+      "scope": "Global",
+      "description": "Outbound transfers must be routed to the correct scheme or rail based on attributes such as currency, destination institution, urgency, and value, with each rail carrying its own format, cut-off, and cost profile. Before submission, beneficiary details should be validated for structural correctness (account/IBAN check digits, routing identifiers) and, where available, confirmed against name-matching or account-verification services to reduce misdirected payments. Routing decisions and the chosen rail must be recorded so reconciliation and lineage can follow the payment down the correct path. Misrouting and beneficiary errors are a leading cause of failed or returned transfers and of operational loss, so validation belongs before authorization.",
+      "applicability": "Relevant where BDM-style middleware also makes outbound creditor settlements or refunds and must select the right rail and confirm the destination before releasing funds.",
+      "example": "A high-value, same-day creditor settlement is routed to the RTGS-style rail rather than the bulk rail because it exceeds the bulk-value threshold; the beneficiary account fails its check-digit test and is rejected before authorization.",
+      "limitation": "Available rails, routing thresholds, identifier formats, and account-verification services are jurisdiction- and scheme-specific; confirm against the current operational and scheme rules.",
+      "confidence": 0.86,
+      "sourceType": "ArchitectureNote",
+      "version": "1.2.0",
+      "lastReviewedUtc": "2026-06-21",
+      "reviewStatus": "Approved",
+      "tags": [
+        "routing",
+        "beneficiary-validation",
+        "transfers",
+        "rails",
+        "account-verification"
+      ],
+      "sources": [
+        "src-bom"
+      ]
+    }
+  ]
+}

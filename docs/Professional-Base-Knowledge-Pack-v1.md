@@ -151,6 +151,20 @@ overwriting the user's work. Unedited baseline items upgrade cleanly with a new 
 - Finance/accounting/banking items are **general domain concepts**, not jurisdiction-specific advice.
 - The `manifest.json` records the `license`, `legalLimitations`, and `sourcePolicy`.
 
+## v1.2 extension (R2-ACC-B2)
+
+Pack v1.2 keeps this same architecture (no schema change) and adds: a **source registry**
+(`source-registry.json`, validated at install — see `Professional-Base-Knowledge-Pack-v1.2-Sources.md`),
+optional per-item `sources` (validated against the registry, rendered as a **Sources** section and `src:` tags)
+and `jurisdiction` (rendered + `jur:` tag), and 11 new enterprise-advisory categories: Financial Market
+Prediction & Quantitative Analysis, Accounting Standards & Financial Reporting, Mauritius Banking & Financial
+Services Context, Payments/Transfers/Settlement/Reconciliation, Leasing/Lending/Credit/Arrears, Insurance &
+Financial Services Controls, Cheque OCR/Signature Forgery/Document Fraud, Python OCR & Computer Vision
+Deployment, PDF Reader/Classifier/Summarizer, AI/Coding/Business Research Notes, and Enterprise
+Solution-Solving Playbooks. Domain limitations are documented in `Financial-AI-and-Market-Prediction-Limitations.md`,
+`Cheque-OCR-and-Forgery-Detection-Research-Notes.md`, and `PDF-Reader-and-Summarizer-Design.md`; the advisory
+posture is in `Enterprise-Consultant-Operating-Model.md`.
+
 ## Limitations (v1) & next improvements
 
 - Keyword + best-effort vector search only; baseline items are not yet weighted in the RAG ranker.

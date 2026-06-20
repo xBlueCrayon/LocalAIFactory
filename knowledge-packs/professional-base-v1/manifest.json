@@ -1,12 +1,13 @@
 {
   "packUid": "0a510000-0001-4000-8000-000000000001",
   "name": "Professional Base Knowledge Pack",
-  "version": "1.0.0",
-  "description": "Baseline professional knowledge shipped with LocalAIFactory: practical, original summaries and patterns across software engineering, CRUD-over-MSSQL, databases, Python/AI/RAG, security, governance, control-style standards, finance/accounting/banking, operations, product/admin patterns, and reporting. Designed to strengthen every repository analysis, support, documentation, and autonomous-engineering workflow.",
-  "license": "Original professional summaries and practical patterns authored for LocalAIFactory. Free to deploy and modify within the application. No third-party source is vendored.",
+  "version": "1.2.0",
+  "description": "Baseline professional knowledge shipped with LocalAIFactory. v1 covers software engineering, CRUD-over-MSSQL, databases, Python/AI/RAG, security, governance, control-style standards, finance/accounting/banking, operations, product/admin patterns, and reporting. v1.2 extends into enterprise advisory and domain intelligence: financial market prediction & quantitative analysis, accounting standards & financial reporting, the Mauritius banking & financial-services context, payments/transfers/settlement/reconciliation, leasing/lending/credit/arrears, insurance & financial-services controls, cheque OCR & signature-forgery/document-fraud, Python OCR & computer-vision deployment, PDF reading/classification/summarization, source-attributed AI/coding/business research notes, and enterprise solution-solving playbooks. All items are original summaries with explicit limitation notes; research- and standards-derived items are attributed via the source registry.",
+  "license": "Original professional summaries and practical patterns authored for LocalAIFactory. Free to deploy and modify within the application. No third-party source is vendored or reproduced verbatim.",
   "createdUtc": "2026-06-20",
-  "lastReviewedUtc": "2026-06-20",
-  "itemCount": 134,
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 390,
+  "sourceRegistry": "source-registry.json",
   "files": [
     "software-engineering.json",
     "crud-web-mssql.json",
@@ -18,9 +19,20 @@
     "finance-accounting-banking.json",
     "sysadmin-operations.json",
     "product-patterns.json",
-    "reporting-templates.json"
+    "reporting-templates.json",
+    "financial-market-prediction.json",
+    "accounting-financial-reporting.json",
+    "mauritius-banking-context.json",
+    "payments-settlement-reconciliation.json",
+    "leasing-lending-credit-arrears.json",
+    "insurance-financial-controls.json",
+    "cheque-ocr-forgery-fraud.json",
+    "python-ocr-computer-vision.json",
+    "pdf-reader-summarizer.json",
+    "ai-coding-business-research.json",
+    "enterprise-solution-playbooks.json"
   ],
-  "legalLimitations": "This pack contains ORIGINAL practical summaries only. It does NOT reproduce ISO/IEC, PMBOK, or any other proprietary or paid standard text verbatim, and it does not assert official certification or compliance. Governance and control-style items are practical summaries, not substitutes for the licensed standards or for formal legal, regulatory, or compliance advice. Finance/accounting/banking items describe general domain concepts and are not jurisdiction-specific advice.",
-  "sourcePolicy": "Original professional summaries and practical patterns only. No proprietary ISO, PMBOK, or paid standard text copied verbatim. Every item carries an explicit limitation note and a confidence score.",
+  "legalLimitations": "This pack contains ORIGINAL practical summaries only. It does NOT reproduce ISO/IEC, IFRS, PMBOK, FATF, Basel, regulatory, or any other proprietary/official text verbatim, and it does not assert official certification or compliance. Governance, accounting and control-style items are practical summaries, not substitutes for the licensed standards or for formal legal, regulatory, tax, audit, or compliance advice. Mauritius banking/financial-services items are awareness-level only and are not Bank of Mauritius / FSC / FIU / Data Protection Office guidance or a compliance claim. Financial-market items are analytical only and are NOT financial or investment advice; no profitability or guaranteed outcome is implied. Cheque OCR / signature-forgery / document-fraud items never assert automatic fraud proof or legally conclusive forgery detection; high-risk decisions require human review, recorded confidence and evidence, and detection is separated from verification. OCR/computer-vision accuracy is dataset- and pipeline-dependent and no fixed accuracy is claimed; 2D document scanning is distinct from 3D/medical imaging and nothing here is medical diagnosis. PDF summaries must retain provenance and distinguish extracted text from model output. Research-derived items are attributed to registered source families, not specific peer-reviewed papers; no DOIs/titles/authors are asserted and such attributions require verification before formal citation.",
+  "sourcePolicy": "Original professional summaries and practical patterns only. No proprietary/official text copied verbatim. Sources are registered in source-registry.json for governance and attribution; research families are marked 'verification required'. Every item carries an explicit limitation note and a confidence score.",
   "reviewStatus": "Approved"
 }

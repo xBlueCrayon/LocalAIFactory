@@ -66,6 +66,38 @@ public class KnowledgePackTests
 
     private static void WriteRaw(string dir, string file, string content) => File.WriteAllText(Path.Combine(dir, file), content);
 
+    // Writes a pack with a source registry; the single item references the given source uids.
+    private static string WritePackWithRegistry(Guid packUid, object[] registrySources, string[] itemSources, string jurisdiction)
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "lafpack_" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        var item = new
+        {
+            uid = "c2990000-0000-4000-8000-000000000001", category = "Reg Test", title = "Sourced item",
+            knowledgeType = "Standard", scope = "Standards", description = "A sourced, jurisdictional item.",
+            applicability = "x", example = "y", limitation = "z", confidence = 0.9, sourceType = "Documentation",
+            version = "1.2.0", lastReviewedUtc = "2026-06-21", reviewStatus = "Approved", tags = new[] { "reg" },
+            sources = itemSources, jurisdiction
+        };
+        File.WriteAllText(Path.Combine(dir, "a.json"), JsonSerializer.Serialize(new { category = "Reg Test", items = new[] { item } }));
+        File.WriteAllText(Path.Combine(dir, "source-registry.json"), JsonSerializer.Serialize(new { registryUid = Guid.NewGuid().ToString(), sources = registrySources }));
+        File.WriteAllText(Path.Combine(dir, "manifest.json"), JsonSerializer.Serialize(new
+        {
+            packUid = packUid.ToString(), name = "Reg Pack", version = "1.2.0", description = "d", license = "l",
+            createdUtc = "2026-06-21", lastReviewedUtc = "2026-06-21", itemCount = 1,
+            files = new[] { "a.json" }, sourceRegistry = "source-registry.json", reviewStatus = "Approved"
+        }));
+        return dir;
+    }
+
+    private static object FullSource(string uid) => new
+    {
+        sourceUid = uid, title = "Title " + uid, sourceType = "Official regulator source", publisher = "Pub",
+        jurisdiction = "Mauritius", url = "https://example.org", retrievedUtc = (string?)null, licenseNote = "©",
+        allowedUse = "summary only", summaryAllowed = true, verbatimCopyAllowed = false,
+        reliabilityLevel = "High", verificationStatus = "registered", limitationNote = "awareness only"
+    };
+
     // ---- 1. manifest validation: missing packUid is rejected with no DB writes ----
     [Fact]
     public async Task Manifest_missing_packUid_is_rejected_and_writes_nothing()
@@ -273,6 +305,49 @@ public class KnowledgePackTests
         Assert.IsType<ViewResult>(result);       // AccessDenied view
         Assert.Equal(403, ctrl.Response.StatusCode);
         Assert.False(installer.Called);          // installer never invoked for a non-admin
+    }
+
+    // ---- 15. source registry: an item referencing an UNREGISTERED source is rejected (no DB writes) ----
+    [Fact]
+    public async Task Item_referencing_unregistered_source_is_rejected()
+    {
+        var db = NewDb();
+        var dir = WritePackWithRegistry(PackA, new[] { FullSource("src-bom") }, new[] { "src-NOT-REGISTERED" }, "Mauritius");
+        var res = await NewInstaller(db).InstallAsync(dir, "test");
+        Assert.False(res.Success);
+        Assert.Contains(res.Errors, e => e.Contains("unregistered source"));
+        Assert.Equal(0, await db.KnowledgeItems.CountAsync());
+    }
+
+    // ---- 16. source registry: a registry source missing required metadata is rejected ----
+    [Fact]
+    public async Task Registry_source_missing_metadata_is_rejected()
+    {
+        var db = NewDb();
+        // publisher omitted -> required-metadata failure
+        var badSource = new { sourceUid = "src-x", title = "t", sourceType = "Research note", allowedUse = "s", reliabilityLevel = "Low", limitationNote = "n", summaryAllowed = true, verbatimCopyAllowed = false };
+        var dir = WritePackWithRegistry(PackA, new object[] { badSource }, new[] { "src-x" }, "International");
+        var res = await NewInstaller(db).InstallAsync(dir, "test");
+        Assert.False(res.Success);
+        Assert.Contains(res.Errors, e => e.Contains("publisher is required"));
+        Assert.Equal(0, await db.KnowledgeItems.CountAsync());
+    }
+
+    // ---- 17. a valid sourced item installs, attributes its source, and is tagged by source + jurisdiction ----
+    [Fact]
+    public async Task Sourced_item_installs_with_source_and_jurisdiction_tags()
+    {
+        var db = NewDb();
+        var dir = WritePackWithRegistry(PackA, new[] { FullSource("src-bom") }, new[] { "src-bom" }, "Mauritius");
+        var res = await NewInstaller(db).InstallAsync(dir, "test");
+        Assert.True(res.Success);
+        Assert.Equal(1, res.Created);
+        var item = await db.KnowledgeItems.SingleAsync(k => k.KnowledgePackId != null);
+        Assert.Contains("Sources:", item.Content);          // attribution rendered
+        Assert.Contains("Jurisdiction:", item.Content);
+        var tagNames = await db.KnowledgeItemTags.Where(t => t.KnowledgeItemId == item.Id).Select(t => t.Tag!.Name).ToListAsync();
+        Assert.Contains("src:src-bom", tagNames);
+        Assert.Contains("jur:Mauritius", tagNames);
     }
 
     private sealed class FakeCurrentUser : ICurrentUserService
