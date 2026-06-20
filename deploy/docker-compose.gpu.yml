@@ -1,0 +1,29 @@
+# R2-ACC-CAP6: GPU-assisted deployment overlay. Use WITH the CPU compose:
+#   docker compose -f docker-compose.cpu.yml -f docker-compose.gpu.yml --profile ai up
+# GPU is OPTIONAL and only accelerates local model inference (Ollama), embeddings, and OCR/CV models. The web
+# app, MSSQL, coverage, graph, Base Knowledge, and auth never require a GPU. Requires the NVIDIA Container
+# Toolkit on the host; verify driver/CUDA compatibility for your image before use.
+services:
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ai"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: ["gpu"]
+    restart: unless-stopped
+
+  app:
+    environment:
+      Ollama__Enabled: "${Ollama__Enabled}"
+      Ollama__BaseUrl: "${Ollama__BaseUrl}"
+
+volumes:
+  ollama-data:

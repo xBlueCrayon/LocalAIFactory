@@ -1,5 +1,7 @@
 using LocalAIFactory.Core.Abstractions;
+using LocalAIFactory.Ingestion.Cheque;
 using LocalAIFactory.Ingestion.Classification;
+using LocalAIFactory.Ingestion.Documents;
 using LocalAIFactory.Ingestion.Graph;
 using LocalAIFactory.Ingestion.Imports;
 using LocalAIFactory.Ingestion.Pipeline;
@@ -36,6 +38,11 @@ public static class DependencyInjection
 
         // KE-010: deterministic structural graph builder (resolves references into CodeEdges).
         services.AddScoped<ICodeGraphBuilder, CodeGraphBuilder>();
+
+        // R2-ACC-CAP4/CAP5: document-intelligence + cheque-risk prototypes (deterministic, dependency-light).
+        services.AddSingleton<IPdfAnalyzer, PdfAnalyzer>();
+        services.AddSingleton<IExtractiveSummarizer, ExtractiveSummarizer>();
+        services.AddSingleton<IChequeRiskEngine, ChequeRiskEngine>();
 
         // KE-012: project-scoped consolidation (re-extract from raw, prune orphans, converge the graph).
         services.AddScoped<IStructuralConsolidationService, Maintenance.StructuralConsolidationService>();

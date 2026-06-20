@@ -1,0 +1,43 @@
+# R2-ACC-CAP6: CPU-only deployment. MSSQL is the source of truth; Qdrant is optional. No GPU required.
+# Secrets come from a local .env (see .env.example) — none are hardcoded here.
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    depends_on:
+      - mssql
+    environment:
+      ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT}"
+      ASPNETCORE_URLS: "${ASPNETCORE_URLS}"
+      ConnectionStrings__DefaultConnection: "${ConnectionStrings__DefaultConnection}"
+      Qdrant__Enabled: "${Qdrant__Enabled}"
+      Qdrant__Url: "${Qdrant__Url}"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  # Optional vector store. The app works without it (MSSQL-only mode).
+  qdrant:
+    image: qdrant/qdrant:latest
+    profiles: ["vectors"]
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    restart: unless-stopped
+
+volumes:
+  mssql-data:
+  qdrant-data:

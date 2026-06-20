@@ -1,5 +1,6 @@
 using LocalAIFactory.Core.Abstractions;
 using LocalAIFactory.Core.Options;
+using LocalAIFactory.Workspaces.Autonomy;
 using LocalAIFactory.Workspaces.Management;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,10 @@ public static class DependencyInjection
         services.AddSingleton<IGitService, DisabledGitService>();
         services.AddSingleton<IBuildService, DisabledBuildService>();
         services.AddSingleton<IDiffService, DiffService>();
+
+        // R2-ACC-CAP7: controlled autonomous workspace skeleton — command policy + dry-run planner (no execution).
+        services.AddSingleton<ICommandPolicy, CommandPolicy>();
+        services.AddSingleton<IAutonomousWorkflowPlanner, AutonomousWorkflowPlanner>();
 
         // Workspace management (uses DbContext): scoped.
         services.AddScoped<IWorkspaceManager, WorkspaceManager>();
