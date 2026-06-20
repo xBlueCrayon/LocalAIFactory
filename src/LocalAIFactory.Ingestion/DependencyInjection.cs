@@ -36,6 +36,9 @@ public static class DependencyInjection
         // KE-010: deterministic structural graph builder (resolves references into CodeEdges).
         services.AddScoped<ICodeGraphBuilder, CodeGraphBuilder>();
 
+        // KE-012: project-scoped consolidation (re-extract from raw, prune orphans, converge the graph).
+        services.AddScoped<IStructuralConsolidationService, Maintenance.StructuralConsolidationService>();
+
         return services;
     }
 }
