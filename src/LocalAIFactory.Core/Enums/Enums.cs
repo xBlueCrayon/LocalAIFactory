@@ -166,7 +166,24 @@ public enum ArtifactSourceSystem { Upload = 0, FileSystem = 1, GitRepository = 2
 public enum CodeSymbolKind
 {
     Namespace = 0, Class = 1, Interface = 2, Struct = 3, Record = 4, Enum = 5, Delegate = 6,
-    Constructor = 7, Method = 8, Property = 9, Field = 10, Event = 11
+    Constructor = 7, Method = 8, Property = 9, Field = 10, Event = 11,
+    // KE-009: deterministic T-SQL schema kinds. Language-neutral structural nodes in the same CodeSymbols
+    // table — schema reuses Namespace (0). Appended to preserve KE-008 values; further dialects (PL/pgSQL,
+    // PL/SQL) add their own kinds at the end (e.g. Sequence, Package) without redefining these.
+    Table = 12, Column = 13, View = 14, StoredProcedure = 15, SqlFunction = 16, Trigger = 17,
+    Constraint = 18, ForeignKey = 19, Index = 20
+}
+
+// Phase 2 / KE-009: the nature of a deterministic structural reference captured during extraction (staging
+// for KE-010 edge resolution). Owner is identified by FromSymbolId; the target is captured by canonical
+// name only (resolved to a symbol id later). Stored as int — append new values at the end.
+public enum CodeReferenceKind
+{
+    TableReference = 0,    // a FROM/JOIN/INTO named object inside a view/proc/function/trigger body
+    ProcedureReference = 1, // an EXEC of another procedure
+    ForeignKeyReference = 2, // a FOREIGN KEY constraint's referenced table/column
+    TriggerTable = 3,       // the table a trigger is defined on
+    ColumnReference = 4     // a referenced column (e.g. FK referenced column)
 }
 
 // Phase 2 / KE-008: syntactic accessibility of a code symbol (best-effort from modifiers; no semantic model).

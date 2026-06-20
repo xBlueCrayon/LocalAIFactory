@@ -28,6 +28,11 @@ public static class DependencyInjection
         services.AddSingleton<ICodeSymbolExtractorRouter, CodeSymbolExtractorRouter>();
         services.AddScoped<ICodeSymbolStore, CodeSymbolStore>();
 
+        // KE-009: pluggable T-SQL schema extraction (T-SQL now; PL/pgSQL / PL/SQL register here later).
+        services.AddSingleton<ISqlSchemaExtractor, TSqlSchemaExtractor>();
+        services.AddSingleton<ISqlSchemaExtractorRouter, SqlSchemaExtractorRouter>();
+        services.AddScoped<ISchemaSymbolStore, SchemaSymbolStore>();
+
         return services;
     }
 }

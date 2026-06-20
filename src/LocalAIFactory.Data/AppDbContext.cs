@@ -48,6 +48,7 @@ public class AppDbContext : DbContext
     public DbSet<KnowledgeDomain> KnowledgeDomains => Set<KnowledgeDomain>();
     public DbSet<ScopeApplicability> ScopeApplicabilities => Set<ScopeApplicability>();
     public DbSet<CodeSymbol> CodeSymbols => Set<CodeSymbol>(); // KE-008
+    public DbSet<CodeSymbolReference> CodeSymbolReferences => Set<CodeSymbolReference>(); // KE-009
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -452,6 +453,25 @@ public class AppDbContext : DbContext
             e.HasIndex(x => new { x.ProjectId, x.Kind });
             e.HasOne<ImportedFile>().WithMany().HasForeignKey(x => x.SourceArtifactId).OnDelete(DeleteBehavior.Restrict);
             e.HasOne<CodeSymbol>().WithMany().HasForeignKey(x => x.ParentSymbolId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Phase 2 / KE-009: deterministic structural references (staging for KE-010 edge resolution). Lean,
+        // rebuildable rows — no Uid/version. ReferencedKey is a canonical "[db.]schema.object" join key that
+        // KE-010 resolves to a target symbol. Restrict deletes; the store manages reference lifecycle in code.
+        b.Entity<CodeSymbolReference>(e =>
+        {
+            e.Property(x => x.ReferencedDatabase).HasMaxLength(128);
+            e.Property(x => x.ReferencedSchema).HasMaxLength(128);
+            e.Property(x => x.ReferencedObject).HasMaxLength(256);
+            e.Property(x => x.ReferencedColumn).HasMaxLength(256);
+            e.Property(x => x.ReferencedKey).HasMaxLength(512);
+            e.Property(x => x.FileLocusKey).HasMaxLength(64);
+            e.HasIndex(x => x.FromSymbolId);
+            e.HasIndex(x => x.SourceArtifactId);
+            e.HasIndex(x => x.ReferencedKey);
+            e.HasIndex(x => new { x.ProjectId, x.ReferenceKind });
+            e.HasOne<CodeSymbol>().WithMany().HasForeignKey(x => x.FromSymbolId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne<ImportedFile>().WithMany().HasForeignKey(x => x.SourceArtifactId).OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
