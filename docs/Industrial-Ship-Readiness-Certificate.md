@@ -5,6 +5,17 @@
 below is backed by a reproducible command, test, benchmark, or live capture. It asserts **no** vendor
 certification, compliance, or production guarantee.
 
+## R2-ACC-20X-FINAL-COMPLETION update (2026-06-21)
+
+This sprint added, with tests + live proof: **chat-import learning** (deterministic chat→knowledge proposals,
+9 tests), **3 new installable knowledge packs** (FI ops / KYC-AML / market intelligence — real-installer tested,
+6 tests), a **KYC/AML→transaction-approval benchmark fixture (Gold 7/7)**, a read-only **/Support operations
+dashboard** (live in UI smoke), an **edition/license model** (demo-safe, 8 tests), a **safe local fix loop**
+(isolated workspace, rollback-on-failure, never-commit, 5 tests), and **diagnostics/security/load/reliability
+scripts run live** on the host. **Tests 207→235. Benchmark standard PASS. UI smoke PASS (11 pages). Publish 151
+files/45 MB.** Readiness mean ≈ 55% → **≈ 57.6%** (none at 100). **Confidence for a controlled paid pilot: 7.5/10.**
+See [`Final-20X-Completion-Report.md`](Final-20X-Completion-Report.md) and [`Final-20X-Gap-Audit.md`](Final-20X-Gap-Audit.md).
+
 ## Evidence summary (all reproduced this phase)
 
 | Category | Evidence | Result |

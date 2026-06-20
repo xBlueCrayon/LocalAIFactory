@@ -66,3 +66,16 @@ guides), Data/Knowledge Governance 70→**80** (KB install/verify scripts, 390 i
 40→**55**, Autonomous 35→**45** (ControlledExecutor tested), Supportability 40→**50**, Document/OCR 30→**35**,
 Commercial 15→**25**. See `Industrial-Ship-Readiness-Certificate.md` for the aggregated evidence and the
 paid-pilot decision. Authoritative scores live in `readiness-scorecard.json` (`/Readiness`). None at 100.
+
+## R2-ACC-20X-FINAL-COMPLETION update (overall mean ≈ 55% → ≈ 57.6%)
+
+Raised only where shipped + tested + live-verified: Technical POC 85→**87** (235 tests, KYC/AML fixture Gold
+7/7, /Support in UI smoke, publish 151 files), Autonomous 45→**55** (LocalFixLoop: isolated workspace +
+rollback proven + never-commit, 5 tests + operator script), Supportability 50→**60** (read-only /Support
+dashboard live + diagnostics suite run live), Commercial Product 25→**30** and Packaging/Licensing 15→**30**
+(edition/license model tested + edition matrix), Banking/Finance 65→**70** (KYC/AML→transaction-approval fixture
+Gold 7/7), Data/Knowledge Governance 80→**82** (3 new installable packs real-installer-tested + chat-learning
+extractor), Scalability 40→**45** (load/reliability smoke live: 0 failures), Security 75→**76** (security-audit
+live: 0 HIGH), UX/Demo 60→**62** (Support dashboard + manuals + screenshot script). Honest non-raises:
+Document/OCR **35**, Cross-System/Estate **45**, Enterprise Product **30**; screenshots NOT generated
+(Node/Playwright absent — documented). See `Final-20X-Completion-Report.md`. **None at 100.**
