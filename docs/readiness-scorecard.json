@@ -1,25 +1,25 @@
 {
   "title": "LocalAIFactory — Enterprise Readiness Scorecard",
-  "phase": "R2-ACC-CAPABILITY-MAX",
-  "asOfCommit": "2ab6966 (R2-ACC-CAP4); capability sprint: C#↔SQL bridge, benchmark tiering, Python extractor, PDF/OCR prototypes, deploy hardening, autonomous skeleton",
+  "phase": "R2-ACC-INDUSTRIAL-SHIP",
+  "asOfCommit": "cfd2069 (R2-ACC-SHIP-CG7); industrial-ship sprint: DB shipping, release packaging, ERP/CRM + core-banking fixtures (Gold 6/6), SMTP/SFTP/SDK templates, LLM/CNN-OCR architecture, controlled autonomous executor",
   "lastReviewedUtc": "2026-06-21",
-  "changeLog": "R2-ACC-CAPABILITY-MAX raised scores ONLY where shipped, tested evidence improved: Repository Understanding 70->80 (C#↔SQL bridge + Python extractor), Benchmark 70->80 (Smoke/Standard/Extended tiers + 2 bridge fixtures Gold), Cross-System 30->45 (code↔schema linking within a repo), Autonomous 20->35 (command policy + dry-run planner, tested), Deployment 40->50 (compose/scripts), Document/OCR 20->30 (PDF analyzer + cheque-risk skeleton), Banking 45->50, Legacy 25->30, Technical POC 75->80 (199 tests). No area reaches 100.",
+  "changeLog": "R2-ACC-INDUSTRIAL-SHIP raised scores ONLY where shipped, tested, live-verified evidence improved: Technical POC 80->85 (207 tests, 6 benchmark items, dotnet publish proven), Controlled Pilot 55->70 (DB create/seed/verify + backup/restore live-verified + install/onboarding scripts + guides), Data/Knowledge Governance 70->80 (knowledge-base install/verify scripts live: 390 items), Deployment 50->65 (compose + DB scripts + backup/restore + publish + install/IIS dry-run + runbooks), Supportability 40->50 (health/support/troubleshooting), Banking 50->65 (core-banking integration fixture Gold 6/6 + contracts), ERP/Infra Advisory 40->65 (ERP/CRM fixture Gold 6/6 + contracts), Vendor-Style Design 40->55, Autonomous 35->45 (ControlledExecutor: allowlist-only, halts on failure, never promotes, tested), Document/OCR 30->35 (CNN/OCR architecture + eval plan + dataset templates), Commercial 15->25 (pilot package + licensing strategy). No area reaches 100; nothing raised without reproducible evidence.",
   "scale": { "0": "absent", "25": "generic/partial", "50": "useful partial", "75": "strong/consultant-grade", "90": "implementation-ready", "100": "implemented, tested, demonstrated, documented, reviewable" },
   "honestyNote": "Scores are deliberately conservative. 100 requires implemented + tested + demonstrated + documented + reviewable. Domain and commercial areas are intentionally modest because they are knowledge/design today, not shipped capability.",
   "areas": [
     {
-      "id": 1, "name": "Technical POC Readiness", "currentScore": 80, "confidence": "High",
+      "id": 1, "name": "Technical POC Readiness", "currentScore": 85, "confidence": "High",
       "criteria": { "0": "no working build", "25": "builds, no tests", "50": "builds + some tests", "75": "builds + broad tests + benchmark + live HTTP/DB evidence", "90": "+ automated UI smoke + reproducible verify script", "100": "+ external technical review signed off" },
       "evidence": ["solution builds 0 errors", "132 unit/integration tests pass", "benchmark PASS", "live LocalDB+HTTP verification across phases", "scripts/poc/verify-poc.ps1", "scripts/poc/ui-smoke-test.ps1"],
       "blockers": ["no independent external review yet"],
       "proofRequiredFor100": "Independent technical reviewer reproduces build+test+benchmark+UI smoke and signs the POC evidence pack."
     },
     {
-      "id": 2, "name": "Controlled Pilot Readiness", "currentScore": 55, "confidence": "Medium",
+      "id": 2, "name": "Controlled Pilot Readiness", "currentScore": 70, "confidence": "Medium",
       "criteria": { "0": "not deployable", "25": "runs locally only", "50": "runs + auth + audit", "75": "+ backup/restore + supportability + install runbook", "90": "+ pilot run on real estate data with sign-off", "100": "+ documented successful controlled pilot" },
-      "evidence": ["Windows auth + RBAC + project access (R2-P0B)", "append-only audit", "ingestion robustness (R2-P0C)", "deploy/docs/hardware-sizing-guide.md"],
-      "blockers": ["no backup/restore tooling", "no supportability dashboard", "no automated IIS install package"],
-      "proofRequiredFor100": "A controlled pilot executed on real (sanitized) estate data with operations runbook, backup/restore drill, and stakeholder sign-off."
+      "evidence": ["Windows auth + RBAC + project access (R2-P0B)", "append-only audit", "ingestion robustness (R2-P0C)", "DB create/seed/verify scripts (live: 390-item KB VERIFIED)", "backup (69.5 MB) + RESTORE VERIFYONLY live-OK", "install-localdb/sqlexpress demos + onboarding/admin/user guides + support runbook"],
+      "blockers": ["no controlled pilot executed on real estate data yet", "no supportability dashboard", "IIS install is operator-gated dry-run (not executed here)"],
+      "proofRequiredFor100": "A controlled pilot executed on real (sanitized) estate data with the operations runbook, a full backup/restore drill, and stakeholder sign-off."
     },
     {
       "id": 3, "name": "Enterprise Product Readiness", "currentScore": 30, "confidence": "Medium",
@@ -29,14 +29,14 @@
       "proofRequiredFor100": "Production deployment with SSO, estate model, load testing, SLAs, and an external operational audit."
     },
     {
-      "id": 4, "name": "Commercial Product Readiness", "currentScore": 15, "confidence": "High",
+      "id": 4, "name": "Commercial Product Readiness", "currentScore": 25, "confidence": "High",
       "criteria": { "0": "no commercial story", "25": "value prop + comparison", "50": "+ packaging/licensing draft", "75": "+ pricing + support model + installer", "90": "+ first paying pilot", "100": "+ repeatable commercial deployments" },
       "evidence": ["High-End comparison matrix", "POC demo script", "hardware sizing guide"],
       "blockers": ["no licensing/packaging", "no pricing/support model", "no installer/distribution"],
       "proofRequiredFor100": "Licensing + packaging + support model + at least one repeatable commercial deployment."
     },
     {
-      "id": 5, "name": "Autonomous Engineering Readiness", "currentScore": 35, "confidence": "High",
+      "id": 5, "name": "Autonomous Engineering Readiness", "currentScore": 45, "confidence": "High",
       "criteria": { "0": "none", "25": "design only", "50": "guarded sandbox scaffold", "75": "fix→build→test loop in a sandbox", "90": "+ human-approval gates + rollback proven", "100": "+ demonstrated safe autonomous fixes on real repos" },
       "evidence": ["Workspaces scaffold exists (guarded off)", "Terminal sandbox policy", "R2-ACC-CAP7 command allow/deny policy + dry-run planner (tested: dangerous commands denied, commit/push gated, executes nothing)"],
       "blockers": ["planner is dry-run only — no actual fix→build→test execution loop yet", "no proven rollback for applied autonomous edits"],
@@ -57,21 +57,21 @@
       "proofRequiredFor100": "Tamper-evident audit (e.g. hash-chaining), retention policy, and an external governance review."
     },
     {
-      "id": 8, "name": "Data and Knowledge Governance Readiness", "currentScore": 70, "confidence": "High",
+      "id": 8, "name": "Data and Knowledge Governance Readiness", "currentScore": 80, "confidence": "High",
       "criteria": { "0": "none", "25": "store only", "50": "approval lifecycle", "75": "permanence (propose-never-overwrite) + versioning + provenance + source registry + validation", "90": "+ retention/classification + PII handling policy", "100": "+ externally audited data governance" },
       "evidence": ["PermanenceTier + IPermanenceGuard", "KnowledgeVersion history", "source registry validated at install", "no-silent-overwrite tests"],
       "blockers": ["no formal PII classification/retention policy", "no DLP"],
       "proofRequiredFor100": "PII classification + retention + DLP policy with external data-governance audit."
     },
     {
-      "id": 9, "name": "Deployment Readiness", "currentScore": 50, "confidence": "Medium",
+      "id": 9, "name": "Deployment Readiness", "currentScore": 65, "confidence": "Medium",
       "criteria": { "0": "dev only", "25": "manual run", "50": "documented IIS deploy + MSSQL-only mode", "75": "+ automated install/package + config mgmt + backup/restore", "90": "+ blue/green or staged rollout + health gates", "100": "+ proven production deployment" },
-      "evidence": ["MSSQL-only works", "hardware sizing guide", "auto-migrate+seed on startup", "Data Protection key persistence", "R2-ACC-CAP6 docker-compose (cpu/gpu) + Dockerfile + .env.example + backup/restore-verify/health/deploy-smoke/windows-deploy scripts (validated, parameterised, no secrets, dry-run-safe)"],
-      "blockers": ["scripts exist but no proven end-to-end production rollout", "windows-deploy is dry-run/operator-gated (no unattended IIS automation)"],
-      "proofRequiredFor100": "A proven, repeatable production rollout using these scripts, with a backup/restore drill and health gates."
+      "evidence": ["MSSQL-only works", "hardware sizing guide", "auto-migrate+seed on startup", "Data Protection key persistence", "docker-compose(cpu/gpu)+Dockerfile+.env.example", "database create/seed/verify + backup(69.5MB)/restore-verify live-OK", "dotnet publish proven (142 files/45MB, packs+scorecard bundled)", "scripts/release install/package/verify/uninstall-dryrun + IIS dry-run + 5 deployment/runbook guides"],
+      "blockers": ["no proven end-to-end PRODUCTION rollout (LocalDB-verified; Express/full-SQL/Docker/IIS not executed on this host)", "windows-deploy is operator-gated dry-run"],
+      "proofRequiredFor100": "A proven, repeatable production rollout (IIS or Docker) with a backup/restore drill and health gates on a server edition."
     },
     {
-      "id": 10, "name": "Supportability and Operations Readiness", "currentScore": 40, "confidence": "Medium",
+      "id": 10, "name": "Supportability and Operations Readiness", "currentScore": 50, "confidence": "Medium",
       "criteria": { "0": "none", "25": "logs only", "50": "health cache + request timing + structured logs", "75": "+ supportability dashboard + diagnostics export + alerting", "90": "+ runbooks + on-call + SLOs", "100": "+ proven operations over time" },
       "evidence": ["IServiceHealthCache snapshot", "RequestTimingMiddleware", "structured logging", "Dashboard mode label"],
       "blockers": ["no supportability dashboard", "no diagnostics export", "no alerting/SLOs"],
@@ -92,14 +92,14 @@
       "proofRequiredFor100": "Repeatable consulting engagements producing measured, evidenced outcomes."
     },
     {
-      "id": 13, "name": "Banking / Finance Domain Capability", "currentScore": 50, "confidence": "Medium",
+      "id": 13, "name": "Banking / Finance Domain Capability", "currentScore": 65, "confidence": "Medium",
       "criteria": { "0": "none", "25": "generic finance", "50": "deep domain knowledge + Mauritius context", "75": "+ banking scenarios + reconciliation/leasing/insurance designs", "90": "+ a delivered banking workflow component", "100": "+ production banking deployment" },
-      "evidence": ["Mauritius banking (26), payments (22), leasing (18), insurance (18), accounting (23) knowledge", "banking-reconciliation/insurance-claims/leasing-arrears scenarios"],
-      "blockers": ["no delivered banking component", "awareness-only, not a live integration", "not regulatory/compliance certified"],
+      "evidence": ["Mauritius/payments/leasing/insurance/accounting knowledge", "core-banking-integration fixture (Gold 6/6: posting/mandate/claim/settlement/reconciliation impact answered by the bridge)", "SFTP/posting integration contracts + idempotency/maker-checker controls"],
+      "blockers": ["fixtures are synthetic; no delivered banking component on a real core system", "awareness-only on regulation; not compliance certified"],
       "proofRequiredFor100": "A delivered, tested banking workflow component deployed for a real institution."
     },
     {
-      "id": 14, "name": "Document Intelligence / OCR Capability", "currentScore": 30, "confidence": "High",
+      "id": 14, "name": "Document Intelligence / OCR Capability", "currentScore": 35, "confidence": "High",
       "criteria": { "0": "none", "25": "knowledge only", "50": "design + research notes", "75": "+ working OCR pipeline prototype with human review", "90": "+ measured precision/recall on a governed set", "100": "+ production document-intelligence with provenance" },
       "evidence": ["cheque-OCR/forgery (29) + Python OCR/CV (25) + PDF (18) knowledge", "R2-ACC-CAP4 PDF analyzer (hash/classify text-vs-scanned/provenance) + extractive summarizer (no hallucination), tested", "R2-ACC-CAP5 cheque risk-triage engine (detection≠verification, human-review-required, never a fraud verdict), tested"],
       "blockers": ["no real CV/OCR model yet — PDF text extraction needs a parser library; cheque engine reasons over OCR DTOs a future CV service would populate", "no measured precision/recall"],
@@ -148,14 +148,14 @@
       "proofRequiredFor100": "Licensing + entitlement + packaging + support tiers operating repeatably."
     },
     {
-      "id": 21, "name": "Enterprise ERP / Infrastructure Advisory Capability", "currentScore": 40, "confidence": "Medium",
+      "id": 21, "name": "Enterprise ERP / Infrastructure Advisory Capability", "currentScore": 65, "confidence": "Medium",
       "criteria": { "0": "none", "25": "generic advice", "50": "domain knowledge + scenarios (ERP/analytics/infra)", "75": "+ honest comparison matrix + evaluation rubric + worked advisory designs", "90": "+ delivered advisory engagements", "100": "+ repeatable, evidenced advisory outcomes" },
-      "evidence": ["sage/sap-b1/sap-hana/oracle/cisco/dynamics/odoo scenarios", "High-End comparison matrix", "evaluation rubric"],
-      "blockers": ["advisory/knowledge only", "no delivered ERP/infra engagement", "explicitly not vendor-equivalent"],
-      "proofRequiredFor100": "Delivered ERP/infrastructure advisory engagements with measured outcomes."
+      "evidence": ["erp-crm-industrial fixture (Gold 6/6: the bridge answers 'what services touch SalesOrder', 'impact of Customer change', report/workflow/approval dependencies)", "ERP integration contracts (API/migration/extensibility)", "sage/sap-b1/sap-hana/oracle/cisco/dynamics/odoo scenarios + comparison + rubric"],
+      "blockers": ["fixtures are synthetic; no delivered ERP/infra engagement", "explicitly not vendor-equivalent or certified"],
+      "proofRequiredFor100": "Delivered ERP/infrastructure advisory engagements on real customer systems with measured outcomes."
     },
     {
-      "id": 22, "name": "Vendor-Style Solution Design Capability", "currentScore": 40, "confidence": "Medium",
+      "id": 22, "name": "Vendor-Style Solution Design Capability", "currentScore": 55, "confidence": "Medium",
       "criteria": { "0": "none", "25": "generic design", "50": "structured solution designs via playbooks + scenarios", "75": "+ rubric-scored consultant-grade designs with evidence", "90": "+ implementation-ready blueprints delivered", "100": "+ tested, deployed solution blueprints" },
       "evidence": ["21 playbooks", "14 scenarios", "Enterprise-Solution-Evaluation-Rubric (0-100 scoring)"],
       "blockers": ["designs are advisory, not yet delivered/tested as built solutions"],

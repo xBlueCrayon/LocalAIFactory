@@ -53,9 +53,13 @@ try {
   $scenarioDirs = Get-ChildItem (Join-Path $repo "enterprise-scenarios") -Directory -ErrorAction SilentlyContinue
   if ($scenarioDirs.Count -ge 14) { Ok "enterprise scenarios: $($scenarioDirs.Count) folders" } else { Bad "expected >=14 scenario folders, found $($scenarioDirs.Count)" }
   foreach ($d in $scenarioDirs) {
-    foreach ($f in 'scenario.md','expected-capabilities.md','acceptance-criteria.md','test-questions.md') {
-      if (-not (Test-Path (Join-Path $d.FullName $f))) { Bad "scenario $($d.Name) missing $f" }
-    }
+    # Two valid shapes: canonical advisory scenarios (4 markdown files), or industrial capability fixtures
+    # (README + a validation script that runs the benchmark proof).
+    $canonical = @('scenario.md','expected-capabilities.md','acceptance-criteria.md','test-questions.md') |
+      ForEach-Object { Test-Path (Join-Path $d.FullName $_) } | Where-Object { -not $_ } | Measure-Object
+    $hasCanonical = ($canonical.Count -eq 0)
+    $hasIndustrial = (Test-Path (Join-Path $d.FullName 'README.md')) -and (Test-Path (Join-Path $d.FullName 'validation-script.ps1'))
+    if (-not ($hasCanonical -or $hasIndustrial)) { Bad "scenario $($d.Name): neither canonical 4 files nor (README.md + validation-script.ps1)" }
   }
 
   Head "Tracking hygiene (no forbidden runtime artifacts tracked)"

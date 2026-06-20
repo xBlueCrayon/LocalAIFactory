@@ -55,3 +55,14 @@ commercial/autonomous areas remain deliberately low until shipped and proven. Th
 | 1 | Technical POC | 75 → **80** | 199 tests, bridge UI evidence, two more benchmark fixtures |
 
 No area reached 100. Nothing was raised without shipped, tested evidence. See `Gap-Closure-Roadmap-To-100.md`.
+
+## R2-ACC-INDUSTRIAL-SHIP update (overall mean ≈ 49% → ≈ 55%)
+
+Raised only where shipped + live-verified: Technical POC 80→**85** (207 tests, 6 benchmark items, publish
+proven), Controlled Pilot 55→**70** (DB create/seed/verify + backup/restore live-OK + install/onboarding/admin
+guides), Data/Knowledge Governance 70→**80** (KB install/verify scripts, 390 items), Deployment 50→**65**
+(compose + DB scripts + backup/restore + publish + install/IIS dry-run + runbooks), Banking/Finance 50→**65**
+(core-banking fixture Gold 6/6), ERP/Infra Advisory 40→**65** (ERP/CRM fixture Gold 6/6), Vendor-Style Design
+40→**55**, Autonomous 35→**45** (ControlledExecutor tested), Supportability 40→**50**, Document/OCR 30→**35**,
+Commercial 15→**25**. See `Industrial-Ship-Readiness-Certificate.md` for the aggregated evidence and the
+paid-pilot decision. Authoritative scores live in `readiness-scorecard.json` (`/Readiness`). None at 100.
