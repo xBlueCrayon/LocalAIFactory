@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using LocalAIFactory.Core.Enums;
 
 namespace LocalAIFactory.Data.Identity;
 
@@ -14,6 +15,21 @@ public static class SourceLocus
     {
         var path = (relativePath ?? "").Replace('\\', '/').Trim().ToLowerInvariant();
         var canonical = $"v1|proj:{projectId ?? 0}|type:file|path:{path}";
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(canonical));
+        return Convert.ToHexStringLower(bytes);
+    }
+
+    // KE-008: per-symbol locus, the natural extension of FileKey foreseen in v1. Kind + FullName + a
+    // signature hash uniquely identify a symbol within a file regardless of its position, so the key
+    // survives edits elsewhere in the file (convergent re-extraction keeps the symbol's Uid). The
+    // signature is hashed to keep the canonical string bounded for long generic parameter lists.
+    public static string SymbolKey(int? projectId, string? relativePath, CodeSymbolKind kind, string fullName, string? signature)
+    {
+        var path = (relativePath ?? "").Replace('\\', '/').Trim().ToLowerInvariant();
+        var sigHash = string.IsNullOrEmpty(signature)
+            ? ""
+            : Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(signature)));
+        var canonical = $"v1|proj:{projectId ?? 0}|type:symbol|path:{path}|kind:{(int)kind}|sym:{fullName}|sig:{sigHash}";
         var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(canonical));
         return Convert.ToHexStringLower(bytes);
     }

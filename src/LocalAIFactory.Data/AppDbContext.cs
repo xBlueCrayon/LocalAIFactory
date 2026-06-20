@@ -47,6 +47,7 @@ public class AppDbContext : DbContext
     public DbSet<KnowledgeDuplicate> KnowledgeDuplicates => Set<KnowledgeDuplicate>();
     public DbSet<KnowledgeDomain> KnowledgeDomains => Set<KnowledgeDomain>();
     public DbSet<ScopeApplicability> ScopeApplicabilities => Set<ScopeApplicability>();
+    public DbSet<CodeSymbol> CodeSymbols => Set<CodeSymbol>(); // KE-008
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -430,6 +431,27 @@ public class AppDbContext : DbContext
             e.Property(x => x.SourceReference).HasMaxLength(1000);
             e.Property(x => x.SourceRevision).HasMaxLength(200);
             e.HasIndex(x => x.Uid).IsUnique();
+        });
+
+        // Phase 2 / KE-008: deterministic code symbols. Lean structural rows that trace back to their
+        // source artifact; reconciled by SourceLocusKey on re-extraction. FileLocusKey groups a file's
+        // symbols; both locus keys are fixed-length hashes that index cheaply. FullName is bounded but
+        // not indexed (overloads share it; the per-symbol join uses SourceLocusKey).
+        b.Entity<CodeSymbol>(e =>
+        {
+            e.Property(x => x.Name).HasMaxLength(400);
+            e.Property(x => x.FullName).HasMaxLength(512);
+            e.Property(x => x.Signature).HasMaxLength(2000);
+            e.Property(x => x.SourceLocusKey).HasMaxLength(64);
+            e.Property(x => x.FileLocusKey).HasMaxLength(64);
+            e.Property(x => x.DetectedLanguage).HasMaxLength(50);
+            e.Property(x => x.SymbolHash).HasMaxLength(64);
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => x.FileLocusKey);
+            e.HasIndex(x => x.SourceLocusKey);
+            e.HasIndex(x => new { x.ProjectId, x.Kind });
+            e.HasOne<ImportedFile>().WithMany().HasForeignKey(x => x.SourceArtifactId).OnDelete(DeleteBehavior.Restrict);
+            e.HasOne<CodeSymbol>().WithMany().HasForeignKey(x => x.ParentSymbolId).OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

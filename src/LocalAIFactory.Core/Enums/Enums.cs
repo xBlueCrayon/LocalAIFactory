@@ -93,7 +93,10 @@ public enum IngestionPhase
     GraphExtraction = 8,
     CandidateExtraction = 9,
     Completed = 10,
-    Failed = 11
+    Failed = 11,
+    // KE-008: deterministic code-symbol extraction. Appended (12) to preserve existing stored values;
+    // it runs before Completed despite the higher ordinal (the enum is a label, not a sort key).
+    SymbolExtraction = 12
 }
 
 public enum EntityType { Flag = 0, Workflow = 1, File = 2, Function = 3, ExternalSystem = 4, Table = 5, Job = 6, Api = 7, Module = 8, Other = 9 }
@@ -157,3 +160,18 @@ public enum DemotionReason { Contradiction = 0, FailedOutcome = 1 }
 // Phase 2 / KE-007: where a raw artifact / import batch originated. Database is reserved for a future
 // live-schema import path; file-based schema imports use Upload/FileSystem with SqlScript classification.
 public enum ArtifactSourceSystem { Upload = 0, FileSystem = 1, GitRepository = 2, Conversation = 3, Database = 4 }
+
+// Phase 2 / KE-008: deterministic code-symbol kinds. Language-neutral so other extractors (VB.NET, Razor)
+// map onto the same set. Stored as int — append new kinds at the end to preserve existing values.
+public enum CodeSymbolKind
+{
+    Namespace = 0, Class = 1, Interface = 2, Struct = 3, Record = 4, Enum = 5, Delegate = 6,
+    Constructor = 7, Method = 8, Property = 9, Field = 10, Event = 11
+}
+
+// Phase 2 / KE-008: syntactic accessibility of a code symbol (best-effort from modifiers; no semantic model).
+// NotApplicable is used for namespaces. Stored as int — append new values at the end.
+public enum CodeAccess
+{
+    Private = 0, Protected = 1, Internal = 2, ProtectedInternal = 3, PrivateProtected = 4, Public = 5, NotApplicable = 6
+}

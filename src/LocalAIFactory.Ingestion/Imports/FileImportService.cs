@@ -18,13 +18,14 @@ public sealed class FileImportService : IFileImportService
     private readonly IChunkingService _chunking;
     private readonly IKnowledgeIndexer _indexer;
     private readonly IIdentityResolver _identity;
+    private readonly ICodeSymbolStore _symbols;
     private readonly RagOptions _rag;
 
     public FileImportService(
         AppDbContext db, IFileClassifier classifier, IChunkingService chunking,
-        IKnowledgeIndexer indexer, IIdentityResolver identity, IOptions<RagOptions> rag)
+        IKnowledgeIndexer indexer, IIdentityResolver identity, ICodeSymbolStore symbols, IOptions<RagOptions> rag)
     {
-        _db = db; _classifier = classifier; _chunking = chunking; _indexer = indexer; _identity = identity; _rag = rag.Value;
+        _db = db; _classifier = classifier; _chunking = chunking; _indexer = indexer; _identity = identity; _symbols = symbols; _rag = rag.Value;
     }
 
     public async Task<ImportedFile> ImportAsync(int? projectId, string fileName, byte[] content, CancellationToken ct = default)
@@ -80,6 +81,11 @@ public sealed class FileImportService : IFileImportService
             await _db.SaveChangesAsync(ct);
             try { await _indexer.IndexKnowledgeItemAsync(res.KnowledgeItemId, ct); } catch { /* keyword fallback remains */ }
         }
+
+        // KE-008: extract C# symbols from the artifact (best-effort; never fails the import).
+        if (string.Equals(imported.DetectedLanguage, "csharp", StringComparison.OrdinalIgnoreCase))
+            try { await _symbols.UpsertForArtifactAsync(imported.Id, ct); } catch { /* symbols are regenerable */ }
+
         return imported;
     }
 }

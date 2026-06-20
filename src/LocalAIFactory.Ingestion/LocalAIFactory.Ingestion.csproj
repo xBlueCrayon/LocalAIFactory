@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\LocalAIFactory.Core\LocalAIFactory.Core.csproj" />
     <ProjectReference Include="..\LocalAIFactory.Data\LocalAIFactory.Data.csproj" />
     <ProjectReference Include="..\LocalAIFactory.Rag\LocalAIFactory.Rag.csproj" />

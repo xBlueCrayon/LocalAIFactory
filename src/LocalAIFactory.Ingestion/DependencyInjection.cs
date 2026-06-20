@@ -5,6 +5,7 @@ using LocalAIFactory.Ingestion.Imports;
 using LocalAIFactory.Ingestion.Pipeline;
 using LocalAIFactory.Ingestion.Profiling;
 using LocalAIFactory.Ingestion.Queue;
+using LocalAIFactory.Ingestion.Symbols;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LocalAIFactory.Ingestion;
@@ -21,6 +22,11 @@ public static class DependencyInjection
         services.AddScoped<IKnowledgeGraphService, KnowledgeGraphService>();
         services.AddScoped<IFileImportService, FileImportService>();
         services.AddScoped<IChatGptImportService, ChatGptImportService>();
+
+        // KE-008: pluggable code-symbol extraction (C# now; VB.NET/Razor register here later).
+        services.AddSingleton<ICodeSymbolExtractor, CSharpSymbolExtractor>();
+        services.AddSingleton<ICodeSymbolExtractorRouter, CodeSymbolExtractorRouter>();
+        services.AddScoped<ICodeSymbolStore, CodeSymbolStore>();
 
         return services;
     }

@@ -28,6 +28,7 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     private readonly IKnowledgeGraphService _graph;
     private readonly IModelExecutionService _model;
     private readonly IIdentityResolver _identity;
+    private readonly ICodeSymbolStore _symbols;
     private readonly WorkspacesOptions _ws;
     private readonly RagOptions _rag;
     private readonly ILogger<ProjectIngestionService> _log;
@@ -35,11 +36,12 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     public ProjectIngestionService(
         AppDbContext db, IZipExtractionService zip, IFileClassifier classifier, IChunkingService chunking,
         IKnowledgeIndexer indexer, IProjectProfileService profile, IKnowledgeGraphService graph,
-        IModelExecutionService model, IIdentityResolver identity, IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag,
-        ILogger<ProjectIngestionService> log)
+        IModelExecutionService model, IIdentityResolver identity, ICodeSymbolStore symbols,
+        IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag, ILogger<ProjectIngestionService> log)
     {
         _db = db; _zip = zip; _classifier = classifier; _chunking = chunking; _indexer = indexer;
-        _profile = profile; _graph = graph; _model = model; _identity = identity; _ws = ws.Value; _rag = rag.Value; _log = log;
+        _profile = profile; _graph = graph; _model = model; _identity = identity; _symbols = symbols;
+        _ws = ws.Value; _rag = rag.Value; _log = log;
     }
 
     private string IncomingDir => Path.Combine(_ws.Root, "_incoming");
@@ -259,6 +261,13 @@ public sealed class ProjectIngestionService : IProjectIngestionService
             try { await _identity.DetectExactDuplicatesAsync(job.ProjectId, ct); }
             catch (Exception ex) { _log.LogWarning(ex, "Duplicate detection failed for job {Id}", job.Id); }
 
+            // KE-008: deterministic code-symbol extraction. Incremental — only this job's changed/new
+            // C# artifacts (dedup already skips unchanged files). Best-effort: never fails the job.
+            job.Phase = IngestionPhase.SymbolExtraction;
+            await _db.SaveChangesAsync(ct);
+            try { await ExtractSymbolsAsync(job.Id, ct); }
+            catch (Exception ex) { _log.LogWarning(ex, "Symbol extraction failed for job {Id}", job.Id); }
+
             job.Phase = IngestionPhase.Completed;
             job.Status = IngestionJobStatus.Completed;
             job.CompletedUtc = DateTime.UtcNow;
@@ -279,6 +288,23 @@ public sealed class ProjectIngestionService : IProjectIngestionService
 
     private async Task<string> TitleOf(int knowledgeItemId, CancellationToken ct)
         => (await _db.KnowledgeItems.Where(k => k.Id == knowledgeItemId).Select(k => k.Title).FirstOrDefaultAsync(ct)) ?? "file";
+
+    // KE-008: extract symbols from this job's changed/new C# artifacts only. Loads ids first (not RawText)
+    // so memory stays bounded on large repos; the store streams one artifact at a time. Per-artifact
+    // failures are isolated so one malformed file can't abort the others.
+    private async Task ExtractSymbolsAsync(int jobId, CancellationToken ct)
+    {
+        var ids = await _db.ImportedFiles
+            .Where(f => f.IngestionJobId == jobId && !f.Skipped && f.DetectedLanguage == "csharp" && f.RawText != null)
+            .Select(f => f.Id)
+            .ToListAsync(ct);
+        foreach (var id in ids)
+        {
+            ct.ThrowIfCancellationRequested();
+            try { await _symbols.UpsertForArtifactAsync(id, ct); }
+            catch (Exception ex) { _log.LogWarning(ex, "Symbol extraction failed for artifact {Id}", id); }
+        }
+    }
 
     private async Task ExtractCandidateRulesAsync(int? projectId, List<(int Id, string Content, FileClass Class)> created, CancellationToken ct)
     {
