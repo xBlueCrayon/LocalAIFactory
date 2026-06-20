@@ -21,6 +21,9 @@ public class ImportedFile
     public string? SkipReason { get; set; }
     public ImportStatus Status { get; set; } = ImportStatus.Pending;
     public int? KnowledgeItemId { get; set; }
+    // KE-004: when a file at the same path is re-imported with changed content, the new artifact points
+    // back to the prior one (minimal raw-artifact versioning; full lineage is KE-007's SourceArtifact).
+    public int? SupersedesImportedFileId { get; set; }
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 }
 

@@ -134,3 +134,14 @@ public enum AuthorityLevel { Normal = 0, Low = 1, High = 2, Binding = 3 }
 
 // Phase 2 / KE-003: interpretable trust band. Inert in KE-003; quality computation in KE-006.
 public enum QualityBand { Provisional = 0, Corroborated = 1, Trusted = 2, Authoritative = 3 }
+
+// Phase 2 / KE-004: how a duplicate was detected. Exact = identical content hash. Near reserved for
+// embedding similarity (KE-030). Extensible without migration churn.
+public enum DuplicateMatchKind { Exact = 0, Near = 1 }
+
+// Phase 2 / KE-004: lifecycle of a duplicate finding. Candidate (detected), Confirmed (human),
+// Rejected (human said "not a duplicate"), AutoMergeCandidate (eligible for KE-030 auto-merge).
+public enum DuplicateStatus { Candidate = 0, Confirmed = 1, Rejected = 2, AutoMergeCandidate = 3 }
+
+// Phase 2 / KE-004: outcome of resolving a machine-extracted item against its source locus.
+public enum LocusOutcome { Created = 0, Updated = 1, ProposedRevision = 2, Unchanged = 3 }

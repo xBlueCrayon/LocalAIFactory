@@ -1,5 +1,6 @@
 using LocalAIFactory.Core.Abstractions;
 using LocalAIFactory.Data.Backbone;
+using LocalAIFactory.Data.Identity;
 using LocalAIFactory.Data.Permanence;
 using LocalAIFactory.Data.Security;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<IContentHasher, ContentHasher>();
         services.AddScoped<IInstanceContext, InstanceContext>();
         services.AddScoped<IKnowledgeBackboneService, KnowledgeBackboneService>();
+        services.AddScoped<IIdentityResolver, IdentityResolver>();
         return services;
     }
 }

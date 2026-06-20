@@ -27,7 +27,7 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     private readonly IProjectProfileService _profile;
     private readonly IKnowledgeGraphService _graph;
     private readonly IModelExecutionService _model;
-    private readonly IKnowledgeBackboneService _backbone;
+    private readonly IIdentityResolver _identity;
     private readonly WorkspacesOptions _ws;
     private readonly RagOptions _rag;
     private readonly ILogger<ProjectIngestionService> _log;
@@ -35,11 +35,11 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     public ProjectIngestionService(
         AppDbContext db, IZipExtractionService zip, IFileClassifier classifier, IChunkingService chunking,
         IKnowledgeIndexer indexer, IProjectProfileService profile, IKnowledgeGraphService graph,
-        IModelExecutionService model, IKnowledgeBackboneService backbone, IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag,
+        IModelExecutionService model, IIdentityResolver identity, IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag,
         ILogger<ProjectIngestionService> log)
     {
         _db = db; _zip = zip; _classifier = classifier; _chunking = chunking; _indexer = indexer;
-        _profile = profile; _graph = graph; _model = model; _backbone = backbone; _ws = ws.Value; _rag = rag.Value; _log = log;
+        _profile = profile; _graph = graph; _model = model; _identity = identity; _ws = ws.Value; _rag = rag.Value; _log = log;
     }
 
     private string IncomingDir => Path.Combine(_ws.Root, "_incoming");
@@ -150,35 +150,33 @@ public sealed class ProjectIngestionService : IProjectIngestionService
                     var sha = Sha256(text);
                     imported.Sha256 = sha;
 
-                    var dup = await _db.ImportedFiles.AnyAsync(
-                        f => f.Sha256 == sha && f.ProjectId == job.ProjectId && f.Id != imported.Id && !f.Skipped, ct);
-                    if (dup)
+                    // KE-004: raw artifact identity by path. The latest non-skipped artifact at this path,
+                    // if any, is the prior version of the same logical file.
+                    var samePath = await _db.ImportedFiles
+                        .Where(f => f.ProjectId == job.ProjectId && f.RelativePath == rel && !f.Skipped && f.KnowledgeItemId != null)
+                        .OrderByDescending(f => f.Id)
+                        .FirstOrDefaultAsync(ct);
+
+                    if (samePath != null && samePath.Sha256 == sha)
                     {
+                        // Identical content at the same path: dedup the raw record; knowledge is unchanged.
                         imported.Skipped = true;
                         imported.SkipReason = "duplicate";
+                        imported.KnowledgeItemId = samePath.KnowledgeItemId;
                         job.SkippedFiles++;
                         _db.ImportedFiles.Add(imported);
                     }
                     else
                     {
                         imported.RawText = text;
-                        var ki = new KnowledgeItem
-                        {
-                            ProjectId = job.ProjectId,
-                            Title = rel,
-                            Content = text,
-                            SourceType = _classifier.ToSourceType(fileClass),
-                            Status = KnowledgeStatus.NeedsReview,
-                            Confidence = 0.5,
-                            Tier = PermanenceTier.Derived // machine-extracted, regenerable.
-                        };
-                        _db.KnowledgeItems.Add(ki);
-                        await _db.SaveChangesAsync(ct);
-                        await _backbone.RecordInitialAsync(ki, ProvenanceMethod.Deterministic, "system:ingestion",
-                            $"Imported file {rel}", ct: ct);
-                        imported.KnowledgeItemId = ki.Id;
+                        if (samePath != null) imported.SupersedesImportedFileId = samePath.Id; // changed content
+                        // KE-004: converge by source locus (create / update+version / propose-if-curated).
+                        var res = await _identity.ResolveFileAsync(job.ProjectId, rel, rel, text,
+                            _classifier.ToSourceType(fileClass), ct);
+                        imported.KnowledgeItemId = res.KnowledgeItemId;
                         _db.ImportedFiles.Add(imported);
-                        created.Add((ki.Id, text, fileClass));
+                        if (res.Outcome is LocusOutcome.Created or LocusOutcome.Updated)
+                            created.Add((res.KnowledgeItemId, text, fileClass));
                     }
                 }
 
@@ -197,6 +195,9 @@ public sealed class ProjectIngestionService : IProjectIngestionService
             int chunkCount = 0;
             foreach (var item in created)
             {
+                // KE-004: clear prior chunks so re-extracted/updated items don't accumulate stale chunks.
+                var oldChunks = await _db.KnowledgeChunks.Where(c => c.KnowledgeItemId == item.Id).ToListAsync(ct);
+                if (oldChunks.Count > 0) _db.KnowledgeChunks.RemoveRange(oldChunks);
                 var chunks = _chunking.Chunk(item.Content, _rag.MaxChunkChars, _rag.ChunkOverlap);
                 int idx = 0;
                 foreach (var chunk in chunks)
@@ -250,6 +251,10 @@ public sealed class ProjectIngestionService : IProjectIngestionService
             await _db.SaveChangesAsync(ct);
             try { await ExtractCandidateRulesAsync(job.ProjectId, created, ct); }
             catch (Exception ex) { _log.LogWarning(ex, "Candidate extraction failed for job {Id}", job.Id); }
+
+            // KE-004: record exact-content duplicate candidates (capture only; auto-merge is KE-030).
+            try { await _identity.DetectExactDuplicatesAsync(job.ProjectId, ct); }
+            catch (Exception ex) { _log.LogWarning(ex, "Duplicate detection failed for job {Id}", job.Id); }
 
             job.Phase = IngestionPhase.Completed;
             job.Status = IngestionJobStatus.Completed;

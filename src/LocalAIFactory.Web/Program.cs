@@ -3,6 +3,7 @@ using LocalAIFactory.Agent;
 using LocalAIFactory.Core.Abstractions;
 using LocalAIFactory.Data;
 using LocalAIFactory.Data.Backbone;
+using LocalAIFactory.Data.Identity;
 using LocalAIFactory.Ingestion;
 using LocalAIFactory.Rag;
 using LocalAIFactory.Terminal;
@@ -73,6 +74,8 @@ using (var scope = app.Services.CreateScope())
         await KnowledgeBackboneBackfill.RunAsync(db,
             sp.GetRequiredService<IContentHasher>(),
             sp.GetRequiredService<IInstanceContext>());
+        // KE-004: assign source-locus keys to pre-existing file-linked items (idempotent).
+        await SourceLocusBackfill.RunAsync(db);
         logger.LogInformation("Database migrated, seeded, and knowledge backbone backfilled.");
     }
     catch (Exception ex)

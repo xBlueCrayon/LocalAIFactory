@@ -5,6 +5,7 @@ using LocalAIFactory.Core.Entities;
 using LocalAIFactory.Core.Enums;
 using LocalAIFactory.Core.Options;
 using LocalAIFactory.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace LocalAIFactory.Ingestion.Imports;
@@ -16,14 +17,14 @@ public sealed class FileImportService : IFileImportService
     private readonly IFileClassifier _classifier;
     private readonly IChunkingService _chunking;
     private readonly IKnowledgeIndexer _indexer;
-    private readonly IKnowledgeBackboneService _backbone;
+    private readonly IIdentityResolver _identity;
     private readonly RagOptions _rag;
 
     public FileImportService(
         AppDbContext db, IFileClassifier classifier, IChunkingService chunking,
-        IKnowledgeIndexer indexer, IKnowledgeBackboneService backbone, IOptions<RagOptions> rag)
+        IKnowledgeIndexer indexer, IIdentityResolver identity, IOptions<RagOptions> rag)
     {
-        _db = db; _classifier = classifier; _chunking = chunking; _indexer = indexer; _backbone = backbone; _rag = rag.Value;
+        _db = db; _classifier = classifier; _chunking = chunking; _indexer = indexer; _identity = identity; _rag = rag.Value;
     }
 
     public async Task<ImportedFile> ImportAsync(int? projectId, string fileName, byte[] content, CancellationToken ct = default)
@@ -55,35 +56,27 @@ public sealed class FileImportService : IFileImportService
         }
 
         imported.RawText = text;
-        var ki = new KnowledgeItem
-        {
-            ProjectId = projectId,
-            Title = Path.GetFileName(fileName),
-            Content = text,
-            SourceType = _classifier.ToSourceType(fileClass),
-            Status = KnowledgeStatus.NeedsReview,
-            Confidence = 0.5,
-            Tier = PermanenceTier.Derived // machine-extracted, regenerable.
-        };
-        _db.KnowledgeItems.Add(ki);
-        await _db.SaveChangesAsync(ct);
-        imported.KnowledgeItemId = ki.Id;
+        // KE-004: converge by source locus — create, update+version, or propose-if-curated.
+        var res = await _identity.ResolveFileAsync(projectId, fileName, Path.GetFileName(fileName), text,
+            _classifier.ToSourceType(fileClass), ct);
+        imported.KnowledgeItemId = res.KnowledgeItemId;
         _db.ImportedFiles.Add(imported);
         await _db.SaveChangesAsync(ct);
-        await _backbone.RecordInitialAsync(ki, ProvenanceMethod.Deterministic, "system:import",
-            $"Imported file {Path.GetFileName(fileName)}", sourceArtifactId: imported.Id, ct: ct);
 
-        int idx = 0;
-        foreach (var chunk in _chunking.Chunk(text, _rag.MaxChunkChars, _rag.ChunkOverlap))
+        // (Re)chunk + index only when content was created or updated; curated/unchanged keep their chunks.
+        if (res.Outcome is LocusOutcome.Created or LocusOutcome.Updated)
         {
-            _db.KnowledgeChunks.Add(new KnowledgeChunk
-            {
-                KnowledgeItemId = ki.Id, ChunkIndex = idx++, Content = chunk, TokenCount = _chunking.EstimateTokens(chunk)
-            });
+            var oldChunks = await _db.KnowledgeChunks.Where(c => c.KnowledgeItemId == res.KnowledgeItemId).ToListAsync(ct);
+            if (oldChunks.Count > 0) _db.KnowledgeChunks.RemoveRange(oldChunks);
+            int idx = 0;
+            foreach (var chunk in _chunking.Chunk(text, _rag.MaxChunkChars, _rag.ChunkOverlap))
+                _db.KnowledgeChunks.Add(new KnowledgeChunk
+                {
+                    KnowledgeItemId = res.KnowledgeItemId, ChunkIndex = idx++, Content = chunk, TokenCount = _chunking.EstimateTokens(chunk)
+                });
+            await _db.SaveChangesAsync(ct);
+            try { await _indexer.IndexKnowledgeItemAsync(res.KnowledgeItemId, ct); } catch { /* keyword fallback remains */ }
         }
-        await _db.SaveChangesAsync(ct);
-
-        try { await _indexer.IndexKnowledgeItemAsync(ki.Id, ct); } catch { /* keyword fallback remains */ }
         return imported;
     }
 }

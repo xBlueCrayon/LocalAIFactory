@@ -44,6 +44,7 @@ public class AppDbContext : DbContext
     public DbSet<ProposedRevision> ProposedRevisions => Set<ProposedRevision>();
     public DbSet<KnowledgeVersion> KnowledgeVersions => Set<KnowledgeVersion>();
     public DbSet<ProvenanceEvent> ProvenanceEvents => Set<ProvenanceEvent>();
+    public DbSet<KnowledgeDuplicate> KnowledgeDuplicates => Set<KnowledgeDuplicate>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -370,6 +371,27 @@ public class AppDbContext : DbContext
             e.HasIndex(x => x.OriginPackUid);
             e.HasOne(x => x.KnowledgeItem).WithMany()
                 .HasForeignKey(x => x.KnowledgeItemId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Phase 2 / KE-004: source-locus convergence key, minimal raw artifact supersession, and the
+        // dedicated duplicate table. KnowledgeDuplicate uses loose references (indexed int + portable Uid,
+        // no FK) like ProposedRevision — it is a capture-only ledger consumed by review/KE-030.
+        b.Entity<KnowledgeItem>(e =>
+        {
+            e.Property(x => x.SourceLocusKey).HasMaxLength(64);
+            e.HasIndex(x => x.SourceLocusKey);
+        });
+        b.Entity<ImportedFile>(e =>
+        {
+            e.HasOne<ImportedFile>().WithMany().HasForeignKey(x => x.SupersedesImportedFileId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+        b.Entity<KnowledgeDuplicate>(e =>
+        {
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => x.KnowledgeItemId);
+            e.HasIndex(x => x.DuplicateOfKnowledgeItemId);
+            e.HasIndex(x => x.Status);
         });
     }
 }

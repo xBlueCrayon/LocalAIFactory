@@ -19,6 +19,10 @@ public class KnowledgeItem
     // KE-003 backbone: portable identity, content fingerprint, current version pointer, short summary.
     public Guid Uid { get; set; } = Guid.CreateVersion7();
     public string ContentHash { get; set; } = "";
+    // KE-004: stable per-file extraction locus so re-extraction converges on the same logical item.
+    // Null = no stable locus (e.g. human-authored), so it is never auto-converged. Designed to extend
+    // to per-symbol granularity in M2 (KE-008) by widening the canonical locus string.
+    public string? SourceLocusKey { get; set; }
     public int VersionNumber { get; set; } = 1;
     public string? Summary { get; set; }
 
