@@ -36,6 +36,9 @@ public static class DependencyInjection
         services.AddScoped<IRagContextBuilder, RagContextBuilder>();
         services.AddScoped<IApprovalService, ApprovalService>();
 
+        // KE-011: deterministic structural retrieval (MSSQL-only; no vectors/model required).
+        services.AddScoped<IStructuralRetrievalService, Retrieval.StructuralRetrievalService>();
+
         return services;
     }
 }

@@ -50,6 +50,7 @@ public class AppDbContext : DbContext
     public DbSet<CodeSymbol> CodeSymbols => Set<CodeSymbol>(); // KE-008
     public DbSet<CodeSymbolReference> CodeSymbolReferences => Set<CodeSymbolReference>(); // KE-009
     public DbSet<CodeEdge> CodeEdges => Set<CodeEdge>(); // KE-010
+    public DbSet<RetrievalEvent> RetrievalEvents => Set<RetrievalEvent>(); // KE-011
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -501,6 +502,15 @@ public class AppDbContext : DbContext
         {
             e.HasNoKey();
             e.ToView("vCodeGraph");
+        });
+
+        // Phase 2 / KE-011: capture-only retrieval log. Lean, append-only; influences nothing yet.
+        b.Entity<RetrievalEvent>(e =>
+        {
+            e.Property(x => x.Query).HasMaxLength(400);
+            e.Property(x => x.Mode).HasMaxLength(40);
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => new { x.ProjectId, x.CreatedUtc });
         });
     }
 }

@@ -18,6 +18,10 @@ public sealed class TSqlSchemaExtractor : ISqlSchemaExtractor
     {
         if (string.IsNullOrWhiteSpace(content)) return SqlExtractionResult.Empty;
 
+        // Strip any BOM characters (leading, or embedded by concatenation/editors) — ScriptDom treats an
+        // unexpected U+FEFF as a syntax error and would drop the whole batch that follows it.
+        content = content.Replace("﻿", string.Empty);
+
         var symbols = new List<ExtractedSqlSymbol>();
         var refs = new List<ExtractedSqlReference>();
 
