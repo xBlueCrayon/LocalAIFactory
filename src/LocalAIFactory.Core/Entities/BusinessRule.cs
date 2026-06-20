@@ -15,6 +15,7 @@ public class BusinessRule
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
     public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-003 portable identity.
 
     public ICollection<BusinessRuleTag> Tags { get; set; } = new List<BusinessRuleTag>();
 }

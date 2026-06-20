@@ -8,6 +8,7 @@ public class ProjectProfile
     public int ProjectId { get; set; }
     public Project? Project { get; set; }
     public KnowledgeStatus Status { get; set; } = KnowledgeStatus.NeedsReview;
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-003 portable identity.
     public string? Summary { get; set; }
     public string? StructuredJson { get; set; }
     public int? GeneratedByModelConfigurationId { get; set; }
@@ -28,4 +29,5 @@ public class ProjectProfileSection
     public KnowledgeStatus Status { get; set; } = KnowledgeStatus.NeedsReview;
     public int OrderIndex { get; set; }
     public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-003 portable identity.
 }

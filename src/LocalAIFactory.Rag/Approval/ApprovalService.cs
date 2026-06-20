@@ -12,10 +12,11 @@ public sealed class ApprovalService : IApprovalService
     private readonly AppDbContext _db;
     private readonly IKnowledgeIndexer _indexer;
     private readonly IAuditService _audit;
+    private readonly IKnowledgeBackboneService _backbone;
 
-    public ApprovalService(AppDbContext db, IKnowledgeIndexer indexer, IAuditService audit)
+    public ApprovalService(AppDbContext db, IKnowledgeIndexer indexer, IAuditService audit, IKnowledgeBackboneService backbone)
     {
-        _db = db; _indexer = indexer; _audit = audit;
+        _db = db; _indexer = indexer; _audit = audit; _backbone = backbone;
     }
 
     public async Task ApproveKnowledgeItemAsync(int knowledgeItemId, CancellationToken ct = default)
@@ -29,6 +30,7 @@ public sealed class ApprovalService : IApprovalService
         item.UpdatedUtc = DateTime.UtcNow;
         await _db.SaveChangesAsync(ct);
         await _audit.LogAsync("ApproveKnowledgeItem", nameof(KnowledgeItem), item.Id.ToString(), item.Title, ct);
+        await _backbone.RecordProvenanceAsync(item, ProvenanceMethod.Human, "user", "Approved", ct: ct);
         await _indexer.IndexKnowledgeItemAsync(item.Id, ct);
     }
 

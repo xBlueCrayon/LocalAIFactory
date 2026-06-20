@@ -42,6 +42,8 @@ public class AppDbContext : DbContext
     public DbSet<SystemSetting> SystemSettings => Set<SystemSetting>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<ProposedRevision> ProposedRevisions => Set<ProposedRevision>();
+    public DbSet<KnowledgeVersion> KnowledgeVersions => Set<KnowledgeVersion>();
+    public DbSet<ProvenanceEvent> ProvenanceEvents => Set<ProvenanceEvent>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -326,6 +328,48 @@ public class AppDbContext : DbContext
             e.Property(x => x.ChangeReason).HasMaxLength(1000);
             e.HasIndex(x => new { x.TargetEntityType, x.TargetEntityId });
             e.HasIndex(x => x.Status);
+        });
+
+        // Phase 2 / KE-003: portable identity (unique Uid on every curated/graph entity), the knowledge
+        // backbone fields, and the provenance + version-history tables. (EF merges these with the blocks
+        // configured above for the same entity types.)
+        b.Entity<KnowledgeItem>(e =>
+        {
+            e.Property(x => x.ContentHash).HasMaxLength(64);
+            e.Property(x => x.Summary).HasMaxLength(2000);
+            e.HasIndex(x => x.Uid).IsUnique();
+        });
+        b.Entity<BusinessRule>(e => e.HasIndex(x => x.Uid).IsUnique());
+        b.Entity<ApprovedCodeSnippet>(e => e.HasIndex(x => x.Uid).IsUnique());
+        b.Entity<ProjectProfile>(e => e.HasIndex(x => x.Uid).IsUnique());
+        b.Entity<ProjectProfileSection>(e => e.HasIndex(x => x.Uid).IsUnique());
+        b.Entity<KnowledgeEntity>(e => e.HasIndex(x => x.Uid).IsUnique());
+        b.Entity<KnowledgeRelationship>(e => e.HasIndex(x => x.Uid).IsUnique());
+        b.Entity<ProposedRevision>(e => e.HasIndex(x => x.Uid).IsUnique());
+
+        b.Entity<KnowledgeVersion>(e =>
+        {
+            e.Property(x => x.ContentHash).HasMaxLength(64);
+            e.Property(x => x.Title).HasMaxLength(400);
+            e.Property(x => x.Summary).HasMaxLength(2000);
+            e.Property(x => x.ChangeReason).HasMaxLength(1000);
+            e.Property(x => x.Actor).HasMaxLength(200);
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => new { x.KnowledgeItemId, x.VersionNumber }).IsUnique();
+            e.HasOne(x => x.KnowledgeItem).WithMany()
+                .HasForeignKey(x => x.KnowledgeItemId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        b.Entity<ProvenanceEvent>(e =>
+        {
+            e.Property(x => x.ExtractorOrModelId).HasMaxLength(200);
+            e.Property(x => x.Actor).HasMaxLength(200);
+            e.Property(x => x.Reason).HasMaxLength(1000);
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => new { x.KnowledgeItemId, x.CreatedUtc });
+            e.HasIndex(x => x.OriginPackUid);
+            e.HasOne(x => x.KnowledgeItem).WithMany()
+                .HasForeignKey(x => x.KnowledgeItemId).OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

@@ -20,11 +20,12 @@ public sealed class ChatGptImportService : IChatGptImportService
     private readonly AppDbContext _db;
     private readonly IChunkingService _chunking;
     private readonly IKnowledgeIndexer _indexer;
+    private readonly IKnowledgeBackboneService _backbone;
     private readonly RagOptions _rag;
 
-    public ChatGptImportService(AppDbContext db, IChunkingService chunking, IKnowledgeIndexer indexer, IOptions<RagOptions> rag)
+    public ChatGptImportService(AppDbContext db, IChunkingService chunking, IKnowledgeIndexer indexer, IKnowledgeBackboneService backbone, IOptions<RagOptions> rag)
     {
-        _db = db; _chunking = chunking; _indexer = indexer; _rag = rag.Value;
+        _db = db; _chunking = chunking; _indexer = indexer; _backbone = backbone; _rag = rag.Value;
     }
 
     public async Task<IReadOnlyList<ImportedConversation>> ImportAsync(int? projectId, string fileName, byte[] content, CancellationToken ct = default)
@@ -100,6 +101,8 @@ public sealed class ChatGptImportService : IChatGptImportService
             await _db.SaveChangesAsync(ct);
             convo.KnowledgeItemId = ki.Id;
             await _db.SaveChangesAsync(ct);
+            await _backbone.RecordInitialAsync(ki, ProvenanceMethod.Import, "system:conversation",
+                $"Imported transcript: {convo.Title}", ct: ct);
 
             int idx = 0;
             foreach (var chunk in _chunking.Chunk(ki.Content, _rag.MaxChunkChars, _rag.ChunkOverlap))

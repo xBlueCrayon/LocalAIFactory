@@ -1,7 +1,10 @@
+@using LocalAIFactory.Core.ViewModels
 @model KnowledgeItem
 @{
     ViewData["Title"] = "Knowledge · " + Model.Title;
     var history = ViewBag.History as List<AuditLog> ?? new List<AuditLog>();
+    var versions = ViewBag.Versions as List<KnowledgeVersionRow> ?? new List<KnowledgeVersionRow>();
+    var provenance = ViewBag.Provenance as List<ProvenanceRow> ?? new List<ProvenanceRow>();
 }
 
 <div class="toolbar-row">
@@ -22,6 +25,29 @@
             <div class="card2-head"><h2><i class="bi bi-file-text me-2"></i>Content</h2></div>
             <div class="card2-body"><div data-md>@Model.Content</div></div>
         </div>
+
+        <div class="card2 mt-3">
+            <div class="card2-head"><h2><i class="bi bi-pencil-square me-2"></i>Edit (records a new version)</h2></div>
+            <div class="card2-body">
+                <form asp-action="Edit" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="mb-2">
+                        <label class="form-label">Title</label>
+                        <input class="form-control" name="title" value="@Model.Title" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Content</label>
+                        <textarea class="form-control" name="content" rows="10">@Model.Content</textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Change reason</label>
+                        <input class="form-control" name="reason" placeholder="Why are you changing this?" />
+                    </div>
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-save me-1"></i>Save new version</button>
+                </form>
+            </div>
+        </div>
     </div>
     <div class="col-lg-4">
         <div class="card2">
@@ -39,6 +65,50 @@
                             <li class="mb-2">
                                 <div style="font-size:13px"><strong>@h.Action</strong></div>
                                 <div class="muted">@h.CreatedUtc.ToString("MMM d, yyyy HH:mm")@(string.IsNullOrEmpty(h.UserName) ? "" : " · " + h.UserName)</div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+
+        <div class="card2 mt-3">
+            <div class="card2-head"><h2><i class="bi bi-stack me-2"></i>Version history</h2></div>
+            <div class="card2-body">
+                @if (!versions.Any())
+                {
+                    <div class="muted">No versions recorded yet.</div>
+                }
+                else
+                {
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var v in versions)
+                        {
+                            <li class="mb-2">
+                                <div style="font-size:13px"><strong>v@(v.VersionNumber)</strong> · @v.Method · @v.Actor</div>
+                                <div class="muted">@v.ChangeReason — @v.CreatedUtc.ToString("MMM d, yyyy HH:mm")</div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+
+        <div class="card2 mt-3">
+            <div class="card2-head"><h2><i class="bi bi-diagram-2 me-2"></i>Provenance</h2></div>
+            <div class="card2-body">
+                @if (!provenance.Any())
+                {
+                    <div class="muted">No provenance recorded yet.</div>
+                }
+                else
+                {
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var p in provenance)
+                        {
+                            <li class="mb-2">
+                                <div style="font-size:13px"><strong>@p.Method</strong> · @p.Actor</div>
+                                <div class="muted">@p.Reason — @p.CreatedUtc.ToString("MMM d, yyyy HH:mm")</div>
                             </li>
                         }
                     </ul>

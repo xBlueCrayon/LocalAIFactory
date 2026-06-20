@@ -13,6 +13,7 @@ public class KnowledgeEntity
     public KnowledgeStatus Status { get; set; } = KnowledgeStatus.NeedsReview;
     public int? SourceKnowledgeItemId { get; set; }
     public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-003 portable identity.
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 }
 
@@ -31,5 +32,6 @@ public class KnowledgeRelationship
     public double Confidence { get; set; } = 0.5;
     public int? SourceKnowledgeItemId { get; set; }
     public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-003 portable identity.
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 }

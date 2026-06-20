@@ -1,6 +1,8 @@
 using System.Globalization;
 using LocalAIFactory.Agent;
+using LocalAIFactory.Core.Abstractions;
 using LocalAIFactory.Data;
+using LocalAIFactory.Data.Backbone;
 using LocalAIFactory.Ingestion;
 using LocalAIFactory.Rag;
 using LocalAIFactory.Terminal;
@@ -67,7 +69,11 @@ using (var scope = app.Services.CreateScope())
         var db = sp.GetRequiredService<AppDbContext>();
         db.Database.Migrate();
         await DbSeeder.SeedAsync(db);
-        logger.LogInformation("Database migrated and seeded.");
+        // KE-003: stamp pre-existing knowledge with content hash + v1 version + provenance (idempotent).
+        await KnowledgeBackboneBackfill.RunAsync(db,
+            sp.GetRequiredService<IContentHasher>(),
+            sp.GetRequiredService<IInstanceContext>());
+        logger.LogInformation("Database migrated, seeded, and knowledge backbone backfilled.");
     }
     catch (Exception ex)
     {

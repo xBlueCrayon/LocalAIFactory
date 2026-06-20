@@ -119,3 +119,18 @@ public enum PermanenceTier { Derived = 0, Curated = 1, Raw = 2 }
 
 // Phase 2 / KE-002: where a proposed revision to a curated item originated.
 public enum RevisionSource { Extraction = 0, Consolidation = 1, ReEmbedding = 2 }
+
+// Phase 2 / KE-003: how/why a knowledge item came to be or changed (the provenance chain).
+public enum ProvenanceMethod { Deterministic = 0, Semantic = 1, Human = 2, Import = 3, Promotion = 4, Consolidation = 5, Autonomous = 6 }
+
+// Phase 2 / KE-003: backbone "type ref" discriminator. Inert in KE-003; typed behavior in later milestones.
+public enum KnowledgeType { Unspecified = 0, CodeSymbol = 1, DataDictionary = 2, BusinessRule = 3, Requirement = 4, Standard = 5, Regulation = 6, ArchitectureDecision = 7, FixPattern = 8, ConversationInsight = 9, GlossaryTerm = 10, Other = 99 }
+
+// Phase 2 / KE-003: scope/precedence vocabulary. Inert in KE-003; precedence behavior in KE-005.
+public enum KnowledgeScope { Unspecified = 0, Global = 1, Project = 2, Standards = 3, Regulatory = 4, Team = 5 }
+
+// Phase 2 / KE-003: authority level. Inert in KE-003; authority order behavior in KE-005.
+public enum AuthorityLevel { Normal = 0, Low = 1, High = 2, Binding = 3 }
+
+// Phase 2 / KE-003: interpretable trust band. Inert in KE-003; quality computation in KE-006.
+public enum QualityBand { Provisional = 0, Corroborated = 1, Trusted = 2, Authoritative = 3 }

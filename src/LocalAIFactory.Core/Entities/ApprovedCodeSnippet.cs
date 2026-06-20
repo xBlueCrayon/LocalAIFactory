@@ -18,6 +18,7 @@ public class ApprovedCodeSnippet
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
     public PermanenceTier Tier { get; set; } = PermanenceTier.Curated;
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-003 portable identity.
 
     public ICollection<ApprovedCodeSnippetTag> Tags { get; set; } = new List<ApprovedCodeSnippetTag>();
 }

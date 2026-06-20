@@ -15,6 +15,22 @@ public class KnowledgeItem
     public bool IsApproved { get; set; }
     public bool IsDeprecated { get; set; }
     public PermanenceTier Tier { get; set; } = PermanenceTier.Derived;
+
+    // KE-003 backbone: portable identity, content fingerprint, current version pointer, short summary.
+    public Guid Uid { get; set; } = Guid.CreateVersion7();
+    public string ContentHash { get; set; } = "";
+    public int VersionNumber { get; set; } = 1;
+    public string? Summary { get; set; }
+
+    // KE-003 inert backbone metadata. Persisted and portable, but no behavior reads these yet
+    // (scope/precedence is KE-005; quality computation is KE-006).
+    public KnowledgeType KnowledgeType { get; set; } = KnowledgeType.Unspecified;
+    public KnowledgeScope Scope { get; set; } = KnowledgeScope.Unspecified;
+    public AuthorityLevel Authority { get; set; } = AuthorityLevel.Normal;
+    public QualityBand QualityBand { get; set; } = QualityBand.Provisional;
+    public DateTime? EffectiveUtc { get; set; }
+    public DateTime? ExpiryUtc { get; set; }
+
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
 

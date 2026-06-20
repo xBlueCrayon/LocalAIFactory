@@ -16,13 +16,14 @@ public sealed class FileImportService : IFileImportService
     private readonly IFileClassifier _classifier;
     private readonly IChunkingService _chunking;
     private readonly IKnowledgeIndexer _indexer;
+    private readonly IKnowledgeBackboneService _backbone;
     private readonly RagOptions _rag;
 
     public FileImportService(
         AppDbContext db, IFileClassifier classifier, IChunkingService chunking,
-        IKnowledgeIndexer indexer, IOptions<RagOptions> rag)
+        IKnowledgeIndexer indexer, IKnowledgeBackboneService backbone, IOptions<RagOptions> rag)
     {
-        _db = db; _classifier = classifier; _chunking = chunking; _indexer = indexer; _rag = rag.Value;
+        _db = db; _classifier = classifier; _chunking = chunking; _indexer = indexer; _backbone = backbone; _rag = rag.Value;
     }
 
     public async Task<ImportedFile> ImportAsync(int? projectId, string fileName, byte[] content, CancellationToken ct = default)
@@ -69,6 +70,8 @@ public sealed class FileImportService : IFileImportService
         imported.KnowledgeItemId = ki.Id;
         _db.ImportedFiles.Add(imported);
         await _db.SaveChangesAsync(ct);
+        await _backbone.RecordInitialAsync(ki, ProvenanceMethod.Deterministic, "system:import",
+            $"Imported file {Path.GetFileName(fileName)}", sourceArtifactId: imported.Id, ct: ct);
 
         int idx = 0;
         foreach (var chunk in _chunking.Chunk(text, _rag.MaxChunkChars, _rag.ChunkOverlap))

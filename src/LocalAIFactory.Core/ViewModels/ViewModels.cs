@@ -49,6 +49,11 @@ public sealed record RecentApprovalRow(string Action, string? EntityName, string
 // KnowledgeItem.Content column is NEVER selected/materialized for the list view.
 public sealed record KnowledgeListRow(int Id, string Title, SourceType SourceType, KnowledgeStatus Status, DateTime UpdatedUtc, bool IsApproved);
 
+// KE-003: read-only history rows for the Knowledge details page. Projected in SQL so the large
+// ContentSnapshot column is never materialized for these lists.
+public sealed record KnowledgeVersionRow(int VersionNumber, string ChangeReason, ProvenanceMethod Method, string Actor, DateTime CreatedUtc);
+public sealed record ProvenanceRow(ProvenanceMethod Method, string Actor, string Reason, Guid? OriginInstanceId, DateTime CreatedUtc);
+
 public sealed class ChatPageViewModel
 {
     public List<Project> Projects { get; set; } = new();

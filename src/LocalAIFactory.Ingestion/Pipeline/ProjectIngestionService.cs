@@ -27,6 +27,7 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     private readonly IProjectProfileService _profile;
     private readonly IKnowledgeGraphService _graph;
     private readonly IModelExecutionService _model;
+    private readonly IKnowledgeBackboneService _backbone;
     private readonly WorkspacesOptions _ws;
     private readonly RagOptions _rag;
     private readonly ILogger<ProjectIngestionService> _log;
@@ -34,11 +35,11 @@ public sealed class ProjectIngestionService : IProjectIngestionService
     public ProjectIngestionService(
         AppDbContext db, IZipExtractionService zip, IFileClassifier classifier, IChunkingService chunking,
         IKnowledgeIndexer indexer, IProjectProfileService profile, IKnowledgeGraphService graph,
-        IModelExecutionService model, IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag,
+        IModelExecutionService model, IKnowledgeBackboneService backbone, IOptions<WorkspacesOptions> ws, IOptions<RagOptions> rag,
         ILogger<ProjectIngestionService> log)
     {
         _db = db; _zip = zip; _classifier = classifier; _chunking = chunking; _indexer = indexer;
-        _profile = profile; _graph = graph; _model = model; _ws = ws.Value; _rag = rag.Value; _log = log;
+        _profile = profile; _graph = graph; _model = model; _backbone = backbone; _ws = ws.Value; _rag = rag.Value; _log = log;
     }
 
     private string IncomingDir => Path.Combine(_ws.Root, "_incoming");
@@ -173,6 +174,8 @@ public sealed class ProjectIngestionService : IProjectIngestionService
                         };
                         _db.KnowledgeItems.Add(ki);
                         await _db.SaveChangesAsync(ct);
+                        await _backbone.RecordInitialAsync(ki, ProvenanceMethod.Deterministic, "system:ingestion",
+                            $"Imported file {rel}", ct: ct);
                         imported.KnowledgeItemId = ki.Id;
                         _db.ImportedFiles.Add(imported);
                         created.Add((ki.Id, text, fileClass));

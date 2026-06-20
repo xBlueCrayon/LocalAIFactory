@@ -7,6 +7,7 @@ namespace LocalAIFactory.Core.Entities;
 public class ProposedRevision
 {
     public int Id { get; set; }
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-003 portable identity.
 
     // The curated entity this revision targets, e.g. "KnowledgeItem", "ProjectProfileSection".
     public string TargetEntityType { get; set; } = "";

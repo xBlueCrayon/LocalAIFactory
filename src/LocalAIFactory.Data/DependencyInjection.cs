@@ -1,4 +1,5 @@
 using LocalAIFactory.Core.Abstractions;
+using LocalAIFactory.Data.Backbone;
 using LocalAIFactory.Data.Permanence;
 using LocalAIFactory.Data.Security;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,9 @@ public static class DependencyInjection
         services.AddScoped<IApiKeyProtector, DataProtectionApiKeyProtector>();
         services.AddScoped<IAuditService, AuditService>();
         services.AddScoped<IPermanenceGuard, KnowledgePermanenceService>();
+        services.AddScoped<IContentHasher, ContentHasher>();
+        services.AddScoped<IInstanceContext, InstanceContext>();
+        services.AddScoped<IKnowledgeBackboneService, KnowledgeBackboneService>();
         return services;
     }
 }
