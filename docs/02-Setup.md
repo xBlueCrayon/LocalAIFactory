@@ -50,7 +50,7 @@ dotnet ef database update --project src/LocalAIFactory.Data --startup-project sr
 | Qdrant | Enabled | `false` | Optional vector DB |
 | Qdrant | BaseUrl / Collection / VectorSize | localhost:6333 / localaifactory / 768 | |
 | Rag | UseVectorSearch | `false` | Vectors only when this AND Qdrant.Enabled are true |
-| Workspaces | Root | `C:\LocalAIFactory\workspaces` | Code-modification sandbox root (Phase 2) |
+| Workspaces | Root | `C:\LocalAIFactory\workspaces` | Code-modification sandbox root (Phase 4 — Autonomy; scaffold guarded off until then) |
 
 ## Optional: local AI and vectors
 

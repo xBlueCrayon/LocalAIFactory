@@ -173,7 +173,8 @@ Target: every core page completes in well under one second on SQL Express.
 - Setup & configuration: `docs/02-Setup.md`
 - Development workflow: `docs/03-Development-Workflow.md`
 - Deployment (IIS): `docs/04-Deployment.md`
-- Roadmaps: `docs/05-Knowledge-Engine-Roadmap.md`, `docs/06-AI-Runtime-Roadmap.md`
+- Phase 2 (authoritative): `docs/Phase-2-README.md` → `docs/Phase-2-Knowledge-Engine-Design.md`, `docs/Phase-2-Refinements-and-Alignment.md`, `docs/Phase-2-Execution-Backlog.md`
+- Legacy roadmaps (historical context only — superseded by the Phase 2 set above; see banners): `docs/05-Knowledge-Engine-Roadmap.md`, `docs/06-AI-Runtime-Roadmap.md`
 - Troubleshooting (incl. the page-hang history): `docs/07-Troubleshooting.md`
 - Phase changelogs: `Phase-1.1-Release-Notes.md`, `Phase-1.2-Release-Notes.md`, `Phase-1.2-Runtime-Audit.md`
 - Phase briefs / prompts: `prompts/`

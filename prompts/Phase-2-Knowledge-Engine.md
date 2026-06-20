@@ -1,5 +1,9 @@
 # Phase 2 — Knowledge Engine (forward brief / Claude Code prompt)
 
+> **Status: SUPERSEDED.** This punch-list is replaced by `docs/Phase-2-Execution-Backlog.md`
+> (KE-001…KE-032). Items 1 (code-candidate promotion UI) and 2 (ProjectProfile UI) are already shipped;
+> item 3 (vector cleanup) = KE-020; item 4 (import ceiling) = KE-007. Follow the backlog, not this file.
+
 **Objective:** evolve the curated memory into a richer knowledge engine **without** breaking
 MSSQL-only operation or the approval lifecycle, and **without** destructive schema changes.
 

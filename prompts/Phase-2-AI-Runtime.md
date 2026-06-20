@@ -1,5 +1,8 @@
 # Phase 2 — AI Runtime / Autonomous code edits (forward brief / Claude Code prompt)
 
+> **Status: RECLASSIFIED to Phase 4 — Autonomy** (MASTER_VISION §16). This is not Phase 2 work.
+> Phase 2 is the Knowledge Engine (`docs/Phase-2-Execution-Backlog.md`). Retained as Phase-4 forward context.
+
 **Objective:** implement the guarded autonomous loop:
 
 > Ask a question → identify relevant files → snapshot → propose modifications → user approves →

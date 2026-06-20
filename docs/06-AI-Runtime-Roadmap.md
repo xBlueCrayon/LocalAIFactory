@@ -1,6 +1,11 @@
 # 06 — AI Runtime Roadmap
 
-This covers the local AI execution layer and the Phase-2 autonomous code-modification vision.
+> **Status: RECLASSIFIED.** The autonomous code-edit loop described here is **Phase 4 — Autonomy**
+> per MASTER_VISION §16, **not Phase 2**. Phase 2 is the Knowledge Engine (`docs/Phase-2-README.md`).
+> The `Workspaces` project remains a **Phase-1 guarded scaffold** (`ApplyChangeAsync` throws
+> `NotSupportedException`); do not enable it during Phase 2. Retained as Phase-4 forward context.
+
+This covers the local AI execution layer and the autonomous code-modification vision (Phase 4 — Autonomy).
 
 ## In place today
 
@@ -17,7 +22,7 @@ This covers the local AI execution layer and the Phase-2 autonomous code-modific
   (`CodeModification`, `BuildAnalysis`, `WorkspacePlanning`). `ApplyChangeAsync` deliberately throws
   `NotSupportedException` as a Phase-1 guard.
 
-## Planned (Phase 2 — AI Runtime)
+## Planned (Phase 4 — Autonomy)
 
 The autonomous loop:
 

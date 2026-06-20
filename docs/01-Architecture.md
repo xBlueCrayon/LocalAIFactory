@@ -29,7 +29,9 @@ acyclic dependency graph.
 ## Knowledge approval lifecycle
 
 Knowledge, business rules, and code snippets move through **Draft → Approved → Deprecated →
-NeedsReview**. **Approved** items are injected **first** into prompt context; **project-specific**
+NeedsReview** (current schema). Phase 2 / KE-013 extends this to the full lifecycle
+(Draft → NeedsReview → Approved → Deprecated/Superseded, plus retained Rejected and, for fixes,
+Validated). **Approved** items are injected **first** into prompt context; **project-specific**
 knowledge overrides **generic** knowledge. This curated memory is the core differentiator.
 
 ## Request & runtime model

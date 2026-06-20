@@ -1,5 +1,16 @@
 # 05 — Knowledge Engine Roadmap
 
+> **Status: SUPERSEDED (historical).** The authoritative Phase 2 plan is the Phase-2 set in `docs/`
+> (`Phase-2-README.md` → `Phase-2-Knowledge-Engine-Design.md`, `Phase-2-Refinements-and-Alignment.md`,
+> `Phase-2-Execution-Backlog.md`). This file is retained for context only.
+>
+> Corrections to the "Planned (Phase 2)" list below:
+> - **Code-candidate promotion UI** — **DONE** (shipped; `CodeCandidatesController`).
+> - **ProjectProfile UI** — **DONE** (shipped; `ProjectProfilesController`).
+> - **Vector cleanup on deprecate/delete** — **partial** (knowledge items done; graph not) → tracked as **KE-020**.
+> - **Raise the multipart/import ceiling** → tracked as **KE-007**.
+> - **In-flight job recovery / optional full-text indexing** — remain open; not on the Phase 2 critical path.
+
 The knowledge engine is the heart of LocalAIFactory: a curated, persistent memory that improves over
 time. This roadmap covers what exists and what is planned. **No work here should break MSSQL-only
 operation or the approval lifecycle.**

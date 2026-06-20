@@ -3,8 +3,8 @@
 > **Derives from:** `MASTER_VISION.md` (governing) and the two memory-architecture reviews.
 > **Phase theme (per roadmap):** *Understanding — the memory becomes structured.*
 > **Form:** design only. No code, no DDL, no schema syntax. Attribute names are conceptual.
-> **Note:** Issue #1 could not be read from here (API rate-limited); this design follows the vision and
-> the existing schema. Reconcile against Issue #1's acceptance criteria before implementation.
+> **Note:** This design follows MASTER_VISION and the existing schema. The MASTER_VISION clarifications
+> it assumes are formalized by backlog item KE-001 (M0); apply KE-001 before implementing M1 onward.
 
 ## What Phase 2 builds, and what it only enables
 

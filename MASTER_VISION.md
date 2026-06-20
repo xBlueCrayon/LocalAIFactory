@@ -23,16 +23,20 @@ principle conflict, the principle wins.
    orchestrated around the memory; the memory is never subordinate to a model.
 2. **MSSQL is the source of truth.** Everything else — vectors, graph projections, model outputs,
    caches — is derived and rebuildable from it.
-3. **Raw is permanent; extracted is regenerable.** Imported source artifacts are immutable truth.
-   Extracted knowledge is a projection that can be re-derived as extraction improves. No early
-   extraction decision is load-bearing.
+3. **Three permanence tiers.** Raw imported artifacts are permanent and immutable. Machine-extracted
+   knowledge is regenerable — a projection that can be re-derived as extraction improves, so no early
+   extraction decision is load-bearing. Human-curated knowledge — anything a person edited or approved —
+   is durable and changes only by human approval. Re-derivation and consolidation may freely regenerate
+   the machine-extracted tier; against curated knowledge they **propose** a revision for review and
+   **never overwrite it silently**.
 4. **Reasoning is grounded in executable truth.** A proposal is correct because it compiles, the tests
    pass, and the query runs — not because a model is confident.
 5. **The expert user is the oracle.** Human curation is the highest-quality signal in the system and
    the anchor of trust. The platform is designed around dense, low-friction human judgment.
-6. **Knowledge constrains as well as informs.** Standards and regulations are guardrails to enforce,
-   not merely context to retrieve. Fixes teach. Requirements trace. Different knowledge behaves
-   differently.
+6. **Knowledge constrains as well as informs.** Standards and regulations are guardrails, not merely
+   context to retrieve. Enforcement is progressive: by visibility and flagging while the platform only
+   advises, and by hard gating once the platform changes code itself. Fixes teach. Requirements trace.
+   Different knowledge behaves differently.
 7. **Local-first and model-pluggable.** The platform runs fully on local infrastructure. AI services
    are optional and interchangeable; the platform must always remain usable with MSSQL alone.
 8. **Outcome validation and human curation prevent drift.** The compiler, the tests, and the user are
@@ -115,8 +119,10 @@ identity), and lexical (exact terms) — because engineering questions need all 
 And memory is alive: it versions, supersedes, decays, deduplicates, detects its own contradictions,
 and revises its confidence from outcomes. A static knowledge store rots; a living memory compounds.
 
-Because every layer above raw is derived, the memory is rebuildable, which makes aggressive automated
-curation safe: if extraction or consolidation goes wrong, it is regenerated rather than lost.
+Because the machine-extracted layer is derived, it is rebuildable, which makes aggressive automated
+curation safe: if extraction or consolidation goes wrong, it is regenerated rather than lost. The
+curated layer is the exception — it is durable, and re-derivation proposes changes to it rather than
+overwriting it (Principle 3).
 
 ## 5. MSSQL as the Source of Truth
 
@@ -146,9 +152,12 @@ approval. Approved knowledge is injected first and weighted highest; more-specif
 precedence over more-general; and constraint knowledge — standards and regulations — is enforced
 rather than merely retrieved.
 
-Quality is treated as a first-class, evolving property rather than a fixed label. It is shaped by
-provenance strength, corroboration across independent sources, currency, specificity, consistency with
-existing knowledge, and — most powerfully — validated outcomes. Knowledge that proves wrong is not
+Quality is treated as a first-class, evolving property rather than a fixed label — an interpretable
+trust band, not an opaque number, so the user and the models can weight knowledge meaningfully. It is
+shaped by provenance strength, corroboration across independent sources, currency, specificity,
+consistency with existing knowledge, and — most powerfully — validated outcomes. It is degradation-safe:
+when no model or outcome history is present, quality is computed from provenance and corroboration alone,
+so no capability depends on AI being available. Knowledge that proves wrong is not
 silently deleted; it is retained as negative knowledge so the same mistake is not relearned. The
 lifecycle's purpose is singular: keep the signal high as the volume grows.
 
