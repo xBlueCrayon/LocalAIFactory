@@ -1,0 +1,46 @@
+{
+  "Name": "CleanArchitecture",
+  "Bucket": "ddd",
+  "Sha": "43831e20374677b81f93bb08923eff3245b7195f",
+  "CandidateFiles": 76,
+  "ParsedArtifacts": 70,
+  "Symbols": 405,
+  "Edges": 108,
+  "References": 306,
+  "Unresolved": 175,
+  "EdgesByType": {
+    "DependsOn": 21,
+    "References": 54,
+    "Inherits": 5,
+    "Implements": 28
+  },
+  "Convergent": true,
+  "Pov": [
+    {
+      "Question": "Which classes implement IApplicationDbContext?",
+      "Mode": "dependents",
+      "Target": "CleanArchitecture.Application.Common.Interfaces.IApplicationDbContext",
+      "Count": 21,
+      "Passed": true
+    },
+    {
+      "Question": "Which class implements IIdentityService?",
+      "Mode": "dependents",
+      "Target": "CleanArchitecture.Application.Common.Interfaces.IIdentityService",
+      "Count": 7,
+      "Passed": true
+    },
+    {
+      "Question": "What breaks if IIdentityService changes?",
+      "Mode": "impact",
+      "Target": "CleanArchitecture.Application.Common.Interfaces.IIdentityService",
+      "Count": 4,
+      "Passed": true
+    }
+  ],
+  "DiscoveryCoverage": 0.9210526315789473,
+  "ResolutionRate": 0.38162544169611307,
+  "GraphAccuracy": 1,
+  "RetrievalAccuracy": 1,
+  "ImpactAccuracy": 1
+}

@@ -1,0 +1,39 @@
+{
+  "Name": "eShopOnWeb",
+  "Bucket": "clean-monolith",
+  "Sha": "4da8212117e87d808d4bbc7da6286fd2147ce606",
+  "CandidateFiles": 209,
+  "ParsedArtifacts": 207,
+  "Symbols": 1190,
+  "Edges": 271,
+  "References": 680,
+  "Unresolved": 351,
+  "EdgesByType": {
+    "DependsOn": 60,
+    "References": 130,
+    "Inherits": 29,
+    "Implements": 52
+  },
+  "Convergent": true,
+  "Pov": [
+    {
+      "Question": "Show all consumers of IRepository\u003CT\u003E",
+      "Mode": "dependents",
+      "Target": "Microsoft.eShopWeb.ApplicationCore.Interfaces.IRepository\u00601",
+      "Count": 27,
+      "Passed": true
+    },
+    {
+      "Question": "Which class implements IBasketService?",
+      "Mode": "dependents",
+      "Target": "Microsoft.eShopWeb.ApplicationCore.Interfaces.IBasketService",
+      "Count": 7,
+      "Passed": true
+    }
+  ],
+  "DiscoveryCoverage": 0.9904306220095693,
+  "ResolutionRate": 0.43569131832797425,
+  "GraphAccuracy": 1,
+  "RetrievalAccuracy": 1,
+  "ImpactAccuracy": 1
+}

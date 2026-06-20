@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>LocalAIFactory.Benchmark</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LocalAIFactory.Core\LocalAIFactory.Core.csproj" />
+    <ProjectReference Include="..\..\src\LocalAIFactory.Data\LocalAIFactory.Data.csproj" />
+    <ProjectReference Include="..\..\src\LocalAIFactory.Ingestion\LocalAIFactory.Ingestion.csproj" />
+    <ProjectReference Include="..\..\src\LocalAIFactory.Rag\LocalAIFactory.Rag.csproj" />
+  </ItemGroup>
+</Project>

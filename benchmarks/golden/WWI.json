@@ -1,0 +1,43 @@
+{
+  "Name": "WideWorldImporters",
+  "Bucket": "sql-heavy",
+  "Sha": "pinned-ssdt-files",
+  "CandidateFiles": 7,
+  "ParsedArtifacts": 7,
+  "Symbols": 161,
+  "Edges": 11,
+  "References": 35,
+  "Unresolved": 24,
+  "EdgesByType": {
+    "References": 11
+  },
+  "Convergent": true,
+  "Pov": [
+    {
+      "Question": "What references Sales.Customers?",
+      "Mode": "dependents",
+      "Target": "Sales.Customers",
+      "Count": 5,
+      "Passed": true
+    },
+    {
+      "Question": "What breaks if Sales.Customers changes?",
+      "Mode": "impact",
+      "Target": "Sales.Customers",
+      "Count": 9,
+      "Passed": true
+    },
+    {
+      "Question": "Find Sales.Orders",
+      "Mode": "find",
+      "Target": "Sales.Orders",
+      "Count": 1,
+      "Passed": true
+    }
+  ],
+  "DiscoveryCoverage": 1,
+  "ResolutionRate": 0.3142857142857143,
+  "GraphAccuracy": 1,
+  "RetrievalAccuracy": 1,
+  "ImpactAccuracy": 1
+}
