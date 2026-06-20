@@ -6,6 +6,7 @@ using LocalAIFactory.Core.Entities;
 using LocalAIFactory.Core.Enums;
 using LocalAIFactory.Core.Options;
 using LocalAIFactory.Data;
+using LocalAIFactory.Ingestion.Imports;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -114,84 +115,118 @@ public sealed class ProjectIngestionService : IProjectIngestionService
             {
                 ct.ThrowIfCancellationRequested();
                 processed++;
-                var rel = Path.GetRelativePath(root, full);
-                var fileClass = _classifier.Classify(rel);
-                var ext = Path.GetExtension(rel).ToLowerInvariant();
-                var info = new FileInfo(full);
-
-                var imported = new ImportedFile
+                var rel = full;
+                // R2-P0C: one unprocessable file must NEVER abort the whole import. The entire per-file body is
+                // guarded; cancellation propagates, anything else is recorded honestly and we move on.
+                try
                 {
-                    ProjectId = job.ProjectId,
-                    IngestionJobId = job.Id,
-                    FileName = Path.GetFileName(rel),
-                    RelativePath = rel,
-                    Extension = string.IsNullOrEmpty(ext) ? "" : ext,
-                    FileClass = fileClass,
-                    SizeBytes = info.Exists ? info.Length : 0,
-                    Status = ImportStatus.Processed
-                };
+                    rel = Path.GetRelativePath(root, full);
+                    var fileClass = _classifier.Classify(rel);
+                    var ext = Path.GetExtension(rel).ToLowerInvariant();
+                    var info = new FileInfo(full);
 
-                bool textual = _classifier.IsTextual(fileClass, ext);
-                if (!textual)
-                {
-                    imported.Skipped = true;
-                    imported.SkipReason = "binary";
-                    job.SkippedFiles++;
-                    _db.ImportedFiles.Add(imported);
-                }
-                else if (info.Exists && info.Length > _ws.MaxTextFileBytes)
-                {
-                    imported.Skipped = true;
-                    imported.SkipReason = "too large";
-                    job.SkippedFiles++;
-                    _db.ImportedFiles.Add(imported);
-                }
-                else
-                {
-                    string text;
-                    try { text = await File.ReadAllTextAsync(full, ct); }
-                    catch { imported.Skipped = true; imported.SkipReason = "unreadable"; job.SkippedFiles++; _db.ImportedFiles.Add(imported); continue; }
-
-                    var sha = Sha256(text);
-                    imported.Sha256 = sha;
-
-                    // KE-004: raw artifact identity by path. The latest non-skipped artifact at this path,
-                    // if any, is the prior version of the same logical file.
-                    var samePath = await _db.ImportedFiles
-                        .Where(f => f.ProjectId == job.ProjectId && f.RelativePath == rel && !f.Skipped && f.KnowledgeItemId != null)
-                        .OrderByDescending(f => f.Id)
-                        .FirstOrDefaultAsync(ct);
-
-                    if (samePath != null && samePath.Sha256 == sha)
+                    var imported = new ImportedFile
                     {
-                        // Identical content at the same path: dedup the raw record; knowledge is unchanged.
+                        ProjectId = job.ProjectId,
+                        IngestionJobId = job.Id,
+                        FileName = Path.GetFileName(rel),
+                        RelativePath = rel,
+                        Extension = string.IsNullOrEmpty(ext) ? "" : ext,
+                        FileClass = fileClass,
+                        SizeBytes = info.Exists ? info.Length : 0,
+                        Status = ImportStatus.Processed
+                    };
+
+                    bool textual = _classifier.IsTextual(fileClass, ext);
+                    if (!textual)
+                    {
                         imported.Skipped = true;
-                        imported.SkipReason = "duplicate";
-                        imported.KnowledgeItemId = samePath.KnowledgeItemId;
+                        imported.SkipReason = "binary";
+                        job.SkippedFiles++;
+                        _db.ImportedFiles.Add(imported);
+                    }
+                    else if (info.Exists && info.Length > _ws.MaxTextFileBytes)
+                    {
+                        imported.Skipped = true;
+                        imported.SkipReason = "too large";
                         job.SkippedFiles++;
                         _db.ImportedFiles.Add(imported);
                     }
                     else
                     {
-                        imported.RawText = text;
-                        imported.DetectedLanguage = _classifier.DetectLanguage(ext); // KE-007
-                        if (samePath != null) imported.SupersedesImportedFileId = samePath.Id; // changed content
-                        // KE-007: persist the artifact first so the derived knowledge links back to it.
-                        _db.ImportedFiles.Add(imported);
-                        await _db.SaveChangesAsync(ct);
-                        // KE-004/007: converge by source locus and link the derived item to its artifact.
-                        var res = await _identity.ResolveFileAsync(job.ProjectId, rel, rel, text,
-                            _classifier.ToSourceType(fileClass), sourceArtifactId: imported.Id, ct);
-                        imported.KnowledgeItemId = res.KnowledgeItemId;
-                        if (res.Outcome is LocusOutcome.Created or LocusOutcome.Updated)
-                            created.Add((res.KnowledgeItemId, text, fileClass));
+                        byte[] raw;
+                        try { raw = await File.ReadAllBytesAsync(full, ct); }
+                        catch (OperationCanceledException) { throw; }
+                        catch { imported.Skipped = true; imported.SkipReason = "unreadable"; job.SkippedFiles++; _db.ImportedFiles.Add(imported); continue; }
+
+                        // R2-P0C: content-based binary detection catches binaries mislabeled with a text extension.
+                        if (RobustText.IsBinary(raw))
+                        {
+                            imported.Skipped = true; imported.SkipReason = "binary (content)"; job.SkippedFiles++;
+                            _db.ImportedFiles.Add(imported); continue;
+                        }
+
+                        // R2-P0C: BOM/UTF-8/Latin-1 decode; a non-UTF-8 fallback is recorded, never silent.
+                        var text = RobustText.Decode(raw, out var encNote);
+                        if (encNote != null) imported.ExtractionNote = encNote;
+
+                        var sha = Sha256(text);
+                        imported.Sha256 = sha;
+
+                        // KE-004: raw artifact identity by path. The latest non-skipped artifact at this path,
+                        // if any, is the prior version of the same logical file.
+                        var samePath = await _db.ImportedFiles
+                            .Where(f => f.ProjectId == job.ProjectId && f.RelativePath == rel && !f.Skipped && f.KnowledgeItemId != null)
+                            .OrderByDescending(f => f.Id)
+                            .FirstOrDefaultAsync(ct);
+
+                        if (samePath != null && samePath.Sha256 == sha)
+                        {
+                            imported.Skipped = true;
+                            imported.SkipReason = "duplicate";
+                            imported.KnowledgeItemId = samePath.KnowledgeItemId;
+                            job.SkippedFiles++;
+                            _db.ImportedFiles.Add(imported);
+                        }
+                        else
+                        {
+                            imported.RawText = text;
+                            imported.DetectedLanguage = _classifier.DetectLanguage(ext); // KE-007
+                            if (samePath != null) imported.SupersedesImportedFileId = samePath.Id; // changed content
+                            _db.ImportedFiles.Add(imported);
+                            await _db.SaveChangesAsync(ct);
+                            var res = await _identity.ResolveFileAsync(job.ProjectId, rel, rel, text,
+                                _classifier.ToSourceType(fileClass), sourceArtifactId: imported.Id, ct);
+                            imported.KnowledgeItemId = res.KnowledgeItemId;
+                            if (res.Outcome is LocusOutcome.Created or LocusOutcome.Updated)
+                                created.Add((res.KnowledgeItemId, text, fileClass));
+                        }
                     }
+                }
+                catch (OperationCanceledException) { throw; }
+                catch (Exception ex)
+                {
+                    _log.LogWarning(ex, "Skipped unprocessable file {File}", full);
+                    try
+                    {
+                        string safeName; try { safeName = Path.GetFileName(rel); } catch { safeName = "unknown"; }
+                        _db.ImportedFiles.Add(new ImportedFile
+                        {
+                            ProjectId = job.ProjectId, IngestionJobId = job.Id,
+                            FileName = safeName, RelativePath = rel, Skipped = true, SkipReason = "error",
+                            ExtractionNote = ex.Message.Length > 500 ? ex.Message[..500] : ex.Message,
+                            Status = ImportStatus.Processed
+                        });
+                        await _db.SaveChangesAsync(ct);
+                        job.SkippedFiles++;
+                    }
+                    catch { /* even the error bookkeeping is best-effort — never let it abort the import */ }
                 }
 
                 if (processed % 25 == 0)
                 {
                     job.ProcessedFiles = processed;
-                    await _db.SaveChangesAsync(ct);
+                    try { await _db.SaveChangesAsync(ct); } catch (OperationCanceledException) { throw; } catch { }
                 }
             }
             job.ProcessedFiles = processed;
@@ -415,16 +450,39 @@ public sealed class ProjectIngestionService : IProjectIngestionService
 
     private static IEnumerable<string> EnumerateFiles(string root)
     {
-        IEnumerable<string> all;
-        try { all = Directory.EnumerateFiles(root, "*.*", SearchOption.AllDirectories); }
-        catch { yield break; }
-
-        foreach (var f in all)
+        // R2-P0C: tolerate inaccessible/looping directories — a single bad subtree must not abort enumeration.
+        // IgnoreInaccessible skips permission failures; reparse points (symlinks/junctions) are not recursed,
+        // preventing escapes outside the extracted root and infinite loops.
+        var opts = new EnumerationOptions
         {
-            var rel = Path.GetRelativePath(root, f);
+            RecurseSubdirectories = true,
+            IgnoreInaccessible = true,
+            AttributesToSkip = FileAttributes.ReparsePoint | FileAttributes.System
+        };
+        var it = SafeEnumerator(root, opts);
+        foreach (var f in it)
+        {
+            string rel;
+            try { rel = Path.GetRelativePath(root, f); } catch { continue; }
             var parts = rel.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
             if (parts.Any(p => IgnoredDirs.Contains(p))) continue;
             yield return f;
+        }
+    }
+
+    // Wraps lazy enumeration so an exception thrown DURING iteration (not just at the start) ends enumeration
+    // cleanly instead of propagating and failing the whole import.
+    private static IEnumerable<string> SafeEnumerator(string root, EnumerationOptions opts)
+    {
+        IEnumerator<string> e;
+        try { e = Directory.EnumerateFiles(root, "*", opts).GetEnumerator(); }
+        catch { yield break; }
+        while (true)
+        {
+            string current;
+            try { if (!e.MoveNext()) break; current = e.Current; }
+            catch { break; } // a bad directory mid-walk ends enumeration of the rest of that subtree, not the job
+            yield return current;
         }
     }
 

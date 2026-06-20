@@ -34,7 +34,6 @@ public sealed class FileImportService : IFileImportService
 
     public async Task<ImportedFile> ImportAsync(int? projectId, string fileName, byte[] content, CancellationToken ct = default)
     {
-        var text = Encoding.UTF8.GetString(content);
         var fileClass = _classifier.Classify(fileName);
         var ext = Path.GetExtension(fileName).ToLowerInvariant();
         var textual = _classifier.IsTextual(fileClass, ext);
@@ -51,15 +50,19 @@ public sealed class FileImportService : IFileImportService
             Status = ImportStatus.Processed
         };
 
-        if (!textual)
+        // R2-P0C: skip binary by extension OR by content (a binary mislabeled with a text extension).
+        if (!textual || RobustText.IsBinary(content))
         {
             imported.Skipped = true;
-            imported.SkipReason = "binary";
+            imported.SkipReason = textual ? "binary (content)" : "binary";
             _db.ImportedFiles.Add(imported);
             await _db.SaveChangesAsync(ct);
             return imported;
         }
 
+        // R2-P0C: robust decode (BOM/UTF-8/Latin-1); a non-UTF-8 fallback is recorded, never silent.
+        var text = RobustText.Decode(content, out var encNote);
+        if (encNote != null) imported.ExtractionNote = encNote;
         imported.RawText = text;
         imported.DetectedLanguage = _classifier.DetectLanguage(ext); // KE-007
         // KE-007: persist the artifact first so the derived knowledge links back to it.
