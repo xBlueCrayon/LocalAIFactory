@@ -6,7 +6,7 @@ using LocalAIFactory.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-
+using LocalAIFactory.Core.ViewModels;
 namespace LocalAIFactory.Web.Controllers;
 
 public class KnowledgeController : Controller
