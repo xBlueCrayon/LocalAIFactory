@@ -51,8 +51,14 @@ public class PocReadinessTests
         var folders = Directory.GetDirectories(dir);
         Assert.True(folders.Length >= 14, $"expected >= 14 scenario folders, found {folders.Length}");
         foreach (var f in folders)
-            foreach (var req in new[] { "scenario.md", "expected-capabilities.md", "acceptance-criteria.md", "test-questions.md" })
-                Assert.True(File.Exists(Path.Combine(f, req)), $"{Path.GetFileName(f)} missing {req}");
+        {
+            // Two valid shapes: canonical advisory scenarios (4 markdown files), or industrial capability
+            // fixtures (README + a validation script that runs the benchmark proof). Either is acceptable.
+            bool canonical = new[] { "scenario.md", "expected-capabilities.md", "acceptance-criteria.md", "test-questions.md" }
+                .All(r => File.Exists(Path.Combine(f, r)));
+            bool industrial = File.Exists(Path.Combine(f, "README.md")) && File.Exists(Path.Combine(f, "validation-script.ps1"));
+            Assert.True(canonical || industrial, $"{Path.GetFileName(f)} has neither the canonical 4 files nor (README.md + validation-script.ps1)");
+        }
     }
 
     // ---- 8-10,14. required evidence docs + scripts exist ----

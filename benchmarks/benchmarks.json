@@ -39,6 +39,48 @@
       ]
     },
     {
+      "name": "ErpCrmIndustrial",
+      "code": "ERPCRM",
+      "type": "localfixture",
+      "bucket": "erp-crm-industrial",
+      "localDir": "erp-crm-industrial",
+      "tier": "standard",
+      "tags": ["csharp", "sql", "erp", "crm", "bridge"],
+      "license": "Original synthetic fixture (LocalAIFactory) — not a vendor product clone.",
+      "expectedCapability": "ERP/CRM entity model + C# service layer; bridge answers 'what touches X', 'impact of changing X', and module/report dependencies.",
+      "expectedGap": "Role/approval and migration questions are advisory (docs), not graph-derived.",
+      "approved": true,
+      "proofOfVision": [
+        { "question": "What C# services touch SalesOrder?", "mode": "dependents", "target": "dbo.SalesOrder", "mustContain": ["ErpCrm.Services.SalesOrderService.GetSalesOrders", "ErpCrm.Services.SalesOrderService.CreateSalesOrder"], "minCount": 2 },
+        { "question": "What is impacted if Customer changes?", "mode": "impact", "target": "dbo.Customer", "mustContain": ["ErpCrm.Services.CustomerService.GetCustomer", "ErpCrm.Services.SalesOrderService.GetSalesOrders"], "minCount": 3 },
+        { "question": "What workflow depends on Opportunity?", "mode": "dependents", "target": "dbo.Opportunity", "mustContain": ["ErpCrm.Services.OpportunityService.AdvanceStage"], "minCount": 1 },
+        { "question": "What code should change if Invoice schema changes?", "mode": "dependents", "target": "dbo.Invoice", "mustContain": ["ErpCrm.Services.InvoiceService.GenerateInvoice"], "minCount": 1 },
+        { "question": "What code handles discount approval?", "mode": "dependents", "target": "dbo.DiscountApproval", "mustContain": ["ErpCrm.Services.ApprovalService.ApproveDiscount"], "minCount": 1 },
+        { "question": "What reports/services are impacted if InventoryMovement changes?", "mode": "dependents", "target": "dbo.InventoryMovement", "mustContain": ["ErpCrm.Services.InventoryService.RecordMovement", "ErpCrm.Services.ReportingService.InventoryReport"], "minCount": 2 }
+      ]
+    },
+    {
+      "name": "CoreBankingIntegration",
+      "code": "COREBANK",
+      "type": "localfixture",
+      "bucket": "core-banking",
+      "localDir": "core-banking",
+      "tier": "standard",
+      "tags": ["csharp", "sql", "banking", "payments", "bridge"],
+      "license": "Original synthetic fixture (LocalAIFactory) — integration middleware, not a core-banking product.",
+      "expectedCapability": "Core-banking integration surface (posting, mandates, claims, settlement, reconciliation); bridge answers 'what posts a transaction', 'what touches mandate', impact of rejection codes.",
+      "expectedGap": "Audit-who/idempotency/retry controls are partly structural and partly advisory (audit model + runbook).",
+      "approved": true,
+      "proofOfVision": [
+        { "question": "What code posts a transaction to the core system?", "mode": "dependents", "target": "dbo.usp_PostTransaction", "mustContain": ["CoreBanking.Middleware.PostingService.PostTransaction"], "minCount": 1 },
+        { "question": "What tables are touched by mandate generation?", "mode": "dependencies", "target": "CoreBanking.Middleware.MandateService.GenerateMandate", "mustContain": ["dbo.Mandate"], "minCount": 1 },
+        { "question": "What changes if the claim response format changes?", "mode": "dependents", "target": "dbo.Claim", "mustContain": ["CoreBanking.Middleware.ClaimResponseService.ProcessResponse"], "minCount": 1 },
+        { "question": "What breaks if a rejection code changes?", "mode": "dependents", "target": "dbo.RejectionCode", "mustContain": ["CoreBanking.Middleware.ClaimResponseService.ProcessResponse"], "minCount": 1 },
+        { "question": "What processes the SFTP settlement file archive?", "mode": "dependents", "target": "dbo.FileArchive", "mustContain": ["CoreBanking.Middleware.SftpFileProcessor.ArchiveFile"], "minCount": 1 },
+        { "question": "What is impacted if the Account changes?", "mode": "impact", "target": "dbo.Account", "mustContain": ["CoreBanking.Middleware.PostingService.AccountBalance", "CoreBanking.Middleware.MandateService.GenerateMandate"], "minCount": 3 }
+      ]
+    },
+    {
       "name": "WideWorldImporters",
       "code": "WWI",
       "type": "sqlfiles",
