@@ -9,8 +9,12 @@ honest about that gap and about what must be built before a commercial sale.
 
 ## 1. Honest starting point
 
-- There is **no licensing code**: no license keys, no feature flags tied to a license, no seat counting, no
-  expiry, no telemetry, no entitlement check. Gating below is a **concept**, not behaviour.
+- **Update (R2-ACC-20X):** a **demo-safe edition/license seam is now implemented and tested** —
+  `Core/Licensing/` (`Edition`, `LicenseFeature`, `LicenseVerifier`: 14-day grace, degrade-to-Community,
+  core-features unlicenseable; 8 tests), surfaced read-only on `/Support`. It is still a **placeholder
+  enforcement** seam: there is **no DRM, no phone-home, no signed-license loading, no seat counting**. See
+  [`License-Enforcement-Design.md`](License-Enforcement-Design.md) and [`Edition-Matrix.md`](Edition-Matrix.md).
+  The gating model below remains the commercial concept, not yet a hard entitlement check.
 - The platform is a **local-first, MSSQL-authoritative** engineering + knowledge tool. It works fully offline
   in MSSQL-only mode. Any licensing approach must respect that air-gapped reality (no phone-home).
 - Readiness for "Commercial Product" maturity is **low by design** on the scorecard (`/Readiness`). This
