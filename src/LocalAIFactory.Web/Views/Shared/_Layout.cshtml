@@ -1,6 +1,8 @@
+@inject LocalAIFactory.Core.Abstractions.ICurrentUserService Me
 @{
     var ctrl = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     string Active(params string[] c) => c.Any(x => string.Equals(ctrl, x, StringComparison.OrdinalIgnoreCase)) ? "active" : "";
+    var isAdmin = Me.IsAdmin;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +22,13 @@
         <div class="nav-section">Pilot</div>
         <a class="nav-link @Active("Benchmarks")" asp-controller="Benchmarks" asp-action="Index"><span class="ico"><i class="bi bi-trophy"></i></span> Benchmarks</a>
         <a class="nav-link @Active("Graph")" asp-controller="Graph" asp-action="Index"><span class="ico"><i class="bi bi-diagram-3"></i></span> Explore Graph</a>
+
+        @if (isAdmin)
+        {
+            <div class="nav-section">Administration</div>
+            <a class="nav-link @Active("Users")" asp-controller="Users" asp-action="Index"><span class="ico"><i class="bi bi-people"></i></span> Users &amp; Access</a>
+            <a class="nav-link @Active("Audit")" asp-controller="Audit" asp-action="Index"><span class="ico"><i class="bi bi-journal-text"></i></span> Audit Trail</a>
+        }
 
         <div class="nav-section">Workspace</div>
         <a class="nav-link @Active("Home")" asp-controller="Home" asp-action="Index"><span class="ico"><i class="bi bi-grid-1x2"></i></span> Dashboard</a>
@@ -51,7 +60,12 @@
             <button class="sidebar-toggle" onclick="document.body.classList.toggle('sb-open')" aria-label="Menu"><i class="bi bi-list"></i></button>
             <span class="page-title">@(ViewData["Title"] ?? "Dashboard")</span>
             <span class="spacer"></span>
-            <span class="crumb">Local-first AI engineering platform</span>
+            @if (Me.User is { } u)
+            {
+                <span class="crumb me-2"><i class="bi bi-person-circle me-1"></i>@u.WindowsIdentity</span>
+                <span class="badge @(u.Role == LocalAIFactory.Core.Enums.UserRole.Admin ? "text-bg-danger" : u.Role == LocalAIFactory.Core.Enums.UserRole.Analyst ? "text-bg-primary" : "text-bg-secondary")">@u.Role</span>
+            }
+            else { <span class="crumb">Local-first AI engineering platform</span> }
         </header>
 
         <main class="app-content">

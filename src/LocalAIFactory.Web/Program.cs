@@ -10,6 +10,7 @@ using LocalAIFactory.Rag;
 using LocalAIFactory.Terminal;
 using LocalAIFactory.Web.Hosted;
 using LocalAIFactory.Web.Middleware;
+using LocalAIFactory.Web.Security;
 using LocalAIFactory.Web.Services;
 using LocalAIFactory.Workspaces;
 using Microsoft.AspNetCore.DataProtection;
@@ -46,6 +47,10 @@ Directory.CreateDirectory(keysDir);
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(keysDir))
     .SetApplicationName("LocalAIFactory");
+
+// R2-P0B: pilot security — Windows auth (IIS) in production, dev-only auth in Development; deny-by-default.
+// Fails fast if dev-auth is misconfigured for a non-Development environment.
+builder.Services.AddPilotSecurity(builder.Configuration, builder.Environment.IsDevelopment());
 
 // Application modules.
 builder.Services.AddLocalAIFactoryData(builder.Configuration);
@@ -102,6 +107,17 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseMiddleware<RequestTimingMiddleware>();
 app.UseRouting();
+
+// R2-P0B: authenticate → authorize → resolve/audit the current user. Deny-by-default; project access enforced
+// server-side in controllers.
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseSession();
+app.UseMiddleware<LocalAIFactory.Web.Security.CurrentUserMiddleware>();
+
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+// R2-P0B: expose the implicit Program class so integration tests can host the app with a test auth scheme.
+public partial class Program { }

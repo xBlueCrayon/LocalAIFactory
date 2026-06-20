@@ -5,20 +5,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LocalAIFactory.Web.Controllers;
 
-public class ImportWizardController : Controller
+public class ImportWizardController : SecuredController
 {
     private readonly AppDbContext _db;
     private readonly IProjectIngestionService _ingestion;
     private readonly IIngestionQueue _queue;
     private readonly IServiceHealthCache _health;
 
-    public ImportWizardController(AppDbContext db, IProjectIngestionService ingestion, IIngestionQueue queue, IServiceHealthCache health)
-    {
-        _db = db; _ingestion = ingestion; _queue = queue; _health = health;
-    }
+    public ImportWizardController(AppDbContext db, IProjectIngestionService ingestion, IIngestionQueue queue, IServiceHealthCache health,
+        ICurrentUserService me, IAccessControlService access, IAuditTrailService audit)
+        : base(me, access, audit) { _db = db; _ingestion = ingestion; _queue = queue; _health = health; }
 
     public async Task<IActionResult> Index(CancellationToken ct)
     {
+        if (await RequireAdminAsync("import project", ct) is { } denied) return denied;
         ViewBag.Projects = await _db.Projects.OrderBy(p => p.Name).ToListAsync(ct);
         ViewBag.Jobs = await _db.IngestionJobs.AsNoTracking().OrderByDescending(j => j.Id).Take(20).ToListAsync(ct);
         return View();
@@ -30,11 +30,13 @@ public class ImportWizardController : Controller
     [RequestFormLimits(MultipartBodyLengthLimit = 1_073_741_824)]
     public async Task<IActionResult> Start(int? projectId, IFormFile? zip, CancellationToken ct)
     {
+        if (await RequireAdminAsync("start project import", ct) is { } denied) return denied;
         if (zip is null || zip.Length == 0) { TempData["Error"] = "Choose a .zip file."; return RedirectToAction(nameof(Index)); }
         using var ms = new MemoryStream();
         await zip.CopyToAsync(ms, ct);
         var jobId = await _ingestion.CreateZipJobAsync(projectId, zip.FileName, ms.ToArray(), ct);
         await _queue.EnqueueAsync(jobId, ct);
+        await AuditAsync(LocalAIFactory.Core.Enums.AuditEventType.ImportStarted, "Project import started", "Zip", zip.FileName, projectId, ct: ct);
         TempData["Message"] = "Import started. This page refreshes as it progresses.";
         return RedirectToAction(nameof(Status), new { jobId });
     }

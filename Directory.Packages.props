@@ -9,6 +9,8 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection" Version="10.0.9" />
+    <!-- R2-P0B: Windows Authentication (Negotiate/NTLM/Kerberos) for the IIS pilot target. -->
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="10.0.9" />
     <!-- KE-008: deterministic C# symbol extraction (Roslyn syntax parsing only — no compilation/semantics). -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
     <!-- KE-009: deterministic T-SQL schema extraction (ScriptDom — offline syntax parsing, no DB connection). -->

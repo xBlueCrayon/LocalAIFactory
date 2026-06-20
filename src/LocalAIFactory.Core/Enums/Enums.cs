@@ -167,6 +167,21 @@ public enum DemotionReason { Contradiction = 0, FailedOutcome = 1 }
 // live-schema import path; file-based schema imports use Upload/FileSystem with SqlScript classification.
 public enum ArtifactSourceSystem { Upload = 0, FileSystem = 1, GitRepository = 2, Conversation = 3, Database = 4 }
 
+// R2-P0B: pilot security. Roles ordered by privilege (Viewer < Analyst < Admin). New users are Viewer with
+// NO project access (deny-by-default). Append-only stored value; do not renumber.
+public enum UserRole { Viewer = 0, Analyst = 1, Admin = 2 }
+
+// R2-P0B: per-project grant level. None = no row (absence denies); Read = view/query. Write is reserved.
+public enum AccessLevel { None = 0, Read = 1, Write = 2 }
+
+// R2-P0B: audited actions. Append-only; the audit trail must answer who/what/when/which-project/denied.
+public enum AuditEventType
+{
+    AuthSuccess = 0, AuthDenied = 1, ImportStarted = 2, ImportCompleted = 3, ProjectViewed = 4,
+    SymbolQueried = 5, DependencyViewed = 6, ImpactQueried = 7, CoverageViewed = 8, AccessGranted = 9,
+    AccessRevoked = 10, RoleChanged = 11, UserDisabled = 12, ConsolidationStarted = 13, ConsolidationCompleted = 14
+}
+
 // R2-P0A: the honest outcome of deterministic structural extraction for one artifact. The whole point of
 // gap-reporting is that a user can tell these apart — never a silent zero. Append-only.
 //   NotAttempted — non-code / skipped / no extractor ran.

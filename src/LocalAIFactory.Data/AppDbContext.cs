@@ -26,6 +26,9 @@ public class AppDbContext : DbContext
     public DbSet<AgentStep> AgentSteps => Set<AgentStep>();
     public DbSet<ImportedFile> ImportedFiles => Set<ImportedFile>();
     public DbSet<ImportCoverageReport> ImportCoverageReports => Set<ImportCoverageReport>(); // R2-P0A
+    public DbSet<UserAccount> UserAccounts => Set<UserAccount>(); // R2-P0B
+    public DbSet<ProjectAccess> ProjectAccesses => Set<ProjectAccess>(); // R2-P0B
+    public DbSet<AuditEvent> AuditEvents => Set<AuditEvent>(); // R2-P0B
     public DbSet<ImportedConversation> ImportedConversations => Set<ImportedConversation>();
     public DbSet<ImportedConversationMessage> ImportedConversationMessages => Set<ImportedConversationMessage>();
     public DbSet<IngestionJob> IngestionJobs => Set<IngestionJob>();
@@ -438,6 +441,35 @@ public class AppDbContext : DbContext
         {
             e.HasIndex(x => x.Uid).IsUnique();
             e.HasIndex(x => new { x.ProjectId, x.CreatedUtc });
+        });
+
+        // R2-P0B: pilot security. Additive; no curated-knowledge changes.
+        b.Entity<UserAccount>(e =>
+        {
+            e.Property(x => x.WindowsIdentity).HasMaxLength(256);
+            e.Property(x => x.Sid).HasMaxLength(128);
+            e.Property(x => x.DisplayName).HasMaxLength(256);
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => x.WindowsIdentity).IsUnique();
+        });
+        b.Entity<ProjectAccess>(e =>
+        {
+            e.HasIndex(x => new { x.UserAccountId, x.ProjectId }).IsUnique();
+            e.HasOne<UserAccount>().WithMany().HasForeignKey(x => x.UserAccountId).OnDelete(DeleteBehavior.Cascade);
+            e.HasOne<Project>().WithMany().HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Cascade);
+        });
+        b.Entity<AuditEvent>(e =>
+        {
+            e.Property(x => x.Action).HasMaxLength(200);
+            e.Property(x => x.TargetType).HasMaxLength(100);
+            e.Property(x => x.TargetId).HasMaxLength(400);
+            e.Property(x => x.Detail).HasMaxLength(2000);
+            e.Property(x => x.WindowsIdentity).HasMaxLength(256);
+            e.Property(x => x.IpAddress).HasMaxLength(64);
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => x.CreatedUtc);
+            e.HasIndex(x => x.UserAccountId);
+            e.HasIndex(x => x.EventType);
         });
 
         b.Entity<IngestionJob>(e =>

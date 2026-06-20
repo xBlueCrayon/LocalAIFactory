@@ -9,14 +9,18 @@ namespace LocalAIFactory.Web.Controllers;
 
 // R2-P0A: the Coverage / Gap Report screen — "Can I trust this analysis?" and "What did LocalAIFactory not
 // understand?" Reads the latest persisted report for a project; computes one on-demand if none exists yet.
-public sealed class CoverageController : Controller
+public sealed class CoverageController : SecuredController
 {
     private readonly AppDbContext _db;
     private readonly IImportCoverageService _coverage;
-    public CoverageController(AppDbContext db, IImportCoverageService coverage) { _db = db; _coverage = coverage; }
+    public CoverageController(AppDbContext db, IImportCoverageService coverage,
+        ICurrentUserService me, IAccessControlService access, IAuditTrailService audit)
+        : base(me, access, audit) { _db = db; _coverage = coverage; }
 
     public async Task<IActionResult> Index(int projectId, CancellationToken ct)
     {
+        if (await RequireProjectAsync(projectId, "view coverage report", ct) is { } denied) return denied;
+        await AuditAsync(LocalAIFactory.Core.Enums.AuditEventType.CoverageViewed, "Viewed coverage report", "Project", projectId.ToString(), projectId, ct: ct);
         var project = await _db.Projects.FirstOrDefaultAsync(p => p.Id == projectId, ct);
         var report = await _coverage.LatestForProjectAsync(projectId, ct);
         if (report is null && project is not null && await _db.ImportedFiles.AnyAsync(f => f.ProjectId == projectId, ct))

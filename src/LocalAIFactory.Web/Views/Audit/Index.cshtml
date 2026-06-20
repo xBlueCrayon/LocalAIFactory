@@ -1,0 +1,37 @@
+@using LocalAIFactory.Core.Entities
+@using LocalAIFactory.Core.Enums
+@model List<AuditEvent>
+@{ ViewData["Title"] = "Audit Trail"; }
+
+<h4 class="mb-1"><i class="bi bi-journal-text me-2"></i>Audit Trail</h4>
+<div class="text-muted small mb-3">Append-only record of who did what, when, to which project — including denied access.</div>
+
+<form method="get" class="d-flex gap-2 mb-3">
+    <input class="form-control form-control-sm" name="user" value="@ViewBag.User" placeholder="Windows identity contains…" style="max-width:260px" />
+    <select name="type" class="form-select form-select-sm" style="width:auto">
+        <option value="">All event types</option>
+        @foreach (var t in Enum.GetValues<AuditEventType>())
+        { <option value="@t" selected="@(((string?)ViewBag.Type) == t.ToString())">@t</option> }
+    </select>
+    <button class="btn btn-sm btn-primary">Filter</button>
+</form>
+
+<div class="card"><div class="table-responsive"><table class="table table-sm align-middle mb-0">
+    <thead><tr><th>When (UTC)</th><th>User</th><th>Event</th><th>Action</th><th>Project</th><th>Target</th><th>IP</th></tr></thead>
+    <tbody>
+    @foreach (var e in Model)
+    {
+        var denied = e.EventType == AuditEventType.AuthDenied;
+        <tr class="@(denied ? "table-danger" : "")">
+            <td class="text-muted small">@e.CreatedUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            <td>@e.WindowsIdentity</td>
+            <td><span class="badge @(denied ? "text-bg-danger" : "text-bg-light")">@e.EventType</span></td>
+            <td class="small">@e.Action</td>
+            <td class="small">@(e.ProjectId?.ToString() ?? "")</td>
+            <td class="small text-truncate" style="max-width:240px" title="@e.TargetId">@e.TargetType @e.TargetId</td>
+            <td class="text-muted small">@e.IpAddress</td>
+        </tr>
+    }
+    </tbody>
+</table></div></div>
+@if (!Model.Any()) { <div class="text-muted small mt-2">No audit events match.</div> }

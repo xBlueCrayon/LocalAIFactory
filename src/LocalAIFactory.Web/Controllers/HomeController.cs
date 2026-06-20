@@ -1,4 +1,5 @@
 using LocalAIFactory.Web.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LocalAIFactory.Web.Controllers;
@@ -17,5 +18,6 @@ public class HomeController : Controller
         return View(vm);
     }
 
+    [AllowAnonymous]
     public IActionResult Error() => View();
 }

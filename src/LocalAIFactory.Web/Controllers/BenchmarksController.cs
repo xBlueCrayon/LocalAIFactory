@@ -14,7 +14,11 @@ public sealed class BenchmarksController : Controller
 {
     private readonly IWebHostEnvironment _env;
     private readonly AppDbContext _db;
-    public BenchmarksController(IWebHostEnvironment env, AppDbContext db) { _env = env; _db = db; }
+    private readonly Core.Abstractions.ICurrentUserService _me;
+    private readonly Core.Abstractions.IAccessControlService _access;
+    public BenchmarksController(IWebHostEnvironment env, AppDbContext db,
+        Core.Abstractions.ICurrentUserService me, Core.Abstractions.IAccessControlService access)
+    { _env = env; _db = db; _me = me; _access = access; }
 
     public async Task<IActionResult> Index(CancellationToken ct)
     {
@@ -22,12 +26,14 @@ public sealed class BenchmarksController : Controller
         if (path is null || !System.IO.File.Exists(path))
             return View(new List<BenchmarkRow>());
 
-        // Map a benchmark repo name -> an imported project that has structural symbols (so cards can deep-link).
+        // Map a benchmark repo name -> an imported project the CURRENT USER may access (so cards only deep-link
+        // where the user is permitted). Non-accessible repos still show scores, just without an explore link.
         var projects = await _db.Projects.Select(p => new { p.Id, p.Name }).ToListAsync(ct);
         var withSymbols = (await _db.CodeSymbols.Select(s => s.ProjectId).Distinct().ToListAsync(ct))
             .Where(x => x.HasValue).Select(x => x!.Value).ToHashSet();
+        var accessible = _me.User is { } u ? await _access.AccessibleProjectIdsAsync(u, ct) : new HashSet<int>();
         int? ProjectIdFor(string name) => projects
-            .Where(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase) && withSymbols.Contains(p.Id))
+            .Where(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase) && withSymbols.Contains(p.Id) && accessible.Contains(p.Id))
             .Select(p => (int?)p.Id).FirstOrDefault();
 
         var rows = new List<BenchmarkRow>();

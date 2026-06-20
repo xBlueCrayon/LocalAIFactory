@@ -10,18 +10,20 @@ namespace LocalAIFactory.Web.Controllers;
 // P2 Pilot UX — read-only structural exploration over the proven engine (MSSQL only, no model/vectors).
 // Screens: Repository Overview, Symbol Explorer, Dependency Explorer, Impact Analysis, Retrieval Search.
 // All queries are indexed/bounded; pages always load.
-public sealed class GraphController : Controller
+public sealed class GraphController : SecuredController
 {
     private readonly AppDbContext _db;
     private readonly IStructuralRetrievalService _retrieval;
 
-    public GraphController(AppDbContext db, IStructuralRetrievalService retrieval)
-    { _db = db; _retrieval = retrieval; }
+    public GraphController(AppDbContext db, IStructuralRetrievalService retrieval,
+        ICurrentUserService me, IAccessControlService access, IAuditTrailService audit)
+        : base(me, access, audit) { _db = db; _retrieval = retrieval; }
 
-    // Project picker — entry into exploration.
+    // Project picker — only projects the user may access are listed.
     public async Task<IActionResult> Index(CancellationToken ct)
     {
-        var projects = await _db.Projects.OrderBy(p => p.Name).ToListAsync(ct);
+        var accessible = CurrentUser is { } u ? await Access.AccessibleProjectIdsAsync(u, ct) : new HashSet<int>();
+        var projects = await _db.Projects.Where(p => accessible.Contains(p.Id)).OrderBy(p => p.Name).ToListAsync(ct);
         var rows = new List<ProjectRow>();
         foreach (var p in projects)
         {
@@ -36,6 +38,8 @@ public sealed class GraphController : Controller
     // Repository Overview — what the engine understood about one project.
     public async Task<IActionResult> Project(int id, CancellationToken ct)
     {
+        if (await RequireProjectAsync(id, "view project overview", ct) is { } denied) return denied;
+        await AuditAsync(AuditEventType.ProjectViewed, "Viewed repository overview", "Project", id.ToString(), id, ct: ct);
         var project = await _db.Projects.FirstOrDefaultAsync(p => p.Id == id, ct);
         if (project is null) return RedirectToAction(nameof(Index));
 
@@ -67,6 +71,8 @@ public sealed class GraphController : Controller
     // Symbol Explorer — exact-identifier lexical search.
     public async Task<IActionResult> Symbols(int projectId, string? q, CancellationToken ct)
     {
+        if (await RequireProjectAsync(projectId, "search symbols", ct) is { } denied) return denied;
+        if (!string.IsNullOrWhiteSpace(q)) await AuditAsync(AuditEventType.SymbolQueried, "Symbol search", "Query", q, projectId, ct: ct);
         ViewBag.ProjectId = projectId;
         ViewBag.Query = q;
         ViewBag.Project = (await _db.Projects.FindAsync(new object?[] { projectId }, ct))?.Name;
@@ -79,8 +85,12 @@ public sealed class GraphController : Controller
     // Dependency Explorer — a symbol's dependents (who depends on it) and dependencies (what it touches).
     public async Task<IActionResult> Symbol(int projectId, int id, CancellationToken ct)
     {
-        var sym = await _db.CodeSymbols.FirstOrDefaultAsync(s => s.Id == id, ct);
+        if (await RequireProjectAsync(projectId, "view dependencies", ct) is { } denied) return denied;
+        // Scope the symbol to the authorized project — a symbol id from another project must not leak via a
+        // granted projectId (IDOR guard).
+        var sym = await _db.CodeSymbols.FirstOrDefaultAsync(s => s.Id == id && s.ProjectId == projectId, ct);
         if (sym is null) return RedirectToAction(nameof(Project), new { id = projectId });
+        await AuditAsync(AuditEventType.DependencyViewed, "Viewed dependencies", "Symbol", sym.FullName, projectId, ct: ct);
         var dependents = await _retrieval.DependentsOfAsync(projectId, sym.FullName, ct);
         var dependencies = await _retrieval.DependenciesOfAsync(projectId, sym.FullName, ct);
         return View(new SymbolVm(projectId, sym, dependents, dependencies));
@@ -89,6 +99,8 @@ public sealed class GraphController : Controller
     // Impact Analysis — transitive blast radius of changing a target.
     public async Task<IActionResult> Impact(int projectId, string? q, CancellationToken ct)
     {
+        if (await RequireProjectAsync(projectId, "impact analysis", ct) is { } denied) return denied;
+        if (!string.IsNullOrWhiteSpace(q)) await AuditAsync(AuditEventType.ImpactQueried, "Impact analysis", "Query", q, projectId, ct: ct);
         ViewBag.ProjectId = projectId;
         ViewBag.Query = q;
         ViewBag.Project = (await _db.Projects.FindAsync(new object?[] { projectId }, ct))?.Name;
@@ -100,6 +112,7 @@ public sealed class GraphController : Controller
     // its Dependency Explorer; fall back to Search when ambiguous/not found.
     public async Task<IActionResult> Lookup(int projectId, string? q, CancellationToken ct)
     {
+        if (await RequireProjectAsync(projectId, "lookup", ct) is { } denied) return denied;
         if (!string.IsNullOrWhiteSpace(q))
         {
             var hits = await _retrieval.FindByIdentifierAsync(projectId, q!, 1, ct);
@@ -111,6 +124,8 @@ public sealed class GraphController : Controller
     // Retrieval Search — unified cited lookup (the Proof-of-Vision query box).
     public async Task<IActionResult> Search(int projectId, string? q, CancellationToken ct)
     {
+        if (await RequireProjectAsync(projectId, "search", ct) is { } denied) return denied;
+        if (!string.IsNullOrWhiteSpace(q)) await AuditAsync(AuditEventType.SymbolQueried, "Retrieval search", "Query", q, projectId, ct: ct);
         ViewBag.ProjectId = projectId;
         ViewBag.Query = q;
         ViewBag.Project = (await _db.Projects.FindAsync(new object?[] { projectId }, ct))?.Name;
