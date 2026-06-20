@@ -6,6 +6,9 @@
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Must be false: Microsoft.Data.SqlClient does not support globalization-invariant mode
+         (it throws "Globalization Invariant Mode is not supported." on connection open). SQL Server
+         is the platform's primary store, so invariant mode must never be enabled. See INFRA-001. -->
+    <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 </Project>

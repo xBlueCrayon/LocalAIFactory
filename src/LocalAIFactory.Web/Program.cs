@@ -1,3 +1,4 @@
+using System.Globalization;
 using LocalAIFactory.Agent;
 using LocalAIFactory.Data;
 using LocalAIFactory.Ingestion;
@@ -10,6 +11,12 @@ using LocalAIFactory.Workspaces;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+
+// INFRA-001: globalization-invariant *mode* is disabled (SqlClient requires it). We still pin the
+// default culture to invariant so formatting, parsing, and sorting stay deterministic and locale-
+// independent across environments — important for a banking estate.
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 var builder = WebApplication.CreateBuilder(args);
 
