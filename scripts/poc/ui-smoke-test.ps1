@@ -51,7 +51,7 @@ try {
   }
 
   Write-Host "== Core pages (no 500s) ==" -ForegroundColor Cyan
-  foreach ($p in @("/","/BaseKnowledge","/Readiness","/Projects","/Knowledge","/Models","/Coverage","/Graph","/Users","/Audit")) {
+  foreach ($p in @("/","/BaseKnowledge","/Readiness","/Support","/Projects","/Knowledge","/Models","/Coverage","/Graph","/Users","/Audit")) {
     $r = Get-Page "$AppUrl$p"
     if ($r.Code -ge 500) { Bad "GET $p -> $($r.Code)" }
     elseif ($r.Code -eq 200 -or $r.Code -eq 302) { Ok "GET $p -> $($r.Code)" }
