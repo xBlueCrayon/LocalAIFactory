@@ -37,6 +37,34 @@ public sealed class FileClassifier : IFileClassifier
 
     public bool IsTextual(FileClass fileClass, string extension) => fileClass != FileClass.Binary;
 
+    // KE-007: detected language for the raw artifact, keyed off the file extension.
+    public string? DetectLanguage(string extension) => (extension ?? "").ToLowerInvariant() switch
+    {
+        ".cs" => "csharp",
+        ".vb" => "vbnet",
+        ".fs" => "fsharp",
+        ".py" => "python",
+        ".js" => "javascript",
+        ".ts" => "typescript",
+        ".sql" => "sql",
+        ".razor" or ".cshtml" or ".aspx" or ".ascx" => "razor",
+        ".json" => "json",
+        ".xml" or ".xaml" or ".xsd" or ".config" or ".csproj" or ".vbproj" or ".fsproj" or ".props" or ".targets" or ".resx" => "xml",
+        ".md" or ".rst" or ".adoc" => "markdown",
+        ".txt" => "text",
+        ".ps1" or ".psm1" or ".psd1" => "powershell",
+        ".bat" or ".cmd" => "batch",
+        ".yml" or ".yaml" => "yaml",
+        ".sln" => "solution",
+        ".java" => "java",
+        ".kt" => "kotlin",
+        ".cpp" or ".cc" or ".c" or ".h" or ".hpp" => "cpp",
+        ".go" => "go",
+        ".rb" => "ruby",
+        ".php" => "php",
+        _ => null
+    };
+
     public SourceType ToSourceType(FileClass fileClass) => fileClass switch
     {
         FileClass.SourceCode => SourceType.SourceCode,

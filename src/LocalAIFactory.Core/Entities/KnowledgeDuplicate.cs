@@ -5,7 +5,7 @@ namespace LocalAIFactory.Core.Entities;
 // KE-004: a detected duplicate relationship between two knowledge items (capture only; auto-merge is
 // KE-030). Dedicated table — deliberately not overloaded onto KnowledgeRelationship (which is graph-
 // node-to-node). References both local Ids (FK/joins) and portable Uids (cross-instance / pack-safe).
-public class KnowledgeDuplicate
+public class KnowledgeDuplicate : IPortableEntity
 {
     public int Id { get; set; }
     public Guid Uid { get; set; } = Guid.CreateVersion7();

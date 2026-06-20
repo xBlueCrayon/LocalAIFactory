@@ -111,7 +111,7 @@ public class KnowledgeController : Controller
         item.UpdatedUtc = DateTime.UtcNow;
         await _backbone.RecordEditAsync(item,
             string.IsNullOrWhiteSpace(reason) ? "Edited via Knowledge UI" : reason!.Trim(),
-            ProvenanceMethod.Human, User?.Identity?.Name ?? "user", ct);
+            ProvenanceMethod.Human, User?.Identity?.Name ?? "user", ct: ct);
         await _quality.RecomputeAsync(id, ct); // KE-006
         // Re-chunk and re-index so retrieval reflects the new content.
         var oldChunks = await _db.KnowledgeChunks.Where(c => c.KnowledgeItemId == id).ToListAsync(ct);

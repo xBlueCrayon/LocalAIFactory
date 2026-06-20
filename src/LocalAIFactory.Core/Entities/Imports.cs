@@ -2,9 +2,12 @@ using LocalAIFactory.Core.Enums;
 
 namespace LocalAIFactory.Core.Entities;
 
-public class ImportedFile
+// KE-007: the immutable SourceArtifact — the permanent raw record of an imported file. Never edited
+// after import; everything derived (knowledge items, provenance, future code symbols) traces back to it.
+public class ImportedFile : IPortableEntity
 {
     public int Id { get; set; }
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-007 portable identity.
     public int? ProjectId { get; set; }
     public Project? Project { get; set; }
     public int? IngestionJobId { get; set; }
@@ -13,6 +16,8 @@ public class ImportedFile
     public string Extension { get; set; } = "";
     public string? ContentType { get; set; }
     public FileClass FileClass { get; set; } = FileClass.Unknown;
+    public ArtifactSourceSystem SourceSystem { get; set; } = ArtifactSourceSystem.Upload; // KE-007
+    public string? DetectedLanguage { get; set; } // KE-007: e.g. "csharp", "sql", "markdown" — feeds KE-008/009.
     public long SizeBytes { get; set; }
     public string? Sha256 { get; set; }
     public string? RawText { get; set; }

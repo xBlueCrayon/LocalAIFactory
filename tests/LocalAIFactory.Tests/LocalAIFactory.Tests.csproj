@@ -14,5 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\LocalAIFactory.Core\LocalAIFactory.Core.csproj" />
     <ProjectReference Include="..\..\src\LocalAIFactory.Data\LocalAIFactory.Data.csproj" />
+    <ProjectReference Include="..\..\src\LocalAIFactory.Ingestion\LocalAIFactory.Ingestion.csproj" />
   </ItemGroup>
 </Project>

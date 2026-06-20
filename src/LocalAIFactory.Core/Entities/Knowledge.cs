@@ -2,7 +2,7 @@ using LocalAIFactory.Core.Enums;
 
 namespace LocalAIFactory.Core.Entities;
 
-public class KnowledgeItem
+public class KnowledgeItem : IPortableEntity
 {
     public int Id { get; set; }
     public int? ProjectId { get; set; }

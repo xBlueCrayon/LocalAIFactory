@@ -27,8 +27,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 
-// Phase 1.1: support large project ZIP uploads (up to 1 GB) across Kestrel, IIS and form parsing.
-const long MaxUploadBytes = 1_073_741_824; // 1 GB
+// KE-007: import ceiling for very large project archives (large BDM ZIPs) across Kestrel, IIS and form
+// parsing. Configurable via Import:MaxUploadBytes; default 4 GB. Extraction is disk-streamed; jobs resume.
+long MaxUploadBytes = long.TryParse(builder.Configuration["Import:MaxUploadBytes"], out var cfgMaxUpload)
+    ? cfgMaxUpload : 4_294_967_296L; // 4 GB
 builder.Services.Configure<FormOptions>(o =>
 {
     o.MultipartBodyLengthLimit = MaxUploadBytes;

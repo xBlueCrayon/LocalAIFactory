@@ -2,7 +2,7 @@ using LocalAIFactory.Core.Enums;
 
 namespace LocalAIFactory.Core.Entities;
 
-public class KnowledgeEntity
+public class KnowledgeEntity : IPortableEntity
 {
     public int Id { get; set; }
     public int? ProjectId { get; set; }
@@ -17,7 +17,7 @@ public class KnowledgeEntity
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 }
 
-public class KnowledgeRelationship
+public class KnowledgeRelationship : IPortableEntity
 {
     public int Id { get; set; }
     public int? ProjectId { get; set; }

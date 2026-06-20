@@ -2,7 +2,7 @@ using LocalAIFactory.Core.Enums;
 
 namespace LocalAIFactory.Core.Entities;
 
-public class ProjectProfile
+public class ProjectProfile : IPortableEntity
 {
     public int Id { get; set; }
     public int ProjectId { get; set; }
@@ -18,7 +18,7 @@ public class ProjectProfile
     public ICollection<ProjectProfileSection> Sections { get; set; } = new List<ProjectProfileSection>();
 }
 
-public class ProjectProfileSection
+public class ProjectProfileSection : IPortableEntity
 {
     public int Id { get; set; }
     public int ProjectProfileId { get; set; }

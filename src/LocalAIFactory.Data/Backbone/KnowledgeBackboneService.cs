@@ -42,7 +42,7 @@ public sealed class KnowledgeBackboneService : IKnowledgeBackboneService
     }
 
     public async Task RecordEditAsync(KnowledgeItem item, string reason, ProvenanceMethod method, string actor,
-        CancellationToken ct = default)
+        int? sourceArtifactId = null, CancellationToken ct = default)
     {
         var instanceId = await _instance.GetInstanceIdAsync(ct);
         var newHash = _hasher.Compute(item.Content);
@@ -69,8 +69,8 @@ public sealed class KnowledgeBackboneService : IKnowledgeBackboneService
 
         _db.ProvenanceEvents.Add(new ProvenanceEvent
         {
-            KnowledgeItemId = item.Id, KnowledgeItemUid = item.Uid, Method = method, Actor = actor,
-            Reason = reason, OriginInstanceId = instanceId
+            KnowledgeItemId = item.Id, KnowledgeItemUid = item.Uid, SourceArtifactId = sourceArtifactId,
+            Method = method, Actor = actor, Reason = reason, OriginInstanceId = instanceId
         });
         await _db.SaveChangesAsync(ct);
     }

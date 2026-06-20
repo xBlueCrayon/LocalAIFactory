@@ -169,12 +169,15 @@ public sealed class ProjectIngestionService : IProjectIngestionService
                     else
                     {
                         imported.RawText = text;
+                        imported.DetectedLanguage = _classifier.DetectLanguage(ext); // KE-007
                         if (samePath != null) imported.SupersedesImportedFileId = samePath.Id; // changed content
-                        // KE-004: converge by source locus (create / update+version / propose-if-curated).
-                        var res = await _identity.ResolveFileAsync(job.ProjectId, rel, rel, text,
-                            _classifier.ToSourceType(fileClass), ct);
-                        imported.KnowledgeItemId = res.KnowledgeItemId;
+                        // KE-007: persist the artifact first so the derived knowledge links back to it.
                         _db.ImportedFiles.Add(imported);
+                        await _db.SaveChangesAsync(ct);
+                        // KE-004/007: converge by source locus and link the derived item to its artifact.
+                        var res = await _identity.ResolveFileAsync(job.ProjectId, rel, rel, text,
+                            _classifier.ToSourceType(fileClass), sourceArtifactId: imported.Id, ct);
+                        imported.KnowledgeItemId = res.KnowledgeItemId;
                         if (res.Outcome is LocusOutcome.Created or LocusOutcome.Updated)
                             created.Add((res.KnowledgeItemId, text, fileClass));
                     }

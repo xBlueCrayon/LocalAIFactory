@@ -4,7 +4,7 @@ namespace LocalAIFactory.Core.Entities;
 
 // Phase 2 / KE-002. An automated change to a *curated* item is never applied in place; it is recorded
 // here as a proposed revision and routed to review. The prioritized review queue UI is KE-014.
-public class ProposedRevision
+public class ProposedRevision : IPortableEntity
 {
     public int Id { get; set; }
     public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-003 portable identity.

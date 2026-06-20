@@ -2,12 +2,17 @@ using LocalAIFactory.Core.Enums;
 
 namespace LocalAIFactory.Core.Entities;
 
-public class IngestionJob
+// KE-007: the ImportBatch — one ingestion episode and the provenance root for everything it produced.
+public class IngestionJob : IPortableEntity
 {
     public int Id { get; set; }
+    public Guid Uid { get; set; } = Guid.CreateVersion7(); // KE-007 portable identity.
     public int? ProjectId { get; set; }
     public Project? Project { get; set; }
     public string FileName { get; set; } = "";
+    public ArtifactSourceSystem SourceSystem { get; set; } = ArtifactSourceSystem.Upload; // KE-007
+    public string? SourceReference { get; set; } // KE-007: repo URL / zip name / folder path.
+    public string? SourceRevision { get; set; }  // KE-007: git commit / branch / version tag (reproducibility).
     public string? ExtractedRoot { get; set; }
     public IngestionJobStatus Status { get; set; } = IngestionJobStatus.Pending;
     public IngestionPhase Phase { get; set; } = IngestionPhase.Pending;

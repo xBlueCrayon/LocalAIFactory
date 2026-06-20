@@ -6,7 +6,7 @@ namespace LocalAIFactory.Core.Entities;
 // project/component it governs. A constraint with NO links applies globally; with links it applies only
 // to the linked targets. Loose references (like ProposedRevision/KnowledgeDuplicate), portable via Uids.
 // (Populating these for typed standards/regulations is KE-023; KE-005 only builds the mechanism.)
-public class ScopeApplicability
+public class ScopeApplicability : IPortableEntity
 {
     public int Id { get; set; }
     public Guid Uid { get; set; } = Guid.CreateVersion7();

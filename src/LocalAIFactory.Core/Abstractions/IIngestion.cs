@@ -13,6 +13,9 @@ public interface IFileClassifier
     LocalAIFactory.Core.Enums.FileClass Classify(string relativePath);
     bool IsTextual(LocalAIFactory.Core.Enums.FileClass fileClass, string extension);
     LocalAIFactory.Core.Enums.SourceType ToSourceType(LocalAIFactory.Core.Enums.FileClass fileClass);
+    // KE-007: detected language for the raw artifact (e.g. "csharp", "sql", "markdown"); null if unknown.
+    // Feeds type-aware extraction (KE-008/009) and chunking (KE-017).
+    string? DetectLanguage(string extension);
 }
 
 public interface IIngestionQueue

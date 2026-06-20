@@ -3,7 +3,7 @@ namespace LocalAIFactory.Core.Entities;
 // KE-005: a user-managed, editable, additive domain vocabulary (e.g. BDM, MCIB). Code is the STABLE,
 // unique, human-meaningful key used to reconcile domains across instances and Knowledge Packs (E9);
 // Uid is the portable surrogate identity. Starter domains are seeded; the taxonomy is owned by the user.
-public class KnowledgeDomain
+public class KnowledgeDomain : IPortableEntity
 {
     public int Id { get; set; }
     public Guid Uid { get; set; } = Guid.CreateVersion7();

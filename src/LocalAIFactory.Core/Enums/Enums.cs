@@ -153,3 +153,7 @@ public enum ScopeTargetKind { Project = 0, Component = 1 }
 // Phase 2 / KE-006: why a knowledge item is being demoted (anti-drift). Sources are KE-025 (contradiction)
 // and KE-028 (failed outcome); the demotion mechanism exists now, the signal wiring lands with them.
 public enum DemotionReason { Contradiction = 0, FailedOutcome = 1 }
+
+// Phase 2 / KE-007: where a raw artifact / import batch originated. Database is reserved for a future
+// live-schema import path; file-based schema imports use Upload/FileSystem with SqlScript classification.
+public enum ArtifactSourceSystem { Upload = 0, FileSystem = 1, GitRepository = 2, Conversation = 3, Database = 4 }

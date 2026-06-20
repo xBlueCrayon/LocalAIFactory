@@ -24,7 +24,7 @@ public sealed class IdentityResolver : IIdentityResolver
     public string ComputeFileLocusKey(int? projectId, string relativePath) => SourceLocus.FileKey(projectId, relativePath);
 
     public async Task<LocusResolution> ResolveFileAsync(int? projectId, string relativePath, string title, string content,
-        SourceType sourceType, CancellationToken ct = default)
+        SourceType sourceType, int? sourceArtifactId = null, CancellationToken ct = default)
     {
         var locus = SourceLocus.FileKey(projectId, relativePath);
         var existing = await _db.KnowledgeItems.FirstOrDefaultAsync(k => k.SourceLocusKey == locus, ct);
@@ -46,7 +46,7 @@ public sealed class IdentityResolver : IIdentityResolver
             _db.KnowledgeItems.Add(ki);
             await _db.SaveChangesAsync(ct);
             await _backbone.RecordInitialAsync(ki, ProvenanceMethod.Deterministic, "system:extraction",
-                $"Extracted from {relativePath}", ct: ct);
+                $"Extracted from {relativePath}", sourceArtifactId: sourceArtifactId, ct: ct);
             return new LocusResolution(ki.Id, LocusOutcome.Created);
         }
 
@@ -68,7 +68,7 @@ public sealed class IdentityResolver : IIdentityResolver
         existing.Content = content;
         existing.UpdatedUtc = DateTime.UtcNow;
         await _backbone.RecordEditAsync(existing, $"Re-extracted from {relativePath}",
-            ProvenanceMethod.Deterministic, "system:extraction", ct);
+            ProvenanceMethod.Deterministic, "system:extraction", sourceArtifactId: sourceArtifactId, ct: ct);
         return new LocusResolution(existing.Id, LocusOutcome.Updated);
     }
 

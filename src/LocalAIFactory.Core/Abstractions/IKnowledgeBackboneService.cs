@@ -14,7 +14,7 @@ public interface IKnowledgeBackboneService
     // Hash-guarded edit: writes a new version + bumps VersionNumber ONLY when content changed;
     // always appends a provenance event.
     Task RecordEditAsync(KnowledgeItem item, string reason, ProvenanceMethod method, string actor,
-        CancellationToken ct = default);
+        int? sourceArtifactId = null, CancellationToken ct = default);
 
     // Append a provenance event without a version (approve, tier change, import, etc.).
     Task RecordProvenanceAsync(KnowledgeItem item, ProvenanceMethod method, string actor, string reason,

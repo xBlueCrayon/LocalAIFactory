@@ -417,5 +417,19 @@ public class AppDbContext : DbContext
             e.HasIndex(x => x.ConstraintKnowledgeItemId);
             e.HasIndex(x => new { x.TargetKind, x.TargetId });
         });
+
+        // Phase 2 / KE-007: raw artifact (SourceArtifact, extends ImportedFile) + import batch
+        // (ImportBatch, extends IngestionJob) — portable identity and the metadata envelope.
+        b.Entity<ImportedFile>(e =>
+        {
+            e.Property(x => x.DetectedLanguage).HasMaxLength(50);
+            e.HasIndex(x => x.Uid).IsUnique();
+        });
+        b.Entity<IngestionJob>(e =>
+        {
+            e.Property(x => x.SourceReference).HasMaxLength(1000);
+            e.Property(x => x.SourceRevision).HasMaxLength(200);
+            e.HasIndex(x => x.Uid).IsUnique();
+        });
     }
 }

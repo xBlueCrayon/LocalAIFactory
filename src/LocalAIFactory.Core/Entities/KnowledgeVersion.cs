@@ -4,7 +4,7 @@ namespace LocalAIFactory.Core.Entities;
 
 // KE-003: an immutable snapshot of a knowledge item at one point in its history. Once written, a
 // version never changes; supersession appends a new version rather than mutating an old one.
-public class KnowledgeVersion
+public class KnowledgeVersion : IPortableEntity
 {
     public int Id { get; set; }
     public Guid Uid { get; set; } = Guid.CreateVersion7();   // portable identity of the version itself.

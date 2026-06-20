@@ -2,7 +2,7 @@ using LocalAIFactory.Core.Enums;
 
 namespace LocalAIFactory.Core.Entities;
 
-public class BusinessRule
+public class BusinessRule : IPortableEntity
 {
     public int Id { get; set; }
     public int? ProjectId { get; set; }

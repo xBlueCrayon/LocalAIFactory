@@ -5,7 +5,7 @@ namespace LocalAIFactory.Core.Entities;
 // KE-003: append-only record of why/how a knowledge item came to be or changed. Distinct from AuditLog
 // (which logs operational actions); provenance is the knowledge-lineage trail used for explainability,
 // cross-instance reconciliation, and (future) Knowledge Pack origin tracking. Never mutated or deleted.
-public class ProvenanceEvent
+public class ProvenanceEvent : IPortableEntity
 {
     public int Id { get; set; }
     public Guid Uid { get; set; } = Guid.CreateVersion7();

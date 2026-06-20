@@ -2,7 +2,7 @@ using LocalAIFactory.Core.Enums;
 
 namespace LocalAIFactory.Core.Entities;
 
-public class ApprovedCodeSnippet
+public class ApprovedCodeSnippet : IPortableEntity
 {
     public int Id { get; set; }
     public int? ProjectId { get; set; }

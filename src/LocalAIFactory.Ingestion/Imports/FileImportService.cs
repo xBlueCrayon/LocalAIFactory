@@ -56,11 +56,14 @@ public sealed class FileImportService : IFileImportService
         }
 
         imported.RawText = text;
-        // KE-004: converge by source locus — create, update+version, or propose-if-curated.
-        var res = await _identity.ResolveFileAsync(projectId, fileName, Path.GetFileName(fileName), text,
-            _classifier.ToSourceType(fileClass), ct);
-        imported.KnowledgeItemId = res.KnowledgeItemId;
+        imported.DetectedLanguage = _classifier.DetectLanguage(ext); // KE-007
+        // KE-007: persist the artifact first so the derived knowledge links back to it.
         _db.ImportedFiles.Add(imported);
+        await _db.SaveChangesAsync(ct);
+        // KE-004/007: converge by source locus and link the derived item to its artifact.
+        var res = await _identity.ResolveFileAsync(projectId, fileName, Path.GetFileName(fileName), text,
+            _classifier.ToSourceType(fileClass), sourceArtifactId: imported.Id, ct);
+        imported.KnowledgeItemId = res.KnowledgeItemId;
         await _db.SaveChangesAsync(ct);
 
         // (Re)chunk + index only when content was created or updated; curated/unchanged keep their chunks.

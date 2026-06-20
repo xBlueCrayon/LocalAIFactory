@@ -15,7 +15,7 @@ public interface IIdentityResolver
     // Resolve-or-create the machine-extracted knowledge item for a file. Honors KE-002 (curated =>
     // propose) and KE-003 (Derived change => new version; unchanged => no version).
     Task<LocusResolution> ResolveFileAsync(int? projectId, string relativePath, string title, string content,
-        SourceType sourceType, CancellationToken ct = default);
+        SourceType sourceType, int? sourceArtifactId = null, CancellationToken ct = default);
 
     // Exact-content-hash duplicate detection within a project; records KnowledgeDuplicate candidates
     // (capture only; near-duplicate and auto-merge are KE-030). Returns the number of new candidates.
