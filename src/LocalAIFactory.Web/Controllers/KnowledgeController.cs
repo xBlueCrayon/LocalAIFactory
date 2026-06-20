@@ -80,7 +80,8 @@ public class KnowledgeController : Controller
         {
             ProjectId = projectId, Title = title, Content = content,
             SourceType = sourceType, Status = KnowledgeStatus.Draft, Confidence = 0.6,
-            Tier = PermanenceTier.Curated // human-authored, so human-anchored even before approval.
+            Tier = PermanenceTier.Curated, // human-authored, so human-anchored even before approval.
+            Scope = projectId.HasValue ? KnowledgeScope.Project : KnowledgeScope.Global // KE-005
         };
         _db.KnowledgeItems.Add(ki);
         await _db.SaveChangesAsync(ct);

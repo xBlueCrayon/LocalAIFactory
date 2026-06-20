@@ -39,7 +39,8 @@ public sealed class IdentityResolver : IIdentityResolver
                 Status = KnowledgeStatus.NeedsReview,
                 Confidence = 0.5,
                 Tier = PermanenceTier.Derived,
-                SourceLocusKey = locus
+                SourceLocusKey = locus,
+                Scope = projectId.HasValue ? KnowledgeScope.Project : KnowledgeScope.Global // KE-005
             };
             _db.KnowledgeItems.Add(ki);
             await _db.SaveChangesAsync(ct);

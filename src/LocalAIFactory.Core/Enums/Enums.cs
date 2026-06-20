@@ -145,3 +145,7 @@ public enum DuplicateStatus { Candidate = 0, Confirmed = 1, Rejected = 2, AutoMe
 
 // Phase 2 / KE-004: outcome of resolving a machine-extracted item against its source locus.
 public enum LocusOutcome { Created = 0, Updated = 1, ProposedRevision = 2, Unchanged = 3 }
+
+// Phase 2 / KE-005: what an applicability (AppliesTo) link points at. Component reserved for finer-grained
+// targets (e.g. a code symbol) once M2 introduces them.
+public enum ScopeTargetKind { Project = 0, Component = 1 }

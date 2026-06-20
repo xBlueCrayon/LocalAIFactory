@@ -118,5 +118,26 @@ public static class DbSeeder
                 new SystemSetting { Key = "App.Version", Value = "1.0.0-phase1" });
             await db.SaveChangesAsync(ct);
         }
+
+        // KE-005: starter domain taxonomy. Seeded additively by Code so user-added domains are preserved
+        // and new starter domains are added on upgrade. The taxonomy is editable and user-managed.
+        var starterDomains = new (string Code, string Name, string Description)[]
+        {
+            ("GENERAL", "General", "Cross-cutting or uncategorized knowledge."),
+            ("BDM", "BDM", "Bulk Direct Mandate / mandate management middleware."),
+            ("MCIB", "MCIB", "Credit information bureau integration."),
+            ("CHEQUEXPERT", "ChequeXpert", "Cheque processing and clearing (Parascript)."),
+            ("ETAMS", "ETAMS", "Enterprise tracking and management system.")
+        };
+        var addedDomain = false;
+        foreach (var d in starterDomains)
+        {
+            if (!await db.KnowledgeDomains.AnyAsync(x => x.Code == d.Code, ct))
+            {
+                db.KnowledgeDomains.Add(new KnowledgeDomain { Code = d.Code, Name = d.Name, Description = d.Description });
+                addedDomain = true;
+            }
+        }
+        if (addedDomain) await db.SaveChangesAsync(ct);
     }
 }

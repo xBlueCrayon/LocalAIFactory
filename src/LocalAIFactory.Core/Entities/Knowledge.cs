@@ -30,6 +30,7 @@ public class KnowledgeItem
     // (scope/precedence is KE-005; quality computation is KE-006).
     public KnowledgeType KnowledgeType { get; set; } = KnowledgeType.Unspecified;
     public KnowledgeScope Scope { get; set; } = KnowledgeScope.Unspecified;
+    public int? KnowledgeDomainId { get; set; } // KE-005: optional domain taxonomy link.
     public AuthorityLevel Authority { get; set; } = AuthorityLevel.Normal;
     public QualityBand QualityBand { get; set; } = QualityBand.Provisional;
     public DateTime? EffectiveUtc { get; set; }

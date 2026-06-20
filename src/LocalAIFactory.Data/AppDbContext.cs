@@ -45,6 +45,8 @@ public class AppDbContext : DbContext
     public DbSet<KnowledgeVersion> KnowledgeVersions => Set<KnowledgeVersion>();
     public DbSet<ProvenanceEvent> ProvenanceEvents => Set<ProvenanceEvent>();
     public DbSet<KnowledgeDuplicate> KnowledgeDuplicates => Set<KnowledgeDuplicate>();
+    public DbSet<KnowledgeDomain> KnowledgeDomains => Set<KnowledgeDomain>();
+    public DbSet<ScopeApplicability> ScopeApplicabilities => Set<ScopeApplicability>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -392,6 +394,28 @@ public class AppDbContext : DbContext
             e.HasIndex(x => x.KnowledgeItemId);
             e.HasIndex(x => x.DuplicateOfKnowledgeItemId);
             e.HasIndex(x => x.Status);
+        });
+
+        // Phase 2 / KE-005: scope precedence, the user-managed domain taxonomy, and applicability links.
+        b.Entity<KnowledgeItem>(e =>
+        {
+            e.HasIndex(x => x.Scope);
+            e.HasIndex(x => x.KnowledgeDomainId);
+            e.HasOne<KnowledgeDomain>().WithMany().HasForeignKey(x => x.KnowledgeDomainId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+        b.Entity<KnowledgeDomain>(e =>
+        {
+            e.Property(x => x.Code).HasMaxLength(64).IsRequired();
+            e.Property(x => x.Name).HasMaxLength(200).IsRequired();
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => x.Code).IsUnique();
+        });
+        b.Entity<ScopeApplicability>(e =>
+        {
+            e.HasIndex(x => x.Uid).IsUnique();
+            e.HasIndex(x => x.ConstraintKnowledgeItemId);
+            e.HasIndex(x => new { x.TargetKind, x.TargetId });
         });
     }
 }

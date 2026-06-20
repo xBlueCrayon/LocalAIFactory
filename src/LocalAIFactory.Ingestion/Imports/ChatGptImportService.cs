@@ -95,7 +95,8 @@ public sealed class ChatGptImportService : IChatGptImportService
                 SourceType = SourceType.ConversationTranscript,
                 Status = KnowledgeStatus.NeedsReview,
                 Confidence = 0.4,
-                Tier = PermanenceTier.Derived // machine-extracted, regenerable.
+                Tier = PermanenceTier.Derived, // machine-extracted, regenerable.
+                Scope = projectId.HasValue ? KnowledgeScope.Project : KnowledgeScope.Global // KE-005
             };
             _db.KnowledgeItems.Add(ki);
             await _db.SaveChangesAsync(ct);
