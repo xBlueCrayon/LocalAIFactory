@@ -1,0 +1,34 @@
+{
+  "registryUid": "fe470111-bdcc-4893-8d51-88da76b55410",
+  "name": "ScreenStream Testing & Simple Use — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": [
+    "domain-theory",
+    "official-docs"
+  ],
+  "sources": [
+    {
+      "sourceUid": "0fcafd7e-c796-4ecd-b16b-e0211a19d014",
+      "type": "domain-theory",
+      "title": "Automated testing strategy: unit, integration, loopback, and end-to-end smoke testing",
+      "reliability": "high",
+      "topic": "testing-strategy"
+    },
+    {
+      "sourceUid": "43023790-d90a-4d19-8afa-67eebc1f69cd",
+      "type": "official-docs",
+      "title": "Playwright browser end-to-end testing concepts (concept family)",
+      "reliability": "high",
+      "topic": "playwright"
+    },
+    {
+      "sourceUid": "26771835-2d18-420d-aa80-9895817f3114",
+      "type": "domain-theory",
+      "title": "Usability and plain-language guidance for non-technical end users",
+      "reliability": "high",
+      "topic": "usability"
+    }
+  ]
+}

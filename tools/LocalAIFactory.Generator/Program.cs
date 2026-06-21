@@ -27,6 +27,41 @@ Console.WriteLine($"prefer-llm  : {preferLocalLlm}");
 if (!File.Exists(requirement))
     Console.WriteLine($"WARN: requirement file not found at {requirement} (continuing with module defaults).");
 
+// ---- Mode: screen-stream-assist (copy the reusable consent-based screen-share sample) ----
+string mode = argMap.GetValueOrDefault("mode", "");
+if (mode == "screen-stream-assist")
+{
+    var ssRoot = Path.Combine(templateRoot, "screen-stream-assist");
+    if (!Directory.Exists(ssRoot)) { Console.WriteLine($"ERROR: template not found at {ssRoot}"); return 1; }
+    var ssFiles = new List<object>();
+    int n = 0;
+    foreach (var f in Directory.EnumerateFiles(ssRoot, "*", SearchOption.AllDirectories))
+    {
+        var rel = Path.GetRelativePath(ssRoot, f).Replace('\\', '/');
+        if (rel == "PRODUCT.slnx.tmpl") rel = Path.GetFileName(target.TrimEnd('/', '\\')) + ".slnx";
+        var dst = Path.Combine(target, rel);
+        Directory.CreateDirectory(Path.GetDirectoryName(dst)!);
+        File.Copy(f, dst, true);
+        ssFiles.Add(new { path = rel, attribution = "LAF_GENERATED" });
+        n++;
+    }
+    var ssAttribution = new
+    {
+        kind = "screenstream-generation-attribution",
+        mode,
+        productName = "LAF ScreenStream Assist",
+        note = "Built first as allowed MANUAL_SAMPLE_HARDENING / MANUAL_TEMPLATE_IMPROVEMENT, then saved into the generator templates so it is reusable. Running this mode EMITS the product from those templates (LAF_GENERATED). The templates live under tools/LocalAIFactory.Generator/templates/screen-stream-assist (LAF_GENERATOR_INFRASTRUCTURE).",
+        totalProductFiles = n,
+        classificationSummary = new { LAF_GENERATED = n, MANUAL_TEMPLATE_IMPROVEMENT = "(template source under tools/)", LAF_GENERATOR_INFRASTRUCTURE = "(generator + spec)" },
+        files = ssFiles
+    };
+    var ssAttrPath = argMap.GetValueOrDefault("attribution", "benchmarks/results/screenstream-generation-attribution.json");
+    Directory.CreateDirectory(Path.GetDirectoryName(ssAttrPath)!);
+    File.WriteAllText(ssAttrPath, JsonSerializer.Serialize(ssAttribution, new JsonSerializerOptions { WriteIndented = true }));
+    Console.WriteLine($"== screen-stream-assist: emitted {n} product files -> {target}; attribution -> {ssAttrPath} ==");
+    return 0;
+}
+
 // ---- 1. Governed local-LLM catalog proposal (validated + collision-guarded) ----
 var reserved = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 {

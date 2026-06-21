@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>LAFScreenStream.Server</AssemblyName>
+    <RootNamespace>LafScreenStream.Server</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LafScreenStream.Shared\LafScreenStream.Shared.csproj" />
+    <ProjectReference Include="..\LafScreenStream.Packager\LafScreenStream.Packager.csproj" />
+  </ItemGroup>
+</Project>

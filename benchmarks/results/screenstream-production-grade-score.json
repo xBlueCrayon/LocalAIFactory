@@ -1,0 +1,41 @@
+{
+  "kind": "screenstream-production-grade-score",
+  "product": "LAF ScreenStream Assist",
+  "generated": "2026-06-21",
+  "classification": "LAN_READY",
+  "classificationScale": ["NOT_READY", "LOCAL_LOOPBACK_READY", "LAN_READY", "PUBLIC_ADDRESS_READY_WITH_OPERATOR_NETWORK_SETUP", "PRODUCTION_READY_WITH_TLS_AND_SIGNING", "PRODUCTION_GRADE_READY"],
+  "disclaimer": "Honest. Works on the same PC (loopback) and same LAN (firewall allowed). NOT production-grade: no TLS/WSS, no code-signing, token is a simple shared secret. Internet use needs a reachable public address (operator network setup) + TLS.",
+  "categories": {
+    "easeOfUse": 75,
+    "serverExe": 90,
+    "generatedClientExe": 85,
+    "dashboard": 80,
+    "streamCorrectness": 75,
+    "disconnect": 85,
+    "dotnetTests": 70,
+    "playwright": 70,
+    "security": 68,
+    "consent": 90,
+    "networkRealism": 82,
+    "packaging": 85,
+    "performance": 60,
+    "productionReadiness": 40,
+    "reusableViaGenerator": 72,
+    "knowledgeBaseMaturity": 80,
+    "fifteenYearOldUsability": 75
+  },
+  "gates": {
+    "tlsWssForInternet": "MISSING (caps production-grade)",
+    "codeSigning": "MISSING (caps production-grade)",
+    "strongAuth": "PARTIAL (per-server shared token over a token-checked WS; no per-session rotation/TLS)",
+    "generatedClientTokensSafe": "OK (token written into client-config.json next to the EXE; LAN scope)",
+    "disconnectProven": "OK (.NET + Playwright)",
+    "noStealth": "OK (visible client + source-scan test)",
+    "firewallNetworkDocumented": "OK (network feasibility report + script)",
+    "serverClientPackageWorks": "OK (published EXEs run; client generated at runtime)",
+    "testsPass": "OK (12 .NET)",
+    "playwrightPasses": "OK (4)"
+  },
+  "overallScorePct": 72,
+  "verdict": "LAN_READY consent-based screen-share with a real double-clickable server EXE, runtime client-EXE generation, token-authenticated WebSocket streaming of the primary screen only, proven disconnect, and a source-scan proving no surveillance APIs. Production-grade is CAPPED by missing TLS/WSS + code-signing (and internet needs operator port-forward/relay). Do NOT claim production-grade or internet-ready."
+}

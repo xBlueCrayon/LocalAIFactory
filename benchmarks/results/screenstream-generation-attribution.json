@@ -1,0 +1,118 @@
+{
+  "kind": "screenstream-generation-attribution",
+  "mode": "screen-stream-assist",
+  "productName": "LAF ScreenStream Assist",
+  "note": "Built first as allowed MANUAL_SAMPLE_HARDENING / MANUAL_TEMPLATE_IMPROVEMENT, then saved into the generator templates so it is reusable. Running this mode EMITS the product from those templates (LAF_GENERATED). The templates live under tools/LocalAIFactory.Generator/templates/screen-stream-assist (LAF_GENERATOR_INFRASTRUCTURE).",
+  "totalProductFiles": 26,
+  "classificationSummary": {
+    "LAF_GENERATED": 26,
+    "MANUAL_TEMPLATE_IMPROVEMENT": "(template source under tools/)",
+    "LAF_GENERATOR_INFRASTRUCTURE": "(generator \u002B spec)"
+  },
+  "files": [
+    {
+      "path": ".gitignore",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "Directory.Build.props",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "Directory.Packages.props",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "LAF-ScreenStreamAssist-GenVerify.slnx",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/package.json",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/playwright.config.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/publish-local-test-folder.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/tests/dashboard.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Client/GdiScreenSource.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Client/LafScreenStream.Client.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Client/LafScreenStream.Client.csproj.user",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Client/Program.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Packager/ClientPackager.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Packager/LafScreenStream.Packager.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Server/appsettings.Development.json",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Server/appsettings.json",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Server/Dashboard.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Server/LafScreenStream.Server.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Server/Program.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Server/SessionHub.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Shared/LafScreenStream.Shared.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Shared/Protocol.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Shared/ScreenSource.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafScreenStream.Tests/LafScreenStream.Tests.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafScreenStream.Tests/ScreenStreamTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafScreenStream.Server/Properties/launchSettings.json",
+      "attribution": "LAF_GENERATED"
+    }
+  ]
+}

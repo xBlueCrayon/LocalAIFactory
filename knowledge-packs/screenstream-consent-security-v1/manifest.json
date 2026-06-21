@@ -1,0 +1,14 @@
+{
+  "packUid": "fda44c0a-7902-436b-a3a3-8f41c94b6c7f",
+  "name": "ScreenStream Consent & Security Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Installable knowledge pack of original, concise, governed rules for building CONSENT-BASED Windows screen-sharing software: consent as the foundation, a client window that must stay visible (no stealth, hidden-window, or tray-only operation), no persistence/autostart/service/UAC-bypass, no keyboard/clipboard/file/webcam/microphone capture, no remote control, primary-screen-only capture, mandatory per-session token authentication on every stream with no unauthenticated pixel endpoint, mandatory client display of server address/session ID/sharing status/Disconnect/warning, revocable informed consent, and the tests that separate legitimate screen-sharing tooling from malware. Each item is an original summary with applicability, a worked example, a required limitation, a confidence level, and tags.",
+  "license": "Original professional summaries of widely-established endpoint-security, least-privilege, informed-consent, and authentication principles, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles are framed honestly with confidence levels; no certification or jurisdiction-specific legal compliance is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 18,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "consent-security.json"
+  ]
+}

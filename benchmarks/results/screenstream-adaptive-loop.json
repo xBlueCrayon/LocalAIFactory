@@ -1,0 +1,29 @@
+{
+  "kind": "screenstream-adaptive-loop",
+  "policy": "adaptive-no-fixed-limit",
+  "generated": "2026-06-21",
+  "iterations": [
+    { "iteration": 1, "change": "scaffold solution + write Shared/Server/Client/Packager/Tests", "build": "fail", "reason": "scaffold csprojs missing project references + Mvc.Testing", "tests": "n/a" },
+    { "iteration": 2, "change": "fix Server/Packager/Tests csprojs (references + Mvc.Testing + correct <Using> placement)", "build": "ok", "tests": "green", "dotnetTests": 12 },
+    { "iteration": 3, "change": "publish to C:\\LAFScreenStreamAssist; run server EXE; generate client at runtime", "build": "ok", "serverExe": "runs", "dashboard": "200", "generateClient": "ok" },
+    { "iteration": 4, "change": "add Playwright dashboard test; fix brittle frame-count assertion to use the API", "build": "ok", "playwright": "4/4", "screenshots": 3 },
+    { "iteration": 5, "change": "save solution into generator templates + add screen-stream-assist mode (reusable); attribution", "build": "ok", "generatorModeEmits": 26, "emittedCopyBuilds": true }
+  ],
+  "metricsFinal": {
+    "build": "ok",
+    "dotnetTests": 12,
+    "dotnetTestsPass": 12,
+    "playwrightTests": 4,
+    "playwrightPass": 4,
+    "screenCaptureSuccess": "fake-frame loopback proven (automated); real GDI capture in client (manual)",
+    "streamingSuccess": true,
+    "dashboardSuccess": true,
+    "generatedClientSuccess": true,
+    "disconnectSuccess": true,
+    "localFolderPackagingSuccess": true,
+    "classification": "LAN_READY",
+    "productionGradePct": 72
+  },
+  "stopReason": "A: the local/LAN screen-streaming gates pass (build+tests+playwright green, server EXE runs, client generated+streams, disconnect works). Higher classifications (PUBLIC/PRODUCTION) require operator network setup + TLS/code-signing, which are external and out of local scope - documented, not faked.",
+  "iterationCount": 5
+}

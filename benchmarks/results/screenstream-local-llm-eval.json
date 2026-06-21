@@ -1,0 +1,13 @@
+{
+  "model": "qwen2.5-coder:14b",
+  "task": "decompose teen prompt + security + NAT blocker",
+  "qwen": {
+    "mentionedNatBlocker": true,
+    "durationSec": 15.5,
+    "chars": 1990,
+    "mentionedConsentVisibleDisconnect": true,
+    "mentionedTokenAuth": true
+  },
+  "conclusion": "LLM is useful for REASONING/REVIEW (it correctly surfaced token auth, the NAT/port-forward blocker, and consent/visible-client rules). For CODE GENERATION, deterministic templates + the LocalAIFactory knowledge packs were used because they produce a compiling, tested solution reliably; the LLM was not allowed to write product source directly.",
+  "generated": "2026-06-21"
+}

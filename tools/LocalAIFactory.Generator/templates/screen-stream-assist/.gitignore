@@ -1,0 +1,26 @@
+# Build output / published EXEs (kept local for testing, never committed)
+**/bin/
+**/obj/
+**/publish/
+dist-local/
+ClientTemplate/
+GeneratedClients/
+Evidence/
+screenstream-token.txt
+
+# Logs / db
+*.log
+*.db
+*.db-shm
+*.db-wal
+
+# Node / Playwright
+playwright/node_modules/
+playwright/test-results/
+playwright/playwright-report*/
+playwright/screenshots/
+playwright/.cache/
+
+# OS / IDE
+.vs/
+*.user

@@ -1,0 +1,7 @@
+{
+  "name": "laf-screenstream-playwright",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "test": "playwright test", "install-browsers": "playwright install chromium" },
+  "devDependencies": { "@playwright/test": "^1.49.0" }
+}

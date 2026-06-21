@@ -1,0 +1,14 @@
+{
+  "packUid": "4c93b7bd-813d-4f1d-8d84-18e1ca29b033",
+  "name": "ScreenStream Windows Packaging & Network Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Installable knowledge pack of original, concise, governed patterns for packaging and connecting a consent-based Windows screen-share tool: publishing a .NET 10 Windows EXE (framework-dependent vs self-contained via dotnet publish), a server-side client-EXE generator that writes client-config.json plus token, checksum, and README and copies the client EXE, friendly folder/EXE naming for non-developers, Start-Server.bat patterns, the Windows Firewall first-run Allow prompt reality, the Windows 11 Home NAT reality that two home PCs cannot connect over the internet without a public address, LAN mode (same network plus firewall allowed), fixed public IP with router port-forwarding, an optional later tunnel/relay operator step, mandatory TLS/WSS for internet production, and an explicit honesty rule against faking internet reachability. Each item is an original summary with applicability, a worked example, a required limitation, a confidence level, and tags.",
+  "license": "Original professional summaries of widely-established .NET packaging, home-networking, NAT, firewall, and TLS concepts, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Concepts are framed honestly with confidence levels; no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 16,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "packaging-network.json"
+  ]
+}

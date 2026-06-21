@@ -1,0 +1,14 @@
+{
+  "packUid": "2a848e04-2643-4178-8e8f-1e9df80811fe",
+  "name": "ScreenStream Windows Capture & Protocol Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Installable knowledge pack of original, concise, governed patterns for the capture-and-streaming core of a consent-based Windows screen-share tool on .NET 10: GDI BitBlt primary-screen capture, an IScreenSource abstraction with a deterministic fake source for automated tests versus a real source for manual runs, JPEG encoding with configurable quality and FPS, frame metadata (session id, frame number, width/height, timestamp), an outbound-client WebSocket protocol with token validation, handshake, typed frame/heartbeat/disconnect messages, timeouts, stale-frame dropping, a monotonic frame counter, adaptive FPS with a frame-drop policy, and latency/last-frame measurement. Each item is an original summary with applicability, a worked example, a required limitation, a confidence level, and tags.",
+  "license": "Original professional summaries of widely-established Windows capture, real-time streaming, and WebSocket lifecycle concepts, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Concepts are framed honestly with confidence levels; no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 17,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "capture-protocol.json"
+  ]
+}

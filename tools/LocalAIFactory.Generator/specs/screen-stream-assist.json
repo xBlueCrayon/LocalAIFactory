@@ -1,0 +1,16 @@
+{
+  "mode": "screen-stream-assist",
+  "product": "LAF ScreenStream Assist",
+  "purpose": "Consent-based Windows screen sharing for support/demo. Server EXE + dashboard + client-EXE generator; client streams the PRIMARY screen only over a token-authenticated WebSocket.",
+  "templateRoot": "templates/screen-stream-assist",
+  "projects": ["LafScreenStream.Shared", "LafScreenStream.Packager", "LafScreenStream.Server", "LafScreenStream.Client", "LafScreenStream.Tests"],
+  "safety": [
+    "client always visible (no stealth)", "no persistence/autostart/service", "no UAC bypass",
+    "no keyboard/clipboard/file/webcam/microphone capture", "no remote control",
+    "primary screen only", "mandatory session token on every stream", "no unauthenticated streaming endpoint"
+  ],
+  "network": {
+    "loopback": "works", "lan": "works with Windows Firewall allowed",
+    "internet": "requires a reachable public address (port-forward or relay) + TLS/WSS — operator-owned, not faked"
+  }
+}

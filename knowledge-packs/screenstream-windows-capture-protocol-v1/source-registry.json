@@ -1,0 +1,34 @@
+{
+  "registryUid": "d4cbc629-3350-40e9-9e2d-c9496676f82d",
+  "name": "ScreenStream Windows Capture & Protocol — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": [
+    "official-docs",
+    "domain-theory"
+  ],
+  "sources": [
+    {
+      "sourceUid": "f1888081-0122-4cab-8acb-f44640c4b056",
+      "type": "official-docs",
+      "title": "Windows GDI screen-capture and System.Drawing concepts on .NET (concept family)",
+      "reliability": "high",
+      "topic": "windows-capture"
+    },
+    {
+      "sourceUid": "aaa4030f-0ec4-4154-8c80-020e4ee30a2a",
+      "type": "domain-theory",
+      "title": "Real-time media streaming, framing, and rate-control theory",
+      "reliability": "high",
+      "topic": "streaming-protocol"
+    },
+    {
+      "sourceUid": "b06d4ec5-11ca-4447-b8e0-0c6374fc62e9",
+      "type": "official-docs",
+      "title": "WebSocket connection lifecycle and keep-alive concepts (concept family)",
+      "reliability": "high",
+      "topic": "websocket"
+    }
+  ]
+}

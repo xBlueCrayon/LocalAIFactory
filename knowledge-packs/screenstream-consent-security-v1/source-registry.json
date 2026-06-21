@@ -1,0 +1,34 @@
+{
+  "registryUid": "67a83e67-ec66-478f-bc9d-0eb08b21fccf",
+  "name": "ScreenStream Consent & Security — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": [
+    "domain-theory",
+    "security-principles"
+  ],
+  "sources": [
+    {
+      "sourceUid": "4c652c82-d400-46a6-818b-3f72fa8a0706",
+      "type": "security-principles",
+      "title": "Anti-spyware and least-privilege design principles for desktop software",
+      "reliability": "high",
+      "topic": "endpoint-security"
+    },
+    {
+      "sourceUid": "6d26526d-96a0-4bc6-a3f0-0d0eab2e2824",
+      "type": "domain-theory",
+      "title": "Informed-consent and transparency principles for monitoring and sharing tools",
+      "reliability": "high",
+      "topic": "consent-and-ethics"
+    },
+    {
+      "sourceUid": "3dae730c-282c-4308-9b27-0aebfe7379ac",
+      "type": "security-principles",
+      "title": "Authentication and endpoint-exposure principles for networked services",
+      "reliability": "high",
+      "topic": "auth-and-exposure"
+    }
+  ]
+}

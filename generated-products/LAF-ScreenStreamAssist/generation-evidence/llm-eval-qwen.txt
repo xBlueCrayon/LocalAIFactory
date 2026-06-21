@@ -1,0 +1,17 @@
+### Security Rules to Enforce
+
+1. **Authentication**: Implement strong authentication mechanisms such as username/password or multi-factor authentication (MFA) for both server and client applications.
+2. **Encryption**: Use end-to-end encryption (e.g., TLS/SSL) for all data transmitted between the server and client to protect against eavesdropping and man-in-the-middle attacks.
+3. **Access Control**: Restrict access to the server dashboard to only authorized users with proper credentials.
+4. **Firewall Rules**: Configure firewalls on both the server and client machines to allow only necessary traffic (e.g., specific ports for the application) and block all other incoming connections.
+5. **Logging and Monitoring**: Implement logging of all activities on the server and client, including login attempts, connection status, and disconnections. Monitor these logs for suspicious activity.
+6. **Regular Updates**: Ensure that both the server and client applications are regularly updated with security patches to protect against known vulnerabilities.
+
+### NAT/Internet Reachability Blocker
+
+1. **Port Forwarding**: Disable or restrict port forwarding on your home routers to prevent external access to the server application unless explicitly allowed.
+2. **Virtual Private Network (VPN)**: Consider setting up a VPN for secure remote access to the server, ensuring that only trusted devices can connect.
+3. **Dynamic DNS (DDNS)**: Use DDNS services if you need to access your home network from the internet, but ensure that the service is properly secured and monitored.
+4. **Network Address Translation (NAT) Traversal**: If necessary for connectivity, use NAT traversal techniques like STUN/TURN servers, but ensure they are configured securely and only used when absolutely required.
+
+By following these security rules and implementing the NAT/internet reachability blockers, you can enhance the security of your application while ensuring that it meets the specified requirements.

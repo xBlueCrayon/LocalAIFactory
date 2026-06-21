@@ -1,0 +1,14 @@
+{
+  "packUid": "8fe636a5-a21d-44a6-8562-c6d345c7f2b1",
+  "name": "ScreenStream Testing & Simple Use Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Installable knowledge pack of original, concise, governed patterns for testing and end-user usability of a consent-based Windows screen-share tool: token valid/invalid tests, frame serialization round-trip tests, in-process fake-frame WebSocket loopback streaming asserting frame-counter increments, disconnect-stops-stream tests, dashboard health 200 and no-HTTP-500 Playwright smoke tests, a security source-scan test that greps product source for forbidden APIs (keyboard hooks, clipboard, file exfiltration, input injection, webcam/microphone) and fails if present, scoped to product code, Playwright dashboard patterns with screenshots, 15-year-old usability rules (double-click only, simple buttons, clear plain-language messages, generated checklists for any technical step like firewall-allow or port-forward), clear connection status, separated operator logging, and a troubleshooting and happy-path acceptance checklist. Each item is an original summary with applicability, a worked example, a required limitation, a confidence level, and tags.",
+  "license": "Original professional summaries of widely-established software-testing strategy, end-to-end UI testing, and usability principles, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles are framed honestly with confidence levels; no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 16,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "testing-simple-user.json"
+  ]
+}
