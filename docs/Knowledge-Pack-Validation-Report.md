@@ -64,12 +64,10 @@ per-pack catalog.
 
 On the build host, with the database seeded, the live checks corroborate the offline results:
 
-- `scripts/knowledge/verify-all-knowledge-packs.ps1` live block: **4 installed packs / 438 pack items**.
-- `database/verify-knowledge-base.ps1`: **VERIFIED** — 438 baseline items, all curated (Tier 1),
-  438 provenance events, 17 `src:` tags, and the baseline is distinct from the 1035 imported-project
-  items (`KnowledgePackId IS NULL AND ProjectId IS NOT NULL`).
-- `database/verify-full-install.ps1`: **PASS** — 14 EF migrations applied, knowledge base verified,
-  all source packs validated and matched to the live installed counts.
+- `scripts/knowledge/verify-all-knowledge-packs.ps1` live block: **10 installed packs / 648 pack items**.
+- `database/verify-full-install.ps1` / `database/verify-knowledge-base.ps1`: the seeded MSSQL state
+  is reconciled against the validated source packs (offline validation remains authoritative when a
+  database is not reachable).
 
 These confirm the seeded MSSQL state matches the validated source packs.
 
@@ -87,7 +85,7 @@ pwsh scripts/knowledge/verify-all-knowledge-packs.ps1
 Expected tail:
 
 ```
-Packs: 4 | items: 438 | distinct UIDs: 438
+Packs: 10 | items: 648 | distinct UIDs: 648
   [ OK ] no cross-pack UID collisions
 VERIFY-ALL-KNOWLEDGE-PACKS: PASS
 ```
@@ -103,7 +101,7 @@ Adds:
 
 ```
 == Live installed counts ((localdb)\MSSQLLocalDB / LocalAIFactory) ==
-  [ OK ] DB has 4 installed pack(s), 438 pack item(s)
+  [ OK ] DB has 10 installed pack(s), 648 pack item(s)
 ```
 
 ### Full-install reconciliation
