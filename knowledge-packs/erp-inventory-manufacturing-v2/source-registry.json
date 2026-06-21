@@ -1,0 +1,41 @@
+{
+  "registryUid": "fddabbe0-12c3-4b23-bd0b-9dee35c40a74",
+  "name": "ERP Inventory & Manufacturing — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries authored as generation guidance; no third-party source vendored",
+  "sourceTypes": [
+    "domain-theory",
+    "official-docs"
+  ],
+  "sources": [
+    {
+      "sourceUid": "9caa8b7b-2a0d-443d-a8e8-77ff38c67b6e",
+      "type": "domain-theory",
+      "title": "Perpetual inventory, stock-ledger and moving-average valuation theory",
+      "reliability": "high",
+      "topic": "inventory-valuation"
+    },
+    {
+      "sourceUid": "7cedcbd4-88fc-47d1-a7e3-8ad261154db4",
+      "type": "domain-theory",
+      "title": "Bill-of-materials, work-order and WIP manufacturing-flow theory",
+      "reliability": "high",
+      "topic": "manufacturing"
+    },
+    {
+      "sourceUid": "d94f6927-30ca-4905-8971-bb2d5c1ead54",
+      "type": "domain-theory",
+      "title": "Inventory internal controls (negative-stock, immutable ledger, reconciliation)",
+      "reliability": "high",
+      "topic": "inventory-controls"
+    },
+    {
+      "sourceUid": "fe26f7d4-2675-4ccf-a12e-3834d251d67a",
+      "type": "official-docs",
+      "title": "Append-only ledger and transactional-consistency modelling (SQL Server / EF Core concept family)",
+      "reliability": "high",
+      "topic": "data-integrity"
+    }
+  ]
+}

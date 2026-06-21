@@ -1,0 +1,43 @@
+{
+  "product": "LAF Enterprise ERP V4",
+  "note": "Expanded module spec for V4. Each entity is generated as a CRUD module (entity + DbSet + generic CRUD service + REST GET/POST + list UI + create/validate tests) on top of the templated accounting/stock/workflow engine (which now also has P&L + Balance Sheet). Names must not collide with core engine entities (the generator guard enforces this).",
+  "modules": [
+    { "module": "Selling", "priority": "P1", "entities": [
+      { "name": "Quotation", "fields": [ {"name":"Name","type":"string"}, {"name":"CustomerCode","type":"string"}, {"name":"Total","type":"decimal"}, {"name":"ValidUntil","type":"DateTime?"}, {"name":"Status","type":"string"} ] },
+      { "name": "DeliveryNote", "fields": [ {"name":"Name","type":"string"}, {"name":"CustomerCode","type":"string"}, {"name":"ItemCode","type":"string"}, {"name":"Qty","type":"decimal"}, {"name":"DeliveredOn","type":"DateTime?"} ] }
+    ]},
+    { "module": "Buying", "priority": "P1", "entities": [
+      { "name": "PurchaseReceipt", "fields": [ {"name":"Name","type":"string"}, {"name":"SupplierCode","type":"string"}, {"name":"ItemCode","type":"string"}, {"name":"Qty","type":"decimal"}, {"name":"ReceivedOn","type":"DateTime?"} ] },
+      { "name": "MaterialRequest", "fields": [ {"name":"Name","type":"string"}, {"name":"ItemCode","type":"string"}, {"name":"Qty","type":"decimal"}, {"name":"Purpose","type":"string"} ] }
+    ]},
+    { "module": "Inventory", "priority": "P1", "entities": [
+      { "name": "StockTransfer", "fields": [ {"name":"Name","type":"string"}, {"name":"ItemCode","type":"string"}, {"name":"FromWarehouse","type":"string"}, {"name":"ToWarehouse","type":"string"}, {"name":"Qty","type":"decimal"} ] }
+    ]},
+    { "module": "Manufacturing", "priority": "P2", "entities": [
+      { "name": "BillOfMaterials", "fields": [ {"name":"Name","type":"string"}, {"name":"ItemCode","type":"string"}, {"name":"Quantity","type":"decimal"}, {"name":"IsActive","type":"bool"} ] },
+      { "name": "WorkOrder", "fields": [ {"name":"Name","type":"string"}, {"name":"BomName","type":"string"}, {"name":"PlannedQty","type":"decimal"}, {"name":"ProducedQty","type":"decimal"}, {"name":"Status","type":"string"} ] },
+      { "name": "QualityInspection", "fields": [ {"name":"Name","type":"string"}, {"name":"ReferenceType","type":"string"}, {"name":"Result","type":"string"}, {"name":"InspectedOn","type":"DateTime?"} ] }
+    ]},
+    { "module": "HR", "priority": "P2", "entities": [
+      { "name": "Employee", "fields": [ {"name":"Name","type":"string"}, {"name":"EmployeeCode","type":"string"}, {"name":"Department","type":"string"}, {"name":"Designation","type":"string"}, {"name":"DateOfJoining","type":"DateTime?"}, {"name":"IsActive","type":"bool"} ] },
+      { "name": "AttendanceRecord", "fields": [ {"name":"Name","type":"string"}, {"name":"EmployeeCode","type":"string"}, {"name":"OnDate","type":"DateTime?"}, {"name":"Status","type":"string"} ] },
+      { "name": "SalaryComponent", "fields": [ {"name":"Name","type":"string"}, {"name":"ComponentType","type":"string"}, {"name":"Amount","type":"decimal"} ] }
+    ]},
+    { "module": "Projects", "priority": "P2", "entities": [
+      { "name": "Timesheet", "fields": [ {"name":"Name","type":"string"}, {"name":"EmployeeCode","type":"string"}, {"name":"Hours","type":"decimal"}, {"name":"OnDate","type":"DateTime?"} ] }
+    ]},
+    { "module": "POS", "priority": "P3", "entities": [
+      { "name": "PosProfile", "fields": [ {"name":"Name","type":"string"}, {"name":"WarehouseCode","type":"string"}, {"name":"AllowDiscount","type":"bool"} ] }
+    ]},
+    { "module": "Ecommerce", "priority": "P3", "entities": [
+      { "name": "WebProduct", "fields": [ {"name":"Name","type":"string"}, {"name":"ItemCode","type":"string"}, {"name":"Price","type":"decimal"}, {"name":"Published","type":"bool"} ] }
+    ]},
+    { "module": "Maintenance", "priority": "P2", "entities": [
+      { "name": "MaintenanceSchedule", "fields": [ {"name":"Name","type":"string"}, {"name":"AssetName","type":"string"}, {"name":"NextDue","type":"DateTime?"}, {"name":"Frequency","type":"string"} ] }
+    ]},
+    { "module": "Customization", "priority": "P2", "entities": [
+      { "name": "CustomFieldDef", "fields": [ {"name":"Name","type":"string"}, {"name":"DocType","type":"string"}, {"name":"FieldType","type":"string"}, {"name":"IsRequired","type":"bool"} ] },
+      { "name": "NotificationRule", "fields": [ {"name":"Name","type":"string"}, {"name":"Event","type":"string"}, {"name":"Channel","type":"string"}, {"name":"IsEnabled","type":"bool"} ] }
+    ]}
+  ]
+}

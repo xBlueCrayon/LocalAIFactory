@@ -1,0 +1,41 @@
+{
+  "registryUid": "30ea4177-a528-464f-8afd-2bad1f8a9b48",
+  "name": "ERP Test / Scenario / UI / API / Report — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries authored as generation guidance; no third-party source vendored",
+  "sourceTypes": [
+    "domain-theory",
+    "official-docs"
+  ],
+  "sources": [
+    {
+      "sourceUid": "018cce86-6caf-4652-b9bb-a2114a65aeee",
+      "type": "domain-theory",
+      "title": "Test design for accounting and inventory invariants (balance, negative-stock, immutability)",
+      "reliability": "high",
+      "topic": "test-design"
+    },
+    {
+      "sourceUid": "31b50d45-0e38-4b9e-b4ab-c7e496dea3d7",
+      "type": "official-docs",
+      "title": "Playwright end-to-end and browser-automation testing concept family",
+      "reliability": "high",
+      "topic": "e2e-testing"
+    },
+    {
+      "sourceUid": "b0c02263-d732-4553-b848-2f3a4eb1ffbf",
+      "type": "official-docs",
+      "title": "ASP.NET Core MVC/REST UI and API scaffolding concept family",
+      "reliability": "high",
+      "topic": "ui-api"
+    },
+    {
+      "sourceUid": "d74f50da-90d2-4559-921e-11a573cdde74",
+      "type": "domain-theory",
+      "title": "Financial and operational report design (GL, TB, P&L, BS, ageing, stock balance)",
+      "reliability": "high",
+      "topic": "reporting"
+    }
+  ]
+}

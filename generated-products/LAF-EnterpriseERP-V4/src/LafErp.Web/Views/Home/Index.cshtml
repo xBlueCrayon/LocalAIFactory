@@ -1,0 +1,13 @@
+@model LafErp.Web.Controllers.DashboardVm
+@{ ViewData["Title"] = "Dashboard"; }
+<div class="cards" data-testid="dashboard">
+    <div class="card"><div class="n" data-testid="kpi-customers">@Model.Customers</div>Customers</div>
+    <div class="card"><div class="n">@Model.Suppliers</div>Suppliers</div>
+    <div class="card"><div class="n">@Model.Items</div>Items</div>
+    <div class="card"><div class="n">@Model.SalesInvoices</div>Sales Invoices</div>
+    <div class="card"><div class="n">@Model.PurchaseInvoices</div>Purchase Invoices</div>
+    <div class="card"><div class="n" data-testid="kpi-pending">@Model.PendingApprovals</div>Pending Approvals</div>
+    <div class="card"><div class="n">@Model.Receivable.ToString("N2")</div>Accounts Receivable</div>
+    <div class="card"><div class="n">@Model.Payable.ToString("N2")</div>Accounts Payable</div>
+    <div class="card"><div class="n">@Model.AuditEvents</div>Audit Events</div>
+</div>

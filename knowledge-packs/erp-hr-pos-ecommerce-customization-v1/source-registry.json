@@ -1,0 +1,41 @@
+{
+  "registryUid": "88d8a979-b946-4709-b312-97270ad0c2f6",
+  "name": "ERP HR / POS / eCommerce / Customization — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries authored as generation guidance; no third-party source vendored",
+  "sourceTypes": [
+    "domain-theory",
+    "official-docs"
+  ],
+  "sources": [
+    {
+      "sourceUid": "7ae0bce3-ee9c-4f26-8111-bf9e76d73356",
+      "type": "domain-theory",
+      "title": "HR, payroll and retail point-of-sale business-process theory",
+      "reliability": "high",
+      "topic": "hr-pos-process"
+    },
+    {
+      "sourceUid": "853e22c1-ace6-4ef7-8212-26b463012581",
+      "type": "domain-theory",
+      "title": "eCommerce order integration and idempotent ingestion patterns",
+      "reliability": "medium",
+      "topic": "integration"
+    },
+    {
+      "sourceUid": "170187c9-5ab7-40de-9833-0a4fc61b286e",
+      "type": "domain-theory",
+      "title": "ERP extensibility patterns (custom fields, numbering series, import/export)",
+      "reliability": "high",
+      "topic": "customization"
+    },
+    {
+      "sourceUid": "69d0c94b-99e4-4537-95e5-55442403540c",
+      "type": "official-docs",
+      "title": "Polymorphic association and template-rendering security modelling (EF Core / web concept family)",
+      "reliability": "high",
+      "topic": "data-modelling"
+    }
+  ]
+}

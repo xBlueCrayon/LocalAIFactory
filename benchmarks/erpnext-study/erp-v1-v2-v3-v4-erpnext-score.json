@@ -1,0 +1,26 @@
+{
+  "kind": "erp-v1-v2-v3-v4-vs-erpnext",
+  "generated": "2026-06-21",
+  "disclaimer": "Honest. None is an ERPNext clone or ERPNext-compatible. Gains are real but modest in parity; the structural wins are the data-driven generator, accounting depth, knowledge base, and module breadth.",
+  "rows": {
+    "erpNextParityPct": { "v1": 36, "v2": 37, "v3": 42, "v4": 45 },
+    "productionGradePct": { "v1": 35, "v2": 35, "v3": 48, "v4": 50 },
+    "dotnetTests": { "v1": 74, "v2": 82, "v3": 108, "v4": 122 },
+    "playwrightTests": { "v1": 12, "v2": 13, "v3": 13, "v4": 13 },
+    "generatedCrudModules": { "v1": 0, "v2": 3, "v3": 15, "v4": 22 },
+    "accountingReports": { "v1": "GL,TB,AR,AP", "v2": "GL,TB,AR,AP", "v3": "+P&L,BalanceSheet", "v4": "+P&L,BalanceSheet" },
+    "howBuilt": { "v1": "hand-written", "v2": "generated (template-copy)", "v3": "generated (data-driven spec + LLM)", "v4": "generated (expanded data-driven spec + LLM + knowledge-usage report)" },
+    "generationAutonomyPct": { "v1": 0, "v2": 100, "v3": 100, "v4": 100 },
+    "manualProductSourceEditsPct": { "v1": 100, "v2": 0, "v3": 0, "v4": 0 }
+  },
+  "v4VsV3": {
+    "parityDeltaPct": 3,
+    "productionGradeDeltaPct": 2,
+    "testsDelta": 14,
+    "modulesDelta": 7,
+    "newModules": ["Quotation", "DeliveryNote", "PurchaseReceipt", "MaterialRequest", "StockTransfer", "AttendanceRecord", "Timesheet"],
+    "note": "V4 expands the document flow (selling/buying/inventory/HR/projects) via the spec and adds a generator knowledge-usage report. Engine depth (P&L/Balance Sheet) carried from V3."
+  },
+  "missingModules": ["full manufacturing MRP", "full HR/payroll", "full POS", "full website/eCommerce", "create/edit UI forms", "real auth/TLS", "EF migrations"],
+  "verdict": "V4 > V3: +3% parity (45%), +2% production-grade (50%), +14 tests (122), 22 modules vs 15, plus a knowledge-usage report proving the generator catalogues the ERP knowledge packs. Still PILOT-grade. ERPNext remains far larger; the remaining distance is documented, not faked."
+}

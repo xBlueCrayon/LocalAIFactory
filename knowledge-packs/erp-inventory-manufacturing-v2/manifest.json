@@ -1,0 +1,14 @@
+{
+  "packUid": "086428dd-b902-431b-870c-5f4cf1ff15b6",
+  "name": "ERP Inventory & Manufacturing Generation Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation rules for inventory and light manufacturing in a generated ERP: stock receipt, issue, transfer and reconciliation entries; moving-average valuation; BOM, work order, material issue to WIP and finished-goods receipt; quality inspection and asset maintenance skeletons; plus the core inventory controls a generator must enforce — negative-stock guard, append-only immutable stock ledger, correct-by-reversal, per-warehouse balances, reservations, and stock-to-GL valuation reconciliation.",
+  "license": "Original professional summaries of widely-established ERP, accounting and software-engineering principles, authored for LocalAIFactory as code-generation guidance. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe/SAP text, or any third-party copyrighted material is reproduced verbatim. Principles are framed honestly with confidence levels; no certification or jurisdiction-specific compliance is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 20,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-inventory-manufacturing.json"
+  ]
+}

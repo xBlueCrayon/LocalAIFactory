@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="src/LafErp.Core/LafErp.Core.csproj" />
+  <Project Path="src/LafErp.Data/LafErp.Data.csproj" />
+  <Project Path="src/LafErp.Services/LafErp.Services.csproj" />
+  <Project Path="src/LafErp.Web/LafErp.Web.csproj" />
+  <Project Path="tests/LafErp.Tests/LafErp.Tests.csproj" />
+</Solution>

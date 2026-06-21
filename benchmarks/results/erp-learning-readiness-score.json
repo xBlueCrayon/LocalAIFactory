@@ -1,0 +1,32 @@
+{
+  "kind": "erp-learning-readiness-score",
+  "generated": "2026-06-21",
+  "scope": "LOCAL ERP-generation knowledge / generator / test-coverage readiness — NOT ERPNext parity (which stays ~45%).",
+  "disclaimer": "This measures how ready LocalAIFactory's own knowledge + generator + tests are to generate ERP modules locally. It is NOT a claim of 100% ERPNext parity or production-grade.",
+  "categories": [
+    { "id": 1,  "category": "ERP module knowledge",            "pct": 88, "evidence": "module spec (22 modules) + 8 ERP knowledge packs", "gap": "more doctypes" },
+    { "id": 2,  "category": "Accounting knowledge",            "pct": 90, "evidence": "GL/JE/Payment/AR/AP/Trial Balance/P&L/Balance Sheet + accounting packs + tests", "gap": "aging, period close" },
+    { "id": 3,  "category": "Inventory knowledge",             "pct": 85, "evidence": "stock ledger + valuation + transfer/adjustment in spec + packs", "gap": "batch/serial, FIFO" },
+    { "id": 4,  "category": "Sales/purchase knowledge",        "pct": 85, "evidence": "quotation/SO/delivery/invoice/PO/receipt/PI in spec + packs", "gap": "returns, pricing rules" },
+    { "id": 5,  "category": "Manufacturing knowledge",         "pct": 70, "evidence": "BOM/WorkOrder/Quality CRUD + packs", "gap": "full MRP scheduling" },
+    { "id": 6,  "category": "HR/payroll knowledge",            "pct": 65, "evidence": "Employee/Attendance/Salary skeletons + packs", "gap": "statutory payroll" },
+    { "id": 7,  "category": "POS/eCommerce knowledge",         "pct": 60, "evidence": "PosProfile/WebProduct skeletons + packs", "gap": "terminal/storefront" },
+    { "id": 8,  "category": "Workflow/maker-checker knowledge","pct": 90, "evidence": "tested engine + workflow packs", "gap": "data-driven multi-state designer" },
+    { "id": 9,  "category": "RBAC/audit knowledge",            "pct": 88, "evidence": "RolePermission matrix + AuditEvent + packs + tests", "gap": "field/row-level perms" },
+    { "id": 10, "category": "UI generation knowledge",         "pct": 70, "evidence": "list pages + dashboard generated; UI packs", "gap": "create/edit forms" },
+    { "id": 11, "category": "API generation knowledge",        "pct": 85, "evidence": "REST per entity + reports; API packs", "gap": "RPC/auto-per-doctype" },
+    { "id": 12, "category": "Report generation knowledge",     "pct": 80, "evidence": "GL/TB/P&L/BS/AR/AP/Stock Balance", "gap": "report builder" },
+    { "id": 13, "category": "Test generation knowledge",       "pct": 88, "evidence": "per-module CRUD/validation tests generated; 122 total", "gap": "more negative paths" },
+    { "id": 14, "category": "Playwright scenario knowledge",   "pct": 75, "evidence": "13 browser tests + scenario packs", "gap": "more module pages" },
+    { "id": 15, "category": "Production issue/fix knowledge",  "pct": 85, "evidence": "production-issue-fixes (77) + generation-lessons packs", "gap": "more real incidents" },
+    { "id": 16, "category": "Deployment knowledge",            "pct": 60, "evidence": "SQLite/SQL Server + IIS packs", "gap": "EF migrations, containers" },
+    { "id": 17, "category": "Security knowledge",              "pct": 70, "evidence": "RBAC/maker-checker/security packs", "gap": "real auth/TLS (external)" },
+    { "id": 18, "category": "Performance knowledge",           "pct": 60, "evidence": "indexes + perf notes", "gap": "load test (external host)" },
+    { "id": 19, "category": "Human usability knowledge",       "pct": 75, "evidence": "simple-user + UI packs", "gap": "guided flows" },
+    { "id": 20, "category": "ERPNext comparison knowledge",    "pct": 88, "evidence": "study + parity matrices V1-V4", "gap": "deeper field-level" }
+  ],
+  "overallErpLearningReadinessPct": 78,
+  "reached100": false,
+  "blockerTo100": "Reaching 100% LOCAL ERP-learning readiness is bounded by (a) full module DEPTH the deterministic templates do not yet cover (manufacturing MRP, statutory payroll, POS terminal, website storefront, returns, create/edit UI forms, EF migrations), and (b) categories that depend on EXTERNAL/operator gates (real authentication, TLS, MSSQL production-load, external security review) which cannot be satisfied locally. Knowledge breadth is high (~78%); 100% would require continued template/spec depth + the external proofs, so it is NOT claimed.",
+  "note": "Improved from earlier sprints via 8 ERP knowledge packs, the data-driven generator, the knowledge-usage report, and ERP V4 (122 tests, 22 modules)."
+}

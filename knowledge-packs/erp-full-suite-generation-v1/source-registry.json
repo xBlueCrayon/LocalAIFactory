@@ -1,0 +1,41 @@
+{
+  "registryUid": "7d15ef11-0873-43d7-bf06-2b6e23b47231",
+  "name": "ERP Full-Suite Generation — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries authored as generation guidance; no third-party source vendored",
+  "sourceTypes": [
+    "domain-theory",
+    "official-docs"
+  ],
+  "sources": [
+    {
+      "sourceUid": "062b8673-97be-4f5e-86a7-66e1150588d5",
+      "type": "domain-theory",
+      "title": "Order-to-cash and procure-to-pay business-process theory",
+      "reliability": "high",
+      "topic": "erp-process-flow"
+    },
+    {
+      "sourceUid": "a3149d40-4b17-433a-bcd8-d2cdde1c25a9",
+      "type": "domain-theory",
+      "title": "Double-entry posting, sub-ledger and period-close accounting principles",
+      "reliability": "high",
+      "topic": "accounting"
+    },
+    {
+      "sourceUid": "61ea619f-fe3b-4ba5-b989-cb9fca83fd57",
+      "type": "official-docs",
+      "title": "Relational document-lifecycle and state-machine modelling (EF Core / SQL Server concept family)",
+      "reliability": "high",
+      "topic": "data-modelling"
+    },
+    {
+      "sourceUid": "8f13baf4-0bf4-4b5b-93cc-b4737cca776d",
+      "type": "domain-theory",
+      "title": "Financial-statement preparation (trial balance, P&L, balance sheet) theory",
+      "reliability": "high",
+      "topic": "financial-reporting"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+@model List<LafErp.Services.StockBalance>
+@{ ViewData["Title"] = "Stock Balance"; }
+<table data-testid="stock-balance-table">
+    <thead><tr><th>Item Id</th><th>Warehouse Id</th><th>Qty</th><th>Value</th><th>Valuation Rate</th></tr></thead>
+    <tbody>
+    @foreach (var b in Model)
+    {
+        <tr><td>@b.ItemId</td><td>@b.WarehouseId</td><td>@b.Qty.ToString("N2")</td><td>@b.Value.ToString("N2")</td><td>@b.ValuationRate.ToString("N2")</td></tr>
+    }
+    </tbody>
+</table>

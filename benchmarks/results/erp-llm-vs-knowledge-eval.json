@@ -1,0 +1,17 @@
+{
+  "generated": "2026-06-21",
+  "models": [
+    {
+      "chars": 1178,
+      "usefulForPlanningReview": true,
+      "model": "qwen2.5-coder:14b",
+      "durationSec": 7.8
+    }
+  ],
+  "deterministicGenerator": {
+    "usedForCode": true,
+    "compilingCodeReliability": "high (108->122 tests across V3->V4, 0 manual product edits)"
+  },
+  "task": "ERP missing-module detection + code-gen approach",
+  "conclusion": "For this use case, local LLM is best as REVIEWER/PLANNER (missing-module detection, scenario ideas, security/accounting review). DETERMINISTIC knowledge-driven generation (module-spec + engine templates + knowledge packs) is better for compiling production code: it produced V4 at 100% file autonomy with 122 passing tests, which the LLM cannot reliably do."
+}

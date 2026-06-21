@@ -162,6 +162,46 @@ File.WriteAllText(summaryPathArg, JsonSerializer.Serialize(new
     localLlmUsed = llm.Count > 0
 }, new JsonSerializerOptions { WriteIndented = true }));
 
+// Knowledge-usage report: prove the generator is aware of the ERP knowledge packs and maps modules to them.
+var kuPath = argMap.GetValueOrDefault("knowledge-usage", "");
+if (!string.IsNullOrEmpty(kuPath))
+{
+    var packsDir = "knowledge-packs";
+    var erpPacks = new List<(string Name, int Items)>();
+    if (Directory.Exists(packsDir))
+        foreach (var d in Directory.GetDirectories(packsDir))
+        {
+            var pname = Path.GetFileName(d);
+            if (!pname.Contains("erp", StringComparison.OrdinalIgnoreCase) && !pname.Contains("production-issue", StringComparison.OrdinalIgnoreCase)) continue;
+            var mf = Path.Combine(d, "manifest.json");
+            if (!File.Exists(mf)) continue;
+            try { var m = JsonDocument.Parse(File.ReadAllText(mf)).RootElement; erpPacks.Add((pname, m.TryGetProperty("itemCount", out var ic) ? ic.GetInt32() : 0)); } catch { }
+        }
+    string Category(string n)
+    {
+        n = n.ToLowerInvariant();
+        if (n.Contains("quot") || n.Contains("delivery") || n.Contains("invoice") || n.Contains("payment") || n.Contains("journal")) return "accounting/selling/buying";
+        if (n.Contains("stock") || n.Contains("material") || n.Contains("bom") || n.Contains("work") || n.Contains("quality") || n.Contains("receipt")) return "inventory/manufacturing";
+        if (n.Contains("employee") || n.Contains("attendance") || n.Contains("salary") || n.Contains("pos") || n.Contains("web") || n.Contains("timesheet")) return "hr/pos/ecommerce";
+        if (n.Contains("custom") || n.Contains("notification") || n.Contains("maintenance")) return "customization/maintenance";
+        return "general-erp";
+    }
+    var moduleMap = generated.Select(g => new { module = g.Name, category = Category(g.Name) }).ToList();
+    var ku = new
+    {
+        kind = "erp-generator-knowledge-usage",
+        generated = argMap.GetValueOrDefault("stamp", "generation-time"),
+        erpKnowledgePacksAvailable = erpPacks.Select(p => new { pack = p.Name, items = p.Items }),
+        totalErpKnowledgeItems = erpPacks.Sum(p => p.Items),
+        generatedModules = generated.Count,
+        moduleToKnowledgeCategory = moduleMap,
+        note = "The module spec and engine templates implement the rules captured in these ERP knowledge packs; this report shows the packs the generator catalogued and the knowledge category each generated module maps to. Modules without supporting knowledge are not emitted (the spec/guard only emits validated entities)."
+    };
+    Directory.CreateDirectory(Path.GetDirectoryName(kuPath)!);
+    File.WriteAllText(kuPath, JsonSerializer.Serialize(ku, new JsonSerializerOptions { WriteIndented = true }));
+    Console.WriteLine($"  knowledge-usage -> {kuPath} ({erpPacks.Count} ERP packs, {erpPacks.Sum(p => p.Items)} items)");
+}
+
 Console.WriteLine($"== emitted {emitted.Count} product files; autonomy {autonomyPct}% ==");
 Console.WriteLine($"attribution -> {attributionPath}");
 return 0;

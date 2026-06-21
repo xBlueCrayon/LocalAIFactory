@@ -1,0 +1,14 @@
+{
+  "packUid": "02c926a0-d82a-449d-9e6e-10ed78a1a513",
+  "name": "ERP Test / Scenario / UI / API / Report Generation Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation rules for everything around a generated ERP's behaviour and surface: test-generation patterns (accounting balance, negative-stock, maker-checker, RBAC, immutability, audit, P&L/Balance-Sheet consistency, reversal equivalence), Playwright end-to-end scenarios, UI page scaffolding (list/detail/create/edit, server-side search/filter/sort/pagination, status badges), REST API scaffolding (GET/POST per entity, DomainException->400, DTO validation), report generation (GL, party statement, trial balance, P&L, balance sheet, AR/AP ageing, stock balance), dashboard KPI rules, and eight named real-life ERP acceptance scenarios written as test specs.",
+  "license": "Original professional summaries of widely-established ERP, accounting and software-engineering principles, authored for LocalAIFactory as code-generation guidance. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe/SAP text, or any third-party copyrighted material is reproduced verbatim. Principles are framed honestly with confidence levels; no certification or jurisdiction-specific compliance is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 27,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-test-scenario-ui-api-report.json"
+  ]
+}

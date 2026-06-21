@@ -1,0 +1,14 @@
+{
+  "packUid": "743d59a0-b0fe-4bda-a34a-c5e6183d2c63",
+  "name": "ERP HR / POS / eCommerce / Customization Generation Knowledge Pack",
+  "version": "1.0.0",
+  "description": "CRUD and skeleton generation rules for the breadth modules around the financial core: employee, attendance, payroll, leave (HR); POS sale, POS profile/closing (retail); eCommerce order ingestion; support ticket and CRM lead/opportunity; project/task; fixed-asset register; plus the customization framework a generator needs — additive custom fields, atomic numbering series, validated import/export, shared contacts/addresses, and sandboxed print templates. Every module skeleton carries an honest 'skeleton, not full module' limitation.",
+  "license": "Original professional summaries of widely-established ERP, accounting and software-engineering principles, authored for LocalAIFactory as code-generation guidance. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe/SAP text, or any third-party copyrighted material is reproduced verbatim. Principles are framed honestly with confidence levels; no certification or jurisdiction-specific compliance is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 18,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-hr-pos-ecommerce-customization.json"
+  ]
+}

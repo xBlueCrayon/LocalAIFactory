@@ -1,0 +1,124 @@
+```json
+{
+  "entities": [
+    {
+      "name": "Supplier",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "ContactPerson",
+          "type": "string"
+        },
+        {
+          "name": "Email",
+          "type": "string"
+        },
+        {
+          "name": "Phone",
+          "type": "string"
+        },
+        {
+          "name": "Address",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "CustomerSegment",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "Description",
+          "type": "string"
+        },
+        {
+          "name": "DiscountRate",
+          "type": "decimal"
+        }
+      ]
+    },
+    {
+      "name": "ProductCategory",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "ParentCategoryId",
+          "type": "int"
+        },
+        {
+          "name": "IsActive",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "EmployeeRole",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "Department",
+          "type": "string"
+        },
+        {
+          "name": "Salary",
+          "type": "decimal"
+        }
+      ]
+    },
+    {
+      "name": "MarketingCampaign",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "StartDate",
+          "type": "DateTime"
+        },
+        {
+          "name": "EndDate",
+          "type": "DateTime?"
+        },
+        {
+          "name": "Budget",
+          "type": "decimal"
+        }
+      ]
+    },
+    {
+      "name": "VendorContract",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "SupplierId",
+          "type": "int"
+        },
+        {
+          "name": "StartDate",
+          "type": "DateTime"
+        },
+        {
+          "name": "EndDate",
+          "type": "DateTime?"
+        }
+      ]
+    }
+  ]
+}
+```
