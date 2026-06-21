@@ -1,0 +1,45 @@
+{
+  "kind": "erp-gold-depth-test-coverage",
+  "stamp": "2026-06-21",
+  "sprint": "ERP-GOLD-DEPTH",
+  "dotnet": {
+    "total": 255,
+    "previous": 222,
+    "delta": "+33",
+    "allGreen": true,
+    "newOrExpandedThisSprint": [
+      { "file": "ManufacturingTests.cs", "count": 10 },
+      { "file": "ReportsDepthTests.cs", "count": 11 },
+      { "file": "ScenarioLibraryDepthTests.cs", "count": 12 }
+    ],
+    "target300": "NOT MET (255). Honest: measurable improvement, not the 300 floor."
+  },
+  "playwright": {
+    "total": 51,
+    "previous": 38,
+    "delta": "+13",
+    "allGreen": true,
+    "newSpec": { "file": "reports-api.spec.ts", "count": 13, "note": "report/manufacturing endpoint loop + tax-summary shape + purchase-register assertions" },
+    "target50": "MET (51)"
+  },
+  "scenarios": {
+    "total": 26,
+    "previous": 13,
+    "breakdown": "13 base + 12 depth (ScenarioLibraryDepthTests) + 1 trading",
+    "target25": "MET (26)"
+  },
+  "depthScenarioNames": [
+    "Scenario_make_to_stock_full_cycle",
+    "Scenario_quality_fail_then_rework_passes",
+    "Scenario_production_cost_flows_to_finished_good_valuation",
+    "Scenario_procure_produce_sell_finished_good",
+    "Scenario_sales_reporting_is_consistent",
+    "Scenario_receivables_aging_is_current_for_new_invoice",
+    "Scenario_tax_summary_reconciles_with_sales",
+    "Scenario_stock_valuation_reconciles_after_sale",
+    "Scenario_reorder_alert_for_low_stock",
+    "Scenario_work_order_summary_tracks_status",
+    "Scenario_purchase_reporting_reflects_procurement",
+    "Scenario_combined_business_day_balances_and_reports"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "erp-gold-sql-express-live-proof",
+  "stamp": "2026-06-21",
+  "instance": "(localdb)\\MSSQLLocalDB",
+  "alsoAvailable": ".\\SQLEXPRESS",
+  "database": "LafErpGoldDepth",
+  "appliedFrom": "generated-products/LAF-EnterpriseERP-GoldGenerated-Hardened (deterministic; model matches the committed migration snapshot)",
+  "migrationApplied": "20260621151632_InitialCreate",
+  "liveSchema": { "baseTables": 66, "migrationsHistoryRows": 1, "coreTablesPresent": "5/5 (Accounts, GLEntries, SalesInvoices, AppUsers, AuditEvents)" },
+  "liveAppSmoke": { "provider": "SqlServer (LocalDB) via Database.Migrate()", "health": 200, "realLogin": 302, "authedDashboard": 200 },
+  "result": "PASS — real live SQL Server (LocalDB) migration + end-to-end app login proven, no fake.",
+  "honest": "Applied against the DETERMINISTIC product because the Gold product additionally contains 5 non-deterministic local-LLM catalog modules NOT in the committed migration (EF reports PendingModelChangesWarning for Gold). On SQL Server those 5 tables would need a follow-up migration; on SQLite Gold uses EnsureCreated for the full model. This is the documented, honest boundary of the committed InitialCreate."
+}

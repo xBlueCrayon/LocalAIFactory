@@ -1,0 +1,29 @@
+{
+  "kind": "erp-gold-stock-depth",
+  "stamp": "2026-06-21",
+  "sprint": "ERP-GOLD-DEPTH",
+  "implemented": [
+    "Stock ledger (StockLedgerEntry: QtyChange, QtyAfter, ValuationRate, VoucherType, VoucherNo)",
+    "Moving-average valuation on receipt (MoveIn) and relief on issue (MoveOut)",
+    "Stock transfer (decrements source warehouse, increments destination, total qty conserved)",
+    "Stock adjustment / reconciliation",
+    "StockValuation report (qty + value per item/warehouse)",
+    "ReorderReport (items at or below a threshold)",
+    "Manufacturing material issue + finished-goods receipt flow through the same stock service"
+  ],
+  "scenarios": [
+    "Scenario_inventory_issue_uses_moving_average (moving average across two receipts)",
+    "Scenario_inventory_transfer_conserves_total_qty (source decrement + destination increment)",
+    "Scenario_stock_valuation_reconciles_after_sale",
+    "Scenario_reorder_alert_for_low_stock"
+  ],
+  "restApi": ["GET /api/stock-ledger", "GET /api/reports/stock-balance", "GET /api/reports/stock-valuation", "GET /api/reports/reorder"],
+  "notImplemented": [
+    "Batch tracking",
+    "Serial-number tracking",
+    "Landed cost (freight/duty apportionment into item valuation)",
+    "Alternative valuation methods (FIFO / standard)",
+    "Due-date / payment-terms driven reporting"
+  ],
+  "erpNextParityArea": { "stockDepth": 56 }
+}

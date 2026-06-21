@@ -3,7 +3,7 @@
   "target": "generated-products/LAF-EnterpriseERP-Gold",
   "requirement": "benchmarks/erpnext-study/laf-erp-v2-generation-requirement.md",
   "moduleSpec": "tools/LocalAIFactory.Generator/specs/erpnext-production-suite.json",
-  "templateEngineFiles": 101,
+  "templateEngineFiles": 110,
   "generatedCrudModules": 28,
   "specDrivenModules": 23,
   "localLlmModules": 5,
@@ -37,7 +37,7 @@
     "MarketingCampaign",
     "VendorContract"
   ],
-  "totalProductFiles": 103,
+  "totalProductFiles": 112,
   "generationAutonomyPct": 100,
   "localLlmUsed": true
 }

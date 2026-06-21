@@ -1,13 +1,13 @@
 {
   "kind": "laf-erp-v2-generation-attribution",
   "generatedUtc": "2026-06-21",
-  "productName": "LafErpMigGen",
+  "productName": "LafMigMfg",
   "generator": "tools/LocalAIFactory.Generator (LAF_GENERATOR_INFRASTRUCTURE)",
   "localLlm": "deterministic-fallback",
   "specModules": 23,
-  "totalProductFiles": 86,
+  "totalProductFiles": 104,
   "classification": {
-    "LAF_GENERATED": 86
+    "LAF_GENERATED": 104
   },
   "catalogGovernance": [
     {
@@ -132,8 +132,8 @@
     }
   ],
   "autonomy": {
-    "autonomousFiles": 86,
-    "lafGenerated": 86,
+    "autonomousFiles": 104,
+    "lafGenerated": 104,
     "localLlmProposalUsed": 0,
     "generationAutonomyPct": 100,
     "note": "Autonomy = (LAF_GENERATED \u002B LAF_GENERATED_THEN_FIXED_BY_LAF \u002B LOCAL_LLM_PROPOSAL_USED) / total product files. The generator itself is LAF_GENERATOR_INFRASTRUCTURE and excluded from the product denominator."
@@ -152,7 +152,11 @@
       "attribution": "LAF_GENERATED"
     },
     {
-      "path": "laf-mig-gen.slnx",
+      "path": "docs/DEPLOYMENT.md",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "laf-mig-mfg.slnx",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -172,6 +176,18 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "playwright/tests/auth-hardening.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/tests/catalog-crud.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/tests/catalog-pages.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "playwright/tests/create-form.spec.ts",
       "attribution": "LAF_GENERATED"
     },
@@ -188,11 +204,35 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "scripts/apply-migrations.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/backup-db.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "scripts/backup-restore-health.ps1",
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "scripts/generate-sql-script.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "scripts/publish-local-production.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/restore-db.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/run-production-smoke.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/setup-sql-express.ps1",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -205,6 +245,10 @@
     },
     {
       "path": "src/LafErp.Core/LedgerEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/ManufacturingEntities.cs",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -244,6 +288,18 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Data/Migrations/20260621151632_InitialCreate.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/Migrations/20260621151632_InitialCreate.Designer.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/Migrations/ErpDbContextModelSnapshot.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Services/Abstractions.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -269,6 +325,10 @@
     },
     {
       "path": "src/LafErp.Services/LafErp.Services.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/ManufacturingService.cs",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -460,6 +520,14 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "tests/LafErp.Tests/ManufacturingTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/MigrationsTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "tests/LafErp.Tests/ModuleGeneratedTests.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -469,6 +537,10 @@
     },
     {
       "path": "tests/LafErp.Tests/RealLifeScenarioTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/ScenarioLibraryTests.cs",
       "attribution": "LAF_GENERATED"
     },
     {

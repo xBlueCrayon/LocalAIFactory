@@ -1,0 +1,40 @@
+{
+  "kind": "erp-gold-report-coverage",
+  "stamp": "2026-06-21",
+  "sprint": "ERP-GOLD-DEPTH",
+  "status": "REAL (ReportsService + 11 tests + REST API)",
+  "files": ["src/LafErp.Services/ReportsService.cs", "src/LafErp.Web/ApiEndpoints.cs", "tests/LafErp.Tests/ReportsDepthTests.cs"],
+  "characteristics": ["company-scoped", "submitted-documents only", "reconcile to the General Ledger", "straightforward EF aggregation (no group-by-constant)"],
+  "reports": [
+    "SalesRegister",
+    "PurchaseRegister",
+    "SalesSummaryByCustomer",
+    "PurchaseSummaryBySupplier",
+    "OutstandingSalesInvoices",
+    "OutstandingPurchaseInvoices",
+    "ReceivablesAging (buckets 0-30 / 31-60 / 61-90 / 90+)",
+    "TaxSummary (output / input / net)",
+    "StockValuation",
+    "ReorderReport",
+    "WorkOrderSummary"
+  ],
+  "restApi": [
+    "/api/reports/sales-register",
+    "/api/reports/purchase-register",
+    "/api/reports/sales-by-customer",
+    "/api/reports/purchase-by-supplier",
+    "/api/reports/receivables-aging",
+    "/api/reports/tax-summary",
+    "/api/reports/stock-valuation",
+    "/api/reports/reorder",
+    "/api/reports/work-order-summary"
+  ],
+  "preExistingAccountingReports": ["GeneralLedger", "TrialBalance", "ProfitAndLoss", "BalanceSheet", "AccountsReceivable", "AccountsPayable", "StockBalance"],
+  "tests": { "file": "ReportsDepthTests.cs", "count": 11, "allGreen": true },
+  "limitations": [
+    "Query-based reports only: no BI engine, no dashboards, no print/report designer",
+    "Receivables aging is bucketed by posting date, not by payment-terms due date",
+    "Export coverage still partial"
+  ],
+  "erpNextParityArea": { "reportingBI": 54 }
+}

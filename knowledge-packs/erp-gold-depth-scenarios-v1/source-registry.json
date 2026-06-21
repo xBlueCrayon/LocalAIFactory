@@ -1,0 +1,31 @@
+{
+  "registryUid": "5210d169-2046-42ed-b29b-5f62010293c0",
+  "name": "ERP Gold Depth Scenarios — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["implemented-code", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "ff3996c9-3e23-48ef-a52c-d7cbbf9936a2",
+      "type": "implemented-code",
+      "title": "ScenarioLibraryDepthTests.cs — end-to-end xUnit scenarios composing manufacturing, reporting and trading flows on a fresh in-memory database (part of the 255-test Gold suite)",
+      "reliability": "high",
+      "topic": "scenarios"
+    },
+    {
+      "sourceUid": "d280f7bb-7808-46d0-8106-1681a0f219c5",
+      "type": "implemented-code",
+      "title": "ManufacturingService.cs, ReportsService.cs and the sales/stock/accounting services that the scenarios drive end-to-end",
+      "reliability": "high",
+      "topic": "engine"
+    },
+    {
+      "sourceUid": "f14bb7d1-3f38-47de-96a7-d2f23de2a100",
+      "type": "domain-theory",
+      "title": "End-to-end ERP business-cycle and reconciliation testing principles",
+      "reliability": "high",
+      "topic": "scenario-theory"
+    }
+  ]
+}

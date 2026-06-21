@@ -1,0 +1,14 @@
+{
+  "packUid": "81c55e85-53c2-47b3-838e-f7aef2025d1e",
+  "name": "ERP Gold Manufacturing Depth Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules and patterns a LocalAIFactory generator maps directly to code for a production-grade ERP manufacturing module: a bill-of-materials header plus typed component lines, a production-order lifecycle (Draft -> MaterialsIssued -> QualityPassed/QualityFailed -> Completed), BOM-scaled material issue with moving-average stock relief, short-material blocking, material-only production costing accumulated from issued-material valuation, mandatory quality inspection with fail-then-reinspect rework, finished-goods receipt at a computed unit cost, post-completion immutability, and full audit of every lifecycle transition. Each item carries an explicit implementation implication and a test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries of the real C# implementation; no third-party text is reproduced.",
+  "license": "Original professional summaries of an ERP manufacturing module implemented for LocalAIFactory, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, SAP, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 11,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-manufacturing-depth.json"
+  ]
+}

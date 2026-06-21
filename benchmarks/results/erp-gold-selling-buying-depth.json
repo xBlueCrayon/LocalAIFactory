@@ -1,0 +1,32 @@
+{
+  "kind": "erp-gold-selling-buying-depth",
+  "stamp": "2026-06-21",
+  "sprint": "ERP-GOLD-DEPTH",
+  "implemented": [
+    "Quote-to-cash: SalesInvoice create -> submit (maker/checker, threshold approval) -> GL + stock posting -> payment",
+    "Procure-to-pay: PurchaseInvoice create -> submit/approve -> GL posting -> payment",
+    "Maker/checker workflow on sales and purchase invoices",
+    "Sales register / purchase register",
+    "Sales-by-customer / purchase-by-supplier summaries",
+    "Outstanding sales / purchase invoices",
+    "Receivables aging (posting-date buckets)",
+    "Tax summary (output/input/net)"
+  ],
+  "scenarios": [
+    "Scenario_sales_reporting_is_consistent",
+    "Scenario_purchase_reporting_reflects_procurement",
+    "Scenario_tax_summary_reconciles_with_sales",
+    "Scenario_receivables_aging_is_current_for_new_invoice",
+    "Scenario_procure_produce_sell_finished_good",
+    "Scenario_combined_business_day_balances_and_reports"
+  ],
+  "restApi": ["/api/sales-invoices (+submit/approve/cancel)", "/api/purchase-invoices", "/api/payments", "/api/reports/sales-register", "/api/reports/purchase-register", "/api/reports/sales-by-customer", "/api/reports/purchase-by-supplier", "/api/reports/receivables-aging", "/api/reports/tax-summary"],
+  "notImplemented": [
+    "Delivery notes against sales orders (CRUD skeleton only; no stock relief)",
+    "Sales/purchase returns (CreditNote/DebitNote skeletons do not reverse stock or GL)",
+    "Partial delivery / partial receipt",
+    "Pricing rules / price-list driven rate resolution",
+    "Purchase-receipt-to-invoice three-way matching"
+  ],
+  "erpNextParityArea": { "sellingBuyingDepth": 54 }
+}

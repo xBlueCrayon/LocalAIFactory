@@ -27,6 +27,10 @@
       "items": 12
     },
     {
+      "pack": "erp-gold-manufacturing-depth-v1",
+      "items": 11
+    },
+    {
       "pack": "erp-gold-rbac-company-audit-v1",
       "items": 10
     },
@@ -79,7 +83,7 @@
       "items": 77
     }
   ],
-  "totalErpKnowledgeItems": 409,
+  "totalErpKnowledgeItems": 420,
   "generatedModules": 28,
   "moduleToKnowledgeCategory": [
     {

@@ -69,6 +69,11 @@ public class ErpDbContext : DbContext
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     public DbSet<ImportBatch> ImportBatches => Set<ImportBatch>();
     public DbSet<ReportDefinition> ReportDefinitions => Set<ReportDefinition>();
+
+    // Manufacturing depth
+    public DbSet<Bom> Boms => Set<Bom>();
+    public DbSet<BomLine> BomLines => Set<BomLine>();
+    public DbSet<ProductionOrder> ProductionOrders => Set<ProductionOrder>();
     // __CATALOG_DBSETS__
 
     protected override void OnModelCreating(ModelBuilder b)
@@ -123,6 +128,8 @@ public class ErpDbContext : DbContext
         b.Entity<WorkflowInstance>().HasMany(x => x.Approvals).WithOne().HasForeignKey(a => a.WorkflowInstanceId);
         b.Entity<Project>().HasMany(x => x.Tasks).WithOne().HasForeignKey(t => t.ProjectId);
         b.Entity<AppUser>().HasMany(x => x.Roles).WithOne().HasForeignKey(r => r.AppUserId);
+        b.Entity<Bom>().HasMany(x => x.Lines).WithOne().HasForeignKey(l => l.BomId);
+        b.Entity<ProductionOrder>().HasIndex(x => x.DocNo).IsUnique();
 
         // Self-referencing account hierarchy.
         b.Entity<Account>().HasOne(x => x.ParentAccount).WithMany().HasForeignKey(x => x.ParentAccountId);

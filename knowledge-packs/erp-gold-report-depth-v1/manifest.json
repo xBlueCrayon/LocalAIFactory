@@ -1,0 +1,14 @@
+{
+  "packUid": "8396c00b-7eba-4ad7-9e04-a68b01d0622e",
+  "name": "ERP Gold Report Depth Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules and patterns a LocalAIFactory generator maps directly to code for a production-grade ERP reporting layer built on the authoritative ledgers: sales and purchase registers, party summaries by customer and supplier, outstanding-invoice lists, receivables aging in 0-30/31-60/61-90/90+ buckets, a tax summary reconciling output minus input to net, stock valuation from the latest ledger balance per item and warehouse, a reorder report against a quantity threshold, and a work-order summary grouped by production status. Every report is company-scoped, considers submitted documents only, and uses straightforward EF aggregation with no group-by-constant. Each item carries an explicit implementation implication and a test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries of the real C# implementation; no third-party text is reproduced.",
+  "license": "Original professional summaries of an ERP reporting layer implemented for LocalAIFactory, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, SAP, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 11,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-report-depth.json"
+  ]
+}

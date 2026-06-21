@@ -1,0 +1,31 @@
+{
+  "registryUid": "d5bfa703-f300-45b4-aa89-245b75222f49",
+  "name": "ERP Gold Report Depth — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["implemented-code", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "48bba2e1-fece-45c4-9d46-ed506181e065",
+      "type": "implemented-code",
+      "title": "ReportsService.cs — company-scoped, submitted-only registers, party summaries, outstanding lists, receivables aging, tax summary, stock valuation, reorder and work-order summary using EF aggregation with no group-by-constant",
+      "reliability": "high",
+      "topic": "reporting"
+    },
+    {
+      "sourceUid": "c612f329-3e37-465d-944c-f130dd3860e0",
+      "type": "implemented-code",
+      "title": "ReportsDepthTests.cs — xUnit tests proving register/summary reconciliation, aging-bucket correctness, tax reconciliation, valuation, reorder threshold and company scoping (part of the 255-test Gold suite)",
+      "reliability": "high",
+      "topic": "reporting-tests"
+    },
+    {
+      "sourceUid": "23231f3e-74fb-4b49-aa42-2fdbffc254a7",
+      "type": "domain-theory",
+      "title": "Subledger reporting, receivables aging, tax output/input reconciliation and stock-valuation reporting principles",
+      "reliability": "high",
+      "topic": "reporting-theory"
+    }
+  ]
+}

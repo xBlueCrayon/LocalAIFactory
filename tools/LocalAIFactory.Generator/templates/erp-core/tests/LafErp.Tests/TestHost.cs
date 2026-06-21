@@ -33,6 +33,8 @@ public sealed class TestHost : IDisposable
     public ProjectService Projects { get; }
     public SupportService Support { get; }
     public AssetService Assets { get; }
+    public ManufacturingService Manufacturing { get; }
+    public ReportsService Reports { get; }
 
     public TestHost(string user = "admin", params string[] roles)
     {
@@ -59,6 +61,8 @@ public sealed class TestHost : IDisposable
         Projects = new ProjectService(Db, Audit);
         Support = new SupportService(Db, Audit);
         Assets = new AssetService(Db, Audit);
+        Manufacturing = new ManufacturingService(Db, Stock, Numbering, Audit);
+        Reports = new ReportsService(Db, Stock);
     }
 
     /// <summary>Switch the acting identity (maker → checker) without rebuilding the graph.</summary>

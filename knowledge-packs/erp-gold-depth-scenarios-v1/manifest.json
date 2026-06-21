@@ -1,0 +1,14 @@
+{
+  "packUid": "5fad0ed0-f3b5-4857-a363-194a4f961d8a",
+  "name": "ERP Gold Depth Scenarios Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable end-to-end scenario patterns that exercise the implemented ERP engine, each backed by a passing xUnit test on a fresh in-memory database: make-to-stock full cycle, quality-fail-then-rework, production cost flowing to finished-goods valuation, procure-produce-sell of a finished good, sales reporting consistency between register and summary, current-bucket receivables aging for a new invoice, tax-summary reconciliation with sales, stock-valuation reconciliation after a sale, low-stock reorder alerting, work-order summary tracking status transitions, purchase reporting reflecting procurement, and a combined production-and-sale business day that keeps the general ledger balanced and reports populated. Each item carries an explicit implementation implication and a test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries of the real C# scenario tests; no third-party text is reproduced.",
+  "license": "Original professional summaries of ERP end-to-end scenario tests implemented for LocalAIFactory, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, SAP, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 12,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-depth-scenarios.json"
+  ]
+}

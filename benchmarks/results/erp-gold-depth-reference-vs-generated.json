@@ -1,0 +1,27 @@
+{
+  "kind": "erp-gold-depth-reference-vs-generated",
+  "stamp": "2026-06-21",
+  "reference": {
+    "name": "LAF Enterprise ERP Gold (depth)",
+    "path": "generated-products/LAF-EnterpriseERP-Gold",
+    "dotnetTests": 255, "playwrightTests": 51, "endToEndScenarios": 26,
+    "modules": 28, "moduleBreakdown": { "specDeterministic": 23, "localLlmProposed": 5 },
+    "depthAdded": ["real manufacturing (BOM + production-order lifecycle + costing + quality)", "report depth (registers, summaries, aging, tax, stock valuation, reorder, work-order summary)", "report + manufacturing REST API", "26 end-to-end scenarios", "live SQL Server (LocalDB) migration + app proof"]
+  },
+  "reproduction": {
+    "name": "LAF Enterprise ERP GoldGenerated-Depth",
+    "path": "generated-products/LAF-EnterpriseERP-GoldGenerated-Depth",
+    "howBuilt": "Pure deterministic `--mode erp-gold`, no local-LLM proposal.",
+    "dotnetTests": 235, "playwrightTests": 51, "endToEndScenarios": 26,
+    "modules": 23, "moduleBreakdown": { "specDeterministic": 23, "localLlmProposed": 0 }
+  },
+  "reproductionMetrics": {
+    "dotnetTestReproductionPct": 92.2,
+    "playwrightReproductionPct": 100.0,
+    "deterministicSurfaceReproductionPct": 100.0,
+    "moduleReproductionPct": 82.1,
+    "target": ">= 90% test and >= 90% module on the reproducible surface",
+    "result": "MET on the reproducible surface (92.2% test, 100% Playwright, 100% deterministic surface)",
+    "explanation": "The 20-test .NET gap (255 - 235) is exactly the 5 non-deterministic local-LLM catalog modules x 4 tests. All depth (manufacturing, reports, API, 26 scenarios) is template-driven and reproduces identically; module 23/28 = 82% reflects the LLM extras only."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "erp-gold-depth-score",
+  "stamp": "2026-06-21",
+  "targetClassification": "ERP_NEXT_GRADE_DEPTH_READY_LOCAL",
+  "before": {
+    "classification": "ERP_LOCAL_PRODUCTION_READY_CORE",
+    "erpNextParityPct": 39, "productionMean": 78,
+    "dotnetTests": 222, "playwrightTests": 38, "scenarios": 13,
+    "manufacturing": "CRUD skeleton only", "reports": "core accounting + stock", "sqlExpressLive": "verified, not applied on a live instance"
+  },
+  "after": {
+    "classification": "ERP_LOCAL_PRODUCTION_READY + measurable ERPNext-grade DEPTH (approaching, not yet ERP_NEXT_GRADE_DEPTH_READY_LOCAL)",
+    "erpNextParityPct": 45, "productionMean": 80.6,
+    "dotnetTests": 255, "playwrightTests": 51, "scenarios": 26,
+    "manufacturing": "REAL: BOM + production-order lifecycle + costing + quality gating + stock impact (10 tests)",
+    "reports": "register/summary/aging/tax/valuation/reorder/work-order depth + REST API (11 tests)",
+    "sqlExpressLive": "APPLIED LIVE to SQL Server LocalDB: 66 tables + AddManufacturing migration; app login proven against LocalDB"
+  },
+  "delta": { "erpNextParityPct": "+6 (39 -> 45)", "productionMean": "+2.6 (78 -> 80.6)", "dotnetTests": "+33 (222 -> 255)", "playwrightTests": "+13 (38 -> 51)", "scenarios": "+13 (13 -> 26)" },
+  "targetsAssessment": {
+    "erpNextParity_55pct": "NOT MET (reached 45%) — honest; manufacturing + reports rose, but HR/payroll/POS/e-commerce + customization framework remain shallow",
+    "productionScore_78pct": "MET and improved (80.6)",
+    "dotnetTests_300min": "NOT MET (255) — measurable improvement, not the 300 floor",
+    "playwrightTests_50min": "MET (51)",
+    "scenarios_25min": "MET (26)",
+    "reproduction_90pct": "MET (92.2% test, 100% Playwright, 100% deterministic surface)"
+  },
+  "honest": "Genuine ERPNext-grade DEPTH was added (real manufacturing, report depth, live SQL Server proof) and reproduced by the generator, but the full ERP_NEXT_GRADE_DEPTH_READY_LOCAL bar (55% parity, 300+ tests, all module flows) is NOT reached in one sprint. HR/payroll/POS/e-commerce remain skeletons; full delivery-note/return document chains and batch/serial stock are not yet implemented."
+}

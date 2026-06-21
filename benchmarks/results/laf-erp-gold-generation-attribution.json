@@ -5,9 +5,9 @@
   "generator": "tools/LocalAIFactory.Generator (LAF_GENERATOR_INFRASTRUCTURE)",
   "localLlm": "qwen2.5-coder:14b (governed proposal, collision-guarded)",
   "specModules": 23,
-  "totalProductFiles": 103,
+  "totalProductFiles": 112,
   "classification": {
-    "LAF_GENERATED": 101,
+    "LAF_GENERATED": 110,
     "LOCAL_LLM_PROPOSAL_USED": 2
   },
   "catalogGovernance": [
@@ -158,8 +158,8 @@
     }
   ],
   "autonomy": {
-    "autonomousFiles": 103,
-    "lafGenerated": 101,
+    "autonomousFiles": 112,
+    "lafGenerated": 110,
     "localLlmProposalUsed": 2,
     "generationAutonomyPct": 100,
     "note": "Autonomy = (LAF_GENERATED \u002B LAF_GENERATED_THEN_FIXED_BY_LAF \u002B LOCAL_LLM_PROPOSAL_USED) / total product files. The generator itself is LAF_GENERATOR_INFRASTRUCTURE and excluded from the product denominator."
@@ -230,6 +230,10 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "playwright/tests/reports-api.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "scripts/apply-migrations.ps1",
       "attribution": "LAF_GENERATED"
     },
@@ -278,6 +282,10 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Core/ManufacturingEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Core/MasterEntities.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -322,6 +330,14 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Data/Migrations/20260621165757_AddManufacturing.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/Migrations/20260621165757_AddManufacturing.Designer.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Data/Migrations/ErpDbContextModelSnapshot.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -354,6 +370,10 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Services/ManufacturingService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Services/NumberingService.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -379,6 +399,10 @@
     },
     {
       "path": "src/LafErp.Services/RbacImportServices.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/ReportsService.cs",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -546,6 +570,10 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "tests/LafErp.Tests/ManufacturingTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "tests/LafErp.Tests/MigrationsTests.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -559,6 +587,14 @@
     },
     {
       "path": "tests/LafErp.Tests/RealLifeScenarioTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/ReportsDepthTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/ScenarioLibraryDepthTests.cs",
       "attribution": "LAF_GENERATED"
     },
     {

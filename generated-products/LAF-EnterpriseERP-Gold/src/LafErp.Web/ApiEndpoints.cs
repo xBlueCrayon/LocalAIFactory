@@ -87,6 +87,25 @@ public static class ApiEndpoints
             Results.Ok(db.AuditEvents.OrderByDescending(x => x.Id).Take(200)
                 .Select(x => new { x.Id, x.EntityType, x.EntityId, x.Action, x.PerformedBy, x.EventUtc, x.Details }).ToList()));
 
+        // Report depth (company-scoped).
+        api.MapGet("/reports/sales-register", (ReportsService r, int companyId) => Results.Ok(r.SalesRegister(companyId)));
+        api.MapGet("/reports/purchase-register", (ReportsService r, int companyId) => Results.Ok(r.PurchaseRegister(companyId)));
+        api.MapGet("/reports/sales-by-customer", (ReportsService r, int companyId) => Results.Ok(r.SalesSummaryByCustomer(companyId)));
+        api.MapGet("/reports/purchase-by-supplier", (ReportsService r, int companyId) => Results.Ok(r.PurchaseSummaryBySupplier(companyId)));
+        api.MapGet("/reports/receivables-aging", (ReportsService r, int companyId) => Results.Ok(r.ReceivablesAging(companyId)));
+        api.MapGet("/reports/tax-summary", (ReportsService r, int companyId) => { var t = r.TaxSummaryReport(companyId); return Results.Ok(new { outputTax = t.OutputTax, inputTax = t.InputTax, netTax = t.NetTax }); });
+        api.MapGet("/reports/stock-valuation", (ReportsService r, int companyId) => Results.Ok(r.StockValuation(companyId)));
+        api.MapGet("/reports/reorder", (ReportsService r, int companyId, decimal threshold) => Results.Ok(r.ReorderReport(companyId, threshold)));
+        api.MapGet("/reports/work-order-summary", (ReportsService r, int companyId) => Results.Ok(r.WorkOrderSummary(companyId)));
+
+        // Manufacturing depth.
+        api.MapGet("/boms", (ErpDbContext db) => Results.Ok(db.Boms.Select(b => new { b.Id, b.Name, b.FinishedItemId, b.Quantity }).ToList()));
+        api.MapGet("/production-orders", (ErpDbContext db) =>
+            Results.Ok(db.ProductionOrders.OrderByDescending(x => x.Id)
+                .Select(x => new { x.Id, x.DocNo, x.BomId, x.FinishedItemId, x.Quantity, Status = x.Status.ToString(), x.MaterialCost, x.UnitCost }).ToList()));
+        api.MapPost("/production-orders/{id:int}/issue", (int id, ManufacturingService m) => Guard(() => { m.IssueMaterials(id); return Results.Ok(new { id, action = "issued" }); }));
+        api.MapPost("/production-orders/{id:int}/complete", (int id, ManufacturingService m) => Guard(() => { m.Complete(id); return Results.Ok(new { id, action = "completed" }); }));
+
                 api.MapGet("/catalog/quotations", (ErpDbContext db) => Results.Ok(db.Set<Quotation>().OrderByDescending(x => x.Id).ToList()));
         api.MapPost("/catalog/quotations", ([Microsoft.AspNetCore.Mvc.FromServices] CatalogCrudService<Quotation> svc, [Microsoft.AspNetCore.Mvc.FromBody] Quotation e) => { try { return Results.Created("/api/catalog/quotations", svc.Create(e)); } catch (LafErp.Core.DomainException ex) { return Results.BadRequest(new { error = ex.Message }); } });
         api.MapGet("/catalog/deliverynotes", (ErpDbContext db) => Results.Ok(db.Set<DeliveryNote>().OrderByDescending(x => x.Id).ToList()));

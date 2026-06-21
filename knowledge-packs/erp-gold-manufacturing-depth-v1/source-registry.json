@@ -1,0 +1,31 @@
+{
+  "registryUid": "44245be5-eb93-452a-b014-72c6811492e2",
+  "name": "ERP Gold Manufacturing Depth — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["implemented-code", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "785b8578-1984-4dbb-8e95-c629c3c5b2b0",
+      "type": "implemented-code",
+      "title": "ManufacturingService.cs and ManufacturingEntities.cs — BOM, production-order lifecycle, material issue, quality gating, finished-goods receipt and moving-average production costing",
+      "reliability": "high",
+      "topic": "manufacturing"
+    },
+    {
+      "sourceUid": "16d5c4f4-0c80-45ed-9ab2-a62e537bbb26",
+      "type": "implemented-code",
+      "title": "ManufacturingTests.cs — xUnit tests proving BOM validation, draft creation, scaled material issue, short-material blocking, quality gating, finished-goods receipt, costing and immutability (part of the 255-test Gold suite)",
+      "reliability": "high",
+      "topic": "manufacturing-tests"
+    },
+    {
+      "sourceUid": "c0df1b56-29d2-446e-945a-f1195355ff76",
+      "type": "domain-theory",
+      "title": "Bill-of-materials, production-order lifecycle and material-issue costing principles",
+      "reliability": "high",
+      "topic": "manufacturing-theory"
+    }
+  ]
+}

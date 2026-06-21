@@ -1,0 +1,16 @@
+{
+  "kind": "erp-gold-depth-ollama-review",
+  "stamp": "2026-06-21",
+  "ollamaPresent": true,
+  "models": ["qwen2.5-coder:14b (reviewer)", "deepseek-r1:14b (architect)"],
+  "authority": "Local models REVIEW only; all committed code is human-authored deterministic templates and tested.",
+  "findings": [
+    { "by": "qwen", "finding": "Manufacturing lacks traceability / predictive maintenance / IoT.", "disposition": "BACKLOG (out of local scope)", "action": "Recorded; not required for ERPNext-grade local depth this sprint." },
+    { "by": "qwen", "finding": "Reports lack BI / ML analytics / customizable dashboards.", "disposition": "ALREADY DOCUMENTED", "action": "Query-based reports only; BI/print-designer is a known parity gap." },
+    { "by": "qwen", "finding": "GL lacks budgeting / financial-planning tools.", "disposition": "BACKLOG", "action": "Budgeting module noted as a future parity item." },
+    { "by": "deepseek", "finding": "Incorrect moving-average costing with multiple batches / partial orders.", "disposition": "PARTIALLY COVERED -> BACKLOG", "action": "Moving-average across two receipts is tested (Scenario_inventory_issue_uses_moving_average); partial-production-run costing edge added to backlog." },
+    { "by": "deepseek", "finding": "Production status not transitioning correctly to Completed.", "disposition": "ALREADY TESTED", "action": "ManufacturingTests assert the full Draft->MaterialsIssued->QualityPassed->Completed transition + immutability." },
+    { "by": "deepseek", "finding": "Transfer fails to decrement the source warehouse.", "disposition": "ALREADY TESTED", "action": "Scenario_inventory_transfer_conserves_total_qty asserts source decrement + destination increment = conserved total." }
+  ],
+  "outcome": "No accepted finding contradicts the honest scoring. Two new backlog items (partial-run costing edge, budgeting/BI); the architect's correctness concerns (status transitions, transfer decrement) are already covered by tests."
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "erp-gold-document-lifecycle-coverage",
+  "stamp": "2026-06-21",
+  "sprint": "ERP-GOLD-DEPTH",
+  "makerCheckerEngine": {
+    "service": "src/LafErp.Services/WorkflowService.cs",
+    "controls": [
+      "maker/checker separation (submitter may not approve own document)",
+      "amount-threshold approval (over threshold requires a separate approver role)",
+      "mandatory rejection reason",
+      "audit event for every transition",
+      "GL/stock posting occurs only on transition to Submitted via a caller-supplied delegate",
+      "posted documents immutable; corrections via cancel/reversal"
+    ],
+    "documentsCovered": ["SalesInvoice", "PurchaseInvoice", "PaymentEntry", "JournalEntry"],
+    "states": "Draft -> PendingApproval -> Submitted (posted) ; Reject (with reason) ; Cancel/reversal"
+  },
+  "newProductionOrderLifecycle": {
+    "service": "src/LafErp.Services/ManufacturingService.cs",
+    "states": "Draft -> MaterialsIssued -> QualityPassed | QualityFailed -> Completed (immutable)",
+    "audited": true
+  },
+  "tests": "Covered across WorkflowTests.cs, AccountingTests.cs, ManufacturingTests.cs and the scenario libraries (part of the 255 xUnit total).",
+  "notImplemented": [
+    "Delivery-note document chain (DeliveryNote is a CRUD skeleton; no Sales-Order -> Delivery-Note -> Sales-Invoice fulfilment chain with stock relief)",
+    "Sales/Purchase return chains (CreditNote / DebitNote exist as CRUD skeletons; they do NOT reverse stock or GL)",
+    "Partial delivery / partial receipt against an order",
+    "Purchase-receipt -> purchase-invoice matching chain"
+  ],
+  "honest": "Maker/checker lifecycle for the four financial documents and the new production-order lifecycle are real and tested. Delivery-note and return (reverse) document chains were NOT added this sprint."
+}

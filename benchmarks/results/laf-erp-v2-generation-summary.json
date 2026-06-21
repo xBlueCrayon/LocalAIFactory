@@ -1,9 +1,9 @@
 {
-  "productName": "LafErpMigGen",
-  "target": "C:\\Users\\Admin\\AppData\\Local\\Temp\\laf-mig-gen",
+  "productName": "LafMigMfg",
+  "target": "C:\\Users\\Admin\\AppData\\Local\\Temp\\laf-mig-mfg",
   "requirement": "benchmarks/erpnext-study/laf-erp-v2-generation-requirement.md",
   "moduleSpec": "tools/LocalAIFactory.Generator/specs/erp-gold-reference.json",
-  "templateEngineFiles": 86,
+  "templateEngineFiles": 104,
   "generatedCrudModules": 23,
   "specDrivenModules": 23,
   "localLlmModules": 0,
@@ -32,7 +32,7 @@
     "CustomFieldDef",
     "NotificationRule"
   ],
-  "totalProductFiles": 86,
+  "totalProductFiles": 104,
   "generationAutonomyPct": 100,
   "localLlmUsed": false
 }

@@ -23,6 +23,8 @@ public static class ServiceRegistration
         services.AddScoped<ProjectService>();
         services.AddScoped<SupportService>();
         services.AddScoped<AssetService>();
+        services.AddScoped<ManufacturingService>();
+        services.AddScoped<ReportsService>();
         return services;// __CATALOG_SERVICES__
         
     }

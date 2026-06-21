@@ -1,0 +1,33 @@
+{
+  "kind": "erp-gold-manufacturing-coverage",
+  "stamp": "2026-06-21",
+  "sprint": "ERP-GOLD-DEPTH",
+  "status": "REAL (implemented + tested), not a CRUD skeleton",
+  "entities": ["Bom (FinishedItemId, Quantity, Lines)", "BomLine (ComponentItemId, Quantity)", "ProductionOrder (DocNo, BomId, CompanyId, WarehouseId, FinishedItemId, Quantity, Status, MaterialCost, UnitCost, QualityInspected)"],
+  "lifecycle": "Draft -> MaterialsIssued -> QualityPassed | QualityFailed -> Completed (terminal/immutable); Cancelled state defined",
+  "files": [
+    "src/LafErp.Core/ManufacturingEntities.cs",
+    "src/LafErp.Services/ManufacturingService.cs",
+    "tests/LafErp.Tests/ManufacturingTests.cs"
+  ],
+  "rules": [
+    "BOM requires at least one component line; positive quantities enforced",
+    "IssueMaterials scales need by orderQty/bomQty (runs) per component line",
+    "IssueMaterials relieves component stock via StockService (moving-average) and blocks if any component is short",
+    "MaterialCost accumulates from the moving-average valuation of materials actually issued",
+    "Quality fail blocks completion; re-inspection from QualityFailed back to QualityPassed is allowed",
+    "Complete requires a quality pass, receives the finished good at UnitCost = MaterialCost / Quantity, then the order is immutable",
+    "All transitions are audited via AuditService"
+  ],
+  "tests": { "file": "ManufacturingTests.cs", "count": 10, "allGreen": true },
+  "restApi": ["GET /api/boms", "GET /api/production-orders", "POST /api/production-orders/{id}/issue", "POST /api/production-orders/{id}/complete", "GET /api/reports/work-order-summary"],
+  "stockIntegration": "Material issue and finished-goods receipt flow through StockService so the stock ledger and valuation stay authoritative.",
+  "limitations": [
+    "No multi-level BOM (single-level explode only)",
+    "No routing / operations / work-centres / scheduling",
+    "No scrap handling",
+    "No WIP accounting (no in-process GL postings)",
+    "Costing is material-only: no labour, no overhead absorption"
+  ],
+  "erpNextParityArea": { "manufacturing": 50, "previous": "CRUD skeleton (catalog stub only)" }
+}

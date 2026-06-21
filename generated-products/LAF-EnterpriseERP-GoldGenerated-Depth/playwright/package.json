@@ -1,0 +1,13 @@
+{
+  "name": "laf-enterprise-erp-playwright",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright UI smoke tests for the LAF Enterprise ERP generated proof product.",
+  "scripts": {
+    "test": "playwright test",
+    "install-browsers": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}

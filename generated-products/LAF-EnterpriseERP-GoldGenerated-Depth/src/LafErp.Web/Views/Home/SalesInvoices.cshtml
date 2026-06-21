@@ -1,0 +1,15 @@
+@model List<LafErp.Core.SalesInvoice>
+@{ ViewData["Title"] = "Sales Invoices"; }
+<table data-testid="sales-invoices-table">
+    <thead><tr><th>Doc No</th><th>Customer</th><th>Grand Total</th><th>Outstanding</th><th>Status</th></tr></thead>
+    <tbody>
+    @foreach (var s in Model)
+    {
+        <tr>
+            <td>@s.DocNo</td><td>@s.CustomerId</td><td>@s.GrandTotal.ToString("N2")</td>
+            <td>@s.OutstandingAmount.ToString("N2")</td>
+            <td><span class="badge @s.Status">@s.Status</span></td>
+        </tr>
+    }
+    </tbody>
+</table>

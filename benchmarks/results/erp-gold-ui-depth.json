@@ -1,0 +1,27 @@
+{
+  "kind": "erp-gold-ui-depth",
+  "stamp": "2026-06-21",
+  "sprint": "ERP-GOLD-DEPTH",
+  "existingUi": [
+    "Dashboard / Home (Index)",
+    "Login (real PBKDF2 auth, cookie, audited)",
+    "Workflow inbox (WorkflowInbox)",
+    "Catalog Create / List / Index / Edit / Deactivate (soft-delete) for masters + catalog entities",
+    "Customers / Items / SalesInvoices / GeneralLedger / StockBalance / AuditLog read views"
+  ],
+  "apiSurface": [
+    "Report REST API (/api/reports/*)",
+    "Manufacturing REST API (/api/boms, /api/production-orders + issue/complete)",
+    "Document action endpoints (sales-invoice submit/approve/cancel)",
+    "Catalog CRUD endpoints"
+  ],
+  "playwright": { "totalTests": 51, "newReportsApiSpec": "reports-api.spec.ts (13 tests via endpoint loop + shape assertions)" },
+  "notAddedThisSprint": [
+    "Bespoke per-document submit/approve/cancel UI buttons (these actions are exercised via REST API + xUnit/Playwright, not new Razor pages)",
+    "Dedicated Razor pages for every manufacturing/report document",
+    "BI dashboards / charts in the UI",
+    "Print/report designer UI"
+  ],
+  "honest": "Depth this sprint went into services, REST API and tests, not into new bespoke UI pages. The existing CRUD/dashboard/workflow-inbox UI is unchanged.",
+  "erpNextParityArea": { "uiCompleteness": 78 }
+}

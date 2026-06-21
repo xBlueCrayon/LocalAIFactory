@@ -8,19 +8,19 @@
     "accounting":              { "score": 85, "note": "Double-entry GL, P&L, balance sheet, trial balance, AR/AP, cost centres; tested." },
     "stock":                   { "score": 80, "note": "Stock ledger, balance, valuation relief; tested." },
     "sellingBuying":           { "score": 80, "note": "Quote-to-cash + procure-to-pay with maker/checker; tested." },
-    "manufacturingSkeleton":   { "score": 55, "note": "WorkOrder/JobCard/BOM/QualityInspection as CRUD modules; no MRP/routing engine." },
+    "manufacturingSkeleton":   { "score": 72, "note": "REAL manufacturing: BOM + production-order lifecycle (issue/quality/complete), moving-average production costing, stock impact, immutability, audit, 10 tests. No multi-level BOM / routing / labour+overhead costing yet." },
     "hrPosEcommerceSkeleton":  { "score": 52, "note": "Employee/Leave/Timesheet/PosProfile/WebProduct as CRUD modules; no payroll/POS/cart engines." },
     "workflowRbacAudit":       { "score": 85, "note": "Maker/checker thresholds + rejection reason + append-only audit + RolePermission matrix; tested." },
     "uiCompleteness":          { "score": 78, "note": "Create/list/edit/soft-delete for masters + catalog; submit/approve/cancel for documents (immutable when posted, by design). Some bespoke pages thin." },
-    "reportsImportExport":     { "score": 70, "note": "GL/TB/P&L/BS/AR-AP/stock reports; CSV import with rejected-row capture. Export coverage partial." },
-    "tests":                   { "score": 89, "note": "222 xUnit tests green." },
-    "playwright":              { "score": 85, "note": "38 Playwright tests green (CRUD lifecycle, auth lockout, anti-forgery, navigation)." },
-    "scenarios":               { "score": 78, "note": "13 explicit end-to-end scenarios: setup/Q2C/P2P/4x inventory/journal/month-end/RBAC-negative/maker-checker-negative/audit." },
-    "deployment":              { "score": 80, "note": "Publish + migrations + backup/restore + health + smoke + SQL-Express setup + DEPLOYMENT.md; login proven on Release EXE." },
-    "generatorReproduction":   { "score": 92, "note": "90.5% .NET + 100% Playwright + 100% deterministic-surface reproduction via --mode erp-gold." }
+    "reportsImportExport":     { "score": 80, "note": "GL/TB/P&L/BS/AR-AP + registers, party summaries, receivables aging, tax summary, stock valuation, reorder, work-order summary (service + REST API + tests); CSV import. Export coverage still partial; no BI/print-designer." },
+    "tests":                   { "score": 90, "note": "255 xUnit tests green." },
+    "playwright":              { "score": 88, "note": "51 Playwright tests green (CRUD lifecycle, auth lockout, anti-forgery, navigation, report/manufacturing API)." },
+    "scenarios":               { "score": 82, "note": "26 explicit end-to-end scenarios incl. make-to-stock, procure-produce-sell, reporting reconciliation, combined business day." },
+    "deployment":              { "score": 86, "note": "Publish + migrations + backup/restore + health + smoke + SQL-Express setup + DEPLOYMENT.md; LIVE migration + app login proven on SQL Server LocalDB." },
+    "generatorReproduction":   { "score": 92, "note": "92.2% .NET + 100% Playwright + 100% deterministic-surface reproduction via --mode erp-gold." }
   },
-  "meanLocalProductionScore": 78.0,
-  "erpNextGradeParity":        { "score": 46, "note": "Reference-grade subset, not ERPNext breadth (separate parity file)." },
+  "meanLocalProductionScore": 80.6,
+  "erpNextGradeParity":        { "score": 45, "note": "Reference-grade subset, not ERPNext breadth (separate parity file); up from 39%." },
   "classification": "ERP_LOCAL_PRODUCTION_READY (core local criteria met) with documented residual depth + external gates",
   "honesty": "No 100% claim. No ERPNext parity claim. No external certification claim. Manufacturing/HR/POS are skeletons; edit/delete is restricted to mutable masters by accounting design; external gates (SSO/OIDC, CA TLS, external security review, customer acceptance) remain."
 }

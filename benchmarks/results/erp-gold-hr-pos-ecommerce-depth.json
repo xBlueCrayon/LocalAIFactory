@@ -1,0 +1,22 @@
+{
+  "kind": "erp-gold-hr-pos-ecommerce-depth",
+  "stamp": "2026-06-21",
+  "sprint": "ERP-GOLD-DEPTH",
+  "status": "CRUD skeletons only; NOT upgraded to usable flows this sprint",
+  "hr": {
+    "exists": ["Employee", "AttendanceRecord", "LeaveApplication", "SalaryComponent", "Timesheet (CRUD create/list/edit/deactivate + REST endpoints)"],
+    "needed": ["Salary structure -> payroll run -> payslip -> GL posting", "Leave accrual + balance", "Attendance-to-pay linkage"],
+    "parity": 22
+  },
+  "pos": {
+    "exists": ["PosProfile (CRUD + REST endpoint)"],
+    "needed": ["POS sale flow (SI + payment + stock in one transaction)", "Session open/close + reconciliation", "Offline sync", "Payment tendering"],
+    "parity": 20
+  },
+  "ecommerce": {
+    "exists": ["WebProduct (CRUD + REST endpoint)"],
+    "needed": ["Storefront", "Cart", "Checkout -> sales order/invoice", "Web price lists / published-product visibility"],
+    "parity": 18
+  },
+  "honest": "These three areas remain thin CRUD skeletons (entity + create/list/edit/deactivate + a REST endpoint). No payroll engine, no POS sale flow, no cart/checkout were implemented this sprint. They are the principal reason ERPNext parity is 45% rather than the 55% stretch target."
+}
