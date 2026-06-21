@@ -1,0 +1,17 @@
+{
+  "packUid": "0a510000-0004-4000-8000-000000000001",
+  "name": "Engineering Leadership and Innovation Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Installable knowledge pack of original, concise leadership and delivery-governance patterns for enterprise software engineering. Covers AI agents in enterprise SWE, platform engineering, DORA delivery metrics, SRE error budgets and SLO/SLI design, secure-by-design and shift-left, observability-first operations, human-in-the-loop AI governance, AI-assisted development safety, knowledge management as a curated asset, engineering leadership, innovation delivery, change management, stakeholder signoff, pilot-to-production transition, blameless incident and postmortem culture, high-volume scaling, architecture decision records, risk acceptance, operator handover and runbooks, change-approval gates, reproducible-build and supply-chain integrity, cloud-native operating patterns, continuous delivery, and technical-debt management. Every item is an original summary linked to an application or governance behaviour, with an explicit limitation note and a confidence score.",
+  "license": "Original professional leadership and governance summaries authored for LocalAIFactory. Free to deploy and modify within the application. No third-party framework, standard, or copyrighted text is reproduced verbatim. Concepts are framed honestly with confidence levels; no certification or endorsement is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 26,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "engineering-leadership-and-innovation.json"
+  ],
+  "legalLimitations": "This pack contains ORIGINAL practical summaries only. It does NOT reproduce DORA/Accelerate, Google SRE, OWASP, NIST, CNCF, Microsoft Learn, or any other proprietary/official text verbatim, and it does not assert official certification or a compliance claim. Items are practical leadership and governance summaries, not substitutes for licensed standards, formal management methodologies, or legal, regulatory, or audit advice. Metrics and practices (e.g. DORA four key metrics, SRE error budgets) are derived from general industry research and are context-dependent; they describe systems rather than individuals and can be misused if tied to personal incentives. Confidence scores are author estimates, not guarantees. Source families are registered in source-registry.json as references only; exact URLs and current guidance require independent verification before citation.",
+  "sourcePolicy": "Original professional summaries and practical patterns only. No proprietary/official text copied verbatim. Generic public source families are registered in source-registry.json for governance and attribution (references only, no copyrighted text). Every item carries an explicit limitation note and a confidence score.",
+  "reviewStatus": "Approved"
+}

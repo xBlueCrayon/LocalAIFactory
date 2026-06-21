@@ -1,0 +1,32 @@
+{
+  "system": "powerbi-rest",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only - live integration NOT executed and NO compatibility/certification is claimed.",
+  "officialDocsUrl": "https://learn.microsoft.com/en-us/power-bi/developer/",
+  "apiDocsUrl": "https://learn.microsoft.com/en-us/rest/api/power-bi/",
+  "authMethod": "Microsoft Entra ID (Azure AD) OAuth2 bearer token. Service principal or delegated user; token acquired from https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token with scope https://analysis.windows.net/powerbi/api/.default. Sent as 'Authorization: Bearer <token>'.",
+  "baseUrlPattern": "https://api.powerbi.com/v1.0/myorg/  (e.g. /groups/{groupId}/datasets, /reports, /dashboards)",
+  "keyEndpoints": [
+    "GET /v1.0/myorg/groups -> list workspaces",
+    "GET /v1.0/myorg/groups/{groupId}/datasets -> list datasets",
+    "POST /v1.0/myorg/groups/{groupId}/datasets/{datasetId}/tables/{table}/rows -> push rows (push dataset)",
+    "GET /v1.0/myorg/groups/{groupId}/reports -> list reports",
+    "POST /v1.0/myorg/groups/{groupId}/reports/{reportId}/GenerateToken -> embed token"
+  ],
+  "expectedRequestShape": {
+    "pushRows": "POST .../tables/{table}/rows  body { \"rows\": [ { \"col1\": value, \"col2\": value } ] }",
+    "requirement": "Entra app registration with Power BI Service permissions; dataset must be a push/streaming dataset for row pushes."
+  },
+  "expectedSuccessResponseShape": {
+    "http": "200 OK (GET) or 200/202 for row push; embed token returns { token, tokenId, expiration }"
+  },
+  "expectedFailureResponseShape": {
+    "http": "401 Unauthorized (expired/invalid token)  OR  403 Forbidden (missing scope/capacity)  OR  400 Bad Request (schema mismatch on push)  OR  429 Too Many Requests (throttling)",
+    "body": "{ \"error\": { \"code\": \"...\", \"message\": \"...\" } }"
+  },
+  "commonIntegrationFailure": "401 when the Entra token expired or the wrong scope was requested; 400 when pushed rows do not match the dataset table schema; 403 when the service principal lacks workspace access or the workspace is not on a supported capacity.",
+  "diagnosticCommand": "POST token endpoint and inspect expiry; GET /v1.0/myorg/groups to confirm the SP can see the workspace; compare push payload columns against the dataset table schema.",
+  "preventionRule": "Cache and refresh the Entra token before expiry; request scope https://analysis.windows.net/powerbi/api/.default; validate push payload against the dataset schema; grant the service principal explicit workspace (group) membership.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "medium"
+}

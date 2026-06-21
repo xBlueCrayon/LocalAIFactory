@@ -1,0 +1,32 @@
+{
+  "system": "servicenow-table",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only - live integration NOT executed and NO compatibility/certification is claimed.",
+  "officialDocsUrl": "https://docs.servicenow.com/bundle/washingtondc-api-reference/page/integrate/inbound-rest/concept/c_RESTAPI.html",
+  "apiDocsUrl": "https://developer.servicenow.com/dev.do#!/reference/api/washingtondc/rest/c_TableAPI",
+  "authMethod": "HTTP Basic auth (username:password) over TLS, or OAuth2 bearer token via /oauth_token.do. Basic is common for service accounts; OAuth2 preferred for delegated/rotating credentials.",
+  "baseUrlPattern": "https://<instance>.service-now.com/api/now/table/<table>  (e.g. /api/now/table/incident)",
+  "keyEndpoints": [
+    "GET /api/now/table/{table}?sysparm_query=... -> query records",
+    "GET /api/now/table/{table}/{sys_id} -> single record",
+    "POST /api/now/table/{table} -> create record",
+    "PATCH /api/now/table/{table}/{sys_id} -> update record",
+    "POST /api/now/attachment/file?table_name=...&table_sys_id=... -> attach file"
+  ],
+  "expectedRequestShape": {
+    "create": "POST /api/now/table/incident  header Accept: application/json, Content-Type: application/json  body { \"short_description\": \"...\", \"caller_id\": \"...\" }",
+    "requirement": "Account has the table-level ACLs and roles (e.g. itil) for the operation; respect sysparm_limit for paging."
+  },
+  "expectedSuccessResponseShape": {
+    "http": "200 (GET/PATCH) or 201 (POST); body { \"result\": { ...fields, \"sys_id\": \"...\" } }"
+  },
+  "expectedFailureResponseShape": {
+    "http": "401 invalid credentials  OR  403 ACL/role denied (User Not Authorized)  OR  400 invalid field/query  OR  404 record/table not found",
+    "body": "{ \"error\": { \"message\": \"...\", \"detail\": \"...\" }, \"status\": \"failure\" }"
+  },
+  "commonIntegrationFailure": "403 'ACL Exception / User Not Authorized' when the integration user lacks the table role; 400 when sysparm_query references a non-existent field or bad encoded query; silent truncation when sysparm_limit/offset paging is ignored.",
+  "diagnosticCommand": "GET /api/now/table/sys_user?sysparm_limit=1 to confirm auth+role; validate sysparm_query field names against the table dictionary; check X-Total-Count header for paging.",
+  "preventionRule": "Grant the integration user the minimum table role; always page with sysparm_limit + sysparm_offset and honor X-Total-Count; validate encoded queries against the table schema; prefer OAuth2 with rotating secrets over static Basic credentials.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "medium"
+}

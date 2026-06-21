@@ -35,10 +35,14 @@ deployment, true fresh-VM install — see the gates report.
 
 ## Readiness
 
-Mean ≈ **63.4%** (max 89, **none at 100**). The **FINAL-CLOSURE** pass reached production-readiness gate
-**V2 = `PRODUCTION_READY_WHEN_EXTERNAL_PROOFS_SUPPLIED`** (12/12 closure dimensions; LEVEL 1 code + LEVEL 2
-local-technical + LEVEL 3 operator-emulation complete) with a **fresh-clone pullable** proof, an
-operator-emulation pack (10 files, all EMULATED), and a 20-system integration-expectation library (no live
+Mean ≈ **64.1%** (max 90, **none at 100**). The **NEAR-GA-CLOSURE** pass reached production-readiness gate
+**V3 = `NEAR_GA_READY_WITH_EXTERNAL_PROOF_MODEL`** (`verify-production-readiness-v3.ps1`): internal
+completeness 84.8, honest GA-now 65.4, projected 94.3 when external proofs are genuinely supplied, with an
+external-proof emulation engine that models all 9 externally-owned proofs (operator/external/customer) and
+fakes none. It builds on gate **V2 = `PRODUCTION_READY_WHEN_EXTERNAL_PROOFS_SUPPLIED`** (12/12 closure
+dimensions; LEVEL 1 code + LEVEL 2 local-technical + LEVEL 3 operator-emulation complete) with a
+**fresh-clone pullable** proof, an operator-emulation pack (10 files, all EMULATED), and a **24-system**
+integration-expectation library incl. Power BI / Tableau / ServiceNow / Salesforce (no live
 integration). Raises: Enterprise Product 30→33, Supportability 68→70, Knowledge Gov 87→88, Benchmark/Evidence
 88→89, Commercial 35→36, Controlled Pilot 74→75. LEVEL 4 (commercial GA) **not** claimed. Earlier, the
 **MULTI-AGENT-HARDENING** pass proved **HTTPS + Windows/Negotiate

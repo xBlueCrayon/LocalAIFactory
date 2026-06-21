@@ -1,0 +1,14 @@
+{
+  "gate": "V3",
+  "generated": "2026-06-21",
+  "pass": 8,
+  "warn": 0,
+  "fail": 0,
+  "internalCompleteness": 84.8,
+  "gaScoreNow": 65.4,
+  "gaScoreWhenProofsSupplied": 94.3,
+  "classification": "NEAR_GA_READY_WITH_EXTERNAL_PROOF_MODEL",
+  "externalProofsModelled": 9,
+  "externalProofsFaked": 0,
+  "note": "Internal completeness high; remaining gaps are external/operator/customer-owned proofs that are modelled+owned+validatable but NOT supplied. Commercial GA is NOT asserted."
+}

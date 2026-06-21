@@ -50,10 +50,15 @@ certainty, or production guarantee.
 - **Not present:** executed production deployment; enterprise SSO; cross-repository estate model; autonomy on a
   real repo; **external penetration test / security audit**; commercial licensing enforcement.
 
-## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 63.4%, max 89, none at 100)
+## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 64.1%, max 90, none at 100)
 
-> **FINAL-CLOSURE:** production-readiness gate **V2 = `PRODUCTION_READY_WHEN_EXTERNAL_PROOFS_SUPPLIED`**
-> (12/12 closure dimensions; LEVEL 1 code + LEVEL 2 local-technical + LEVEL 3 operator-emulation complete).
+> **NEAR-GA-CLOSURE:** production-readiness gate **V3 = `NEAR_GA_READY_WITH_EXTERNAL_PROOF_MODEL`**
+> (`scripts/production/verify-production-readiness-v3.ps1`). Internal completeness **84.8**, honest GA-now
+> **65.4**, projected GA-when-proofs-supplied **94.3** (`benchmarks/results/near-ga-score-model.json`,
+> `docs/reports/NEAR_100_GA_SCORE_MODEL.md`). Every external proof is **modelled + owned + validatable and
+> none is faked** (external-proof emulation engine: 9 proofs, `docs/reports/EXTERNAL_PROOF_EMULATION_ENGINE.md`).
+> Builds on gate **V2 = `PRODUCTION_READY_WHEN_EXTERNAL_PROOFS_SUPPLIED`** (12/12 closure dimensions; LEVEL 1
+> code + LEVEL 2 local-technical + LEVEL 3 operator-emulation complete).
 > **Fresh-clone pullable** proof passed (clone → build 0 err → 240/240 tests → gates). LEVEL 4
 > (commercial GA / real production) is **not** claimed. Full ladder:
 > **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → HTTPS/Windows-auth pilot ✅ →

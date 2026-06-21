@@ -1,0 +1,33 @@
+{
+  "system": "salesforce-rest",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only - live integration NOT executed and NO compatibility/certification is claimed.",
+  "officialDocsUrl": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/",
+  "apiDocsUrl": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_list.htm",
+  "authMethod": "OAuth2. Server-to-server: JWT bearer flow (signed assertion to /services/oauth2/token) or client-credentials flow; interactive: web-server flow. Access token sent as 'Authorization: Bearer <token>'; calls go to the returned instance_url.",
+  "baseUrlPattern": "https://<instance>.my.salesforce.com/services/data/v<XX.X>/  (e.g. /sobjects/Account, /query)",
+  "keyEndpoints": [
+    "POST /services/oauth2/token -> obtain access_token + instance_url",
+    "GET /services/data/v60.0/sobjects/{SObject}/{id} -> retrieve record",
+    "POST /services/data/v60.0/sobjects/{SObject} -> create record",
+    "PATCH /services/data/v60.0/sobjects/{SObject}/{id} -> update record",
+    "GET /services/data/v60.0/query?q=SELECT+Id,Name+FROM+Account -> SOQL query",
+    "POST /services/data/v60.0/composite/sobjects -> bulk create/update (up to 200)"
+  ],
+  "expectedRequestShape": {
+    "create": "POST /sobjects/Account  header Authorization: Bearer <token>, Content-Type: application/json  body { \"Name\": \"Acme\" }",
+    "requirement": "Connected App with the right OAuth scopes (api, refresh_token); the integration user's profile/permission set grants object + field access."
+  },
+  "expectedSuccessResponseShape": {
+    "http": "200 (GET/query), 201 (create) body { \"id\": \"...\", \"success\": true, \"errors\": [] }, 204 (update)"
+  },
+  "expectedFailureResponseShape": {
+    "http": "401 INVALID_SESSION_ID (expired token)  OR  403 REQUEST_LIMIT_EXCEEDED (API limits)  OR  400 MALFORMED_QUERY / INVALID_FIELD  OR  404 NOT_FOUND",
+    "body": "[ { \"message\": \"...\", \"errorCode\": \"...\" } ]"
+  },
+  "commonIntegrationFailure": "401 INVALID_SESSION_ID when the access token expired and was not refreshed; 400 INVALID_FIELD/MALFORMED_QUERY when SOQL references a field the user cannot see or a typo; 403 REQUEST_LIMIT_EXCEEDED when the org's 24h API call quota is exhausted; using a stale instance_url after a migration.",
+  "diagnosticCommand": "GET /services/data/ to list supported API versions; GET /services/data/v60.0/limits to inspect remaining API calls; re-run the OAuth token request and use the returned instance_url verbatim.",
+  "preventionRule": "Refresh the OAuth access token on 401 and retry once; always call the instance_url returned by the token response; validate SOQL fields against the object describe; monitor /limits to stay under the API quota; pin a tested API version.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "medium"
+}

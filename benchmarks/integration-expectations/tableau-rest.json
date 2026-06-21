@@ -1,0 +1,32 @@
+{
+  "system": "tableau-rest",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only - live integration NOT executed and NO compatibility/certification is claimed.",
+  "officialDocsUrl": "https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api.htm",
+  "apiDocsUrl": "https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref.htm",
+  "authMethod": "Sign-in returns a credentials token sent as the 'X-Tableau-Auth' header. Preferred: Personal Access Token (PAT) via POST /api/{version}/auth/signin with { credentials: { personalAccessTokenName, personalAccessTokenSecret, site: { contentUrl } } }.",
+  "baseUrlPattern": "https://<tableau-server-or-online-host>/api/<api-version>/  (e.g. /sites/{siteId}/workbooks, /datasources)",
+  "keyEndpoints": [
+    "POST /api/{version}/auth/signin -> obtain X-Tableau-Auth token + siteId",
+    "GET /api/{version}/sites/{siteId}/workbooks -> list workbooks",
+    "GET /api/{version}/sites/{siteId}/datasources -> list data sources",
+    "POST /api/{version}/sites/{siteId}/workbooks -> publish workbook (multipart)",
+    "POST /api/{version}/auth/signout -> invalidate token"
+  ],
+  "expectedRequestShape": {
+    "signin": "POST /auth/signin body { \"credentials\": { \"personalAccessTokenName\": \"...\", \"personalAccessTokenSecret\": \"...\", \"site\": { \"contentUrl\": \"\" } } }",
+    "requirement": "API version in the path must match a version the server supports; subsequent calls send X-Tableau-Auth."
+  },
+  "expectedSuccessResponseShape": {
+    "http": "200 OK; signin returns { credentials: { token, site: { id }, user: { id } } }"
+  },
+  "expectedFailureResponseShape": {
+    "http": "401001 invalid credentials / expired token  OR  401002 unauthorized  OR  404 site/resource not found  OR  405 version not supported",
+    "body": "<tsResponse><error code=\"...\"><summary/><detail/></error></tsResponse>"
+  },
+  "commonIntegrationFailure": "401 when the auth token expired (tokens are short-lived) or the PAT was rotated; 405/404 when the API version in the URL path is newer than the server supports; wrong site contentUrl yields an empty/forbidden result set.",
+  "diagnosticCommand": "GET /api/{version}/serverinfo to discover supported API/product versions; re-run /auth/signin to refresh the token; confirm site contentUrl matches the target site.",
+  "preventionRule": "Pin the API version to one the server reports via /serverinfo; refresh the X-Tableau-Auth token before its idle timeout; store PAT name+secret as secrets and rotate via config, never in code.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "medium"
+}

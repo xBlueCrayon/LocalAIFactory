@@ -1,0 +1,10 @@
+{
+  "proofs": 9,
+  "byClassification": {
+    "BLOCKED_OPERATOR": 6,
+    "BLOCKED_EXTERNAL": 2,
+    "BLOCKED_CUSTOMER": 1
+  },
+  "noRealProofClaimed": true,
+  "fail": 0
+}

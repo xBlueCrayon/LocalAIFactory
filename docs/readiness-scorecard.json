@@ -222,7 +222,7 @@
     {
       "id": 7,
       "name": "Audit and Governance Readiness",
-      "currentScore": 70,
+      "currentScore": 73,
       "confidence": "High",
       "criteria": {
         "0": "none",
@@ -237,7 +237,8 @@
         "ProvenanceEvent lineage",
         "source-registry.json governance",
         "denials audited",
-        "pack install audited (EventType 15)"
+        "pack install audited (EventType 15)",
+        "NEAR-GA-CLOSURE (2026-06-21): External-proof emulation engine (verify-external-proof-emulation.ps1) + operator-emulation/external-proof-model.json: 9 external proofs each MODELLED+OWNED+VALIDATABLE, none faked; gate V3 records the near-GA classification."
       ],
       "blockers": [
         "no cryptographic tamper-evidence",
@@ -330,7 +331,7 @@
     {
       "id": 10,
       "name": "Supportability and Operations Readiness",
-      "currentScore": 70,
+      "currentScore": 74,
       "confidence": "Medium",
       "criteria": {
         "0": "none",
@@ -346,7 +347,8 @@
         "structured logging",
         "Dashboard mode label",
         "FULL-PRODUCTION-READINESS: 8 diagnostics scripts (IIS 500.30/500.19, sql-apppool-login, https-binding, forwarded-headers, large-repo-clone, ollama, qdrant) + load profile + production-issue-fixes knowledge pack (42 patterns)",
-        "FINAL-CLOSURE: 20-system integration-expectation library (auth/endpoints/failure/diagnostic/prevention) + operator-emulation pack + 8 diagnostics + production-issue pack (42) — supportability for a human operator to complete external proofs"
+        "FINAL-CLOSURE: 20-system integration-expectation library (auth/endpoints/failure/diagnostic/prevention) + operator-emulation pack + 8 diagnostics + production-issue pack (42) — supportability for a human operator to complete external proofs",
+        "NEAR-GA-CLOSURE (2026-06-21): 8 production-check scripts (env/release/pilot/monitoring/backup/entra) + run-known-issue-diagnostics.ps1 (page-hang/blocking/secret anti-pattern detector) + production-issue-fixes pack expanded to 77 items."
       ],
       "blockers": [
         "no supportability dashboard",
@@ -405,7 +407,7 @@
     {
       "id": 12,
       "name": "Business Workflow Consulting Capability",
-      "currentScore": 60,
+      "currentScore": 63,
       "confidence": "Medium",
       "criteria": {
         "0": "none",
@@ -421,7 +423,8 @@
         "Enterprise-Solution-Evaluation-Rubric",
         "Enterprise-Consultant-Operating-Model",
         "FINAL-ENTERPRISE-REASONING: graded 31-question scenario suite over 10 pattern families with a 0-100 rubric and worked designs grounded in code/schema evidence (mean 94.5, PASS); 17 advisory questions verify controls+risks+evidence+limitations against real fixture entities",
-        "FULL-PRODUCTION-READINESS: enterprise-workflows-v1 pack (40 workflow families with states/roles/validations/approvals/audit/exceptions) + Workflow-Code-Generation-Standard + theory-crosscheck (23 concepts)"
+        "FULL-PRODUCTION-READINESS: enterprise-workflows-v1 pack (40 workflow families with states/roles/validations/approvals/audit/exceptions) + Workflow-Code-Generation-Standard + theory-crosscheck (23 concepts)",
+        "NEAR-GA-CLOSURE (2026-06-21): engineering-leadership-and-innovation-v1 knowledge pack (25 items) + DEVCON_LEADERSHIP_INNOVATION_LEARNINGS research doc."
       ],
       "blockers": [
         "no executed real engagements",
@@ -571,7 +574,7 @@
     {
       "id": 17,
       "name": "Cross-System / Estate Understanding Capability",
-      "currentScore": 45,
+      "currentScore": 48,
       "confidence": "Medium",
       "criteria": {
         "0": "none",
@@ -584,7 +587,8 @@
       "evidence": [
         "object-scoped schema identity (KE-009)",
         "portable Uid identity",
-        "R2-ACC-CAP1/CAP3 code↔schema linking within a repo (C# and Python methods linked to SQL tables/procs with evidence)"
+        "R2-ACC-CAP1/CAP3 code↔schema linking within a repo (C# and Python methods linked to SQL tables/procs with evidence)",
+        "NEAR-GA-CLOSURE (2026-06-21): Integration-expectation library deepened to 24 doc-referenced systems incl. Power BI / Tableau / ServiceNow / Salesforce (all EMULATED_EXPECTATION_ONLY; check-official-api-expectation.ps1 PASS)."
       ],
       "blockers": [
         "linking is within a single repo/project; no cross-REPOSITORY estate model yet (R2-P2)",
@@ -701,7 +705,7 @@
     {
       "id": 21,
       "name": "Enterprise ERP / Infrastructure Advisory Capability",
-      "currentScore": 68,
+      "currentScore": 70,
       "confidence": "Medium",
       "criteria": {
         "0": "none",
@@ -715,7 +719,8 @@
         "erp-crm-industrial fixture (Gold 6/6: the bridge answers 'what services touch SalesOrder', 'impact of Customer change', report/workflow/approval dependencies)",
         "ERP integration contracts (API/migration/extensibility)",
         "sage/sap-b1/sap-hana/oracle/cisco/dynamics/odoo scenarios + comparison + rubric",
-        "FINAL-ENTERPRISE-REASONING: enterprise-giant-patterns fixture extends ERP advisory across CRM/ERP/ITSM/core-banking/reporting (Gold 14/14 POV) + Enterprise-Reasoning-Comparison-Matrix + rubric-scored reasoning (mean 94.5)"
+        "FINAL-ENTERPRISE-REASONING: enterprise-giant-patterns fixture extends ERP advisory across CRM/ERP/ITSM/core-banking/reporting (Gold 14/14 POV) + Enterprise-Reasoning-Comparison-Matrix + rubric-scored reasoning (mean 94.5)",
+        "NEAR-GA-CLOSURE (2026-06-21): Added ServiceNow Table API, Salesforce REST, Power BI REST and Tableau REST expectation models (auth/endpoints/failure-modes), doc-referenced, no compatibility claimed."
       ],
       "blockers": [
         "fixtures are synthetic; no delivered ERP/infra engagement",
