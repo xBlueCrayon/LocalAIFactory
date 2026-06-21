@@ -1,0 +1,46 @@
+{
+  "kind": "operator-emulation",
+  "status": "EMULATED",
+  "fields": [
+    {
+      "name": "productionHostname",
+      "exampleValue": "laf-app-01.example.local",
+      "realProvider": "Operator infrastructure / Active Directory DNS",
+      "whyRequired": "ASP.NET Core / IIS must be bound to a resolvable production host; certificates and Entra redirect URIs are issued against this name.",
+      "validationCommand": "Resolve-DnsName laf-app-01.example.local",
+      "expectedSuccessfulOutput": "A/AAAA record resolves to the production host's internal IP with no NXDOMAIN.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "osEdition",
+      "exampleValue": "Windows Server 2022 Standard (build placeholder 20348.xxxx)",
+      "realProvider": "Operator platform team",
+      "whyRequired": "Hosting model (in-process ANCM) and .NET 10 runtime support require a supported Windows Server edition.",
+      "validationCommand": "Get-ComputerInfo -Property OsName,OsVersion,WindowsEditionId",
+      "expectedSuccessfulOutput": "OsName reports a supported Windows Server edition and a build matching the operator baseline.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "serviceAdminAccount",
+      "exampleValue": "EXAMPLE\\svc-laf-app-placeholder",
+      "realProvider": "Operator identity team (least-privilege service account)",
+      "whyRequired": "The IIS application pool runs under a managed service account with rights to the SQL Server database and the Data Protection key ring only.",
+      "validationCommand": "whoami /groups  (run as the service account)",
+      "expectedSuccessfulOutput": "Account is a member only of the expected least-privilege groups; not a local administrator.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "MISSING"
+    },
+    {
+      "name": "iisFeatureState",
+      "exampleValue": "Web-Server, Web-Asp-Net45, Web-Net-Ext45, Web-Mgmt-Console = Installed; ASP.NET Core Hosting Bundle = Installed (version placeholder)",
+      "realProvider": "Operator platform team",
+      "whyRequired": "The ASP.NET Core Module v2 (ANCM) and the Hosting Bundle must be present for in-process hosting under IIS.",
+      "validationCommand": "Get-WindowsFeature Web-Server, Web-Asp-Net45; (Get-Command dotnet).Path; reg query \"HKLM\\SOFTWARE\\Microsoft\\IIS Extensions\\Application Initialization\"",
+      "expectedSuccessfulOutput": "Web-Server feature Installed; ASP.NET Core Module v2 appears in the IIS modules list; Hosting Bundle version >= app target.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    }
+  ]
+}

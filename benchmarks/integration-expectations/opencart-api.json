@@ -1,0 +1,33 @@
+{
+  "system": "opencart-api",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://docs.opencart.com/",
+  "apiDocsUrl": "https://docs.opencart.com/en-gb/system/users/api/",
+  "authMethod": "API user (username + API key) -> POST to index.php?route=api/login returns an api_token, which is passed on subsequent calls.",
+  "baseUrlPattern": "https://<opencart-host>.example.local/index.php?route=api/<endpoint>",
+  "keyEndpoints": [
+    "POST index.php?route=api/login -> obtain api_token",
+    "POST index.php?route=api/cart/add&api_token=... -> add to cart",
+    "POST index.php?route=api/sale/order&api_token=... -> order operations",
+    "GET index.php?route=api/... (route-based store API)"
+  ],
+  "expectedRequestShape": {
+    "method": "POST",
+    "url": "https://opencart-host.example.local/index.php?route=api/login",
+    "headers": {"Content-Type": "application/x-www-form-urlencoded"},
+    "body": "username=api-user-placeholder&key=api-key-ref"
+  },
+  "expectedSuccessResponseShape": {
+    "api_token": "api-token-placeholder",
+    "success": "Success: You have successfully logged in!"
+  },
+  "expectedFailureResponseShape": {
+    "error": {"key": "Warning: No match for API Key and/or IP Address!"}
+  },
+  "commonIntegrationFailure": "Login fails with 'No match for API Key and/or IP Address' when the calling IP is not in the API user's allowed IP list, or the api_token is not forwarded on subsequent calls.",
+  "diagnosticCommand": "curl -s -X POST 'https://opencart-host.example.local/index.php?route=api/login' -d 'username=api-user-placeholder&key=api-key-ref'",
+  "preventionRule": "Add the integration server's IP to the API user's IP allow-list; capture and reuse api_token; OpenCart API is route/form based, not REST/JSON-resource based.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "low"
+}

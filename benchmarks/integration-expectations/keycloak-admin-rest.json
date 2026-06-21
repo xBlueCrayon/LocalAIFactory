@@ -1,0 +1,32 @@
+{
+  "system": "keycloak-admin-rest",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://www.keycloak.org/documentation",
+  "apiDocsUrl": "https://www.keycloak.org/docs-api/latest/rest-api/index.html",
+  "authMethod": "OAuth2 bearer token from the token endpoint (client_credentials or password grant against the realm), then Authorization: Bearer for Admin REST calls.",
+  "baseUrlPattern": "https://<keycloak-host>.example.local/admin/realms/<realm>/",
+  "keyEndpoints": [
+    "POST /realms/<realm>/protocol/openid-connect/token -> obtain access token",
+    "GET /admin/realms/<realm>/users -> list users",
+    "POST /admin/realms/<realm>/users -> create user",
+    "GET /admin/realms/<realm>/clients -> list clients"
+  ],
+  "expectedRequestShape": {
+    "method": "GET",
+    "url": "https://keycloak-host.example.local/admin/realms/example-realm/users?max=5",
+    "headers": {"Authorization": "Bearer access-token-placeholder", "Accept": "application/json"}
+  },
+  "expectedSuccessResponseShape": [
+    {"id": "uuid-placeholder", "username": "emulated-user", "enabled": true, "emailVerified": false}
+  ],
+  "expectedFailureResponseShape": {
+    "error": "invalid_token",
+    "error_description": "Token verification failed"
+  },
+  "commonIntegrationFailure": "401 invalid_token when the admin token expired or was issued for the wrong realm; 403 when the service account client lacks the realm-management roles (e.g., manage-users).",
+  "diagnosticCommand": "curl -s -X POST https://keycloak-host.example.local/realms/example-realm/protocol/openid-connect/token -d 'grant_type=client_credentials&client_id=admin-cli-placeholder&client_secret=client-secret-ref'",
+  "preventionRule": "Use a service-account client granted realm-management roles; refresh the short-lived admin token; target the correct realm in both the token and admin URLs.",
+  "localAIFactorySupportStatus": "PARTIAL",
+  "confidence": "high"
+}

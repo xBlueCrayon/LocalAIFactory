@@ -1,0 +1,33 @@
+{
+  "system": "prometheus-grafana",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://prometheus.io/docs/",
+  "apiDocsUrl": "https://prometheus.io/docs/prometheus/latest/querying/api/",
+  "authMethod": "Prometheus HTTP API typically unauthenticated behind a private network/reverse proxy; Grafana uses API tokens / basic auth / OAuth.",
+  "baseUrlPattern": "http://localhost:9090/api/v1/ (Prometheus)  and  http://localhost:3000/api/ (Grafana)",
+  "keyEndpoints": [
+    "GET /api/v1/query?query=<promql> -> instant query (Prometheus)",
+    "GET /api/v1/query_range -> range query",
+    "GET /metrics -> scrape target exposition (app side)",
+    "GET /api/health (Grafana) -> health"
+  ],
+  "expectedRequestShape": {
+    "method": "GET",
+    "url": "http://localhost:9090/api/v1/query?query=up{job=\"localaifactory\"}"
+  },
+  "expectedSuccessResponseShape": {
+    "status": "success",
+    "data": {"resultType": "vector", "result": [{"metric": {"__name__": "up", "job": "localaifactory"}, "value": [0, "1"]}]}
+  },
+  "expectedFailureResponseShape": {
+    "status": "error",
+    "errorType": "bad_data",
+    "error": "invalid parameter \"query\": parse error: unexpected end of input"
+  },
+  "commonIntegrationFailure": "PromQL parse errors (status=error, errorType=bad_data); scrape target DOWN (up=0) when /metrics is unreachable or the scrape config job name mismatches; Grafana datasource pointed at the wrong Prometheus URL.",
+  "diagnosticCommand": "curl -s 'http://localhost:9090/api/v1/query?query=up' | jq '.status, .data.result'",
+  "preventionRule": "Expose a /metrics endpoint matching the scrape job name; validate PromQL before issuing; point Grafana's datasource at the reachable Prometheus base URL; keep monitoring out of the app's request path.",
+  "localAIFactorySupportStatus": "METADATA_ONLY",
+  "confidence": "medium"
+}

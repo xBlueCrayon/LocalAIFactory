@@ -1,0 +1,76 @@
+{
+  "kind": "operator-emulation",
+  "status": "EMULATED",
+  "fields": [
+    {
+      "name": "tenantId",
+      "exampleValue": "tenant-id-guid-placeholder",
+      "realProvider": "Operator Microsoft Entra ID tenant",
+      "whyRequired": "Identifies the Entra tenant whose users may sign in; embedded in the OIDC authority URL.",
+      "validationCommand": "curl -s https://login.microsoftonline.com/tenant-id-guid-placeholder/v2.0/.well-known/openid-configuration",
+      "expectedSuccessfulOutput": "OpenID configuration JSON returned with issuer matching the tenant; HTTP 200.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "clientId",
+      "exampleValue": "client-id-guid-placeholder",
+      "realProvider": "Operator Entra app registration (Application/client ID)",
+      "whyRequired": "Identifies the LocalAIFactory app registration during the OIDC authorization code flow.",
+      "validationCommand": "az ad app show --id client-id-guid-placeholder --query appId",
+      "expectedSuccessfulOutput": "Returns the same client id; app registration exists in the tenant.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "clientSecretReference",
+      "exampleValue": "vault://example-kv/secrets/laf-entra-client-secret#latest (REFERENCE ONLY — no secret value in repo)",
+      "realProvider": "Operator secrets manager (Azure Key Vault / Windows DPAPI key ring)",
+      "whyRequired": "The confidential-client secret is required to redeem the authorization code; it MUST live in a vault and be referenced, never stored inline (CLAUDE.md §10).",
+      "validationCommand": "az keyvault secret show --vault-name example-kv --name laf-entra-client-secret --query id",
+      "expectedSuccessfulOutput": "Secret reference resolves in the vault; value is never printed; app retrieves it at runtime via the reference.",
+      "sourceReferenceType": "vault-reference",
+      "status": "BLOCKED_EXTERNAL"
+    },
+    {
+      "name": "authority",
+      "exampleValue": "https://login.microsoftonline.com/tenant-id-guid-placeholder/v2.0",
+      "realProvider": "Derived from tenantId (Entra v2.0 endpoint)",
+      "whyRequired": "OIDC middleware uses the authority to discover endpoints and validate the issuer/signing keys.",
+      "validationCommand": "curl -s https://login.microsoftonline.com/tenant-id-guid-placeholder/v2.0/.well-known/openid-configuration | jq .issuer",
+      "expectedSuccessfulOutput": "issuer matches https://login.microsoftonline.com/tenant-id-guid-placeholder/v2.0 (or the tenant's STS issuer).",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "redirectUri",
+      "exampleValue": "https://laf.example.local/signin-oidc",
+      "realProvider": "Operator Entra app registration (Web redirect URIs)",
+      "whyRequired": "Entra only returns the authorization code to a pre-registered redirect URI; must match exactly.",
+      "validationCommand": "az ad app show --id client-id-guid-placeholder --query \"web.redirectUris\"",
+      "expectedSuccessfulOutput": "Redirect URI list contains https://laf.example.local/signin-oidc exactly.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "postLogoutRedirectUri",
+      "exampleValue": "https://laf.example.local/signout-callback-oidc",
+      "realProvider": "Operator Entra app registration (front-channel logout)",
+      "whyRequired": "Enables clean single sign-out back to the app after the Entra logout.",
+      "validationCommand": "az ad app show --id client-id-guid-placeholder --query \"web.logoutUrl\"",
+      "expectedSuccessfulOutput": "Logout URL registered as https://laf.example.local/signout-callback-oidc.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "claimsMapping",
+      "exampleValue": "{ \"oid\": \"subject\", \"preferred_username\": \"userName\", \"roles\": \"appRole -> LocalAIFactory UserRole (Admin|Approver|Contributor|Viewer)\" }",
+      "realProvider": "Operator Entra app roles + LocalAIFactory role mapping configuration",
+      "whyRequired": "Entra app-role claims must map deterministically onto LocalAIFactory's UserRole enum so authorization policies work.",
+      "validationCommand": "Sign in with a test user and inspect the issued id_token roles claim; compare to the configured mapping table.",
+      "expectedSuccessfulOutput": "A user assigned the Entra 'Admin' app role is granted LocalAIFactory UserRole.Admin; unmapped users receive the least-privilege default.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "MISSING"
+    }
+  ]
+}

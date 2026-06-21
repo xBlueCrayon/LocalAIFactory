@@ -1,5 +1,4 @@
 {
-  "totalRequests": 29540.0,
   "suites": [
     {
       "suite": "iis-smoke-load",
@@ -38,5 +37,6 @@
       "appPoolAfter": "Started"
     }
   ],
-  "totalHttp500": 0.0
+  "totalHttp500": 0.0,
+  "totalRequests": 29540.0
 }

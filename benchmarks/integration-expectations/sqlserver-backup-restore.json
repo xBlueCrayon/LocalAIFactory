@@ -1,0 +1,31 @@
+{
+  "system": "sqlserver-backup-restore",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-sql-server-databases",
+  "apiDocsUrl": "https://learn.microsoft.com/en-us/sql/t-sql/statements/backup-transact-sql",
+  "authMethod": "SQL Server authentication or Windows/Integrated authentication; the principal needs BACKUP DATABASE / RESTORE permissions (db_backupoperator / sysadmin).",
+  "baseUrlPattern": "Server=laf-sql-01.example.local;Database=LocalAIFactory;  (T-SQL over TDS, port 1433)",
+  "keyEndpoints": [
+    "BACKUP DATABASE ... TO DISK = N'...' WITH INIT, CHECKSUM",
+    "BACKUP LOG ... TO DISK = N'...'",
+    "RESTORE VERIFYONLY FROM DISK = N'...'",
+    "RESTORE DATABASE ... FROM DISK = N'...' WITH MOVE, RECOVERY"
+  ],
+  "expectedRequestShape": {
+    "tsql": "BACKUP DATABASE [LocalAIFactory] TO DISK = N'\\\\backup\\\\laf\\\\LocalAIFactory_FULL.bak' WITH INIT, CHECKSUM, COMPRESSION;"
+  },
+  "expectedSuccessResponseShape": {
+    "message": "BACKUP DATABASE successfully processed N pages in X seconds.",
+    "verify": "RESTORE VERIFYONLY: The backup set on file 1 is valid."
+  },
+  "expectedFailureResponseShape": {
+    "error": "Msg 3201: Cannot open backup device ... Operating system error 5(Access is denied).  OR  Msg 3013 BACKUP DATABASE is terminating abnormally.",
+    "restoreError": "Msg 3154: The backup set holds a backup of a database other than the existing database."
+  },
+  "commonIntegrationFailure": "OS error 5 (Access denied) when the SQL Server service account cannot write the backup share; RESTORE fails with Msg 3154 when overwriting a different database without WITH REPLACE.",
+  "diagnosticCommand": "sqlcmd -S laf-sql-01.example.local -E -Q \"RESTORE VERIFYONLY FROM DISK = N'\\\\backup\\\\laf\\\\LocalAIFactory_FULL.bak';\"",
+  "preventionRule": "Grant the SQL Server service account write access to the backup path; use WITH CHECKSUM + RESTORE VERIFYONLY; periodically test full restores on a recovery instance.",
+  "localAIFactorySupportStatus": "SUPPORTED",
+  "confidence": "high"
+}

@@ -1,0 +1,37 @@
+{
+  "system": "odoo",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://www.odoo.com/documentation/",
+  "apiDocsUrl": "https://www.odoo.com/documentation/master/developer/reference/external_api.html",
+  "authMethod": "XML-RPC/JSON-RPC: authenticate(db, login, password|api_key) -> uid; subsequent calls pass uid + password/api_key. API keys configurable per user.",
+  "baseUrlPattern": "https://<odoo-host>.example.local/xmlrpc/2/common  and  /xmlrpc/2/object  (or /jsonrpc)",
+  "keyEndpoints": [
+    "/xmlrpc/2/common -> version, authenticate",
+    "/xmlrpc/2/object -> execute_kw(db, uid, password, model, method, args, kwargs)",
+    "/jsonrpc -> JSON-RPC equivalent (service=object, method=execute_kw)"
+  ],
+  "expectedRequestShape": {
+    "transport": "JSON-RPC 2.0",
+    "method": "call",
+    "params": {
+      "service": "object",
+      "method": "execute_kw",
+      "args": ["example_db", "<uid-placeholder>", "<api-key-or-password-ref>", "res.partner", "search_read", [[["is_company", "=", true]]], {"fields": ["name", "country_id"], "limit": 5}]
+    }
+  },
+  "expectedSuccessResponseShape": {
+    "jsonrpc": "2.0",
+    "id": null,
+    "result": [{"id": 1, "name": "EMULATED Partner", "country_id": [1, "EMULATED Country"]}]
+  },
+  "expectedFailureResponseShape": {
+    "jsonrpc": "2.0",
+    "error": {"code": 200, "message": "Odoo Server Error", "data": {"name": "odoo.exceptions.AccessDenied", "message": "Access Denied"}}
+  },
+  "commonIntegrationFailure": "Wrong database name or invalid api_key/password yields AccessDenied; calling execute_kw before a successful authenticate() returns uid=false.",
+  "diagnosticCommand": "curl -s https://odoo-host.example.local/jsonrpc -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"method\":\"call\",\"params\":{\"service\":\"common\",\"method\":\"version\",\"args\":[]}}'",
+  "preventionRule": "Always call common.authenticate first to obtain uid; store api_key as a vault reference; pin the exact database name.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "medium"
+}

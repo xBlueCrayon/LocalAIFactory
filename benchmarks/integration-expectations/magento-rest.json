@@ -1,0 +1,33 @@
+{
+  "system": "magento-rest",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://developer.adobe.com/commerce/webapi/rest/",
+  "apiDocsUrl": "https://developer.adobe.com/commerce/webapi/rest/quick-reference/",
+  "authMethod": "Bearer token: admin/integration token from /V1/integration/admin/token, or OAuth1.0a for integrations, or customer token.",
+  "baseUrlPattern": "https://<magento-host>.example.local/rest/<store-code>/V1/",
+  "keyEndpoints": [
+    "POST /rest/V1/integration/admin/token -> obtain admin bearer token",
+    "GET /rest/V1/products?searchCriteria... -> search products",
+    "GET /rest/V1/orders?searchCriteria... -> search orders",
+    "POST /rest/V1/products -> create product"
+  ],
+  "expectedRequestShape": {
+    "method": "GET",
+    "url": "https://magento-host.example.local/rest/V1/products?searchCriteria[pageSize]=5",
+    "headers": {"Authorization": "Bearer admin-token-placeholder", "Content-Type": "application/json"}
+  },
+  "expectedSuccessResponseShape": {
+    "items": [{"id": 1, "sku": "EMULATED-SKU-001", "name": "EMULATED Product", "price": 9.99}],
+    "total_count": 1
+  },
+  "expectedFailureResponseShape": {
+    "message": "The consumer isn't authorized to access %resources.",
+    "parameters": {"resources": "Magento_Catalog::products"}
+  },
+  "confidence": "medium",
+  "commonIntegrationFailure": "401 with 'consumer is not authorized' when the integration lacks the required ACL resource, or token expired; searchCriteria query syntax errors return 400.",
+  "diagnosticCommand": "curl -s -X POST https://magento-host.example.local/rest/V1/integration/admin/token -H 'Content-Type: application/json' -d '{\"username\":\"placeholder\",\"password\":\"password-ref\"}'",
+  "preventionRule": "Grant the integration the exact ACL resources it calls; refresh bearer tokens before expiry; URL-encode searchCriteria parameters.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY"
+}

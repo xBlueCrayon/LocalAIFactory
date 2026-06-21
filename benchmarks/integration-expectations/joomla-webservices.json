@@ -1,0 +1,32 @@
+{
+  "system": "joomla-webservices",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://docs.joomla.org/J4.x:Joomla_Core_APIs",
+  "apiDocsUrl": "https://docs.joomla.org/J4.x:Joomla_Core_APIs",
+  "authMethod": "API token via 'X-Joomla-Token' header (Joomla API Authentication plugin), or HTTP Basic via the Basic Auth plugin.",
+  "baseUrlPattern": "https://<joomla-host>.example.local/api/index.php/v1/",
+  "keyEndpoints": [
+    "GET /api/index.php/v1/content/articles -> list articles",
+    "GET /api/index.php/v1/content/articles/<id> -> single article",
+    "POST /api/index.php/v1/content/articles -> create article",
+    "GET /api/index.php/v1/users -> list users"
+  ],
+  "expectedRequestShape": {
+    "method": "GET",
+    "url": "https://joomla-host.example.local/api/index.php/v1/content/articles",
+    "headers": {"X-Joomla-Token": "joomla-api-token-placeholder", "Accept": "application/vnd.api+json"}
+  },
+  "expectedSuccessResponseShape": {
+    "links": {"self": "https://joomla-host.example.local/api/index.php/v1/content/articles"},
+    "data": [{"type": "articles", "id": "1", "attributes": {"title": "EMULATED Article", "state": 1}}]
+  },
+  "expectedFailureResponseShape": {
+    "errors": [{"title": "Forbidden", "code": 403}]
+  },
+  "commonIntegrationFailure": "403/401 when the API plugin is disabled, the token is wrong, or the request hits Apache mod_rewrite issues so /api/index.php is not routed; missing Accept header may return HTML.",
+  "diagnosticCommand": "curl -s -H 'X-Joomla-Token: joomla-api-token-placeholder' -H 'Accept: application/vnd.api+json' https://joomla-host.example.local/api/index.php/v1/content/articles",
+  "preventionRule": "Enable the API Authentication plugin and Web Services modules; send X-Joomla-Token and the vnd.api+json Accept header; verify URL rewriting routes /api.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "medium"
+}

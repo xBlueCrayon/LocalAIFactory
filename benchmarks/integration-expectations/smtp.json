@@ -1,0 +1,31 @@
+{
+  "system": "smtp",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://datatracker.ietf.org/doc/html/rfc5321",
+  "apiDocsUrl": "https://datatracker.ietf.org/doc/html/rfc6409",
+  "authMethod": "SMTP AUTH (LOGIN/PLAIN) over STARTTLS on the submission port 587; or implicit TLS on 465.",
+  "baseUrlPattern": "smtp.example.local:587 (submission, STARTTLS)",
+  "keyEndpoints": [
+    "EHLO -> capability advertisement (STARTTLS, AUTH, SIZE)",
+    "STARTTLS -> upgrade to TLS",
+    "AUTH LOGIN/PLAIN -> authenticate",
+    "MAIL FROM / RCPT TO / DATA -> submit message"
+  ],
+  "expectedRequestShape": {
+    "transcript": ["EHLO laf-app-01.example.local", "STARTTLS", "AUTH LOGIN", "MAIL FROM:<no-reply@example.local>", "RCPT TO:<ops@example.local>", "DATA", ". (end of message)"]
+  },
+  "expectedSuccessResponseShape": {
+    "auth": "235 2.7.0 Authentication successful",
+    "queued": "250 2.0.0 OK: queued as <message-id-placeholder>"
+  },
+  "expectedFailureResponseShape": {
+    "authFail": "535 5.7.8 Authentication credentials invalid",
+    "relayDenied": "550 5.7.1 Relaying denied  OR  554 5.7.1 Sender address rejected"
+  },
+  "commonIntegrationFailure": "535 auth failure (wrong credentials), 550 relaying denied (sender/recipient not permitted), or STARTTLS not offered so credentials would be sent in clear (must abort).",
+  "diagnosticCommand": "Test-NetConnection smtp.example.local -Port 587; then openssl s_client -starttls smtp -connect smtp.example.local:587 -crlf",
+  "preventionRule": "Require STARTTLS before AUTH; use a permitted SPF/DKIM-aligned MAIL FROM; never send credentials without TLS; store the SMTP password as a vault reference.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "high"
+}

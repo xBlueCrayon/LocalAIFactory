@@ -1,0 +1,32 @@
+{
+  "system": "drupal-jsonapi",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://www.drupal.org/docs/core-modules-and-themes/core-modules/jsonapi-module",
+  "apiDocsUrl": "https://jsonapi.org/format/",
+  "authMethod": "Cookie session, HTTP Basic (basic_auth module), or OAuth2 (simple_oauth module). Read access may be anonymous if permitted.",
+  "baseUrlPattern": "https://<drupal-host>.example.local/jsonapi/<entity-type>/<bundle>",
+  "keyEndpoints": [
+    "GET /jsonapi -> resource index",
+    "GET /jsonapi/node/article -> list article nodes",
+    "POST /jsonapi/node/article -> create node (auth required)",
+    "GET /jsonapi/node/article/<uuid> -> single node"
+  ],
+  "expectedRequestShape": {
+    "method": "POST",
+    "url": "https://drupal-host.example.local/jsonapi/node/article",
+    "headers": {"Content-Type": "application/vnd.api+json", "Accept": "application/vnd.api+json", "Authorization": "Basic <base64(user:password-ref)>"},
+    "body": {"data": {"type": "node--article", "attributes": {"title": "EMULATED Title", "body": {"value": "EMULATED", "format": "basic_html"}}}}
+  },
+  "expectedSuccessResponseShape": {
+    "data": {"type": "node--article", "id": "uuid-placeholder", "attributes": {"title": "EMULATED Title", "status": true}}
+  },
+  "expectedFailureResponseShape": {
+    "errors": [{"title": "Forbidden", "status": "403", "detail": "The current user is not allowed to POST the selected resource."}]
+  },
+  "commonIntegrationFailure": "415 Unsupported Media Type when Content-Type is not application/vnd.api+json; 403 when the JSON:API module is read-only or the user lacks create permission.",
+  "diagnosticCommand": "curl -s -H 'Accept: application/vnd.api+json' https://drupal-host.example.local/jsonapi | jq '.links.self'",
+  "preventionRule": "Always send and accept application/vnd.api+json; enable JSON:API write mode and grant permissions before POST; use UUIDs not numeric ids.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "high"
+}

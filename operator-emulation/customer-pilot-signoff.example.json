@@ -1,0 +1,46 @@
+{
+  "kind": "operator-emulation",
+  "status": "EMULATED",
+  "fields": [
+    {
+      "name": "customerName",
+      "exampleValue": "Example Bank Placeholder Pilot Customer",
+      "realProvider": "Customer organisation (pilot sponsor)",
+      "whyRequired": "Identifies the accountable customer entity that accepts the pilot outcome.",
+      "validationCommand": "Confirm the customer name on the signed acceptance document matches the contract / SOW.",
+      "expectedSuccessfulOutput": "Customer name on the signed acceptance record matches the engagement contract.",
+      "sourceReferenceType": "customer-attestation",
+      "status": "BLOCKED_CUSTOMER"
+    },
+    {
+      "name": "acceptanceCriteriaRefs",
+      "exampleValue": "[ \"AC-001-placeholder\", \"AC-002-placeholder\", \"AC-003-placeholder\" ]",
+      "realProvider": "Joint customer + delivery acceptance test plan",
+      "whyRequired": "Sign-off must reference the specific acceptance criteria that were demonstrated and passed.",
+      "validationCommand": "Cross-reference each AC id against the executed acceptance test report and its pass result.",
+      "expectedSuccessfulOutput": "Every referenced acceptance criterion has a recorded PASS in the acceptance test report.",
+      "sourceReferenceType": "customer-attestation",
+      "status": "BLOCKED_CUSTOMER"
+    },
+    {
+      "name": "signoffDate",
+      "exampleValue": "EMULATED-DATE 2099-01-01 (placeholder)",
+      "realProvider": "Customer (date of acceptance)",
+      "whyRequired": "Establishes the effective date of pilot acceptance for contractual and audit purposes.",
+      "validationCommand": "Confirm the date on the signed document is on or after the last acceptance test execution date.",
+      "expectedSuccessfulOutput": "Sign-off date is present, valid, and not back-dated before testing completed.",
+      "sourceReferenceType": "customer-attestation",
+      "status": "BLOCKED_CUSTOMER"
+    },
+    {
+      "name": "signer",
+      "exampleValue": "Placeholder Signer Name, Placeholder Title (e.g., Head of Middleware), Example Bank Placeholder",
+      "realProvider": "Customer authorised signatory",
+      "whyRequired": "Acceptance must be signed by a person with authority to accept on the customer's behalf.",
+      "validationCommand": "Verify the signer's authority against the customer's delegation-of-authority matrix.",
+      "expectedSuccessfulOutput": "Signer holds documented authority to accept; signature is present and verifiable.",
+      "sourceReferenceType": "customer-attestation",
+      "status": "BLOCKED_CUSTOMER"
+    }
+  ]
+}

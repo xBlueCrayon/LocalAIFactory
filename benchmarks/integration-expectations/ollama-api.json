@@ -1,0 +1,34 @@
+{
+  "system": "ollama-api",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://github.com/ollama/ollama",
+  "apiDocsUrl": "https://github.com/ollama/ollama/blob/main/docs/api.md",
+  "authMethod": "None by default (local loopback); intended to run on 127.0.0.1:11434. Optional reverse-proxy auth if exposed.",
+  "baseUrlPattern": "http://localhost:11434/api/",
+  "keyEndpoints": [
+    "GET /api/tags -> list installed models",
+    "POST /api/generate -> single-prompt completion",
+    "POST /api/chat -> chat completion",
+    "POST /api/embeddings (or /api/embed) -> generate embeddings"
+  ],
+  "expectedRequestShape": {
+    "method": "POST",
+    "url": "http://localhost:11434/api/chat",
+    "body": {"model": "qwen2.5-coder:14b", "messages": [{"role": "user", "content": "EMULATED prompt"}], "stream": false}
+  },
+  "expectedSuccessResponseShape": {
+    "model": "qwen2.5-coder:14b",
+    "message": {"role": "assistant", "content": "EMULATED response"},
+    "done": true,
+    "total_duration": 0
+  },
+  "expectedFailureResponseShape": {
+    "error": "model 'qwen2.5-coder:14b' not found, try pulling it first"
+  },
+  "commonIntegrationFailure": "Connection refused when the Ollama daemon is not running; 'model not found' when the model has not been pulled; LocalAIFactory must degrade gracefully (Ollama is optional).",
+  "diagnosticCommand": "curl -s http://localhost:11434/api/tags | jq '.models[].name'",
+  "preventionRule": "Treat Ollama as optional: probe /api/tags via the cached health snapshot, never block a request path; pre-pull required models; never call synchronously in a controller (CLAUDE.md §5).",
+  "localAIFactorySupportStatus": "SUPPORTED",
+  "confidence": "high"
+}

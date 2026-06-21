@@ -1,0 +1,36 @@
+{
+  "system": "entra-oidc",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/",
+  "apiDocsUrl": "https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc",
+  "authMethod": "OpenID Connect authorization code flow (confidential client) against the Microsoft identity platform v2.0 endpoint.",
+  "baseUrlPattern": "https://login.microsoftonline.com/<tenant-id>/v2.0/",
+  "keyEndpoints": [
+    "GET /<tenant-id>/v2.0/.well-known/openid-configuration -> discovery document",
+    "GET /<tenant-id>/oauth2/v2.0/authorize -> authorization request",
+    "POST /<tenant-id>/oauth2/v2.0/token -> token redemption",
+    "GET /<tenant-id>/discovery/v2.0/keys -> JWKS signing keys"
+  ],
+  "expectedRequestShape": {
+    "step1_authorize": "GET https://login.microsoftonline.com/tenant-id-guid-placeholder/oauth2/v2.0/authorize?client_id=client-id-guid-placeholder&response_type=code&redirect_uri=https://laf.example.local/signin-oidc&scope=openid%20profile%20email&response_mode=form_post",
+    "step2_token": {"method": "POST", "url": ".../oauth2/v2.0/token", "body": "grant_type=authorization_code&code=<code>&redirect_uri=https://laf.example.local/signin-oidc&client_id=client-id-guid-placeholder&client_secret=<vault-ref>"}
+  },
+  "expectedSuccessResponseShape": {
+    "token_type": "Bearer",
+    "scope": "openid profile email",
+    "expires_in": 3600,
+    "id_token": "<jwt-placeholder>",
+    "access_token": "<jwt-placeholder>"
+  },
+  "expectedFailureResponseShape": {
+    "error": "invalid_grant",
+    "error_description": "AADSTS70008 / AADSTS50011: The redirect URI specified in the request does not match the redirect URIs configured.",
+    "error_codes": [50011]
+  },
+  "commonIntegrationFailure": "AADSTS50011 redirect-URI-mismatch, or AADSTS700016 application-not-found, or AADSTS7000215 invalid client secret; clock skew causes id_token validation failures.",
+  "diagnosticCommand": "curl -s https://login.microsoftonline.com/tenant-id-guid-placeholder/v2.0/.well-known/openid-configuration | jq '.authorization_endpoint, .token_endpoint, .jwks_uri'",
+  "preventionRule": "Register the exact redirect URI https://laf.example.local/signin-oidc; keep the client secret in a vault; validate issuer and signing keys via discovery; keep host clock in sync.",
+  "localAIFactorySupportStatus": "PARTIAL",
+  "confidence": "high"
+}

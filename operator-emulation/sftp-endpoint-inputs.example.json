@@ -1,0 +1,46 @@
+{
+  "kind": "operator-emulation",
+  "status": "EMULATED",
+  "fields": [
+    {
+      "name": "sftpHost",
+      "exampleValue": "sftp.example.local",
+      "realProvider": "Operator file-transfer infrastructure",
+      "whyRequired": "Inbound legacy project archives / outbound exports are exchanged with banking systems over SFTP.",
+      "validationCommand": "Test-NetConnection sftp.example.local -Port 22",
+      "expectedSuccessfulOutput": "TcpTestSucceeded = True; SSH banner returned.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "sftpPort",
+      "exampleValue": "22",
+      "realProvider": "Operator file-transfer infrastructure",
+      "whyRequired": "Standard SSH/SFTP port; confirm any non-default port the operator uses.",
+      "validationCommand": "Test-NetConnection sftp.example.local -Port 22",
+      "expectedSuccessfulOutput": "TcpTestSucceeded = True on the configured port.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "sftpHostKeyFingerprint",
+      "exampleValue": "SHA256:HOSTKEY-FINGERPRINT-PLACEHOLDER-AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "realProvider": "Operator file-transfer infrastructure (server host key)",
+      "whyRequired": "The server host-key fingerprint must be pinned to prevent man-in-the-middle on first connect.",
+      "validationCommand": "ssh-keyscan -p 22 sftp.example.local | ssh-keygen -lf -",
+      "expectedSuccessfulOutput": "Reported fingerprint matches the pinned SHA256 fingerprint exactly.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "MISSING"
+    },
+    {
+      "name": "sftpClientKeyReference",
+      "exampleValue": "vault://example-kv/secrets/laf-sftp-private-key#latest (REFERENCE ONLY — private key never in repo)",
+      "realProvider": "Operator secrets manager",
+      "whyRequired": "Key-based authentication is required; the private key is held in the vault and referenced at runtime.",
+      "validationCommand": "Resolve the key reference from the vault into the service account's key agent, then: sftp -i <resolved-key> svc-laf@sftp.example.local",
+      "expectedSuccessfulOutput": "SFTP session authenticates with the key; no password prompt; private key absent from repo and logs.",
+      "sourceReferenceType": "vault-reference",
+      "status": "BLOCKED_EXTERNAL"
+    }
+  ]
+}

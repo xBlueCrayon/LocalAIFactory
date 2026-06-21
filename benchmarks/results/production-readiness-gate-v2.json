@@ -1,0 +1,8 @@
+{
+  "finalClassification": "PRODUCTION_READY_WHEN_EXTERNAL_PROOFS_SUPPLIED",
+  "dimensionsPassed": 12,
+  "note": "FULL_PRODUCTION_READY / COMMERCIAL_GA_READY require REAL external production evidence (Windows Server, CA TLS, real Entra tenant, external pen-test, signed customer pilot) — NOT produced from this host.",
+  "externalGatesEmulatedNotReal": true,
+  "dimensionsTotal": 12,
+  "gateVersion": 2
+}

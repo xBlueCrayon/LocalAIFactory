@@ -1,0 +1,35 @@
+{
+  "system": "qdrant-api",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://qdrant.tech/documentation/",
+  "apiDocsUrl": "https://api.qdrant.tech/api-reference",
+  "authMethod": "Optional api-key header (api-key: <key>) over the REST API; commonly unauthenticated on a private network.",
+  "baseUrlPattern": "http://localhost:6333/",
+  "keyEndpoints": [
+    "GET /collections -> list collections",
+    "PUT /collections/{name} -> create collection (vector size + distance)",
+    "PUT /collections/{name}/points -> upsert points",
+    "POST /collections/{name}/points/search -> vector similarity search"
+  ],
+  "expectedRequestShape": {
+    "method": "POST",
+    "url": "http://localhost:6333/collections/laf-knowledge/points/search",
+    "headers": {"Content-Type": "application/json", "api-key": "qdrant-api-key-ref-optional"},
+    "body": {"vector": ["...768 floats (nomic-embed-text dim)..."], "limit": 5, "with_payload": true}
+  },
+  "expectedSuccessResponseShape": {
+    "result": [{"id": 1, "score": 0.87, "payload": {"chunkId": "emulated"}}],
+    "status": "ok",
+    "time": 0.0
+  },
+  "expectedFailureResponseShape": {
+    "status": {"error": "Wrong input: Vector dimension error: expected dim: 768, got 384"},
+    "time": 0.0
+  },
+  "commonIntegrationFailure": "Dimension mismatch (collection created with a different vector size than the embedding model 768), connection refused when Qdrant is down; LocalAIFactory must degrade gracefully (Qdrant optional, REST only).",
+  "diagnosticCommand": "curl -s http://localhost:6333/collections | jq '.result.collections[].name'",
+  "preventionRule": "Create collections with the embedding model's exact dimension (768 for nomic-embed-text); REST only; treat Qdrant as optional via the cached health snapshot, never block a request path (CLAUDE.md §5).",
+  "localAIFactorySupportStatus": "METADATA_ONLY",
+  "confidence": "high"
+}

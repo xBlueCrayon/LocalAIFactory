@@ -1,0 +1,37 @@
+{
+  "system": "wordpress-rest",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://developer.wordpress.org/rest-api/",
+  "apiDocsUrl": "https://developer.wordpress.org/rest-api/reference/",
+  "authMethod": "Application Passwords (HTTP Basic over HTTPS) or cookie+nonce for logged-in sessions; OAuth/JWT via plugins.",
+  "baseUrlPattern": "https://<wp-host>.example.local/wp-json/wp/v2/",
+  "keyEndpoints": [
+    "GET /wp-json/ -> API discovery / namespaces",
+    "GET /wp-json/wp/v2/posts -> list posts",
+    "POST /wp-json/wp/v2/posts -> create post (auth required)",
+    "GET /wp-json/wp/v2/users/me -> current user (auth required)"
+  ],
+  "expectedRequestShape": {
+    "method": "POST",
+    "url": "https://wp-host.example.local/wp-json/wp/v2/posts",
+    "headers": {"Authorization": "Basic <base64(user:application-password-ref)>", "Content-Type": "application/json"},
+    "body": {"title": "EMULATED Title", "content": "EMULATED body", "status": "draft"}
+  },
+  "expectedSuccessResponseShape": {
+    "id": 123,
+    "status": "draft",
+    "title": {"rendered": "EMULATED Title"},
+    "link": "https://wp-host.example.local/?p=123"
+  },
+  "expectedFailureResponseShape": {
+    "code": "rest_cannot_create",
+    "message": "Sorry, you are not allowed to create posts as this user.",
+    "data": {"status": 401}
+  },
+  "commonIntegrationFailure": "401 rest_cannot_create or rest_forbidden when Application Passwords are disabled, the Authorization header is stripped by the host, or HTTPS is not used.",
+  "diagnosticCommand": "curl -s https://wp-host.example.local/wp-json/ | jq '.namespaces'",
+  "preventionRule": "Use HTTPS + Application Passwords; verify the host forwards the Authorization header; confirm the wp/v2 namespace appears in discovery.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "high"
+}

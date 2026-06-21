@@ -1,0 +1,36 @@
+{
+  "kind": "operator-emulation",
+  "status": "EMULATED",
+  "fields": [
+    {
+      "name": "edition",
+      "exampleValue": "Placeholder-Edition (e.g., Pilot | Standard | Enterprise) — EMULATED",
+      "realProvider": "Commercial/licensing owner (operator or vendor business)",
+      "whyRequired": "The licensed edition determines which features and limits the deployment is entitled to.",
+      "validationCommand": "Compare the configured edition flag against the signed commercial agreement.",
+      "expectedSuccessfulOutput": "Configured edition matches the entitlement on the executed agreement.",
+      "sourceReferenceType": "external-attestation",
+      "status": "BLOCKED_EXTERNAL"
+    },
+    {
+      "name": "entitlement",
+      "exampleValue": "{ \"seats\": \"placeholder\", \"projects\": \"placeholder\", \"importQuotaGb\": \"placeholder\", \"expiry\": \"EMULATED-2099-12-31\" }",
+      "realProvider": "Commercial agreement / license issuer",
+      "whyRequired": "Entitlements bound usage (seats, projects, quotas) and the license expiry.",
+      "validationCommand": "Validate the runtime license token's entitlement claims against the agreement and check expiry > today.",
+      "expectedSuccessfulOutput": "Entitlement claims match the agreement; license not expired.",
+      "sourceReferenceType": "external-attestation",
+      "status": "BLOCKED_EXTERNAL"
+    },
+    {
+      "name": "enforcementMode",
+      "exampleValue": "warn-only (EMULATED default) | options: off | warn-only | enforce",
+      "realProvider": "Operator licensing configuration",
+      "whyRequired": "Determines whether exceeding entitlements logs a warning or blocks; must match contractual intent.",
+      "validationCommand": "Inspect the licensing configuration and trigger an over-limit condition in a test environment to observe behaviour.",
+      "expectedSuccessfulOutput": "Over-limit condition produces the contractually-agreed behaviour (warn or block) and an audit record.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "BLOCKED_EXTERNAL"
+    }
+  ]
+}

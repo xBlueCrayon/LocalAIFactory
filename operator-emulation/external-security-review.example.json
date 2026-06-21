@@ -1,0 +1,46 @@
+{
+  "kind": "operator-emulation",
+  "status": "EMULATED",
+  "fields": [
+    {
+      "name": "reviewerFirm",
+      "exampleValue": "Placeholder Security Assurance Firm Ltd (EMULATED — not engaged)",
+      "realProvider": "Independent external security firm (operator-procured)",
+      "whyRequired": "An independent review is required before a banking customer accepts the platform into production.",
+      "validationCommand": "Confirm the engagement letter / contract with the reviewing firm exists and covers this release.",
+      "expectedSuccessfulOutput": "A signed engagement exists naming the firm and the assessed release version.",
+      "sourceReferenceType": "external-attestation",
+      "status": "BLOCKED_EXTERNAL"
+    },
+    {
+      "name": "scope",
+      "exampleValue": "Placeholder scope: web app (OWASP ASVS), Entra OIDC flow, SQL Server data-at-rest, IIS hardening, Data Protection key ring, terminal/command sandbox.",
+      "realProvider": "Agreed statement of work with the reviewing firm",
+      "whyRequired": "Defines exactly what was assessed so gaps in coverage are explicit.",
+      "validationCommand": "Compare the SOW scope to the deployed components and list any unassessed components.",
+      "expectedSuccessfulOutput": "Scope covers all internet/identity-facing and data-handling components with no unjustified exclusions.",
+      "sourceReferenceType": "external-attestation",
+      "status": "BLOCKED_EXTERNAL"
+    },
+    {
+      "name": "reportReference",
+      "exampleValue": "report-ref-placeholder-0000 (EMULATED — no report exists yet)",
+      "realProvider": "Reviewing firm deliverable",
+      "whyRequired": "Provides an auditable reference to the actual findings report.",
+      "validationCommand": "Locate the referenced report in the secure document store and verify its integrity hash.",
+      "expectedSuccessfulOutput": "Report exists, reference resolves, and integrity hash matches the firm's delivered artifact.",
+      "sourceReferenceType": "external-attestation",
+      "status": "BLOCKED_EXTERNAL"
+    },
+    {
+      "name": "findingsCount",
+      "exampleValue": "{ \"critical\": null, \"high\": null, \"medium\": null, \"low\": null } (EMULATED — null = unknown, no review performed)",
+      "realProvider": "Reviewing firm findings summary",
+      "whyRequired": "Critical/high findings must be zero (or remediated) before production go-live.",
+      "validationCommand": "Read the findings summary; confirm critical and high counts and that each is remediated or risk-accepted by the operator.",
+      "expectedSuccessfulOutput": "No open critical or high findings; all such findings closed or formally risk-accepted.",
+      "sourceReferenceType": "external-attestation",
+      "status": "BLOCKED_EXTERNAL"
+    }
+  ]
+}

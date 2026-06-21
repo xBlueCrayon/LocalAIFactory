@@ -1,0 +1,56 @@
+{
+  "kind": "operator-emulation",
+  "status": "EMULATED",
+  "fields": [
+    {
+      "name": "productionDomain",
+      "exampleValue": "laf.example.local",
+      "realProvider": "Operator DNS / domain registrar (internal zone)",
+      "whyRequired": "All HTTPS bindings, certificate SANs, and the Entra OIDC redirect URI are scoped to this domain.",
+      "validationCommand": "Resolve-DnsName laf.example.local",
+      "expectedSuccessfulOutput": "Domain resolves to the production host with no NXDOMAIN.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "caCertificateThumbprint",
+      "exampleValue": "THUMBPRINT-PLACEHOLDER-0000000000000000000000000000000000000000",
+      "realProvider": "Operator enterprise PKI / internal certificate authority",
+      "whyRequired": "The server certificate must chain to an enterprise CA that domain-joined clients already trust; the thumbprint pins the exact leaf certificate to the IIS binding.",
+      "validationCommand": "Get-ChildItem Cert:\\LocalMachine\\My | Where-Object Thumbprint -eq 'THUMBPRINT-PLACEHOLDER-0000000000000000000000000000000000000000'",
+      "expectedSuccessfulOutput": "Exactly one certificate returned, HasPrivateKey = True, NotAfter in the future, issuer = enterprise CA.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "MISSING"
+    },
+    {
+      "name": "subjectAlternativeNames",
+      "exampleValue": "DNS:laf.example.local, DNS:laf-app-01.example.local",
+      "realProvider": "Operator PKI request (CSR SAN list)",
+      "whyRequired": "Modern TLS clients validate the hostname against the SAN, not the CN; every name the app is reached by must be present.",
+      "validationCommand": "(Get-ChildItem Cert:\\LocalMachine\\My\\THUMBPRINT-PLACEHOLDER-0000000000000000000000000000000000000000).Extensions | Where-Object {$_.Oid.FriendlyName -eq 'Subject Alternative Name'} | ForEach-Object {$_.Format($true)}",
+      "expectedSuccessfulOutput": "SAN list contains every production hostname; no certificate-name-mismatch warning when browsing https://laf.example.local.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "certificateExpiry",
+      "exampleValue": "EMULATED-EXPIRY 2099-12-31T00:00:00Z (placeholder, replace with real NotAfter)",
+      "realProvider": "Operator PKI (certificate validity period)",
+      "whyRequired": "Expiry must be tracked so a renewal job replaces the certificate before clients see a trust failure.",
+      "validationCommand": "(Get-ChildItem Cert:\\LocalMachine\\My\\THUMBPRINT-PLACEHOLDER-0000000000000000000000000000000000000000).NotAfter",
+      "expectedSuccessfulOutput": "NotAfter is in the future and a renewal reminder exists at least 30 days prior.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "developmentFallbackCertificate",
+      "exampleValue": "CN=localhost (local test only — self-signed dev certificate, NOT for production)",
+      "realProvider": "dotnet dev-certs (developer machine only)",
+      "whyRequired": "Documents that local development uses a self-signed CN=localhost certificate which must never be promoted to production.",
+      "validationCommand": "dotnet dev-certs https --check",
+      "expectedSuccessfulOutput": "A valid HTTPS development certificate is present on the dev machine; this certificate is absent from production.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    }
+  ]
+}

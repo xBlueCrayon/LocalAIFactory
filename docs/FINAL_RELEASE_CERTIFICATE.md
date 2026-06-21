@@ -50,12 +50,16 @@ certainty, or production guarantee.
 - **Not present:** executed production deployment; enterprise SSO; cross-repository estate model; autonomy on a
   real repo; **external penetration test / security audit**; commercial licensing enforcement.
 
-## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 62.0%, max 88, none at 100)
+## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 63.4%, max 89, none at 100)
 
-> DEPLOYMENT-HARDENING raised only **Deployment Readiness 70 → 73** — a Mode C published-app + SQL Express
-> deployment was **executed** (not IIS, not production). Deployment proof ladder:
-> **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → IIS HTTPS/Windows-auth pilot ✅ →
-> 50-real-project benchmark ✅ → Production ⬜ → Commercial GA ⬜** (HTTPS + Windows/Negotiate round-trip and
+> **FINAL-CLOSURE:** production-readiness gate **V2 = `PRODUCTION_READY_WHEN_EXTERNAL_PROOFS_SUPPLIED`**
+> (12/12 closure dimensions; LEVEL 1 code + LEVEL 2 local-technical + LEVEL 3 operator-emulation complete).
+> **Fresh-clone pullable** proof passed (clone → build 0 err → 240/240 tests → gates). LEVEL 4
+> (commercial GA / real production) is **not** claimed. Full ladder:
+> **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → HTTPS/Windows-auth pilot ✅ →
+> 50-real-project benchmark ✅ → 100+ system benchmark ✅ → operator-emulation ✅ → fresh-clone pullable ✅ →
+> production-ready-when-external-proofs-supplied ✅ → Real Windows Server prod ⬜ → External review ⬜ →
+> Signed customer pilot ⬜ → Commercial GA ⬜.** (HTTPS + Windows/Negotiate round-trip and
 > a 51-real-repo benchmark proven this phase).
 
 Technical POC **88** · Data/Knowledge Governance **85** · Benchmark **82** · Repository Understanding **80** ·

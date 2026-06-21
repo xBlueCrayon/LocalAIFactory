@@ -1,0 +1,33 @@
+{
+  "system": "woocommerce-rest",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://woocommerce.com/document/woocommerce-rest-api/",
+  "apiDocsUrl": "https://woocommerce.github.io/woocommerce-rest-api-docs/",
+  "authMethod": "REST API consumer key + consumer secret (HTTP Basic over HTTPS, or OAuth 1.0a over plain HTTP).",
+  "baseUrlPattern": "https://<store-host>.example.local/wp-json/wc/v3/",
+  "keyEndpoints": [
+    "GET /wp-json/wc/v3/products -> list products",
+    "POST /wp-json/wc/v3/products -> create product",
+    "GET /wp-json/wc/v3/orders -> list orders",
+    "GET /wp-json/wc/v3/system_status -> environment / status"
+  ],
+  "expectedRequestShape": {
+    "method": "GET",
+    "url": "https://store-host.example.local/wp-json/wc/v3/products?per_page=5",
+    "headers": {"Authorization": "Basic <base64(ck_consumer-key-placeholder:cs_consumer-secret-ref)>"}
+  },
+  "expectedSuccessResponseShape": [
+    {"id": 101, "name": "EMULATED Product", "price": "9.99", "stock_status": "instock"}
+  ],
+  "expectedFailureResponseShape": {
+    "code": "woocommerce_rest_authentication_error",
+    "message": "Consumer key is invalid.",
+    "data": {"status": 401}
+  },
+  "commonIntegrationFailure": "401 woocommerce_rest_authentication_error when ck/cs are wrong, or when Basic auth is attempted over plain HTTP (WooCommerce requires HTTPS for Basic; HTTP requires OAuth 1.0a).",
+  "diagnosticCommand": "curl -s -u 'ck_consumer-key-placeholder:cs_consumer-secret-ref' https://store-host.example.local/wp-json/wc/v3/system_status | jq '.environment.version'",
+  "preventionRule": "Always use HTTPS with consumer key/secret as Basic auth; store cs as a vault reference; never put ck/cs in a URL query string in logs.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "high"
+}

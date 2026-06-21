@@ -580,5 +580,5 @@ captured evidence:
 
 Until those four are simultaneously true, the product remains a **controlled,
 operator-assisted pilot/demo**, and the final `v1.0` release (blocker 15) stays
-**unpublished by design**. Readiness today is reported honestly at mean ~62.0%, max 88,
+**unpublished by design**. Readiness today is reported honestly at mean ~63.4%, max 89,
 **none at 100** — consistent with this roadmap. See also `docs/Known-Limitations.md`.

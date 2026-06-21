@@ -1,0 +1,46 @@
+{
+  "kind": "operator-emulation",
+  "status": "EMULATED",
+  "fields": [
+    {
+      "name": "smtpHost",
+      "exampleValue": "smtp.example.local",
+      "realProvider": "Operator mail infrastructure (internal relay)",
+      "whyRequired": "Notification and operational mail (alerts, sign-off reminders) are sent through the corporate relay.",
+      "validationCommand": "Test-NetConnection smtp.example.local -Port 587",
+      "expectedSuccessfulOutput": "TcpTestSucceeded = True; relay reachable from the production host.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "smtpPort",
+      "exampleValue": "587",
+      "realProvider": "Operator mail infrastructure",
+      "whyRequired": "Port 587 is the submission port using STARTTLS for authenticated relay.",
+      "validationCommand": "Test-NetConnection smtp.example.local -Port 587",
+      "expectedSuccessfulOutput": "TcpTestSucceeded = True on port 587.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    },
+    {
+      "name": "smtpAuth",
+      "exampleValue": "{ \"mode\": \"STARTTLS\", \"username\": \"svc-laf-mailer@example.local\", \"passwordRef\": \"vault://example-kv/secrets/laf-smtp-password#latest\" }",
+      "realProvider": "Operator mail infrastructure + secrets manager",
+      "whyRequired": "Authenticated submission prevents open-relay abuse; the password is a vault reference, never inline.",
+      "validationCommand": "Send a test message via the configured credentials and confirm 235 Authentication successful in the SMTP transcript.",
+      "expectedSuccessfulOutput": "SMTP AUTH succeeds over STARTTLS; no plaintext password is logged or stored in repo.",
+      "sourceReferenceType": "vault-reference",
+      "status": "BLOCKED_EXTERNAL"
+    },
+    {
+      "name": "fromAddress",
+      "exampleValue": "no-reply@example.local",
+      "realProvider": "Operator mail infrastructure (allowed sender / SPF)",
+      "whyRequired": "Outbound mail must use an SPF/DKIM-aligned sender so it is not rejected or spam-filtered.",
+      "validationCommand": "Send a test mail and inspect the received headers for SPF=pass / DKIM=pass.",
+      "expectedSuccessfulOutput": "Test mail delivered to a real mailbox with SPF/DKIM alignment.",
+      "sourceReferenceType": "operator-supplied",
+      "status": "EMULATED"
+    }
+  ]
+}

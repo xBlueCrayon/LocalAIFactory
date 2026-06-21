@@ -24,7 +24,8 @@ for ($iter=1; $iter -le $MaxIterations; $iter++) {
   if ($kp -notmatch "VERIFY-ALL-KNOWLEDGE-PACKS: PASS") { $issues += "knowledge" }
   $gate = & pwsh -NoProfile -File "$repo/scripts/production/verify-production-readiness.ps1" 2>&1 | Out-String
   if ($gate -match "FINAL CLASSIFICATION: NOT_READY") { $issues += "production-gate-NOT_READY" }
-  $forbidden = (git -C $repo ls-files | Select-String 'bin/|obj/|\.tmp|/publish/|\.bak$|\.log$|node_modules|inetpub|release.*\.zip$|benchmark-repos|public-system-docs|backups/').Count
+  # match runtime/scratch artifacts only — anchor temp dirs on .tmp- so legit source scripts (e.g. fetch-public-system-docs.ps1) are not false-flagged
+  $forbidden = (git -C $repo ls-files | Select-String '/(bin|obj)/|\.tmp-|/publish/|\.bak$|\.log$|node_modules/|inetpub/|release.*\.zip$|^backups/|\.(mdf|ldf)$').Count
   if ($forbidden -gt 0) { $issues += "forbidden-tracked" }
   $procs = (Get-Process LocalAIFactory.Web -EA SilentlyContinue | Measure-Object).Count
   if ($procs -gt 0) { $issues += "stale-app-process" }

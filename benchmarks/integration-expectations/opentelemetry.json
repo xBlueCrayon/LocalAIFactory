@@ -1,0 +1,34 @@
+{
+  "system": "opentelemetry",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://opentelemetry.io/docs/",
+  "apiDocsUrl": "https://opentelemetry.io/docs/specs/otlp/",
+  "authMethod": "OTLP exporter; optional headers (e.g., Authorization) when shipping to a gated collector. Local collector typically unauthenticated.",
+  "baseUrlPattern": "http://localhost:4318/ (OTLP/HTTP)  or  localhost:4317 (OTLP/gRPC)",
+  "keyEndpoints": [
+    "POST /v1/traces -> export spans (OTLP/HTTP)",
+    "POST /v1/metrics -> export metrics",
+    "POST /v1/logs -> export logs",
+    "gRPC: opentelemetry.proto.collector.trace.v1.TraceService/Export"
+  ],
+  "expectedRequestShape": {
+    "method": "POST",
+    "url": "http://localhost:4318/v1/traces",
+    "headers": {"Content-Type": "application/json"},
+    "body": {"resourceSpans": [{"resource": {"attributes": [{"key": "service.name", "value": {"stringValue": "LocalAIFactory.Web"}}]}, "scopeSpans": [{"spans": [{"name": "EMULATED span", "traceId": "0000000000000000-traceid-placeholder"}]}]}]}
+  },
+  "expectedSuccessResponseShape": {
+    "http": "200 OK",
+    "body": {"partialSuccess": {}}
+  },
+  "expectedFailureResponseShape": {
+    "http": "400 Bad Request OR 503 when collector unavailable",
+    "body": {"partialSuccess": {"rejectedSpans": 1, "errorMessage": "EMULATED rejection"}}
+  },
+  "commonIntegrationFailure": "Exporter connection refused when no collector is listening on 4317/4318; protocol mismatch (sending OTLP/HTTP JSON to the gRPC port); silent data loss if the exporter is fire-and-forget without retry.",
+  "diagnosticCommand": "curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:4318/v1/traces -H 'Content-Type: application/json' -d '{\"resourceSpans\":[]}'",
+  "preventionRule": "Match exporter protocol to the collector port (4318 HTTP vs 4317 gRPC); make telemetry export non-blocking and best-effort so the app never stalls when the collector is down.",
+  "localAIFactorySupportStatus": "METADATA_ONLY",
+  "confidence": "medium"
+}

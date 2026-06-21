@@ -1,0 +1,32 @@
+{
+  "system": "aspnetcore-iis-ancm",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/",
+  "apiDocsUrl": "https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/aspnet-core-module",
+  "authMethod": "N/A (hosting integration). The ASP.NET Core Module v2 (ANCM) forwards requests from IIS to the in-process .NET runtime via web.config.",
+  "baseUrlPattern": "https://laf.example.local/  (IIS site -> ANCM -> in-process Kestrel)",
+  "keyEndpoints": [
+    "web.config aspNetCore handler section -> processPath, hostingModel=inprocess",
+    "GET / -> app served via in-process hosting",
+    "stdout / Event Log -> ANCM startup diagnostics",
+    "ASPNETCORE_* environment variables -> runtime configuration"
+  ],
+  "expectedRequestShape": {
+    "webConfig": "<aspNetCore processPath=\"dotnet\" arguments=\".\\LocalAIFactory.Web.dll\" stdoutLogEnabled=\"false\" hostingModel=\"inprocess\" />",
+    "requirement": "ASP.NET Core Hosting Bundle installed; AppPool 'No Managed Code'."
+  },
+  "expectedSuccessResponseShape": {
+    "http": "200 from https://laf.example.local/",
+    "process": "w3wp.exe hosts the app in-process; no separate dotnet.exe child for inprocess model"
+  },
+  "expectedFailureResponseShape": {
+    "http": "500.30 ANCM In-Process Start Failure  OR  500.31 ANCM Failed to Find Native Dependencies  OR  502.5 ANCM Out-Of-Process Startup Failure",
+    "log": "Event Viewer / stdout log shows the unhandled startup exception."
+  },
+  "commonIntegrationFailure": "HTTP 500.30/500.31 when the Hosting Bundle version is older than the app's target framework, or 502.5 when processPath/arguments are wrong; AppPool set to a managed CLR version instead of 'No Managed Code'.",
+  "diagnosticCommand": "Get-WindowsFeature Web-Server; reg query \"HKLM\\SOFTWARE\\Microsoft\\Updates\\.NET\"; Get-EventLog -LogName Application -Source 'IIS AspNetCore Module V2' -Newest 5",
+  "preventionRule": "Install a Hosting Bundle >= the app's .NET target; set AppPool to No Managed Code; enable stdout logging only to diagnose then disable; match web.config processPath/arguments to the published dll.",
+  "localAIFactorySupportStatus": "SUPPORTED",
+  "confidence": "high"
+}

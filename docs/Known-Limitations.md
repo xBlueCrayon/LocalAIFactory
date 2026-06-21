@@ -102,7 +102,13 @@ This list is a feature, not an apology: over-claiming is the failure mode we are
   (TS/JS) / 12 CloneFailed-or-TimedOut (xlarge scale gap); honest coverage limits documented in
   `reports/PUBLIC_50_PROJECT_FAILURE_ANALYSIS.md`. TS/JS/Java/Go are **not** extracted; xlarge monorepos
   exceed the per-repo budget.
-- Deployment proof ladder: **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → IIS HTTPS/Windows-auth pilot ✅ → 50-real-project benchmark ✅ → Production ⬜ → Commercial GA ⬜**.
+- **Update (2026-06-21, FINAL-CLOSURE):** production-readiness gate **V2 =
+  `PRODUCTION_READY_WHEN_EXTERNAL_PROOFS_SUPPLIED`** (12/12 closure dimensions). The repo is **fresh-clone
+  pullable** (clone → build → 240/240 tests → gates). External inputs (Windows Server, CA TLS, real Entra,
+  pen-test, customer pilot, license enforcement) are **EMULATED only** in `operator-emulation/` +
+  `benchmarks/integration-expectations/` — **not** real. LEVEL 4 (commercial GA / real production) is **not**
+  claimed.
+- Deployment proof ladder: **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → HTTPS/Windows-auth pilot ✅ → 50-real-project benchmark ✅ → 100+ system benchmark ✅ → operator-emulation ✅ → fresh-clone pullable ✅ → production-ready-when-external-proofs-supplied ✅ → Real Windows Server prod ⬜ → External review ⬜ → Signed customer pilot ⬜ → Commercial GA ⬜**.
 
 - **Docker and SQL Express were not exercised on the build host.** The build/validation host did not
   run the Docker-based or SQL-Express scenarios; those paths are documented but not host-verified

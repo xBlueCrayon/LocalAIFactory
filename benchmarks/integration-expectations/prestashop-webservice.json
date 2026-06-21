@@ -1,0 +1,31 @@
+{
+  "system": "prestashop-webservice",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://devdocs.prestashop-project.org/8/webservice/",
+  "apiDocsUrl": "https://devdocs.prestashop-project.org/8/webservice/tutorials/",
+  "authMethod": "Webservice key as HTTP Basic username with an empty password (key:), over HTTPS.",
+  "baseUrlPattern": "https://<prestashop-host>.example.local/api/",
+  "keyEndpoints": [
+    "GET /api/ -> list available resources",
+    "GET /api/products -> list product ids",
+    "GET /api/products/<id> -> single product (XML by default)",
+    "GET /api/orders -> list orders"
+  ],
+  "expectedRequestShape": {
+    "method": "GET",
+    "url": "https://prestashop-host.example.local/api/products?display=full&limit=5&output_format=JSON",
+    "headers": {"Authorization": "Basic <base64(webservice-key-placeholder:)>"}
+  },
+  "expectedSuccessResponseShape": {
+    "products": [{"id": 1, "name": "EMULATED Product", "price": "9.990000", "active": "1"}]
+  },
+  "expectedFailureResponseShape": {
+    "errors": [{"code": 401, "message": "Unauthorized"}]
+  },
+  "commonIntegrationFailure": "401 when the webservice is disabled, the key lacks permission for the resource, or the password portion of Basic auth is not empty; XML returned unexpectedly when output_format=JSON is omitted.",
+  "diagnosticCommand": "curl -s -u 'webservice-key-placeholder:' 'https://prestashop-host.example.local/api/?output_format=JSON'",
+  "preventionRule": "Enable the Webservice in Advanced Parameters; grant the key per-resource permissions; use Basic auth with key as user and empty password; pass output_format=JSON.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "medium"
+}

@@ -1,0 +1,32 @@
+{
+  "system": "erpnext-frappe-rest",
+  "status": "EMULATED_EXPECTATION_ONLY",
+  "note": "Official expectation model only — live integration NOT executed.",
+  "officialDocsUrl": "https://docs.frappe.io/framework/user/en/api/rest",
+  "apiDocsUrl": "https://docs.frappe.io/framework/user/en/api/rest",
+  "authMethod": "Token-based: Authorization: token <api_key>:<api_secret>; or session login via /api/method/login; or OAuth2.",
+  "baseUrlPattern": "https://<erpnext-host>.example.local/api/resource/<DocType>",
+  "keyEndpoints": [
+    "GET /api/resource/<DocType> -> list documents",
+    "GET /api/resource/<DocType>/<name> -> single document",
+    "POST /api/resource/<DocType> -> create document",
+    "POST /api/method/<dotted.path> -> call a whitelisted method"
+  ],
+  "expectedRequestShape": {
+    "method": "GET",
+    "url": "https://erpnext-host.example.local/api/resource/Customer?fields=[\"name\",\"customer_name\"]&limit_page_length=5",
+    "headers": {"Authorization": "token api-key-placeholder:api-secret-ref", "Accept": "application/json"}
+  },
+  "expectedSuccessResponseShape": {
+    "data": [{"name": "CUST-EMULATED-0001", "customer_name": "EMULATED Customer"}]
+  },
+  "expectedFailureResponseShape": {
+    "exc_type": "AuthenticationError",
+    "_server_messages": "[\"Invalid API Key or Secret\"]"
+  },
+  "commonIntegrationFailure": "401/403 when the Authorization header omits the 'token ' prefix or uses key/secret in the wrong order; HTML login page returned instead of JSON when unauthenticated.",
+  "diagnosticCommand": "curl -s -H 'Authorization: token api-key-placeholder:api-secret-ref' https://erpnext-host.example.local/api/method/frappe.auth.get_logged_user",
+  "preventionRule": "Use the 'token <key>:<secret>' header exactly; store api_secret as a vault reference; expect JSON, not an HTML redirect, when correctly authenticated.",
+  "localAIFactorySupportStatus": "EMULATED_EXPECTATION_ONLY",
+  "confidence": "medium"
+}

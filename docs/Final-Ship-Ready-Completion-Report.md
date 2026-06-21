@@ -35,7 +35,13 @@ deployment, true fresh-VM install — see the gates report.
 
 ## Readiness
 
-Mean ≈ **62.0%** (max 88, **none at 100**). The **MULTI-AGENT-HARDENING** pass proved **HTTPS + Windows/Negotiate
+Mean ≈ **63.4%** (max 89, **none at 100**). The **FINAL-CLOSURE** pass reached production-readiness gate
+**V2 = `PRODUCTION_READY_WHEN_EXTERNAL_PROOFS_SUPPLIED`** (12/12 closure dimensions; LEVEL 1 code + LEVEL 2
+local-technical + LEVEL 3 operator-emulation complete) with a **fresh-clone pullable** proof, an
+operator-emulation pack (10 files, all EMULATED), and a 20-system integration-expectation library (no live
+integration). Raises: Enterprise Product 30→33, Supportability 68→70, Knowledge Gov 87→88, Benchmark/Evidence
+88→89, Commercial 35→36, Controlled Pilot 74→75. LEVEL 4 (commercial GA) **not** claimed. Earlier, the
+**MULTI-AGENT-HARDENING** pass proved **HTTPS + Windows/Negotiate
 authenticated round-trip** over IIS (401 → 200 with Windows credentials; production-posture healthcheck PASS,
 0 HTTP 500s) and a **51-real-public-repo benchmark** (123,849 C# + 241,730 Python symbols over 7.56M LOC),
 raising Deployment 80→83, Benchmark/Evidence 82→86, Repository Understanding 80→82, Security 76→78, Controlled

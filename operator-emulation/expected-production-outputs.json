@@ -1,0 +1,91 @@
+{
+  "kind": "expected-production-outputs",
+  "status": "EMULATED",
+  "note": "These are the outputs that MUST be true in a real production deployment. None are proven here — all values upstream are EMULATED placeholders.",
+  "outputs": [
+    {
+      "requirement": "HTTPS certificate chain validates to a trusted enterprise CA",
+      "expectedEvidence": "Browser/openssl shows the leaf certificate for laf.example.local chaining to the enterprise CA with no trust or name-mismatch errors.",
+      "validationCommand": "echo | openssl s_client -connect laf.example.local:443 -servername laf.example.local 2>/dev/null | openssl x509 -noout -issuer -subject -dates",
+      "passCriterion": "Issuer = enterprise CA, subject/SAN includes laf.example.local, NotAfter in future, chain trusted.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "Entra OIDC sign-in maps an authenticated user to a LocalAIFactory UserRole",
+      "expectedEvidence": "Test user signs in via Entra and lands authenticated with the correct UserRole applied to authorization policies.",
+      "validationCommand": "Sign in as a test user, then inspect the issued id_token roles claim and the effective UserRole in the app's session/diagnostics.",
+      "passCriterion": "Entra app-role claim maps deterministically to the expected UserRole; unmapped users get least privilege.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "SMTP test mail is delivered through the corporate relay",
+      "expectedEvidence": "A test notification sent from no-reply@example.local arrives in a real mailbox with SPF/DKIM alignment.",
+      "validationCommand": "Trigger the app's SMTP self-test action and inspect the received message headers.",
+      "passCriterion": "Message delivered; SPF=pass and DKIM=pass; no relay rejection.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "SFTP endpoint reachable and key-authenticated",
+      "expectedEvidence": "Service account establishes an SFTP session to sftp.example.local using the vault-held key with a pinned host key.",
+      "validationCommand": "sftp -i <vault-resolved-key> svc-laf@sftp.example.local then 'ls'",
+      "passCriterion": "Key auth succeeds, host-key fingerprint matches the pinned value, directory listing returns.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "SQL Server backup runs and restore is verified",
+      "expectedEvidence": "Scheduled FULL + LOG backups complete and a test restore of the latest backup succeeds on a recovery instance.",
+      "validationCommand": "RESTORE VERIFYONLY FROM DISK = N'\\\\backup\\\\laf\\\\latest.bak'; and a periodic full test-restore.",
+      "passCriterion": "RESTORE VERIFYONLY reports the backup set is valid; periodic test restore brings the DB online with row counts matching.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "Backup retention job runs and prunes per policy",
+      "expectedEvidence": "Retention job log shows old backups removed and the configured retention window maintained.",
+      "validationCommand": "Inspect the retention job history (SQL Agent / scheduled task) and the backup share contents against the policy window.",
+      "passCriterion": "Backups older than the retention window are removed; the most recent N backups are retained intact.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "Database migrations applied cleanly on the production instance",
+      "expectedEvidence": "App startup applies all pending EF migrations with no error; __EFMigrationsHistory reflects the latest migration.",
+      "validationCommand": "dotnet ef database update --project src/LocalAIFactory.Data --startup-project src/LocalAIFactory.Web (or app auto-migrate on startup)",
+      "passCriterion": "All migrations present in __EFMigrationsHistory; 34-table schema intact; app starts.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "Core pages load quickly in MSSQL-only mode",
+      "expectedEvidence": "Home, Projects, Knowledge, Models all return HTTP 200 in well under one second with Qdrant/Ollama absent.",
+      "validationCommand": "curl -s -o NUL -w \"%{http_code} %{time_total}s\" https://laf.example.local/ (and /Projects, /Knowledge, /Models)",
+      "passCriterion": "Every core page returns 200 quickly; no hang; degrades gracefully without optional services.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "External penetration-test / security review report is clean",
+      "expectedEvidence": "Independent firm's report shows zero open critical/high findings (or all remediated / risk-accepted).",
+      "validationCommand": "Read the findings summary in the referenced report and verify remediation status of each critical/high item.",
+      "passCriterion": "No open critical or high findings at go-live.",
+      "owner": "external"
+    },
+    {
+      "requirement": "Monitoring alert fires on an induced failure",
+      "expectedEvidence": "Inducing an error condition (e.g., DB unreachable) raises an alert through the operator's monitoring channel.",
+      "validationCommand": "Stop the dependency in a test slot and confirm the alert is received within the SLO window.",
+      "passCriterion": "Alert fires, is routed to the on-call channel, and auto-resolves when the condition clears.",
+      "owner": "operator"
+    },
+    {
+      "requirement": "Customer pilot sign-off is signed",
+      "expectedEvidence": "A signed acceptance record references the passed acceptance criteria and a dated, authorised signature.",
+      "validationCommand": "Verify the signed document, signer authority, date, and acceptance-criteria references.",
+      "passCriterion": "Sign-off present, signed by an authorised signatory, referencing passed acceptance criteria.",
+      "owner": "customer"
+    },
+    {
+      "requirement": "Commercial license entitlement validates at runtime",
+      "expectedEvidence": "The configured edition/entitlement matches the signed agreement and the license is not expired.",
+      "validationCommand": "Inspect the runtime license state/diagnostics and compare entitlement claims and expiry to the agreement.",
+      "passCriterion": "Edition and entitlements match the agreement; license valid and unexpired; enforcement mode as contracted.",
+      "owner": "external"
+    }
+  ]
+}
