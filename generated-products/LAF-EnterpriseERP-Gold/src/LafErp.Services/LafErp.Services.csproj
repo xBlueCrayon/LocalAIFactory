@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\LafErp.Core\LafErp.Core.csproj" />
+    <ProjectReference Include="..\LafErp.Data\LafErp.Data.csproj" />
+  </ItemGroup>
+</Project>

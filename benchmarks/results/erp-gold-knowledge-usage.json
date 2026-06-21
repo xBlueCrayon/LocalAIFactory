@@ -1,0 +1,167 @@
+{
+  "kind": "erp-generator-knowledge-usage",
+  "generated": "2026-06-21",
+  "erpKnowledgePacksAvailable": [
+    {
+      "pack": "enterprise-workflows-v1",
+      "items": 40
+    },
+    {
+      "pack": "erp-accounting-production-v1",
+      "items": 22
+    },
+    {
+      "pack": "erp-full-suite-generation-v1",
+      "items": 24
+    },
+    {
+      "pack": "erp-hr-pos-ecommerce-customization-v1",
+      "items": 18
+    },
+    {
+      "pack": "erp-inventory-manufacturing-v2",
+      "items": 20
+    },
+    {
+      "pack": "erp-selling-buying-stock-production-v1",
+      "items": 26
+    },
+    {
+      "pack": "erp-test-scenario-ui-api-report-v2",
+      "items": 27
+    },
+    {
+      "pack": "erp-testing-and-scenarios-v1",
+      "items": 24
+    },
+    {
+      "pack": "laf-erp-generation-lessons-v1",
+      "items": 22
+    },
+    {
+      "pack": "production-grade-erp-controls-v1",
+      "items": 22
+    },
+    {
+      "pack": "production-issue-fixes-v1",
+      "items": 77
+    }
+  ],
+  "totalErpKnowledgeItems": 322,
+  "generatedModules": 28,
+  "moduleToKnowledgeCategory": [
+    {
+      "module": "Quotation",
+      "category": "accounting/selling/buying"
+    },
+    {
+      "module": "DeliveryNote",
+      "category": "accounting/selling/buying"
+    },
+    {
+      "module": "CreditNote",
+      "category": "general-erp"
+    },
+    {
+      "module": "PurchaseReceipt",
+      "category": "inventory/manufacturing"
+    },
+    {
+      "module": "MaterialRequest",
+      "category": "inventory/manufacturing"
+    },
+    {
+      "module": "DebitNote",
+      "category": "general-erp"
+    },
+    {
+      "module": "StockTransfer",
+      "category": "inventory/manufacturing"
+    },
+    {
+      "module": "StockReconciliation",
+      "category": "inventory/manufacturing"
+    },
+    {
+      "module": "PriceList",
+      "category": "general-erp"
+    },
+    {
+      "module": "BillOfMaterials",
+      "category": "inventory/manufacturing"
+    },
+    {
+      "module": "WorkOrder",
+      "category": "inventory/manufacturing"
+    },
+    {
+      "module": "JobCard",
+      "category": "general-erp"
+    },
+    {
+      "module": "QualityInspection",
+      "category": "inventory/manufacturing"
+    },
+    {
+      "module": "Employee",
+      "category": "hr/pos/ecommerce"
+    },
+    {
+      "module": "AttendanceRecord",
+      "category": "hr/pos/ecommerce"
+    },
+    {
+      "module": "LeaveApplication",
+      "category": "general-erp"
+    },
+    {
+      "module": "SalaryComponent",
+      "category": "hr/pos/ecommerce"
+    },
+    {
+      "module": "Timesheet",
+      "category": "hr/pos/ecommerce"
+    },
+    {
+      "module": "PosProfile",
+      "category": "hr/pos/ecommerce"
+    },
+    {
+      "module": "WebProduct",
+      "category": "hr/pos/ecommerce"
+    },
+    {
+      "module": "MaintenanceSchedule",
+      "category": "customization/maintenance"
+    },
+    {
+      "module": "CustomFieldDef",
+      "category": "customization/maintenance"
+    },
+    {
+      "module": "NotificationRule",
+      "category": "customization/maintenance"
+    },
+    {
+      "module": "CustomerSegment",
+      "category": "customization/maintenance"
+    },
+    {
+      "module": "ProductCategory",
+      "category": "general-erp"
+    },
+    {
+      "module": "EmployeeRole",
+      "category": "hr/pos/ecommerce"
+    },
+    {
+      "module": "MarketingCampaign",
+      "category": "general-erp"
+    },
+    {
+      "module": "VendorContract",
+      "category": "general-erp"
+    }
+  ],
+  "note": "The module spec and engine templates implement the rules captured in these ERP knowledge packs; this report shows the packs the generator catalogued and the knowledge category each generated module maps to. Modules without supporting knowledge are not emitted (the spec/guard only emits validated entities)."
+}

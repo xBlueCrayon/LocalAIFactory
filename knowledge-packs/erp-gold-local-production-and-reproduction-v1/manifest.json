@@ -1,0 +1,14 @@
+{
+  "packUid": "1a473110-379c-4450-8314-bf5cab0331b1",
+  "name": "ERP Gold Local Production and Reproduction Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules, patterns and practices for deploying a LocalAIFactory-generated ERP product locally and for proving the generator reproduces a hand-built reference: publishing a Release build to a self-contained local folder; defaulting to a portable file-based SQLite store while switching to SQL Server / SQL Express purely by a ConnectionStrings__Default connection string; matching schema initialization to the provider with EnsureCreated for SQLite and Database.Migrate for SQL Server; backing up and restoring a SQLite file by copy versus using native sqlcmd BACKUP/RESTORE DATABASE for SQL Server; shipping a lightweight HTTP health-probe script (/api/health or root); the core discipline that every manual fix is written back into the generator templates, spec or code rather than left as a one-off product edit so regeneration reproduces it; a deterministic generation mode (--mode erp-gold) driven by a fixed reference spec; measuring reproduction as concrete module-percent and test-percent figures against the hand-built reference with an explicit target; reporting non-deterministic local-LLM-proposed modules honestly as the named reason exact reproduction is below 100%; emitting stable data-testid hooks so generated UI tests survive regeneration; emitting a README and run instructions with the published product; and the honest boundaries that EnsureCreated is a fresh-create strategy with no migration history and that the exact-reproduction figure excludes the non-deterministic LLM modules. Each item carries an implementation implication, a test implication, an honest boundary, an applicability note, a worked example, a confidence level and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established deployment, database-operations and reproducible-generation engineering practice, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, framework reference text, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no platform certification or jurisdiction-specific compliance is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 12,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-gold-local-production-and-reproduction.json"
+  ]
+}

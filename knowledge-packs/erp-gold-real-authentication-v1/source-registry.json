@@ -1,0 +1,38 @@
+{
+  "registryUid": "23e55e77-b25b-4c50-b7be-c6a7ff8d3bcd",
+  "name": "ERP Gold Real Authentication — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "official-docs"],
+  "sources": [
+    {
+      "sourceUid": "3929b9f2-47a6-4872-b378-cd8798e2d602",
+      "type": "domain-theory",
+      "title": "Salted iterated password-hashing theory and constant-time credential comparison",
+      "reliability": "high",
+      "topic": "password-hashing"
+    },
+    {
+      "sourceUid": "55f93ccd-b419-40d1-8ffc-c384745074cc",
+      "type": "official-docs",
+      "title": "Cookie authentication scheme, claims principals and middleware ordering (ASP.NET Core concept family)",
+      "reliability": "high",
+      "topic": "cookie-authentication"
+    },
+    {
+      "sourceUid": "6c9c4f75-e21e-412f-9789-c42fcca576c0",
+      "type": "domain-theory",
+      "title": "Role-based access control, user-role-claim mapping and login auditing principles",
+      "reliability": "high",
+      "topic": "authorization"
+    },
+    {
+      "sourceUid": "7fdff265-55b6-4f89-96e2-c70ead20f232",
+      "type": "domain-theory",
+      "title": "Testable authentication design: stable UI test hooks and deterministic current-user resolution",
+      "reliability": "high",
+      "topic": "auth-testability"
+    }
+  ]
+}

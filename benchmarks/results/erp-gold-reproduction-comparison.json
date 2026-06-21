@@ -1,0 +1,37 @@
+{
+  "kind": "erp-gold-reproduction-comparison",
+  "stamp": "2026-06-21",
+  "reference": {
+    "name": "LAF Enterprise ERP Gold",
+    "path": "generated-products/LAF-EnterpriseERP-Gold",
+    "howBuilt": "Emitted from the generator templates after hand-coding the real-auth + deployment upgrades INTO those templates, plus 5 governed local-LLM catalog modules.",
+    "dotnetTests": 138,
+    "playwrightTests": 16,
+    "csFiles": 62,
+    "modules": 28,
+    "moduleBreakdown": { "specDeterministic": 23, "localLlmProposed": 5 },
+    "productionUpgrades": ["PBKDF2 real authentication", "cookie auth + role claims", "login UI + audit", "seeded users/roles", "local-production publish script", "backup/restore/health scripts"]
+  },
+  "reproduction": {
+    "name": "LAF Enterprise ERP GoldGenerated",
+    "path": "generated-products/LAF-EnterpriseERP-GoldGenerated",
+    "howBuilt": "Pure deterministic generator run: `--mode erp-gold` (defaults to specs/erp-gold-reference.json). NO local-LLM proposal supplied, so only the deterministic surface is reproduced.",
+    "dotnetTests": 128,
+    "playwrightTests": 16,
+    "csFiles": 60,
+    "modules": 23,
+    "moduleBreakdown": { "specDeterministic": 23, "localLlmProposed": 0 }
+  },
+  "reproductionMetrics": {
+    "moduleReproductionPct": 82,
+    "testReproductionPct": 93,
+    "deterministicEngineReproductionPct": 100,
+    "authLayerReproduced": true,
+    "deploymentScriptsReproduced": true,
+    "playwrightLoginReproduced": true,
+    "target": ">= 80%",
+    "result": "MET",
+    "explanation": "The entire hand-coded production surface (engine, real PBKDF2 auth, cookie login, role claims, audit, deployment scripts, create UI, double-entry GL, maker/checker, RBAC) lives in the generator templates/spec, so GoldGenerated reproduces it identically (100% of the deterministic surface; 23/23 spec modules; 128 tests). The only Gold-exclusive content is the 5 NON-deterministic local-LLM-proposed catalog modules and their ~10 tests, which a pure deterministic run does not regenerate. Counting those, module reproduction is 23/28 = 82% and test reproduction is 128/138 = 93%."
+  },
+  "discipline": "Every manual ERP-GOLD action (auth, login, deployment, audit-on-login) was written back into tools/LocalAIFactory.Generator/templates + specs + Program.cs, never left as a one-off product edit. That is what makes the generator able to reproduce the Gold reference."
+}

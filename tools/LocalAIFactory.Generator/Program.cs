@@ -13,7 +13,9 @@ string target = argMap.GetValueOrDefault("target", "generated-products/LAF-Enter
 string productName = argMap.GetValueOrDefault("product-name", "LAF Enterprise ERP V2");
 bool preferLocalLlm = argMap.ContainsKey("prefer-local-llm");
 string attributionPath = argMap.GetValueOrDefault("attribution", "benchmarks/results/laf-erp-v2-generation-attribution.json");
+string mode = argMap.GetValueOrDefault("mode", "");
 string specPath = argMap.GetValueOrDefault("module-spec", "");
+if (mode == "erp-gold" && string.IsNullOrEmpty(specPath)) specPath = "tools/LocalAIFactory.Generator/specs/erp-gold-reference.json";
 string summaryPathArg = argMap.GetValueOrDefault("summary", "benchmarks/results/laf-erp-v2-generation-summary.json");
 string toolDir = AppContext.BaseDirectory;
 string templateRoot = FindTemplates(toolDir);
@@ -28,7 +30,6 @@ if (!File.Exists(requirement))
     Console.WriteLine($"WARN: requirement file not found at {requirement} (continuing with module defaults).");
 
 // ---- Mode: screen-stream-assist (copy the reusable consent-based screen-share sample) ----
-string mode = argMap.GetValueOrDefault("mode", "");
 if (mode == "screen-stream-assist")
 {
     var ssRoot = Path.Combine(templateRoot, "screen-stream-assist");

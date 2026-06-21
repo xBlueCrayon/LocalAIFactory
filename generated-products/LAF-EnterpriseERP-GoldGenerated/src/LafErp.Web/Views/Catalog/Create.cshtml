@@ -1,0 +1,13 @@
+@model List<LafErp.Web.Controllers.CatalogField>
+@{ ViewData["Title"] = "Create " + (string)ViewBag.Entity; }
+<h3>Create @ViewBag.Entity</h3>
+@if (ViewBag.Error != null) { <p style="color:#b91c1c" data-testid="form-error">@ViewBag.Error</p> }
+<form method="post" action="/Catalog/Create?entity=@ViewBag.Entity" data-testid="create-form">
+@foreach (var f in Model)
+{
+    <p><label style="display:inline-block;width:180px">@f.Name (@f.Type)</label>
+    <input name="@f.Name" data-testid="field-@f.Name" /></p>
+}
+    <button type="submit" data-testid="create-submit">Create</button>
+</form>
+<p><a href="/Catalog">Back to catalog</a></p>

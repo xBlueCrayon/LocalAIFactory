@@ -1,0 +1,12 @@
+@model List<LafErp.Web.Controllers.CatalogRow>
+@{ ViewData["Title"] = "Catalog (generated modules)"; }
+<p style="font-size:14px;color:#6b7280">Generated CRUD modules (spec-driven + governed local-LLM). Each has a create form.</p>
+<table data-testid="catalog-table">
+    <thead><tr><th>Entity</th><th>Rows</th><th></th></tr></thead>
+    <tbody>
+    @foreach (var r in Model)
+    {
+        <tr><td>@r.EntityType</td><td>@r.Count</td><td><a href="/Catalog/Create?entity=@r.EntityType" data-testid="create-@r.EntityType">+ Create</a></td></tr>
+    }
+    </tbody>
+</table>

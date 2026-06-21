@@ -1,0 +1,12 @@
+{
+  "home_status": null,
+  "login_page": 200,
+  "wrong_pw_shows_error": true,
+  "good_pw_status": 302,
+  "auth_cookie_set": true,
+  "authed_dashboard": 200,
+  "note": "Published Release EXE run locally; real PBKDF2 login proven over HTTP end-to-end.",
+  "stamp": "2026-06-21",
+  "url": "http://localhost:5099",
+  "publishedDll": "C:\\LAFEnterpriseERP-Gold\\LafErp.Web.dll"
+}

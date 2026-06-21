@@ -1,0 +1,38 @@
+{
+  "registryUid": "2165312d-c7cd-49dc-a3cd-d7d320686b8e",
+  "name": "ERP Gold Local Production and Reproduction — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "official-docs"],
+  "sources": [
+    {
+      "sourceUid": "b8c34970-0534-4d29-99d0-2556b200d53a",
+      "type": "official-docs",
+      "title": "Publishing a Release build and provider selection for SQLite versus SQL Server (.NET / EF Core concept family)",
+      "reliability": "high",
+      "topic": "local-deployment"
+    },
+    {
+      "sourceUid": "ebc99d9c-4a16-490b-919b-f87445e2e910",
+      "type": "official-docs",
+      "title": "EnsureCreated versus migrations and database backup/restore strategies for SQLite and SQL Server",
+      "reliability": "high",
+      "topic": "schema-and-backup"
+    },
+    {
+      "sourceUid": "ce124c9a-cdbb-40af-bc07-33a7ae1f4b6f",
+      "type": "domain-theory",
+      "title": "Reproducible code generation: write-back discipline, deterministic modes and reference-based reproduction metrics",
+      "reliability": "high",
+      "topic": "reproducible-generation"
+    },
+    {
+      "sourceUid": "216a3c2b-b7bf-4c14-83f6-275c945097e2",
+      "type": "domain-theory",
+      "title": "Honest reporting of non-deterministic generation steps and operational health probing",
+      "reliability": "high",
+      "topic": "reporting-and-operations"
+    }
+  ]
+}

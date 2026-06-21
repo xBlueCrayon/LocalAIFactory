@@ -1,0 +1,7 @@
+<!-- Opt this generated product OUT of the parent repo's central package management.
+     Versions are declared inline per project. -->
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+</Project>

@@ -8,6 +8,7 @@ public static class ServiceRegistration
     public static IServiceCollection AddErpServices(this IServiceCollection services)
     {
         services.AddScoped<AuditService>();
+        services.AddScoped<UserAuthService>();
         services.AddScoped<NumberingService>();
         services.AddScoped<WorkflowService>();
         services.AddScoped<StockService>();

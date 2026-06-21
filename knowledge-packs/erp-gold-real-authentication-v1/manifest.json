@@ -1,0 +1,14 @@
+{
+  "packUid": "ce37838f-03f5-49bc-9015-806ab3b1f7c8",
+  "name": "ERP Gold Real Authentication Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules, patterns and practices for a real, application-level authentication layer in a LocalAIFactory-generated ERP product: PBKDF2 password hashing with a per-user salt, a high iteration count and a self-describing {iterations}.{salt}.{key} format compared in fixed time; an absolute prohibition on plaintext or reversible password storage; a named cookie authentication scheme with sign-in claims carrying the user name and one claim per role and the correct UseAuthentication-before-UseAuthorization pipeline order; seeding an initial administrator and demonstration users with pre-hashed credentials and role links; mapping AppUser through a role join to role claims for role-based authorization; recording a Login audit event inside the authenticating unit of work; resolving the current user from the authenticated principal with a guarded development fallback so deterministic tests stay green; a focused authentication test set (hash round-trip, wrong-password rejection, seeded-admin authenticates with roles, login is audited); stable data-testid hooks on the login UI for browser automation; explicit login and access-denied redirect paths with logout; upgradable hash parameters so iteration counts can be rotated via rehash-on-login; and an honest scope statement that this is app-level auth without MFA, SSO, lockout or password policy unless those are added. Each item carries an implementation implication, a test implication, an honest boundary, an applicability note, a worked example, a confidence level and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established authentication and credential-storage engineering practice, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, framework reference text, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no security certification or jurisdiction-specific compliance is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 12,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-gold-real-authentication.json"
+  ]
+}

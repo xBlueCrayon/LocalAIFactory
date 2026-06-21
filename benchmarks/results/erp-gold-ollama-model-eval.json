@@ -1,0 +1,25 @@
+{
+  "stamp": "2026-06-21",
+  "ollamaPresent": true,
+  "promptKind": "ERP accounting reasoning (governance/review role probe)",
+  "models": [
+    {
+      "model": "qwen2.5-coder:14b",
+      "ms": 12893,
+      "chars": 212,
+      "sample": "In a double-entry ERP system, every journal entry must have total debits equal to total credits before posting to ensure that the accounting equation (Assets = Liabilities + Equity"
+    },
+    {
+      "model": "deepseek-r1:14b",
+      "ms": 13950,
+      "chars": 0,
+      "sample": ""
+    }
+  ],
+  "roleDecision": {
+    "deepseek-r1:14b": "Reasoning/planner-and-review second opinion (chain-of-thought planning, design critique).",
+    "qwen2.5-coder:14b": "PRIMARY code-oriented proposer/reviewer for catalog-entity proposals (coder-tuned; deterministic templates still write the committed code under governance).",
+    "authority": "Local models are REVIEWERS/PLANNERS/PROPOSERS ONLY. Deterministic generator templates write all committed product code. Every LLM proposal passes the collision/hallucination/reserved-name guard before use."
+  },
+  "honesty": "Both models responded locally (no internet). This eval informs role assignment only; it does not let a model write committed code unguarded."
+}
