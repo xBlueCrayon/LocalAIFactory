@@ -36,6 +36,13 @@ public class PocReadinessTests
             Assert.InRange(score, 0, 100);
             Assert.False(string.IsNullOrWhiteSpace(a.GetProperty("proofRequiredFor100").GetString()), "proofRequiredFor100 required");
             Assert.True(a.TryGetProperty("criteria", out _), "criteria required");
+            // WP9 fields: targetScore (0..100, >= currentScore), status, pathTo100, nextActions
+            var target = a.GetProperty("targetScore").GetInt32();
+            Assert.InRange(target, 0, 100);
+            Assert.True(target >= score, $"targetScore {target} should be >= currentScore {score}");
+            Assert.False(string.IsNullOrWhiteSpace(a.GetProperty("status").GetString()), "status required");
+            Assert.False(string.IsNullOrWhiteSpace(a.GetProperty("pathTo100").GetString()), "pathTo100 required");
+            Assert.True(a.GetProperty("nextActions").ValueKind == JsonValueKind.Array, "nextActions array required");
         }
         // ids 1..22 all present
         for (int i = 1; i <= 22; i++) Assert.Contains(i, ids);
@@ -71,10 +78,15 @@ public class PocReadinessTests
     [InlineData("docs/POC-Demo-Script.md")]
     [InlineData("docs/Public-Material-Learning-Governance.md")]
     [InlineData("docs/Repository-Cleanliness-Audit.md")]
+    [InlineData("docs/Local-POC-Environment-Verification.md")]
+    [InlineData("docs/LocalDB-POC-Evidence.md")]
+    [InlineData("docs/HTTP-POC-Evidence.md")]
+    [InlineData("docs/Ollama-Local-AI-POC-Evidence.md")]
     [InlineData("deploy/docs/hardware-sizing-guide.md")]
     [InlineData("benchmarks/repo-candidates.json")]
     [InlineData("scripts/poc/verify-poc.ps1")]
     [InlineData("scripts/poc/ui-smoke-test.ps1")]
+    [InlineData("scripts/benchmark/run-enterprise-reasoning-benchmark.ps1")]
     public void Required_poc_artifact_exists(string rel)
     {
         var path = Path2(rel.Split('/'));

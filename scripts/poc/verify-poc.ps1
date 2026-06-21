@@ -43,9 +43,15 @@ try {
     "docs/POC-Demo-Script.md",
     "docs/Public-Material-Learning-Governance.md",
     "docs/Repository-Cleanliness-Audit.md",
+    "docs/Local-POC-Environment-Verification.md",
+    "docs/LocalDB-POC-Evidence.md",
+    "docs/HTTP-POC-Evidence.md",
+    "docs/Ollama-Local-AI-POC-Evidence.md",
+    "docs/reports/ENTERPRISE_REASONING_BENCHMARK_RESULTS.md",
     "deploy/docs/hardware-sizing-guide.md",
     "benchmarks/repo-candidates.json",
     "scripts/poc/ui-smoke-test.ps1",
+    "scripts/benchmark/run-enterprise-reasoning-benchmark.ps1",
     "enterprise-scenarios/README.md"
   )
   foreach ($r in $required) { if (Test-Path (Join-Path $repo $r)) { Ok $r } else { Bad "missing $r" } }
@@ -86,6 +92,14 @@ try {
     if (($bench | Select-String "Result: PASS")) { Ok "benchmark PASS" } else { Bad "benchmark did not report PASS" }
   } else { Write-Host "`n(skipping build/test/benchmark: -Fast)" -ForegroundColor Yellow }
 
+  Head "LocalDB configuration"
+  $settings = Join-Path $repo "src/LocalAIFactory.Web/appsettings.json"
+  if (Test-Path $settings) {
+    $conn = (Get-Content $settings -Raw | ConvertFrom-Json).ConnectionStrings.DefaultConnection
+    if ($conn -match "localdb|MSSQL") { Ok "DefaultConnection configured ($($conn -replace 'Password=[^;]*','Password=***'))" }
+    else { Bad "DefaultConnection does not look like a SQL/LocalDB connection" }
+  } else { Bad "appsettings.json not found" }
+
   if ($AppUrl) {
     Head "Live HTTP checks ($AppUrl)"
     foreach ($p in @("/","/BaseKnowledge","/Readiness")) {
@@ -95,6 +109,15 @@ try {
       } catch { Bad "GET $p -> error" }
     }
   }
+
+  Head "Optional: local AI (Ollama) readiness"
+  try {
+    $tags = Invoke-WebRequest -UseBasicParsing -Uri "http://localhost:11434/api/tags" -TimeoutSec 5
+    if ($tags.StatusCode -eq 200) {
+      $models = ($tags.Content | ConvertFrom-Json).models.name -join ", "
+      Ok "Ollama reachable (optional); models: $models"
+    } else { Write-Host "  [INFO] Ollama returned $($tags.StatusCode) (optional; app runs without it)" -ForegroundColor Yellow }
+  } catch { Write-Host "  [INFO] Ollama not reachable (optional; app runs MSSQL-only without it)" -ForegroundColor Yellow }
 }
 finally { Pop-Location }
 

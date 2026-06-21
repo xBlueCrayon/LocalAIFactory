@@ -8,6 +8,27 @@ enterprise AI proof-of-capability — and an honest statement of what it is **no
 > and `scripts/poc/ui-smoke-test.ps1` (live HTTP UI checks). Nothing in this pack is asserted without a
 > reproducible command, a test, a benchmark, a database query, or an HTTP response behind it.
 
+## 0. Live POC run — R2-ACC-POC-COMPLETE (2026-06-21, commit `1ccd494`)
+
+Captured live on this machine against the configured `(localdb)\MSSQLLocalDB / LocalAIFactory` database.
+Full evidence in the linked docs.
+
+| Proof | Result | Evidence doc |
+|---|---|---|
+| Build (Release) | **0 errors** | — |
+| Tests | **235 / 235 pass** | — |
+| Benchmark (all 10 repos) | **PASS** — 47/47 POV, 9 Gold + 1 Bronze; `EnterpriseGiantPatterns` Gold 14/14 | — |
+| Environment | .NET 10.0.301, LocalDB v17, Ollama 0.30.10 (API 200), Qdrant optional/off | [`Local-POC-Environment-Verification.md`](Local-POC-Environment-Verification.md) |
+| LocalDB knowledge base | **4 packs / 438 baseline items**, 0 duplicate Uids, 1,488 total (1,050 imported), pack installs audited | [`LocalDB-POC-Evidence.md`](LocalDB-POC-Evidence.md) |
+| HTTP (app on LocalDB) | **22 routes → 200, 0 HTTP 500s**, 16–89 ms; searches OCR 57 / Mauritius 52 / insurance 20 / VB6 1 … | [`HTTP-POC-Evidence.md`](HTTP-POC-Evidence.md) |
+| Local AI (Ollama) | Reachable, 2 models; **optional** — every proof passed with it off the critical path | [`Ollama-Local-AI-POC-Evidence.md`](Ollama-Local-AI-POC-Evidence.md) |
+| Enterprise reasoning benchmark | **PASS** — mean 94.5/100 (14 structural @100 + 17 advisory @90) | [`reports/ENTERPRISE_REASONING_BENCHMARK_RESULTS.md`](reports/ENTERPRISE_REASONING_BENCHMARK_RESULTS.md) |
+| Repo cleanliness | 6.3 MB tracked / 788 files, .git 3.3 MB, **0** forbidden, **0** > 5 MB | [`Repository-Cleanliness-Audit.md`](Repository-Cleanliness-Audit.md) |
+
+> Note: the knowledge base now holds **4 packs / 438 items** (the 390-item professional base + 3 domain
+> packs of 16), not the 390 quoted in the older sections below — those sections describe the original
+> single-pack baseline and remain accurate for that pack.
+
 ## 1. Executive summary
 
 LocalAIFactory is a **local-first, MSSQL-authoritative** platform that deterministically understands

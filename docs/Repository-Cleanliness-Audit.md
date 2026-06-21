@@ -1,32 +1,37 @@
 # Repository Cleanliness & Size Audit
 
-Audit of the working folder and Git repository for an enterprise review. Measured at commit `138a59b`
-(R2-ACC-B3), 2026-06-21. Re-run the measurements with the commands shown.
+Audit of the working folder and Git repository for an enterprise review. Re-measured live at commit
+`1ccd494` (R2-ACC-POC-COMPLETE), 2026-06-21. Re-run the measurements with the commands shown.
 
 ## Summary verdict
 
-**Clean.** The Git repository is small and healthy (`.git` ≈ 2.9 MB). No build outputs, caches, databases,
-model weights, or secrets are tracked. On-disk bulk is entirely **git-ignored** build output and benchmark
-cache, not committed content.
+**Clean.** The Git repository is small and healthy (`.git` ≈ **3.3 MB**, **6.3 MB tracked across 788
+files**). No build outputs, caches, databases, model weights, release ZIPs, or secrets are tracked. The
+~494 MB on disk is **entirely git-ignored** build output, temp dirs, and benchmark cache — not committed
+content.
 
-## Measurements
+## Measurements (live, commit `1ccd494`)
 
 | Metric | Value | Note |
 |---|---|---|
-| Working folder (incl. bin/obj, cache, .git) | ≈ 345 MB | dominated by git-ignored artifacts |
-| `.git` directory | ≈ 2.9 MB | healthy; no large blobs |
-| `bin/` + `obj/` on disk | ≈ 275 MB | **git-ignored** build output |
-| `benchmarks/cache/` on disk | ≈ 60 MB | **git-ignored** pinned-repo clones |
-| Tracked files | 347 | source artifacts only |
-| `knowledge-packs/` | ≈ 756 KB | reasonable (390 items + registry, JSON) |
-| Largest tracked files | ≈ 100 KB each | EF migration `*.Designer.cs` / `ModelSnapshot.cs` |
+| Working folder (incl. bin/obj, .tmp-*, cache, .git) | **≈ 497 MB** | dominated by git-ignored artifacts |
+| **Tracked content** | **6.3 MB / 788 files** | source artifacts only — this is the real repo size |
+| `.git` directory | **≈ 3.3 MB** | healthy; no large blobs, no history bloat |
+| `bin/` + `obj/` on disk | ≈ 275 MB | **git-ignored** build output (src 138, tests 94, tools 45) |
+| `.tmp-release` / `.tmp-publish` / `.tmp-clean-install` | ≈ 154 MB | **git-ignored** release/publish working dirs |
+| `benchmarks/cache/` on disk | ≈ 51 MB | **git-ignored** pinned-repo clones |
+| `.tmp-playwright` (node_modules) | ≈ 17 MB | **git-ignored** Playwright tooling |
+| Largest tracked files | ≤ 191 KB | `docs/screenshots/*.png` (11 real PNGs), EF migration `*.Designer.cs` |
+| Tracked files > 5 MB | **0** | none |
+| `knowledge-packs/` | ≈ 0.8 MB | reasonable (4 packs / 438 items + registry, JSON) |
 
-Commands:
-```bash
-du -sh .            # working folder
-du -sh .git         # git size
-git ls-files | wc -l                                   # tracked file count
-git ls-files | xargs -I{} du -k "{}" | sort -rn | head # largest tracked files
+Commands (PowerShell):
+```powershell
+# working folder excl .git, .git size, tracked size + count
+(Get-ChildItem -Recurse -File -Force | ? FullName -notmatch '\\\.git\\' | Measure Length -Sum).Sum
+(Get-ChildItem .git -Recurse -File -Force | Measure Length -Sum).Sum
+git ls-files | % { (Get-Item $_).Length } | Measure -Sum ; (git ls-files | Measure).Count
+git ls-files | % { [pscustomobject]@{KB=[int]((Get-Item $_).Length/1KB);P=$_} } | sort KB -desc | select -First 12
 ```
 
 ## Tracking hygiene (all clean)
@@ -43,15 +48,17 @@ git ls-files | xargs -I{} du -k "{}" | sort -rn | head # largest tracked files
 
 ## Content composition (tracked)
 
-`src/` (251 files, 8 projects), `tests/`, `tools/` (benchmark), `knowledge-packs/` (pack JSON + registry),
-`docs/` (architecture, phase notes, POC/readiness/governance), `enterprise-scenarios/` (14 × 4 markdown),
-`benchmarks/` (manifest, golden snapshots, README, candidates — **not** the cache), `deploy/docs/`, `scripts/`,
-`prompts/`. All are **source artifacts** (code, JSON data, markdown) — no runtime binaries.
+`src/` (276 files, 8 projects), `tests/`, `tools/` (benchmark), `knowledge-packs/` (4 packs JSON + registry),
+`docs/` (architecture, phase notes, POC/readiness/governance, 11 screenshots), `enterprise-scenarios/`
+(19 scenarios), `benchmarks/` (manifest, golden snapshots incl. `ENTGIANT.json`, fixtures, README, candidates —
+**not** the cache), `deploy/docs/`, `scripts/`, `prompts/`. All are **source artifacts** (code, JSON data,
+markdown, small PNGs) — no runtime binaries.
 
 ## Actions taken this phase
 
-- Extended `.gitignore` with POC artifact patterns (`*.log`, temp/screenshot output under `scripts/poc/`) so
-  demo/smoke artifacts are never accidentally committed. No files were deleted; no Git history was rewritten.
+- Re-measured live at commit `1ccd494`; confirmed **0** forbidden tracked artifacts and **0** files > 5 MB.
+- Verified the scoped benchmark scratch dir (`.tmp-bench`, used by the enterprise reasoning runner) is
+  git-ignored. No files were deleted; no Git history was rewritten.
 
 ## Recommendations
 

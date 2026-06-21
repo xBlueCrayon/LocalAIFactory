@@ -27,6 +27,8 @@ dist/
 .tmp-publish/
 .tmp-playwright/
 .tmp-clean-install/
+# R2-ACC-POC-COMPLETE: catch-all for any temp scratch (dirs AND files): .tmp-bench/, .tmp-*.log, .tmp-*.json, etc.
+.tmp-*
 [Dd]ebug/
 [Rr]elease/
 # R2-ACC-INDUSTRIAL: scripts/release/ is SOURCE (release scripts), not build output — keep it tracked.
