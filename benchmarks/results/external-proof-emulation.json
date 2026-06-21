@@ -1,10 +1,10 @@
 {
   "byClassification": {
-    "BLOCKED_CUSTOMER": 1,
     "BLOCKED_EXTERNAL": 2,
-    "BLOCKED_OPERATOR": 6
+    "BLOCKED_OPERATOR": 6,
+    "BLOCKED_CUSTOMER": 1
   },
+  "fail": 0,
   "proofs": 9,
-  "noRealProofClaimed": true,
-  "fail": 0
+  "noRealProofClaimed": true
 }

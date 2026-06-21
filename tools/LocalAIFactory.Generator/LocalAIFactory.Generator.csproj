@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>laf-erp-generator</AssemblyName>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <!-- Self-contained generator: no NuGet packages, only the framework (System.Text.Json, HttpClient).
+         Templates under templates/ are DATA, never compiled into the generator. -->
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+</Project>

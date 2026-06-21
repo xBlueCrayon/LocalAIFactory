@@ -1,0 +1,3 @@
+You are an ERP data-model assistant. Propose 6 ADDITIONAL ERP master/catalog entities that are NOT already covered by accounting, inventory, CRM-core, projects, support, or assets. Good examples: UnitOfMeasure, PriceList, Territory, Department, Brand, ProductCategory, SalesPerson, ContactPerson.
+For each: name (PascalCase, singular) and 4-6 fields as {name,type} where type in: string, int, decimal, bool, DateTime, DateTime?. Always include a 'Name' string field. Do NOT include an Id field (it is added automatically).
+Output ONLY strict JSON: {"entities":[{"name":"UnitOfMeasure","fields":[{"name":"Name","type":"string"},{"name":"Symbol","type":"string"}]}, ...]}

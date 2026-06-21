@@ -1,0 +1,333 @@
+{
+  "kind": "laf-erp-v2-generation-attribution",
+  "generatedUtc": "generation-time",
+  "productName": "LAF Enterprise ERP V2",
+  "generator": "tools/LocalAIFactory.Generator (LAF_GENERATOR_INFRASTRUCTURE)",
+  "localLlm": "qwen2.5-coder:14b (governed proposal, collision-guarded)",
+  "totalProductFiles": 70,
+  "classification": {
+    "LAF_GENERATED": 66,
+    "LOCAL_LLM_PROPOSAL_USED": 4
+  },
+  "catalogGovernance": [
+    {
+      "Entity": "Supplier",
+      "Status": "REJECTED",
+      "Reason": "collision with a core engine entity (hallucination/overlap guard)"
+    },
+    {
+      "Entity": "CustomerSegment",
+      "Status": "ACCEPTED",
+      "Reason": "3 valid fields"
+    },
+    {
+      "Entity": "Currency",
+      "Status": "REJECTED",
+      "Reason": "collision with a core engine entity (hallucination/overlap guard)"
+    },
+    {
+      "Entity": "PaymentTerm",
+      "Status": "ACCEPTED",
+      "Reason": "3 valid fields"
+    },
+    {
+      "Entity": "Warehouse",
+      "Status": "REJECTED",
+      "Reason": "collision with a core engine entity (hallucination/overlap guard)"
+    },
+    {
+      "Entity": "TaxCode",
+      "Status": "ACCEPTED",
+      "Reason": "3 valid fields"
+    }
+  ],
+  "autonomy": {
+    "autonomousFiles": 70,
+    "lafGenerated": 66,
+    "localLlmProposalUsed": 4,
+    "generationAutonomyPct": 100,
+    "note": "Autonomy = (LAF_GENERATED \u002B LAF_GENERATED_THEN_FIXED_BY_LAF \u002B LOCAL_LLM_PROPOSAL_USED) / total product files. The generator itself is LAF_GENERATOR_INFRASTRUCTURE and excluded from the product denominator."
+  },
+  "files": [
+    {
+      "path": ".gitignore",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "Directory.Build.props",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "Directory.Packages.props",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "LAF-EnterpriseERP-LAFGenerated.slnx",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/package.json",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/PLAYWRIGHT_RESULTS.md",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/playwright-report.json",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/playwright.config.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/tests/erp.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/tests/real-life-login-and-navigation.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/CatalogEntities.cs",
+      "attribution": "LOCAL_LLM_PROPOSAL_USED"
+    },
+    {
+      "path": "src/LafErp.Core/Common.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/LafErp.Core.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/LedgerEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/MasterEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/OpsEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/PlatformEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/SetupEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/TransactionEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/ErpDbContext.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/LafErp.Data.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/Abstractions.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/AccountingService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/AuditService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/CatalogCrudService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/DataSeeder.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/DemoData.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/LafErp.Services.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/NumberingService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/OpsServices.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/PaymentJournalService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/PurchaseService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/RbacImportServices.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/SalesService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/ServiceRegistration.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/StockService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/WorkflowService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/ApiEndpoints.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/appsettings.Development.json",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/appsettings.json",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Controllers/CatalogController.cs",
+      "attribution": "LOCAL_LLM_PROPOSAL_USED"
+    },
+    {
+      "path": "src/LafErp.Web/Controllers/HomeController.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/HttpCurrentUser.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/LafErp.Web.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Program.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Properties/launchSettings.json",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/_ViewImports.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/_ViewStart.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Catalog/Index.cshtml",
+      "attribution": "LOCAL_LLM_PROPOSAL_USED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/AuditLog.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/Customers.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/GeneralLedger.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/Index.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/Items.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/Login.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/SalesInvoices.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/StockBalance.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Home/WorkflowInbox.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Shared/_Layout.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/AccountingTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/ApiTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/CatalogGeneratedTests.cs",
+      "attribution": "LOCAL_LLM_PROPOSAL_USED"
+    },
+    {
+      "path": "tests/LafErp.Tests/ControlsAndValidationTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/GenerationProvenanceTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/LafErp.Tests.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/OpsAndImportTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/RealLifeScenarioTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/StockTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/TestHost.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/WorkflowTests.cs",
+      "attribution": "LAF_GENERATED"
+    }
+  ]
+}

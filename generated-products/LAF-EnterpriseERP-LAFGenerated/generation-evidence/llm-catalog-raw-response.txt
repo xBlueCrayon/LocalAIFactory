@@ -1,0 +1,112 @@
+```json
+{
+  "entities": [
+    {
+      "name": "Supplier",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "ContactName",
+          "type": "string"
+        },
+        {
+          "name": "Email",
+          "type": "string"
+        },
+        {
+          "name": "Phone",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "CustomerSegment",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "Description",
+          "type": "string"
+        },
+        {
+          "name": "DiscountRate",
+          "type": "decimal"
+        }
+      ]
+    },
+    {
+      "name": "Currency",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "Code",
+          "type": "string"
+        },
+        {
+          "name": "Symbol",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "PaymentTerm",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "DaysDue",
+          "type": "int"
+        },
+        {
+          "name": "DiscountPercentage",
+          "type": "decimal"
+        }
+      ]
+    },
+    {
+      "name": "Warehouse",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "Location",
+          "type": "string"
+        },
+        {
+          "name": "Capacity",
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "TaxCode",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "string"
+        },
+        {
+          "name": "Rate",
+          "type": "decimal"
+        },
+        {
+          "name": "Description",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}
+```

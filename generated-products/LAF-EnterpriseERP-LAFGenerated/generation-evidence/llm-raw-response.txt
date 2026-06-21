@@ -1,0 +1,78 @@
+```json
+{
+  "entities": [
+    {
+      "name": "Lead",
+      "fields": [
+        { "name": "Id", "type": "int" },
+        { "name": "FirstName", "type": "string" },
+        { "name": "LastName", "type": "string" },
+        { "name": "Email", "type": "string" },
+        { "name": "Phone", "type": "string" },
+        { "name": "Company", "type": "string" },
+        { "name": "CreatedDate", "type": "DateTime" }
+      ]
+    },
+    {
+      "name": "Opportunity",
+      "fields": [
+        { "name": "Id", "type": "int" },
+        { "name": "LeadId", "type": "int" },
+        { "name": "Amount", "type": "decimal" },
+        { "name": "CloseDate", "type": "DateTime?" },
+        { "name": "Probability", "type": "decimal" },
+        { "name": "Status", "type": "string" },
+        { "name": "CreatedDate", "type": "DateTime" }
+      ]
+    },
+    {
+      "name": "Project",
+      "fields": [
+        { "name": "Id", "type": "int" },
+        { "name": "Name", "type": "string" },
+        { "name": "StartDate", "type": "DateTime" },
+        { "name": "EndDate", "type": "DateTime?" },
+        { "name": "Budget", "type": "decimal" },
+        { "name": "Status", "type": "string" },
+        { "name": "ManagerId", "type": "int" }
+      ]
+    },
+    {
+      "name": "ProjectTask",
+      "fields": [
+        { "name": "Id", "type": "int" },
+        { "name": "ProjectId", "type": "int" },
+        { "name": "Name", "type": "string" },
+        { "name": "Description", "type": "string" },
+        { "name": "StartDate", "type": "DateTime" },
+        { "name": "EndDate", "type": "DateTime?" },
+        { "name": "Status", "type": "string" }
+      ]
+    },
+    {
+      "name": "SupportTicket",
+      "fields": [
+        { "name": "Id", "type": "int" },
+        { "name": "CustomerId", "type": "int" },
+        { "name": "Subject", "type": "string" },
+        { "name": "Description", "type": "string" },
+        { "name": "CreatedDate", "type": "DateTime" },
+        { "name": "Status", "type": "string" },
+        { "name": "AssignedToId", "type": "int?" }
+      ]
+    },
+    {
+      "name": "Asset",
+      "fields": [
+        { "name": "Id", "type": "int" },
+        { "name": "Name", "type": "string" },
+        { "name": "SerialNumber", "type": "string" },
+        { "name": "PurchaseDate", "type": "DateTime" },
+        { "name": "WarrantyExpiry", "type": "DateTime?" },
+        { "name": "Status", "type": "string" },
+        { "name": "Location", "type": "string" }
+      ]
+    }
+  ]
+}
+```

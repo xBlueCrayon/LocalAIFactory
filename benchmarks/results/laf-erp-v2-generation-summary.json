@@ -1,0 +1,15 @@
+{
+  "productName": "LAF Enterprise ERP V2",
+  "target": "generated-products/LAF-EnterpriseERP-LAFGenerated",
+  "requirement": "benchmarks/erpnext-study/laf-erp-v2-generation-requirement.md",
+  "templateEngineFiles": 66,
+  "catalogModulesGenerated": 3,
+  "catalogEntities": [
+    "CustomerSegment",
+    "PaymentTerm",
+    "TaxCode"
+  ],
+  "totalProductFiles": 70,
+  "generationAutonomyPct": 100,
+  "localLlmUsed": true
+}

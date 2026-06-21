@@ -1,0 +1,35 @@
+{
+  "kind": "erp-v1-vs-v2-vs-erpnext",
+  "generated": "2026-06-21",
+  "disclaimer": "Honest self-assessment. Neither V1 nor V2 is an ERPNext clone or ERPNext-compatible. The V2 advance over V1 is GENERATION AUTONOMY, not a large parity jump.",
+  "dimensions": {
+    "modules": { "erpnext": "15+", "v1": 9, "v2": 9, "note": "V2 adds 3 generated catalog modules on the same engine" },
+    "dbEntities": { "v1": 35, "v2": 38, "note": "+3 LLM-proposed catalog entities" },
+    "workflows": { "v1": "maker/checker x4 doctypes", "v2": "same" },
+    "restApis": { "v1": "~17", "v2": "~23 (+6 catalog endpoints)" },
+    "uiPages": { "v1": 9, "v2": 10, "note": "+Catalog page" },
+    "dotnetTests": { "v1": 74, "v2": 82 },
+    "playwrightTests": { "v1": 12, "v2": 13 },
+    "realLifeScenarioTest": { "v1": "implicit across tests", "v2": "explicit Trading_company_buy_sell_pay_cycle" },
+    "accountingControls": { "v1": "double-entry, balance-enforced", "v2": "same (templated)" },
+    "stockControls": { "v1": "ledger, valuation, negative guard", "v2": "same" },
+    "rbac": { "v1": "matrix enforced", "v2": "same + catalog create gate" },
+    "audit": { "v1": "all transitions", "v2": "same + catalog create" },
+    "docs": { "v1": "full set", "v2": "full set + generation/attribution/fix-loop" },
+    "browserLoginProof": { "v1": "navigation smoke", "v2": "login + navigation + screenshots" }
+  },
+  "scores": {
+    "erpNextParityV1Pct": 36,
+    "erpNextParityV2Pct": 37,
+    "v2ImprovementVsV1Pct": 1,
+    "lafGenerationAutonomyPct": 100,
+    "manualInterventionPct": 0,
+    "manualProductSourceEdits": 0,
+    "generatorTemplateFixes": 3,
+    "testConfidenceV1Pct": 75,
+    "testConfidenceV2Pct": 76,
+    "productionReadinessV1Pct": 35,
+    "productionReadinessV2Pct": 35
+  },
+  "verdict": "Parity is essentially flat V1->V2 (~36-37%): same engine, +3 generated catalog modules. The real, large advance is AUTONOMY: V1 was hand-built; V2 was emitted by a LocalAIFactory generator at 100% file autonomy (0 hand edits to product source), with a governed local-LLM driving the catalog layer and a collision guard catching 3 hallucinated entities. Both remain PILOT-grade, not production-grade."
+}

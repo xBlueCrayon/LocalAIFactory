@@ -1,0 +1,11 @@
+@model List<LafErp.Core.Customer>
+@{ ViewData["Title"] = "Customers"; }
+<table data-testid="customers-table">
+    <thead><tr><th>Code</th><th>Name</th><th>Email</th><th>Credit Limit</th></tr></thead>
+    <tbody>
+    @foreach (var c in Model)
+    {
+        <tr><td>@c.Code</td><td>@c.Name</td><td>@c.Email</td><td>@c.CreditLimit.ToString("N2")</td></tr>
+    }
+    </tbody>
+</table>

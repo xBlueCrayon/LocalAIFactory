@@ -1,0 +1,4 @@
+You are an ERP data-model assistant. For a .NET EF Core ERP, propose the OPERATIONS/CRM entities (NOT accounting/inventory which already exist) as STRICT JSON only, no prose.
+Required entities: Lead, Opportunity, Project, ProjectTask, SupportTicket, Asset.
+For each entity give: name, and fields as array of {name,type} where type is one of: string, int, decimal, bool, DateTime, DateTime?. Keep 4-7 fields each, business-relevant.
+Output ONLY a JSON object: {"entities":[{"name":"Lead","fields":[{"name":"Name","type":"string"}, ...]}, ...]}

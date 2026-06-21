@@ -1,0 +1,13 @@
+{
+  "finalStatus": "GREEN",
+  "iterations": [
+    {
+      "iteration": 1,
+      "generate": "ok",
+      "build": "ok",
+      "test": "ok",
+      "playwright": "skipped",
+      "failures": []
+    }
+  ]
+}
