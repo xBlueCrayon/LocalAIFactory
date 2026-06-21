@@ -5,6 +5,14 @@ This guide deploys LocalAIFactory behind IIS using the real helper
 runbook, not an unattended production deployer*. It never edits the firewall or services, and it
 never deploys without a backup having been taken.
 
+> **A real IIS PILOT was executed (Mode A, 2026-06-21).** On a Windows 11 + SQL Express host, IIS was
+> enabled, the ASP.NET Core Hosting Bundle/ANCM installed, and the published app deployed under IIS (served
+> through IIS — `Server: Microsoft-IIS/10.0`) against SQL Express with a **least-privilege** app-pool login,
+> 0 HTTP 500s, rollback proven. The executable, re-runnable scripts are
+> `scripts/deployment-drill/10-iis-mode-a-deploy.ps1` (+ `11` health, `12` rollback); evidence is in
+> `docs/reports/MODE_A_IIS_*`. This guide remains the path for a Windows **Server** production deployment
+> (HTTPS, domain service account, staged rollout), which is **not** yet executed.
+
 ---
 
 ## 1. Prerequisites on the target server

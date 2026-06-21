@@ -296,7 +296,7 @@ This release is a **controlled, operator-assisted demo / pilot** scoped to the p
 - **No cross-repository estate model.**
 - **No licensing enforcement.**
 
-Readiness is reported honestly (mean ~60.8%, max 88, **none at 100**) on the `/Readiness` page and in
+Readiness is reported honestly (mean ~61.2%, max 88, **none at 100**) on the `/Readiness` page and in
 [`readiness-scorecard.json`](readiness-scorecard.json). The pilot dimension scores 8/10; local / repo
 / package readiness ~19/20.
 

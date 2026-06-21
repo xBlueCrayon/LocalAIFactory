@@ -105,3 +105,16 @@ Honest **modest** raise (published-app fallback, **not IIS, not production**): *
 IIS/SSO/production), SSO, external review, OCR/CNN, license enforcement. Deployment proof ladder: **Local
 POC → Published-app (done) → IIS pilot → Production → Commercial GA**. See `reports/DEPLOYMENT_*`.
 **None at 100.**
+
+## MODE-A-IIS-PROOF update (overall mean ≈ 60.8% → ≈ 61.2%)
+
+A **real IIS pilot was executed**: IIS Windows features enabled (dism, no reboot) + **ASP.NET Core
+Hosting Bundle 10.0.9** installed (winget → ANCM `AspNetCoreModuleV2`). Site `LocalAIFactoryPilot` + app
+pool `LocalAIFactoryPilotPool` (No Managed Code, ApplicationPoolIdentity); the published app is served
+**through IIS** (`Server: Microsoft-IIS/10.0`) — 7 routes 200 + DB-backed search, **0 HTTP 500s** —
+against **SQL Express `LocalAIFactory_IISProof`** with a **least-privilege** app-pool login (db_datareader
++ db_datawriter + EXECUTE, **no db_owner**). Windows-auth feature enabled + 401 Negotiate challenge
+demonstrated; rollback proven (stop frees port, restart restores). Honest raises: **Deployment Readiness 73
+→ 80** (real IIS pilot — **not** production/blue-green/HTTPS), **Controlled Pilot 70 → 72**. Proof ladder:
+**Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → Production ⬜ → Commercial GA ⬜.** See
+`reports/MODE_A_IIS_*`. **None at 100.**

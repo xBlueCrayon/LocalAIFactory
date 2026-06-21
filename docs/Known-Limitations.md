@@ -86,7 +86,14 @@ This list is a feature, not an apology: over-claiming is the failure mode we are
   - *Close with:* install IIS + the ASP.NET Core Hosting Bundle, run the drill `04`/`05` in `-Execute`
     (Mode A) with a least-privilege app-pool SQL login, and re-run the core-page + `09` health checks on
     that host under Windows/Negotiate auth.
-- Deployment proof ladder: **Local POC → Published-app (done) → IIS pilot → Production → Commercial GA**.
+- **Update (2026-06-21): a real IIS pilot WAS executed (Mode A).** IIS was enabled + the ASP.NET Core
+  Hosting Bundle/ANCM installed; the published app is served **through IIS** (`Server: Microsoft-IIS/10.0`)
+  against SQL Express `LocalAIFactory_IISProof` with a **least-privilege** app-pool login, 0 HTTP 500s,
+  rollback proven (see `reports/MODE_A_IIS_*`). What remains for **production**: an HTTPS binding, the full
+  Windows/Negotiate authenticated round-trip + RBAC (the pilot used dev-auth for reachability and showed the
+  IIS 401 Negotiate challenge), a Windows **Server** edition, and a staged/blue-green rollout with operations
+  over time.
+- Deployment proof ladder: **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → Production ⬜ → Commercial GA ⬜**.
 
 - **Docker and SQL Express were not exercised on the build host.** The build/validation host did not
   run the Docker-based or SQL-Express scenarios; those paths are documented but not host-verified

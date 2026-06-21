@@ -25,6 +25,7 @@ Full evidence in the linked docs.
 | Enterprise reasoning benchmark | **PASS** — mean 94.5/100 (14 structural @100 + 17 advisory @90) | [`reports/ENTERPRISE_REASONING_BENCHMARK_RESULTS.md`](reports/ENTERPRISE_REASONING_BENCHMARK_RESULTS.md) |
 | Repo cleanliness | 6.3 MB tracked / 788 files, .git 3.3 MB, **0** forbidden, **0** > 5 MB | [`Repository-Cleanliness-Audit.md`](Repository-Cleanliness-Audit.md) |
 | **Deployment (Mode C)** | **EXECUTED** — published app → **SQL Server Express 2022** (fresh DB, 14 migrations + 4 packs/438 items), 13 routes 200, 0 HTTP 500s, healthcheck + rollback PASS. Not IIS, not production. | [`reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md`](reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md) |
+| **Deployment (Mode A)** | **EXECUTED** — **real IIS** + ANCM (Hosting Bundle 10.0.9) → SQL Express `LocalAIFactory_IISProof` with **least-privilege** app-pool login; served **through IIS** (`Server: Microsoft-IIS/10.0`), 7 routes 200, 0 HTTP 500s, Windows-auth 401 challenge, rollback proven. **Pilot, not production.** | [`reports/MODE_A_IIS_HTTP_AUTH_HEALTHCHECK.md`](reports/MODE_A_IIS_HTTP_AUTH_HEALTHCHECK.md) |
 
 > Note: the knowledge base now holds **4 packs / 438 items** (the 390-item professional base + 3 domain
 > packs of 16), not the 390 quoted in the older sections below — those sections describe the original

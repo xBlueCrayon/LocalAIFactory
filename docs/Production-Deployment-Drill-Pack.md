@@ -12,19 +12,23 @@ on an approved host.
 
 ### Honesty banner — read this first
 
-This **production / IIS** procedure has **NOT** been executed on a real production server. The drill
-scripts are **dry-run by default** and require `-Execute` for any real change; the read-only steps (`00`,
-`01`, `06`, `08`, and the new `09`) change nothing at all. As of this writing:
+This **production / IIS** procedure has **NOT** been executed on a real *production server* (a Windows
+**Server** edition under HTTPS). The drill scripts are **dry-run by default** and require `-Execute` for any
+real change; the read-only steps (`00`, `01`, `06`, `08`, `09`, `11`) change nothing. As of this writing:
 
-- No representative production host has been provisioned.
-- **Docker is not installed** on the build host, and **IIS is not installed** on the build host.
+- No representative *production* host has been provisioned (this is a Windows 11 workstation).
+- **Docker is not installed** on the build host.
 
-> **However — a Mode C deployment WAS executed (2026-06-21).** Because IIS is unavailable, the strongest
-> truthful deployment was performed: the **published app** running against **SQL Server Express 2022**
-> (fresh `LocalAIFactory_DeploymentProof` DB, 14 migrations + 4 packs/438 items, 13 routes 200, 0 HTTP
-> 500s, `09-post-deploy-healthcheck` PASS, rollback proven). See `reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md`.
-> A new read-only step **`09-post-deploy-healthcheck.ps1`** certifies a deployed endpoint (HTTP + DB +
-> pack counts + migrations). The IIS (`-Execute`) path below remains the documented next step (Mode A).
+> **A real IIS PILOT deployment WAS executed (Mode A, 2026-06-21).** IIS was enabled (dism, no reboot) and
+> the **ASP.NET Core Hosting Bundle 10.0.9** installed (winget → ANCM). The published app was deployed under
+> IIS (site `LocalAIFactoryPilot`, app pool `LocalAIFactoryPilotPool`, No Managed Code) and served **through
+> IIS** (`Server: Microsoft-IIS/10.0`) against **SQL Express `LocalAIFactory_IISProof`** with a
+> **least-privilege** app-pool login — 7 routes 200, 0 HTTP 500s, Windows-auth 401 challenge shown, rollback
+> proven. New scripts: **`10-iis-mode-a-deploy.ps1`** (deploy), **`11-iis-mode-a-healthcheck.ps1`**
+> (read-only health), **`12-iis-mode-a-rollback-dryrun.ps1`** (rollback). See `reports/MODE_A_IIS_*`.
+> **Earlier**, a Mode C deployment (published app + SQL Express, no IIS) was executed — see
+> `reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md`. What remains for **production**: HTTPS, full Negotiate+RBAC,
+> a Windows Server edition, and a staged/blue-green rollout.
 
 What *has* been verified is that the dry-run pass runs cleanly (see "Verified dry-run facts" below).
 That proves the **procedure and the scripts**, not a fresh-server production deployment. Do not read

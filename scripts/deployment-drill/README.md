@@ -24,6 +24,14 @@ most destructive steps stay manual and confirmation-gated).
 | 06 | `06-run-healthchecks.ps1` | read-only | Probes core pages + DB + knowledge base. Returns non-zero on any failure. |
 | 07 | `07-run-rollback-dryrun.ps1` | dry-run | Shows the rollback plan. `-Execute` restores the previous `app/`; DB restore stays manual. |
 | 08 | `08-capture-evidence.ps1` | read-only | Collects host facts, page health, DB/KB verification, support bundle into an evidence folder. |
+| 09 | `09-post-deploy-healthcheck.ps1` | read-only | Certifies a deployed endpoint: HTTP + DB pack/item counts + migrations + mode. (Used for Mode C and Mode A.) |
+| 10 | `10-iis-mode-a-deploy.ps1` | dry-run | **Mode A:** deploy the published app under IIS (app pool + site + web.config + ACL). `-Execute` applies. |
+| 11 | `11-iis-mode-a-healthcheck.ps1` | read-only | **Mode A:** HTTP + SQL + IIS site/app-pool state health check; writes JSON evidence to `.tmp-*`. |
+| 12 | `12-iis-mode-a-rollback-dryrun.ps1` | dry-run | **Mode A:** rollback. `-StopOnly` stops site+pool (frees port); `-Execute` removes site+pool. |
+
+> **Mode A (real IIS) was executed on 2026-06-21** — IIS enabled + ASP.NET Core Hosting Bundle/ANCM, app
+> served through IIS against SQL Express with a least-privilege app-pool login. Evidence: `docs/reports/MODE_A_IIS_*`.
+> Companion DB scripts: `database/setup-iis-sqlexpress-proof.ps1`, `grant-iis-apppool-sql-access.ps1`, `verify-iis-sqlexpress-proof.ps1`.
 
 ## Safety contract
 

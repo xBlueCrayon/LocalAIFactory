@@ -41,7 +41,7 @@ calibrate every claim below against the real, current state of the repository.
   Development-only dev-auth handler. RBAC (Viewer < Analyst < Admin) and per-project
   `ProjectAccess` ACLs are enforced server-side and audited. There is **no** enterprise
   SSO / OIDC / Entra ID integration — that is design and additive hooks only.
-- **Readiness (reported honestly):** mean ~**60.8%**, max **88**, **none at 100**
+- **Readiness (reported honestly):** mean ~**61.2%**, max **88**, **none at 100**
   (per the `/Readiness` page and `readiness-scorecard.json`).
 
 ### Cross-references (existing in this repository)
@@ -75,7 +75,7 @@ calibrate every claim below against the real, current state of the repository.
 
 | # | Blocker | Current status | Priority | Est. effort | Risk |
 |---|---------|----------------|----------|-------------|------|
-| 1 | Real Windows Server / IIS deployment | Dry-run drill only; never executed on a real server | P0 | 3–5 days | High |
+| 1 | Real Windows Server / IIS deployment | **IIS PILOT EXECUTED (Mode A): real IIS + ANCM + least-privilege SQL Express, app served through IIS, 0 HTTP 500s, rollback proven.** Remaining: HTTPS + production posture + Server edition + blue/green | P0 | 1–2 days | Medium |
 | 2 | SQL Server Express deployment (deployed app) | **Substantially DONE (Mode C): published app executed against SQL Express 2022 — migrated+seeded+served, healthcheck PASS.** Remaining: behind IIS + production posture | P0 | 2–3 days | Medium |
 | 3 | Full SQL Server deployment | Provisioning script exists; not executed | P1 | 2–4 days | Medium |
 | 4 | Docker deployment | Docker not installed on build host; no Dockerfile proven | P2 | 3–5 days | Medium |
@@ -98,11 +98,17 @@ trail the first P0 wave; **P2** = needed for full-scope GA but can be staged.
 
 ## 1. Real Windows Server / IIS deployment
 
-- **Current status:** An executable **dry-run** deployment drill exists at
-  `scripts/deployment-drill/` (steps `00`–`08`) and a written guide at
-  `docs/Windows-Server-IIS-Deployment-Guide.md`. IIS is **not installed on the build
-  host**, so the drill has only ever been run in dry-run mode. It has **never** been
-  executed against a real Windows Server with IIS.
+- **Current status: A REAL IIS PILOT WAS EXECUTED (Mode A, 2026-06-21).** IIS was enabled
+  on this host (dism, no reboot) and the **ASP.NET Core Hosting Bundle 10.0.9** installed
+  (winget → ANCM `AspNetCoreModuleV2` registered). The **published app was deployed under
+  IIS** (site `LocalAIFactoryPilot`, app pool `LocalAIFactoryPilotPool`, No Managed Code /
+  ApplicationPoolIdentity) and served **through IIS** (`Server: Microsoft-IIS/10.0`) — 7
+  routes 200, DB-backed search, **0 HTTP 500s** — against **SQL Express
+  `LocalAIFactory_IISProof`** with a **least-privilege** app-pool login (db_datareader +
+  db_datawriter + EXECUTE, no db_owner). Windows-auth 401 Negotiate challenge demonstrated;
+  rollback proven. Evidence: `reports/MODE_A_IIS_*`. Drill scripts `10`/`11`/`12` added.
+  **Remaining for production:** HTTPS binding, full Negotiate+RBAC round-trip, a Windows
+  **Server** edition, staged/blue-green rollout, and operations over time.
 - **Why it blocks 20/20:** The product's production hosting model is IIS on Windows
   Server. Until the package is deployed, started, and served from a real IIS site, the
   primary deployment path is unproven. A dry-run validates intent, not reality.
@@ -574,5 +580,5 @@ captured evidence:
 
 Until those four are simultaneously true, the product remains a **controlled,
 operator-assisted pilot/demo**, and the final `v1.0` release (blocker 15) stays
-**unpublished by design**. Readiness today is reported honestly at mean ~60.8%, max 88,
+**unpublished by design**. Readiness today is reported honestly at mean ~61.2%, max 88,
 **none at 100** — consistent with this roadmap. See also `docs/Known-Limitations.md`.

@@ -35,7 +35,11 @@ deployment, true fresh-VM install — see the gates report.
 
 ## Readiness
 
-Mean ≈ **60.8%** (max 88, **none at 100**). The **DEPLOYMENT-HARDENING** pass executed a Mode C
+Mean ≈ **61.2%** (max 88, **none at 100**). The **MODE-A-IIS-PROOF** pass executed a **real IIS pilot**
+(IIS enabled + Hosting Bundle/ANCM; app served through IIS — `Server: Microsoft-IIS/10.0` — against SQL
+Express with a **least-privilege** app-pool login; 0 HTTP 500s; rollback proven) and raised **Deployment
+Readiness 73 → 80** and **Controlled Pilot 70 → 72**. Proof ladder: **Local POC ✅ → Published-app + SQL
+Express ✅ → IIS pilot ✅ → Production ⬜ → Commercial GA ⬜.** Earlier, the **DEPLOYMENT-HARDENING** pass executed a Mode C
 published-app + **SQL Server Express 2022** deployment (fresh DB, 14 migrations + 4 packs/438 items, 13
 routes 200, 0 HTTP 500s, healthcheck + rollback proven — **not IIS, not production**) and raised only
 **Deployment Readiness 70 → 73**. Earlier, the **FINAL-ENTERPRISE-REASONING** pass added a synthetic
