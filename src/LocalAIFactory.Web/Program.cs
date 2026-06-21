@@ -94,22 +94,29 @@ using (var scope = app.Services.CreateScope())
             db.SystemSettings.Add(new SystemSetting { Key = "KE006.QualityBackfilled", Value = "true" });
             await db.SaveChangesAsync();
         }
-        // R2-ACC-B1: install the Professional Base Knowledge Pack (idempotent; best-effort, never blocks startup).
+        // R2-ACC-B1/FINAL: install the included knowledge base — ALL shipped packs (idempotent; best-effort,
+        // never blocks startup). Set KnowledgePacks:InstallAllAtStartup=false to seed only the base pack.
         try
         {
-            var packPath = LocalAIFactory.Web.Services.KnowledgePackLocator.FindBaseV1(builder.Configuration, builder.Environment.ContentRootPath);
-            if (packPath is not null)
+            var installer = sp.GetRequiredService<IKnowledgePackInstaller>();
+            var installAll = builder.Configuration.GetValue("KnowledgePacks:InstallAllAtStartup", true);
+            var packPaths = installAll
+                ? LocalAIFactory.Web.Services.KnowledgePackLocator.FindAllPacks(builder.Configuration, builder.Environment.ContentRootPath)
+                : new[] { LocalAIFactory.Web.Services.KnowledgePackLocator.FindBaseV1(builder.Configuration, builder.Environment.ContentRootPath) }
+                    .Where(p => p is not null).Select(p => p!).ToList();
+
+            if (packPaths.Count == 0) logger.LogInformation("No knowledge packs found to install (optional).");
+            foreach (var packPath in packPaths)
             {
-                var res = await sp.GetRequiredService<IKnowledgePackInstaller>().InstallAsync(packPath, "system (startup)");
+                var res = await installer.InstallAsync(packPath, "system (startup)");
                 if (res.Success)
-                    logger.LogInformation("Base knowledge pack '{Name}' v{Version}: {Created} created, {Updated} updated, {Unchanged} unchanged, {Proposed} proposed (current={Cur}).",
+                    logger.LogInformation("Knowledge pack '{Name}' v{Version}: {Created} created, {Updated} updated, {Unchanged} unchanged, {Proposed} proposed (current={Cur}).",
                         res.Name, res.Version, res.Created, res.Updated, res.Unchanged, res.ProposedRevisions, res.AlreadyCurrent);
                 else
-                    logger.LogWarning("Base knowledge pack install reported {N} error(s); first: {E}", res.Errors.Count, res.Errors.FirstOrDefault());
+                    logger.LogWarning("Knowledge pack at '{Path}' reported {N} error(s); first: {E}", packPath, res.Errors.Count, res.Errors.FirstOrDefault());
             }
-            else logger.LogInformation("No base knowledge pack found to install (optional).");
         }
-        catch (Exception ex) { logger.LogError(ex, "Base knowledge pack install failed (non-fatal)."); }
+        catch (Exception ex) { logger.LogError(ex, "Knowledge pack install failed (non-fatal)."); }
         logger.LogInformation("Database migrated, seeded, and knowledge backbone backfilled.");
     }
     catch (Exception ex)

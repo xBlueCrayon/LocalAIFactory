@@ -1,0 +1,60 @@
+# Final Ship-Ready Completion Report
+
+**Product:** LocalAIFactory · **Release:** v1.0.0-rc (customer-handover candidate) · **Date:** 2026-06-21
+**Branch:** `ke-008-code-symbols` (not merged) · **Decision:** controlled paid-pilot ready; **not** commercial GA.
+
+This report summarises the final release sprint. It is the companion to
+[`FINAL_RELEASE_CERTIFICATE.md`](FINAL_RELEASE_CERTIFICATE.md) (signed evidence) and
+[`reports/FINAL_RELEASE_VALIDATION_GATES.md`](reports/FINAL_RELEASE_VALIDATION_GATES.md) (the 25 gates).
+
+## What changed this sprint (real, tested)
+
+1. **Included knowledge base now seeded & shipped.** The app installs **all** packs under `knowledge-packs/` at
+   startup (idempotent; `KnowledgePacks:InstallAllAtStartup`, default true). Live DB now holds **4 packs / 438
+   items** (was base-only). New scripts: `install-all-knowledge-packs.ps1`, `verify-all-knowledge-packs.ps1`,
+   `export-knowledge-catalog.ps1`; generated `Included-Knowledge-Base-Catalog.md`.
+2. **Database setup finalised.** `database/setup-full-local-demo.ps1` (one-command) + `verify-full-install.ps1`
+   (migrations + KB) — run live, **PASS** (14 migrations, KB VERIFIED).
+3. **Release package generated + verified.** `build-release` (151 files) → `package-release`
+   (**16.2 MB ZIP / 277 files** + `RELEASE_MANIFEST`) → `verify-release-package` **PASS** →
+   `simulate-clean-install` **PASS** (verified on the extracted ZIP) → `customer-acceptance-check` **ACCEPTED**.
+   Output lives under git-ignored `.tmp-release/`.
+4. **Real screenshots.** Node + Playwright installed on the host; **11 product screenshots** captured to
+   `docs/screenshots/` (viewport, ~1.5 MB). The prior "Node absent" blocker is resolved.
+5. **Supportability.** `export-support-bundle.ps1` (read-only diagnostics zip) + `process-monitor.ps1`.
+6. **Research-informed docs.** Internet-backed `docs/research/*` (official references, community failure
+   patterns, AI/RAG notes) + deployment/AI-governance/OCR/autonomy status docs + manuals + evidence docs.
+
+## Validation (final gates — all runnable gates green)
+
+Build **0 errors** · Tests **235/235** · Benchmark smoke+standard **PASS** (KYC/AML Gold 7/7) · UI smoke
+**PASS** (11 pages) · verify-poc **PASS** · KB **VERIFIED** (4/438) · full-install **PASS** · package
+**verified** · clean-install sim **PASS** · acceptance **ACCEPTED** · security **0 HIGH** · 0 tracked > 5 MB ·
+0 secrets. Blocked-and-documented (not faked): Docker (not installed), executed production/IIS/Express/full-SQL
+deployment, true fresh-VM install — see the gates report.
+
+## Readiness
+
+Mean ≈ **59.5%** (max 88, **none at 100**). Raised this sprint: Packaging/Licensing 30→**45**, UX/Demo 62→**70**,
+Data/Knowledge Governance 82→**85**, Deployment 65→**70**, Supportability 60→**65**, Commercial Product 30→**35**,
+Technical POC 87→**88**. Authoritative: `readiness-scorecard.json` (`/Readiness`).
+
+## Scores & decisions
+
+- **Local / repo / package completion: ~19/20.** The missing point is the set of inherently-external proofs.
+- **Confidence (controlled paid pilot): 8/10.**
+- **Paid pilot:** YES (controlled, scoped to the proven core). **Commercial GA:** NO.
+- **GitHub deliverable:** COMPLETE — clean repo + generated, verified release package + draft release prepared.
+
+## Remaining gaps → exact proof for 20/20
+
+Executed production deployment (IIS/Docker/Express/full-SQL) with backup/restore + health gates on a real
+server; enterprise SSO/IdP; **independent technical + security review / penetration test**; fix loop end-to-end
+on a real repo; trained OCR/CV model with measured precision/recall; cross-repository estate model; **a
+signed-off customer pilot**. See `Gap-Closure-Roadmap-To-100.md`.
+
+## Next action for the operator
+
+1. Review the draft GitHub release (`v1.0.0-rc`) — see [`GitHub-Release-Instructions.md`](GitHub-Release-Instructions.md).
+2. Run a real production-deployment drill + commission an independent security review.
+3. Onboard a controlled pilot on sanitized estate data and capture sign-off.

@@ -21,6 +21,12 @@ publish/
 [Pp]ublish/
 build/
 artifacts/
+dist/
+# R2-ACC-FINAL: generated release packages + scratch areas (never committed; GitHub Release artifacts only).
+.tmp-release/
+.tmp-publish/
+.tmp-playwright/
+.tmp-clean-install/
 [Dd]ebug/
 [Rr]elease/
 # R2-ACC-INDUSTRIAL: scripts/release/ is SOURCE (release scripts), not build output — keep it tracked.

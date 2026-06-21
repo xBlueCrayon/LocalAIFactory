@@ -23,4 +23,30 @@ public static class KnowledgePackLocator
             if (File.Exists(Path.Combine(c, "manifest.json"))) return c;
         return null;
     }
+
+    // R2-ACC-FINAL: locate ALL shipped knowledge-pack directories (each containing a manifest.json) so the
+    // included knowledge base — not just the base pack — is seeded on startup. Resolves the knowledge-packs root
+    // across dev (repo root) and published (next to binaries) layouts; returns base pack first, then the rest.
+    public static IReadOnlyList<string> FindAllPacks(Microsoft.Extensions.Configuration.IConfiguration config, string contentRoot)
+    {
+        var roots = new List<string>();
+        var configuredRoot = config["KnowledgePacks:RootPath"];
+        if (!string.IsNullOrWhiteSpace(configuredRoot)) roots.Add(configuredRoot);
+        roots.Add(Path.Combine(AppContext.BaseDirectory, "knowledge-packs"));
+        roots.Add(Path.Combine(contentRoot, "knowledge-packs"));
+        var dir = new DirectoryInfo(contentRoot);
+        for (int i = 0; i < 6 && dir is not null; i++, dir = dir.Parent)
+            roots.Add(Path.Combine(dir.FullName, "knowledge-packs"));
+
+        var packsRoot = roots.FirstOrDefault(Directory.Exists);
+        if (packsRoot is null) return Array.Empty<string>();
+
+        var packs = Directory.EnumerateDirectories(packsRoot)
+            .Where(d => File.Exists(Path.Combine(d, "manifest.json")))
+            // base pack first (deterministic order; the rest alphabetical).
+            .OrderByDescending(d => Path.GetFileName(d) == BaseV1)
+            .ThenBy(d => Path.GetFileName(d), StringComparer.OrdinalIgnoreCase)
+            .ToList();
+        return packs;
+    }
 }

@@ -1,0 +1,73 @@
+# LocalAIFactory — Final Release Certificate
+
+**Product:** LocalAIFactory · **Release:** v1.0.0-rc (customer-handover candidate) · **Branch:** `ke-008-code-symbols`
+**Date:** 2026-06-21 · **Decision:** **controlled paid-pilot ready; NOT commercial GA.**
+
+This is an honest certificate: every claim is backed by a reproducible command, test, benchmark, or live capture
+on the build host. It asserts **no** vendor certification, regulatory/financial compliance, fraud-detection
+certainty, or production guarantee.
+
+## Evidence (reproduced this release)
+
+| Category | Command | Result |
+|---|---|---|
+| Build | `dotnet build LocalAIFactory.sln -c Release` | **0 errors** |
+| Tests | `dotnet test` | **235 / 235 pass** |
+| Benchmark | `--inmemory --suite standard` | **PASS** — ERP/CRM Gold 6/6, core-banking Gold 6/6, **KYC/AML Gold 7/7** |
+| verify-poc | `scripts/poc/verify-poc.ps1` | **PASS** (build + test + benchmark + artifacts + hygiene) |
+| UI smoke | `scripts/poc/ui-smoke-test.ps1` | **PASS** (11 pages 200, incl. `/Support`) |
+| Included KB | `scripts/knowledge/verify-all-knowledge-packs.ps1` | **PASS** — 4 packs, 438 items, 438 distinct UIDs, no collisions; **live DB 4 packs / 438 items** |
+| Full install | `database/verify-full-install.ps1` | **PASS** — 14 migrations + KB VERIFIED |
+| Publish | `scripts/release/build-release.ps1` | **151 files** |
+| Package | `scripts/release/package-release.ps1` | **16.2 MB ZIP, 277 files**, RELEASE_MANIFEST (v1.0.0-rc) |
+| Package verify | `scripts/release/verify-release-package.ps1` | **PASS** (binaries, 4 packs, DB scripts, appsettings, manuals, manifest; no secrets; no >5 MB) |
+| Clean-install sim | `scripts/release/simulate-clean-install.ps1` | **PASS** (verified on the extracted ZIP, not the repo) |
+| Acceptance | `scripts/release/customer-acceptance-check.ps1` | **ACCEPTED** |
+| Screenshots | `scripts/docs/capture-screenshots.ps1` (Playwright) | **11 real PNGs** captured (~1.5 MB) |
+| Support bundle | `scripts/support/export-support-bundle.ps1` | read-only diagnostics zip (~3 KB, no secrets) |
+| Security | `scripts/security/security-audit.ps1` | **0 HIGH**, 2 INFO (gated); 0 forbidden tracked; 0 secrets |
+| GPU / AI (optional) | `nvidia-smi` / `ollama` | RTX 5070 Ti 16 GB; Ollama online (2 models) |
+
+## Capability statements (honest)
+
+- **Real & shipped:** deterministic C#/T-SQL/Python understanding + C#↔SQL bridge + impact; **included knowledge
+  base of 4 packs / 438 items, auto-seeded + live-verified**; governed knowledge (Curated, provenance,
+  propose-never-overwrite); Windows-auth RBAC + append-only audit; ERP/CRM + core-banking + KYC/AML benchmark
+  fixtures (Gold); `/Support` dashboard; edition/license skeleton; safe local fix loop; **a generated,
+  verified, self-contained release package + clean-install simulation + customer-acceptance check**; real
+  product screenshots; diagnostics/support-bundle scripts.
+- **Templates / design / prototype:** IIS/Docker/Express/full-SQL deployment (scripts + research-informed docs;
+  **not executed** — Docker not installed on host); SSO/IdP (design + hooks); market-intelligence + multi-agent
+  factory (design + skeleton); OCR/CV (deterministic prototypes, **no trained model**); commercial licensing
+  (demo-safe skeleton, **no enforcement**).
+- **Not present:** executed production deployment; enterprise SSO; cross-repository estate model; autonomy on a
+  real repo; **external penetration test / security audit**; commercial licensing enforcement.
+
+## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 59.5%, max 88, none at 100)
+
+Technical POC **88** · Data/Knowledge Governance **85** · Repository Understanding **80** · Benchmark **80** ·
+Security **76** · Controlled Pilot **70** · Deployment **70** · UX/Demo **70** · Audit **70** · Banking **70** ·
+Supportability **65** · ERP/Infra Advisory **65** · Autonomous **55** · Vendor-Style **55** · Cross-System/Estate
+**45** · Packaging/Licensing **45** · Scalability **45** · Document/OCR **35** · Commercial Product **35** ·
+Legacy **30** · Enterprise Product **30**.
+
+## Decision
+
+- **GitHub deliverable:** **COMPLETE** — a clean repo + a generated, verified release package that a
+  customer/operator can use to install, seed the included knowledge base, verify, run, and understand exactly
+  what is proven and what remains.
+- **Paid pilot:** **YES** — controlled, operator-assisted, scoped to the proven core.
+- **Commercial GA:** **NO** — blocked on executed production deployment, SSO, external security review, and a
+  signed-off customer pilot.
+- **Confidence (controlled paid pilot): 8 / 10.** Local/repo/package completion ≈ **19/20** (the missing point
+  is the set of inherently-external proofs below).
+
+## Exact proof required for 20/20
+
+Executed production deployment (IIS/Docker/Express/full-SQL) with backup/restore drill + health gates on a real
+server; enterprise SSO/IdP integration; an **independent technical + security review / penetration test**; the
+fix loop demonstrated end-to-end on a real (sanitized) estate repo; a trained OCR/CV model with measured
+precision/recall; a cross-repository estate model; and at least one **signed-off customer pilot**.
+
+> Signed off by the engineering process, not an external auditor. The single highest-value next step is an
+> independent technical + security review, then a real production-deployment drill.

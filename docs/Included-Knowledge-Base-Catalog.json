@@ -1,0 +1,75 @@
+{
+  "generated": "source-pack-export",
+  "packCount": 4,
+  "totalItems": 438.0,
+  "packs": [
+    {
+      "folder": "financial-institution-operations-v1",
+      "name": "Financial Institution Operations v1",
+      "version": "1.0.0",
+      "itemCount": 16.0,
+      "manifestItemCount": 16,
+      "categories": {
+        "Financial Institution Operations": 8,
+        "Operational Controls and Risk": 8
+      },
+      "reviewStatus": "Approved"
+    },
+    {
+      "folder": "kyc-aml-transaction-approval-v1",
+      "name": "KYC AML Transaction Approval v1",
+      "version": "1.0.0",
+      "itemCount": 16.0,
+      "manifestItemCount": 16,
+      "categories": {
+        "KYC CDD and EDD": 8,
+        "AML Screening and Transaction Approval": 8
+      },
+      "reviewStatus": "Approved"
+    },
+    {
+      "folder": "market-intelligence-forecasting-v1",
+      "name": "Market Intelligence and Forecasting v1",
+      "version": "1.0.0",
+      "itemCount": 16.0,
+      "manifestItemCount": 16,
+      "categories": {
+        "Forecasting and Model Governance": 8,
+        "Market Data and Signals": 8
+      },
+      "reviewStatus": "Approved"
+    },
+    {
+      "folder": "professional-base-v1",
+      "name": "Professional Base Knowledge Pack",
+      "version": "1.2.0",
+      "itemCount": 390.0,
+      "manifestItemCount": 390,
+      "categories": {
+        "ISO-style Controls / Standards": 12,
+        "Payments, Transfers, Settlement and Reconciliation": 22,
+        "Cheque OCR, Signature Forgery Detection and Document Fraud": 29,
+        "Python OCR and Computer Vision Deployment": 25,
+        "Database / SQL": 13,
+        "CRUD / Web to MSSQL": 13,
+        "Financial Market Prediction and Quantitative Analysis": 24,
+        "Python / AI / Data": 12,
+        "Leasing, Lending, Credit and Arrears": 18,
+        "AI, Coding and Business Research Notes": 32,
+        "Governance / Project Management": 13,
+        "Operations / Sysadmin": 11,
+        "Enterprise Solution-Solving Playbooks": 21,
+        "Finance / Accounting / Banking": 14,
+        "Software Engineering": 13,
+        "PDF Reader, Classifier and Summarizer": 18,
+        "Security / Access Control": 13,
+        "Reporting / Templates": 10,
+        "Accounting Standards and Financial Reporting": 23,
+        "Mauritius Banking and Financial Services Context": 26,
+        "Product / Admin Patterns": 10,
+        "Insurance and Financial Services Controls": 18
+      },
+      "reviewStatus": "Approved"
+    }
+  ]
+}
