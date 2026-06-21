@@ -1,0 +1,134 @@
+{
+  "Name": "EnterpriseGiantPatterns",
+  "Bucket": "enterprise-giant-patterns",
+  "Sha": "local-fixture",
+  "CandidateFiles": 9,
+  "ParsedArtifacts": 9,
+  "Symbols": 329,
+  "Edges": 79,
+  "References": 111,
+  "Unresolved": 32,
+  "EdgesByType": {
+    "AccessesSql": 51,
+    "References": 28
+  },
+  "Convergent": true,
+  "Pov": [
+    {
+      "Question": "Find the change-approval stored procedure (SQL extraction)",
+      "Mode": "find",
+      "Target": "dbo.usp_ApproveChangeRequest",
+      "Count": 1,
+      "Passed": true
+    },
+    {
+      "Question": "Find ResolveIncident (C# extraction)",
+      "Mode": "find",
+      "Target": "EnterprisePatterns.Services.IncidentService.ResolveIncident",
+      "Count": 1,
+      "Passed": true
+    },
+    {
+      "Question": "CRM: what code handles high-value discount approval?",
+      "Mode": "dependents",
+      "Target": "dbo.DiscountApproval",
+      "Count": 3,
+      "Passed": true
+    },
+    {
+      "Question": "ERP: what touches the purchase order (procure-to-pay)?",
+      "Mode": "dependents",
+      "Target": "dbo.PurchaseOrder",
+      "Count": 4,
+      "Passed": true
+    },
+    {
+      "Question": "ITSM: what code creates/approves a change request?",
+      "Mode": "dependents",
+      "Target": "dbo.ChangeRequest",
+      "Count": 2,
+      "Passed": true
+    },
+    {
+      "Question": "Core banking: what touches the payment instruction (submit/screen/reject/reconcile/report)?",
+      "Mode": "dependents",
+      "Target": "dbo.PaymentInstruction",
+      "Count": 10,
+      "Passed": true
+    },
+    {
+      "Question": "ITSM: what is impacted by the incident table (lifecycle \u002B SLA \u002B dashboard)?",
+      "Mode": "dependents",
+      "Target": "dbo.Incident",
+      "Count": 6,
+      "Passed": true
+    },
+    {
+      "Question": "ERP/reporting: what depends on stock movement?",
+      "Mode": "dependents",
+      "Target": "dbo.StockMovement",
+      "Count": 3,
+      "Passed": true
+    },
+    {
+      "Question": "Core banking: what breaks if a rejection code changes?",
+      "Mode": "dependents",
+      "Target": "dbo.RejectionCode",
+      "Count": 1,
+      "Passed": true
+    },
+    {
+      "Question": "Core banking: what code runs sanctions screening?",
+      "Mode": "dependents",
+      "Target": "dbo.SanctionsScreening",
+      "Count": 1,
+      "Passed": true
+    },
+    {
+      "Question": "CRM 360: what tables does the customer-360 read depend on?",
+      "Mode": "dependencies",
+      "Target": "EnterprisePatterns.Services.CustomerService.GetCustomer360",
+      "Count": 5,
+      "Passed": true
+    },
+    {
+      "Question": "Core banking: what does payment release depend on (proc \u002B log)?",
+      "Mode": "dependencies",
+      "Target": "EnterprisePatterns.Services.PaymentApprovalService.ReleasePayment",
+      "Count": 3,
+      "Passed": true
+    },
+    {
+      "Question": "CRM: what is impacted if the Customer table changes?",
+      "Mode": "impact",
+      "Target": "dbo.Customer",
+      "Count": 11,
+      "Passed": true
+    },
+    {
+      "Question": "ERP: what is impacted if the GL account changes (GL posting)?",
+      "Mode": "impact",
+      "Target": "dbo.GlAccount",
+      "Count": 5,
+      "Passed": true
+    }
+  ],
+  "Coverage": {
+    "FilesDiscovered": 9,
+    "FilesImported": 9,
+    "FilesExtracted": 9,
+    "FilesNoSymbols": 0,
+    "FilesUnsupported": 0,
+    "FilesParseError": 0,
+    "FilesNonCode": 0,
+    "FilesSkipped": 0,
+    "ResolvedReferences": 79,
+    "UnresolvedReferences": 32,
+    "UnsupportedLanguages": []
+  },
+  "DiscoveryCoverage": 1,
+  "ResolutionRate": 0.7117117117117117,
+  "GraphAccuracy": 1,
+  "RetrievalAccuracy": 1,
+  "ImpactAccuracy": 1
+}

@@ -61,3 +61,19 @@ append-only audit, and AI output is treated as a proposal. The two honest "watch
 startup `Database.Migrate()` path — acceptable for single-instance local installs and made safer by
 EF Core 9+ migration locking, but a script/bundle is the production-grade alternative — and (2) the
 IIS deploy path, where the **Hosting Bundle** and **app-pool SQL login** are the usual failure points.
+
+---
+
+## Final enterprise-reasoning pass (2026-06-21, addendum)
+
+This pass added a **synthetic enterprise giant-pattern reasoning benchmark** (not a deployment-research task)
+and did **not** perform new external browsing — it relies on the deployment/security failure-pattern research
+already captured above and in `COMMUNITY_FAILURE_PATTERNS.md` /
+`OFFICIAL_DEPLOYMENT_SECURITY_REFERENCES.md`. The benchmark proves consultant-style reasoning over **public,
+high-level** enterprise pattern families (CRM/ERP/ITSM/core-banking/reporting), with the same honesty
+discipline as the rest of this log: structural answers are graph-proven and reproducible; advisory answers are
+grounded design reasoning, scored at most 90, and carry **no** vendor-certification or compliance claim. The one
+research-relevant reuse: the maker/checker, sanctions-before-release, and change-approval controls modelled in
+the fixture mirror the controls the official/community research flags as the real operational risk points
+(segregation of duties, approval gates, audit evidence). See
+`Enterprise-Giant-Solution-Reasoning-Benchmark.md` and `reports/ENTERPRISE_REASONING_BENCHMARK_RESULTS.md`.

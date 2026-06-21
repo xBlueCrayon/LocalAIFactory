@@ -1,0 +1,223 @@
+{
+  "fixture": "enterprise-giant-patterns",
+  "note": "Answer key for the enterprise reasoning benchmark. For STRUCTURAL questions the graph proof is authoritative; 'evidence' and 'limitations' are required so the answer never overclaims. For ADVISORY questions, every entity in the matching scenario question's requiredEntities must exist in the fixture, and controls+risks+evidence+limitations must be supplied — these are design/consultant reasoning, NOT graph-executed and NOT vendor-certified.",
+  "answers": {
+    "ci-find-change-proc": {
+      "groundedEntities": ["dbo.usp_ApproveChangeRequest"],
+      "controls": ["maker/checker enforced inside the procedure (MakerUser <> CheckerUser)"],
+      "risks": ["dynamic SQL that names the proc indirectly would not resolve"],
+      "evidence": ["enterprise-itsm-schema.sql"],
+      "limitations": ["locates the symbol; does not execute or approve anything"]
+    },
+    "ci-find-resolve-incident": {
+      "groundedEntities": ["EnterprisePatterns.Services.IncidentService.ResolveIncident"],
+      "controls": ["resolution writes an IncidentAudit row (who/what/when)"],
+      "risks": ["reflection/dynamic dispatch could hide a caller"],
+      "evidence": ["enterprise-operations-services.cs"],
+      "limitations": ["locates the symbol; no real incident is resolved"]
+    },
+    "crm-discount-approval-code": {
+      "groundedEntities": ["dbo.DiscountApproval", "dbo.usp_ApproveDiscount", "EnterprisePatterns.Services.DiscountApprovalService.SubmitDiscount", "EnterprisePatterns.Services.DiscountApprovalService.ApproveDiscount"],
+      "controls": ["maker/checker segregation", "ApproverRole authorization"],
+      "risks": ["a discount applied without the approval row would bypass control"],
+      "evidence": ["enterprise-crm-schema.sql", "enterprise-approval-workflows.cs"],
+      "limitations": ["graph shows the code paths; it does not certify a Dynamics/Salesforce control framework"]
+    },
+    "crm-customer360-data": {
+      "groundedEntities": ["dbo.Customer", "dbo.Contact", "dbo.Account", "dbo.Opportunity"],
+      "controls": ["read-only assembly; per-project access still enforced by the platform"],
+      "risks": ["fields added later must be wired into the 360 read"],
+      "evidence": ["enterprise-crm-schema.sql", "enterprise-integration-services.cs"],
+      "limitations": ["lists the tables the read touches; not a real customer dataset"]
+    },
+    "crm-customer-impact": {
+      "groundedEntities": ["dbo.Customer", "dbo.Contact", "dbo.Account", "dbo.Opportunity"],
+      "controls": ["review every impacted service before a Customer schema change"],
+      "risks": ["dynamic/ORM-generated SQL is not in the edge set, so impact is a floor not a ceiling"],
+      "evidence": ["enterprise-crm-schema.sql", "enterprise-integration-services.cs"],
+      "limitations": ["blast radius covers statically-named SQL only"]
+    },
+    "erp-po-procure-to-pay": {
+      "groundedEntities": ["dbo.PurchaseOrder", "dbo.PurchaseOrderApproval", "dbo.usp_ApprovePurchaseOrder", "EnterprisePatterns.Services.PurchaseApprovalService.SubmitPurchaseOrder", "EnterprisePatterns.Services.FinanceReportingService.ProcurementReport"],
+      "controls": ["purchase-order approval over threshold", "maker/checker segregation"],
+      "risks": ["goods receipt before approval would break the control"],
+      "evidence": ["enterprise-erp-schema.sql", "enterprise-approval-workflows.cs"],
+      "limitations": ["pattern only; not a certified SAP/Oracle module map"]
+    },
+    "erp-gl-impact": {
+      "groundedEntities": ["dbo.GlAccount", "dbo.GlJournal", "dbo.usp_PostToGl", "EnterprisePatterns.Services.GlService.PostJournal"],
+      "controls": ["GL posting centralised in usp_PostToGl"],
+      "risks": ["a GL posting-format change ripples into every finance report"],
+      "evidence": ["enterprise-erp-schema.sql", "enterprise-operations-services.cs"],
+      "limitations": ["no accounting-standard (GAAP/IFRS) guarantee"]
+    },
+    "erp-stock-reports": {
+      "groundedEntities": ["dbo.StockMovement", "dbo.InventoryValuation", "EnterprisePatterns.Services.OperationsReportingService.StockMovementReport"],
+      "controls": ["stock movements are the single source for inventory reporting"],
+      "risks": ["a movement-schema change breaks downstream reports"],
+      "evidence": ["enterprise-erp-schema.sql", "enterprise-reporting-services.cs"],
+      "limitations": ["not a certified BI connector"]
+    },
+    "itsm-change-code": {
+      "groundedEntities": ["dbo.ChangeRequest", "dbo.ChangeApproval", "dbo.usp_ApproveChangeRequest", "EnterprisePatterns.Services.ChangeApprovalService.SubmitChange"],
+      "controls": ["CAB / change-manager approval", "maker/checker segregation"],
+      "risks": ["scheduling a change before approval bypasses governance"],
+      "evidence": ["enterprise-itsm-schema.sql", "enterprise-approval-workflows.cs"],
+      "limitations": ["not certified ServiceNow workflow conformance"]
+    },
+    "itsm-incident-impact": {
+      "groundedEntities": ["dbo.Incident", "dbo.IncidentAudit", "dbo.SlaBreach"],
+      "controls": ["audit row on resolution", "SLA breach tracking"],
+      "risks": ["an Incident schema change affects lifecycle, SLA, and the ops dashboard"],
+      "evidence": ["enterprise-itsm-schema.sql", "enterprise-operations-services.cs"],
+      "limitations": ["impact covers statically-named SQL only"]
+    },
+    "bank-payment-touch": {
+      "groundedEntities": ["dbo.PaymentInstruction", "dbo.MakerCheckerLog", "dbo.usp_SubmitPayment", "dbo.usp_ReleasePayment"],
+      "controls": ["sanctions screen before release", "maker/checker/approver segregation"],
+      "risks": ["release without a clean screen or checker would breach control"],
+      "evidence": ["enterprise-core-banking-schema.sql", "enterprise-approval-workflows.cs", "enterprise-integration-services.cs"],
+      "limitations": ["not a certified core-banking product; no fraud-proof guarantee"]
+    },
+    "bank-sanctions-code": {
+      "groundedEntities": ["dbo.SanctionsScreening", "EnterprisePatterns.Services.SanctionsScreeningService.ScreenPayment"],
+      "controls": ["screening result recorded with a list version"],
+      "risks": ["stale list version invalidates the screen"],
+      "evidence": ["enterprise-core-banking-schema.sql", "enterprise-integration-services.cs"],
+      "limitations": ["no real sanctions list; screening accuracy not claimed"]
+    },
+    "bank-rejection-impact": {
+      "groundedEntities": ["dbo.RejectionCode", "EnterprisePatterns.Services.RejectionService.ProcessRejection"],
+      "controls": ["rejection-code mapping drives retry vs terminal handling"],
+      "risks": ["a code-mapping change alters payment routing/retry behaviour"],
+      "evidence": ["enterprise-core-banking-schema.sql", "enterprise-integration-services.cs"],
+      "limitations": ["not a complete external-scheme rejection catalogue"]
+    },
+    "bank-release-deps": {
+      "groundedEntities": ["dbo.usp_ReleasePayment", "dbo.MakerCheckerLog"],
+      "controls": ["release goes through the procedure and updates the maker/checker log"],
+      "risks": ["bypassing the proc would skip the control"],
+      "evidence": ["enterprise-core-banking-schema.sql", "enterprise-approval-workflows.cs"],
+      "limitations": ["no settlement-finality guarantee"]
+    },
+    "crm-discount-controls": {
+      "groundedEntities": ["dbo.DiscountApproval", "dbo.usp_ApproveDiscount"],
+      "controls": ["maker/checker segregation (MakerUser <> CheckerUser in usp_ApproveDiscount)", "ApproverRole authorization", "approval row required before the discount is applied"],
+      "risks": ["self-approval if segregation is not enforced", "discount applied without an approval record"],
+      "evidence": ["enterprise-crm-schema.sql", "enterprise-approval-workflows.cs"],
+      "limitations": ["advisory control design; not a certified Dynamics/Salesforce control framework and not a fraud guarantee"]
+    },
+    "crm-contact-mandatory": {
+      "groundedEntities": ["dbo.Contact", "EnterprisePatterns.Services.CustomerService.UpdateContact", "EnterprisePatterns.Services.CustomerService.GetCustomer360"],
+      "controls": ["validate email on write before enforcing NOT NULL", "back-fill existing rows first"],
+      "risks": ["existing NULL emails break inserts/updates", "the customer-360 read assumes the column is present"],
+      "evidence": ["enterprise-crm-schema.sql", "enterprise-integration-services.cs"],
+      "limitations": ["advisory impact; the migration was not executed here"]
+    },
+    "erp-inventory-valuation": {
+      "groundedEntities": ["dbo.InventoryValuation", "dbo.StockMovement", "EnterprisePatterns.Services.ProcureToPayService.RevalueInventory", "EnterprisePatterns.Services.FinanceReportingService.FinanceDashboard"],
+      "controls": ["revaluation method recorded (Standard/FIFO/etc.)", "valuation derived from stock movements"],
+      "risks": ["a valuation-method change shifts GL value and finance reporting"],
+      "evidence": ["enterprise-erp-schema.sql", "enterprise-integration-services.cs", "enterprise-reporting-services.cs"],
+      "limitations": ["advisory; no accounting-standard correctness guarantee"]
+    },
+    "erp-order-to-cash": {
+      "groundedEntities": ["dbo.SalesOrder", "dbo.SalesOrderLine", "dbo.Invoice", "dbo.usp_PostToGl", "EnterprisePatterns.Services.OrderToCashService.CreateSalesOrder", "EnterprisePatterns.Services.OrderToCashService.GenerateInvoice"],
+      "controls": ["invoice posts to GL via the central procedure"],
+      "risks": ["order without invoice, or invoice without GL posting, breaks the cash cycle"],
+      "evidence": ["enterprise-erp-schema.sql", "enterprise-integration-services.cs"],
+      "limitations": ["advisory module flow; not a certified ERP map"]
+    },
+    "erp-procure-to-pay": {
+      "groundedEntities": ["dbo.PurchaseOrder", "dbo.GoodsReceipt", "dbo.StockMovement", "EnterprisePatterns.Services.ProcureToPayService.ReceiveGoods"],
+      "controls": ["PO approval before receipt", "receipt creates a stock movement"],
+      "risks": ["receiving against an unapproved PO"],
+      "evidence": ["enterprise-erp-schema.sql", "enterprise-integration-services.cs"],
+      "limitations": ["advisory module flow; not a certified ERP map"]
+    },
+    "itsm-incident-lifecycle": {
+      "groundedEntities": ["dbo.Incident", "dbo.IncidentAudit", "dbo.SlaBreach", "EnterprisePatterns.Services.IncidentService.LogIncident", "EnterprisePatterns.Services.IncidentService.ResolveIncident"],
+      "controls": ["state transitions New -> ... -> Resolved", "audit row on resolution", "SLA breach captured"],
+      "risks": ["resolving without an audit entry loses traceability"],
+      "evidence": ["enterprise-itsm-schema.sql", "enterprise-operations-services.cs"],
+      "limitations": ["advisory lifecycle; not certified ITIL conformance"]
+    },
+    "itsm-change-approvals": {
+      "groundedEntities": ["dbo.ChangeRequest", "dbo.ChangeApproval", "dbo.usp_ApproveChangeRequest"],
+      "controls": ["change-manager (CAB) approval", "maker/checker segregation before scheduling"],
+      "risks": ["unapproved change reaching production"],
+      "evidence": ["enterprise-itsm-schema.sql", "enterprise-approval-workflows.cs"],
+      "limitations": ["advisory; not certified ServiceNow change workflow"]
+    },
+    "itsm-ops-dashboard": {
+      "groundedEntities": ["EnterprisePatterns.Services.OperationsReportingService.OperationsDashboard", "dbo.OperationsDailySnapshot"],
+      "controls": ["single dashboard surfaces incidents, SLA breaches, and the payment pipeline"],
+      "risks": ["stale snapshot misleads the manager"],
+      "evidence": ["enterprise-reporting-schema.sql", "enterprise-reporting-services.cs"],
+      "limitations": ["advisory; not a certified BI tool integration"]
+    },
+    "itsm-incident-audit": {
+      "groundedEntities": ["dbo.IncidentAudit"],
+      "controls": ["actor, action, and timestamp captured for every resolution"],
+      "risks": ["missing audit rows undermine post-incident review"],
+      "evidence": ["enterprise-itsm-schema.sql", "enterprise-operations-services.cs"],
+      "limitations": ["advisory; not a tamper-proof legal record"]
+    },
+    "bank-kyc-to-approval": {
+      "groundedEntities": ["dbo.PaymentInstruction", "dbo.SanctionsScreening", "dbo.MakerCheckerLog", "dbo.usp_SubmitPayment", "dbo.usp_ReleasePayment"],
+      "controls": ["screen -> submit (maker) -> release (checker/approver)", "segregation of duties at each stage"],
+      "risks": ["release before a clean screen", "maker == checker"],
+      "evidence": ["enterprise-core-banking-schema.sql", "enterprise-approval-workflows.cs", "enterprise-integration-services.cs"],
+      "limitations": ["advisory flow; not certified core-banking compliance and not fraud-proof"]
+    },
+    "bank-payment-release-controls": {
+      "groundedEntities": ["dbo.SanctionsScreening", "dbo.MakerCheckerLog", "dbo.usp_ReleasePayment"],
+      "controls": ["clean sanctions screen required", "maker/checker/approver segregation of duties", "release only via the procedure"],
+      "risks": ["self-release", "release with a sanctions hit"],
+      "evidence": ["enterprise-core-banking-schema.sql", "enterprise-approval-workflows.cs"],
+      "limitations": ["advisory; no regulatory sign-off and no guaranteed AML detection"]
+    },
+    "bank-sanctions-rule-change": {
+      "groundedEntities": ["dbo.SanctionsScreening", "EnterprisePatterns.Services.SanctionsScreeningService.ScreenPayment"],
+      "controls": ["list version recorded with each screen"],
+      "risks": ["a rule/list change requires re-screening in-flight payments"],
+      "evidence": ["enterprise-core-banking-schema.sql", "enterprise-integration-services.cs"],
+      "limitations": ["advisory; no real or current sanctions list is shipped"]
+    },
+    "ops-manager-daily-evidence": {
+      "groundedEntities": ["dbo.OperationsDailySnapshot", "EnterprisePatterns.Services.OperationsReportingService.OperationsDashboard"],
+      "controls": ["daily snapshot of open incidents, SLA breaches, payment pipeline"],
+      "risks": ["acting on a stale or missing snapshot"],
+      "evidence": ["enterprise-reporting-schema.sql", "enterprise-reporting-services.cs"],
+      "limitations": ["advisory; not a live production feed"]
+    },
+    "bank-maker-checker-evidence": {
+      "groundedEntities": ["dbo.MakerCheckerLog"],
+      "controls": ["maker, checker, approver, and stage recorded per payment with timestamps"],
+      "risks": ["incomplete log undermines the segregation proof"],
+      "evidence": ["enterprise-core-banking-schema.sql", "enterprise-approval-workflows.cs"],
+      "limitations": ["advisory; not legal proof of compliance"]
+    },
+    "ci-migration-review": {
+      "groundedEntities": ["dbo.PaymentInstruction", "dbo.Customer"],
+      "controls": ["review every file in the impact set before migrating a shared table"],
+      "risks": ["dynamic SQL means the impact set is a floor, so add manual review"],
+      "evidence": ["enterprise-integration-services.cs", "enterprise-approval-workflows.cs", "enterprise-operations-services.cs", "enterprise-reporting-services.cs"],
+      "limitations": ["advisory; driven by the structural impact graph, which excludes dynamic SQL"]
+    },
+    "ci-autonomous-patch-risk": {
+      "groundedEntities": ["dbo.PaymentInstruction"],
+      "controls": ["dry-run-by-default", "allowlist-only", "human approval / maker-checker", "halt-on-failure", "never auto-promote"],
+      "risks": ["an unreviewed patch touching a shared table could change payment behaviour"],
+      "evidence": ["enterprise-approval-workflows.cs"],
+      "limitations": ["advisory; cross-links the ControlledExecutor proof, which ran on a synthetic workspace, not a real repo"]
+    },
+    "ci-test-gates": {
+      "groundedEntities": ["dbo.ChangeRequest"],
+      "controls": ["build", "unit/integration tests", "benchmark", "UI smoke", "security audit"],
+      "risks": ["approving a change without the gates risks a regression or a page hang"],
+      "evidence": ["enterprise-itsm-schema.sql"],
+      "limitations": ["advisory; gates are real (verify-poc/ui-smoke/security-audit) but not externally certified"]
+    }
+  }
+}

@@ -41,7 +41,7 @@ calibrate every claim below against the real, current state of the repository.
   Development-only dev-auth handler. RBAC (Viewer < Analyst < Admin) and per-project
   `ProjectAccess` ACLs are enforced server-side and audited. There is **no** enterprise
   SSO / OIDC / Entra ID integration — that is design and additive hooks only.
-- **Readiness (reported honestly):** mean ~**59.5%**, max **88**, **none at 100**
+- **Readiness (reported honestly):** mean ~**60.6%**, max **88**, **none at 100**
   (per the `/Readiness` page and `readiness-scorecard.json`).
 
 ### Cross-references (existing in this repository)
@@ -571,5 +571,5 @@ captured evidence:
 
 Until those four are simultaneously true, the product remains a **controlled,
 operator-assisted pilot/demo**, and the final `v1.0` release (blocker 15) stays
-**unpublished by design**. Readiness today is reported honestly at mean ~59.5%, max 88,
+**unpublished by design**. Readiness today is reported honestly at mean ~60.6%, max 88,
 **none at 100** — consistent with this roadmap. See also `docs/Known-Limitations.md`.

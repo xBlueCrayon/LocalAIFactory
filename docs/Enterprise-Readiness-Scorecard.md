@@ -79,3 +79,17 @@ extractor), Scalability 40→**45** (load/reliability smoke live: 0 failures), S
 live: 0 HIGH), UX/Demo 60→**62** (Support dashboard + manuals + screenshot script). Honest non-raises:
 Document/OCR **35**, Cross-System/Estate **45**, Enterprise Product **30**; screenshots NOT generated
 (Node/Playwright absent — documented). See `Final-20X-Completion-Report.md`. **None at 100.**
+
+## FINAL-ENTERPRISE-REASONING update (overall mean ≈ 59.5% → ≈ 60.6%)
+
+Added a synthetic enterprise giant-solution reasoning benchmark (`benchmarks/fixtures/enterprise-giant-patterns`,
+manifest `ENTGIANT`) over 10 **public** pattern families (CRM/Dynamics, Salesforce, ERP/SAP, Oracle/NetSuite,
+ServiceNow ITSM, Temenos/Finastra/FIS core banking, Jira/Confluence workflow, Copilot/Sourcegraph
+code-intelligence, Power BI/Tableau reporting, operating-manager workflow) — **NOT a vendor clone and NOT a
+certified-compatibility claim**. The real structural harness scores it **Gold** (329 symbols, 79 edges, **14/14
+POV**, golden-guarded); `scripts/benchmark/run-enterprise-reasoning-benchmark.ps1` scores **31 questions** (14
+structural graph-proven @100 + 17 advisory design @90), **mean 94.5/100, PASS**. Raised only where this gives
+reproducible proof: Benchmark/Evidence 80→**82**, Business Workflow Consulting 45→**55**, ERP/Infra Advisory
+65→**68**, Vendor-Style Design 55→**65**. Blocked areas (production, SSO, OCR, estate, GA) **unchanged**. See
+`Enterprise-Giant-Solution-Reasoning-Benchmark.md` and `reports/ENTERPRISE_REASONING_BENCHMARK_RESULTS.md`.
+**None at 100.**

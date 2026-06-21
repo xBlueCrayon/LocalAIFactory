@@ -35,9 +35,12 @@ deployment, true fresh-VM install — see the gates report.
 
 ## Readiness
 
-Mean ≈ **59.5%** (max 88, **none at 100**). Raised this sprint: Packaging/Licensing 30→**45**, UX/Demo 62→**70**,
-Data/Knowledge Governance 82→**85**, Deployment 65→**70**, Supportability 60→**65**, Commercial Product 30→**35**,
-Technical POC 87→**88**. Authoritative: `readiness-scorecard.json` (`/Readiness`).
+Mean ≈ **60.6%** (max 88, **none at 100**). The **FINAL-ENTERPRISE-REASONING** pass added a synthetic
+enterprise giant-pattern reasoning benchmark (10 public pattern families, Gold 14/14 structural + 17 advisory,
+mean 94.5, reproducible — no vendor clone) and raised only four areas where it gives proof: Benchmark/Evidence
+80→**82**, Business Workflow Consulting 45→**55**, ERP/Infra Advisory 65→**68**, Vendor-Style Design 55→**65**.
+No blocked area (production, SSO, OCR, estate, GA) was raised. Authoritative: `readiness-scorecard.json`
+(`/Readiness`).
 
 ## Scores & decisions
 

@@ -23,6 +23,24 @@ This list is a feature, not an apology: over-claiming is the failure mode we are
 
 ---
 
+## 1a. Enterprise reasoning benchmark scope
+
+- **The enterprise giant-pattern reasoning benchmark is synthetic and pattern-level, not vendor-equivalent.**
+  `benchmarks/fixtures/enterprise-giant-patterns` models **public, high-level** CRM/ERP/ITSM/core-banking/
+  reporting patterns. It is **not** a clone of, and makes **no** certified-compatibility claim for, SAP,
+  Dynamics, Salesforce, ServiceNow, Oracle, NetSuite, Temenos, Finastra, Mambu, FIS, Fiserv, Jira, Confluence,
+  Power BI, Tableau, Copilot, or Sourcegraph.
+  - *Close with:* a delivered, measured advisory/solution engagement on a real customer system — not a synthetic
+    fixture.
+- **Structural answers cover statically-named SQL only; advisory answers are design, not execution.** The 14
+  structural questions are graph-proven (find/dependents/dependencies/impact) but exclude dynamic/ORM-generated
+  SQL (reported as a gap). The 17 advisory questions (controls, audit evidence, lifecycle, risk) are grounded
+  design reasoning scored at most 90 — they are **not** executed workflows and carry **no** compliance,
+  regulatory, financial, or fraud guarantee.
+  - *Close with:* delivered, executed workflows with measured outcomes and, where regulated, an external review.
+
+---
+
 ## 2. Estate-level understanding
 
 - **No estate model.** The platform reasons per-project; there is no cross-project / whole-estate

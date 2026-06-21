@@ -103,6 +103,35 @@
       ]
     },
     {
+      "name": "EnterpriseGiantPatterns",
+      "code": "ENTGIANT",
+      "type": "localfixture",
+      "bucket": "enterprise-giant-patterns",
+      "localDir": "enterprise-giant-patterns",
+      "tier": "standard",
+      "tags": ["csharp", "sql", "crm", "erp", "itsm", "core-banking", "reporting", "approval", "bridge"],
+      "license": "Original synthetic fixture (LocalAIFactory) — public high-level enterprise patterns only; NOT a clone of SAP/Dynamics/Salesforce/ServiceNow/Oracle/Temenos/Finastra/FIS/Fiserv or any vendor product, schema, UI, or documentation.",
+      "expectedCapability": "Reason like an enterprise solution consultant over synthetic CRM/ERP/ITSM/core-banking/reporting code+schema: 'what touches X', 'impact of changing X', 'what code runs approval proc Y', 'what does this service/report depend on' — across pattern families, grounded in the graph.",
+      "expectedGap": "Approval CONTROLS, audit-evidence, lifecycle and risk narratives are advisory (design/knowledge), not graph-derived; they are scored separately by the standalone reasoning runner and never asserted as vendor compatibility or compliance guarantees.",
+      "approved": true,
+      "proofOfVision": [
+        { "question": "Find the change-approval stored procedure (SQL extraction)", "mode": "find", "target": "dbo.usp_ApproveChangeRequest", "minCount": 1 },
+        { "question": "Find ResolveIncident (C# extraction)", "mode": "find", "target": "EnterprisePatterns.Services.IncidentService.ResolveIncident", "minCount": 1 },
+        { "question": "CRM: what code handles high-value discount approval?", "mode": "dependents", "target": "dbo.DiscountApproval", "mustContain": ["EnterprisePatterns.Services.DiscountApprovalService.SubmitDiscount", "EnterprisePatterns.Services.DiscountApprovalService.ApproveDiscount"], "minCount": 2 },
+        { "question": "ERP: what touches the purchase order (procure-to-pay)?", "mode": "dependents", "target": "dbo.PurchaseOrder", "mustContain": ["EnterprisePatterns.Services.PurchaseApprovalService.SubmitPurchaseOrder", "EnterprisePatterns.Services.FinanceReportingService.ProcurementReport"], "minCount": 2 },
+        { "question": "ITSM: what code creates/approves a change request?", "mode": "dependents", "target": "dbo.ChangeRequest", "mustContain": ["EnterprisePatterns.Services.ChangeApprovalService.SubmitChange"], "minCount": 1 },
+        { "question": "Core banking: what touches the payment instruction (submit/screen/reject/reconcile/report)?", "mode": "dependents", "target": "dbo.PaymentInstruction", "mustContain": ["EnterprisePatterns.Services.SanctionsScreeningService.ScreenPayment", "EnterprisePatterns.Services.RejectionService.ProcessRejection", "EnterprisePatterns.Services.ReconciliationService.Reconcile"], "minCount": 4 },
+        { "question": "ITSM: what is impacted by the incident table (lifecycle + SLA + dashboard)?", "mode": "dependents", "target": "dbo.Incident", "mustContain": ["EnterprisePatterns.Services.IncidentService.LogIncident", "EnterprisePatterns.Services.IncidentService.ResolveIncident", "EnterprisePatterns.Services.OperationsReportingService.OperationsDashboard"], "minCount": 3 },
+        { "question": "ERP/reporting: what depends on stock movement?", "mode": "dependents", "target": "dbo.StockMovement", "mustContain": ["EnterprisePatterns.Services.ProcureToPayService.ReceiveGoods", "EnterprisePatterns.Services.OperationsReportingService.StockMovementReport"], "minCount": 2 },
+        { "question": "Core banking: what breaks if a rejection code changes?", "mode": "dependents", "target": "dbo.RejectionCode", "mustContain": ["EnterprisePatterns.Services.RejectionService.ProcessRejection"], "minCount": 1 },
+        { "question": "Core banking: what code runs sanctions screening?", "mode": "dependents", "target": "dbo.SanctionsScreening", "mustContain": ["EnterprisePatterns.Services.SanctionsScreeningService.ScreenPayment"], "minCount": 1 },
+        { "question": "CRM 360: what tables does the customer-360 read depend on?", "mode": "dependencies", "target": "EnterprisePatterns.Services.CustomerService.GetCustomer360", "mustContain": ["dbo.Customer", "dbo.Contact"], "minCount": 2 },
+        { "question": "Core banking: what does payment release depend on (proc + log)?", "mode": "dependencies", "target": "EnterprisePatterns.Services.PaymentApprovalService.ReleasePayment", "mustContain": ["dbo.usp_ReleasePayment"], "minCount": 1 },
+        { "question": "CRM: what is impacted if the Customer table changes?", "mode": "impact", "target": "dbo.Customer", "mustContain": ["EnterprisePatterns.Services.CustomerService.GetCustomer360"], "minCount": 3 },
+        { "question": "ERP: what is impacted if the GL account changes (GL posting)?", "mode": "impact", "target": "dbo.GlAccount", "mustContain": ["EnterprisePatterns.Services.GlService.PostJournal"], "minCount": 1 }
+      ]
+    },
+    {
       "name": "WideWorldImporters",
       "code": "WWI",
       "type": "sqlfiles",

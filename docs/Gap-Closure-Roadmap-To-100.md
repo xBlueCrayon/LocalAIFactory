@@ -10,6 +10,16 @@ The capability sprint converted knowledge/design into **shipped, tested capabili
 benchmark tiering, deployment scripts, document/OCR prototypes, and the autonomous skeleton. The remaining gaps
 are deliberately not claimed.
 
+## After FINAL-ENTERPRISE-REASONING (overall ≈ 60.6%)
+
+A synthetic enterprise giant-pattern reasoning benchmark (`ENTGIANT`, Gold 14/14 structural + 17 advisory, mean
+94.5, reproducible — no vendor clone) advanced the **reasoning/advisory** areas that it actually proves:
+Benchmark/Evidence 80→82, Business Workflow Consulting 45→55, ERP/Infra Advisory 65→68, Vendor-Style Design
+55→65. To move these higher (90+), the next proof is **delivered, measured engagements** (not synthetic
+fixtures): a real consulting/advisory engagement on a customer system with measured outcomes, and
+implementation-ready blueprints actually built and deployed. The blocked areas below are **unchanged** — the
+reasoning benchmark does not substitute for production deployment, SSO, OCR, an estate model, or a customer pilot.
+
 ## Highest-leverage next steps (in order)
 
 1. **Cross-repository estate model (17, 13 → higher).** Link symbols/edges across repos by shared-DB identity so

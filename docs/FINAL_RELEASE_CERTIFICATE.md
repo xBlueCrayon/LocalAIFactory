@@ -13,7 +13,8 @@ certainty, or production guarantee.
 |---|---|---|
 | Build | `dotnet build LocalAIFactory.sln -c Release` | **0 errors** |
 | Tests | `dotnet test` | **235 / 235 pass** |
-| Benchmark | `--inmemory --suite standard` | **PASS** — ERP/CRM Gold 6/6, core-banking Gold 6/6, **KYC/AML Gold 7/7** |
+| Benchmark | `--inmemory --suite standard` | **PASS** — ERP/CRM Gold 6/6, core-banking Gold 6/6, **KYC/AML Gold 7/7**, **enterprise giant-patterns Gold 14/14** |
+| Enterprise reasoning | `scripts/benchmark/run-enterprise-reasoning-benchmark.ps1` | **PASS** — 31 questions (14 structural @100 + 17 advisory @90), **mean 94.5**; synthetic public patterns, no vendor clone |
 | verify-poc | `scripts/poc/verify-poc.ps1` | **PASS** (build + test + benchmark + artifacts + hygiene) |
 | UI smoke | `scripts/poc/ui-smoke-test.ps1` | **PASS** (11 pages 200, incl. `/Support`) |
 | Included KB | `scripts/knowledge/verify-all-knowledge-packs.ps1` | **PASS** — 4 packs, 438 items, 438 distinct UIDs, no collisions; **live DB 4 packs / 438 items** |
@@ -35,7 +36,9 @@ certainty, or production guarantee.
   propose-never-overwrite); Windows-auth RBAC + append-only audit; ERP/CRM + core-banking + KYC/AML benchmark
   fixtures (Gold); `/Support` dashboard; edition/license skeleton; safe local fix loop; **a generated,
   verified, self-contained release package + clean-install simulation + customer-acceptance check**; real
-  product screenshots; diagnostics/support-bundle scripts.
+  product screenshots; diagnostics/support-bundle scripts; **a synthetic enterprise giant-pattern reasoning
+  benchmark (10 public pattern families, Gold 14/14 structural + 17 advisory, mean 94.5, reproducible) proving
+  consultant-style reasoning over architecture/workflows/approvals/impacts/controls — no vendor cloning**.
 - **Templates / design / prototype:** IIS/Docker/Express/full-SQL deployment (scripts + research-informed docs;
   **not executed** — Docker not installed on host); SSO/IdP (design + hooks); market-intelligence + multi-agent
   factory (design + skeleton); OCR/CV (deterministic prototypes, **no trained model**); commercial licensing
@@ -43,13 +46,17 @@ certainty, or production guarantee.
 - **Not present:** executed production deployment; enterprise SSO; cross-repository estate model; autonomy on a
   real repo; **external penetration test / security audit**; commercial licensing enforcement.
 
-## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 59.5%, max 88, none at 100)
+## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 60.6%, max 88, none at 100)
 
-Technical POC **88** · Data/Knowledge Governance **85** · Repository Understanding **80** · Benchmark **80** ·
+Technical POC **88** · Data/Knowledge Governance **85** · Benchmark **82** · Repository Understanding **80** ·
 Security **76** · Controlled Pilot **70** · Deployment **70** · UX/Demo **70** · Audit **70** · Banking **70** ·
-Supportability **65** · ERP/Infra Advisory **65** · Autonomous **55** · Vendor-Style **55** · Cross-System/Estate
-**45** · Packaging/Licensing **45** · Scalability **45** · Document/OCR **35** · Commercial Product **35** ·
-Legacy **30** · Enterprise Product **30**.
+ERP/Infra Advisory **68** · Supportability **65** · Vendor-Style **65** · Autonomous **55** · Business Workflow
+Consulting **55** · Cross-System/Estate **45** · Packaging/Licensing **45** · Scalability **45** · Document/OCR
+**35** · Commercial Product **35** · Legacy **30** · Enterprise Product **30**.
+
+> This pass raised only four areas, and only where the new enterprise giant-pattern reasoning benchmark
+> provides reproducible proof: Benchmark/Evidence 80→82, Business Workflow Consulting 45→55, ERP/Infra Advisory
+> 65→68, Vendor-Style Design 55→65. No blocked area (production, SSO, OCR, estate, GA) was raised.
 
 ## Decision
 
