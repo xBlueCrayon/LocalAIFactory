@@ -1,3 +1,5 @@
+> **Authoritative current status:** [docs/reports/CURRENT_STATUS.md](reports/CURRENT_STATUS.md) (commit 96fbbc4). This document is point-in-time; where numbers differ, CURRENT_STATUS wins.
+
 # Final Ship-Ready Completion Report
 
 **Product:** LocalAIFactory · **Release:** v1.0.0-rc (customer-handover candidate) · **Date:** 2026-06-21

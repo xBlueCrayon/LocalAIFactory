@@ -1,121 +1,122 @@
 # LocalAIFactory
 
-**A private, local-first, MSSQL-authoritative AI software-engineering platform for a banking middleware estate.**
-It imports legacy projects (C#/.NET, T-SQL, Python), understands them *structurally*, and accumulates a
-**governed, approval-gated knowledge base** that is injected first into every prompt context. Everything runs
-locally and keeps working with **only SQL Server present** — no GPU, no internet, no Ollama, no Qdrant required.
+**A private, local-first, MSSQL-authoritative AI software-engineering platform — with a data-driven
+product generator and a governed knowledge engine.** It imports legacy projects (C#/.NET, T-SQL, Python),
+understands them *structurally*, accumulates an **approval-gated knowledge base** injected first into every
+prompt context, and can **generate clean-room sample applications** (ERP, screen-share) from that knowledge.
+Everything runs locally and keeps working with **only SQL Server present** — no GPU, no internet, no Ollama,
+no Qdrant required (the local LLM is optional and used only as a reviewer/planner).
 
-> `MASTER_VISION.md` is the authoritative source of truth. `CLAUDE.md` is the contributor contract.
-> This is **not** a general chatbot, and it makes **no** vendor-certification, regulatory, financial, or
-> fraud-proof claims.
+> `MASTER_VISION.md` is the authoritative vision; `CLAUDE.md` is the contributor contract.
+> **Authoritative current status:** [`docs/reports/CURRENT_STATUS.md`](docs/reports/CURRENT_STATUS.md).
+> This is **not** a general chatbot and makes **no** commercial-GA, vendor-certification, ERPNext-parity,
+> or internet-ready claims.
 
 ---
+
+## Current status (verified, commit `96fbbc4`)
+
+| Area | Status |
+|---|---|
+| **Factory** build / tests | 0 errors · **240 / 240** |
+| Production-readiness gate V3 | `NEAR_GA_READY_WITH_EXTERNAL_PROOF_MODEL` (near-GA **local** proof, not commercial GA) |
+| Security audit | PASS (no HIGH findings) |
+| **Knowledge engine** | **20 packs / 852 items**, validated, no UID collisions |
+| **ERP V5** (generated) | `ERP_PILOT_READY` · 134 .NET + 14 Playwright tests · ~48% ERPNext parity · ~57% production-grade |
+| **ScreenStream** (generated) | `LAN_READY` · 12 .NET + 4 Playwright tests · real local server EXE |
+| Release | `v1.0.0-rc` **draft + prerelease** (unpublished); no `v1.0` tag |
 
 ## What it is
 
-.NET 10 / ASP.NET Core MVC. Eight projects, no dependency cycles: **Core, Data, Rag, Agent, Ingestion,
-Workspaces, Terminal, Web**. MSSQL + EF Core is the primary memory store; Qdrant (vectors) and Ollama (local
-inference) are **optional** and degrade gracefully when absent.
+.NET 10 / ASP.NET Core MVC. MSSQL + EF Core is the primary memory store; Qdrant (vectors) and Ollama (local
+inference) are optional and degrade gracefully when absent. Three pillars:
 
-## What it can do today (proven)
+1. **Code understanding** — deterministic C# (Roslyn), T-SQL (ScriptDom) and Python symbol extraction into a
+   structural graph with C#↔SQL bridging and bidirectional impact analysis.
+2. **Knowledge engine** — governed `KnowledgePack`s (propose-never-overwrite), 20 packs / 852 items, validated
+   and default-installed. See [`docs/knowledge-engine/`](docs/knowledge-engine/).
+3. **Product generator** — `tools/LocalAIFactory.Generator`: a data-driven, knowledge + template emitter that
+   generates clean-room sample applications at 100% file autonomy, with attribution + knowledge-usage reports.
 
-- **Deterministic structural understanding** — C# (Roslyn), T-SQL (ScriptDom) and Python (pure-C# parser) symbol
-  extraction into a structural graph (`CodeSymbol`/`CodeEdge`), with reference resolution and **bidirectional
-  impact analysis**.
-- **C#↔SQL bridge** — links C#/Python methods to the SQL objects they access (`AccessesSql` edges, with
-  confidence + evidence); answers "what code touches `dbo.X`" and "what is the blast radius of this change".
-- **Governed knowledge base** — `KnowledgeItem`/`KnowledgePack` with permanence tiers (Curated), provenance,
-  versioning, a source registry, and a **propose-never-overwrite** guard. MSSQL is the runtime source of truth;
-  JSON packs are the source-controlled seed/import format.
-- **General vs project vs chat-imported knowledge** — general packs (`ProjectId=null`, Curated), project-scoped
-  knowledge (`ProjectId` set), and a deterministic **chat-import extractor** that turns ChatGPT/Claude/markdown
-  conversations into *proposals only* (never auto-approved).
-- **Project import** — ZIP import pipeline with profiling, code extraction, and per-import **coverage / gap
-  reporting** (no silent blind spots).
-- **Knowledge packs (4)** — `professional-base-v1` (390 items) plus `financial-institution-operations-v1`,
-  `kyc-aml-transaction-approval-v1`, `market-intelligence-forecasting-v1` (48 items), all installable through the
-  validated, idempotent installer.
-- **Benchmark harness** — pinned-repo + local-fixture fixtures with Smoke/Standard/Extended tiers and golden
-  snapshots, including **ERP/CRM (Gold 6/6)**, **core-banking (Gold 6/6)** and **KYC/AML→transaction-approval
-  (Gold 7/7)** fixtures where the bridge answers industrial impact questions.
-- **Security & audit** — Windows-auth RBAC enforced server-side, deny-by-default, append-only audit, IDOR guard.
-- **Supportability** — read-only `/Support` dashboard (build/version, edition+license, cached service health, DB
-  counts, last import/audit, disk, warnings); never blocks on an external service.
-- **Edition / license skeleton** — demo-safe (no DRM, no phone-home; a missing/expired paid license degrades to
-  the Community core).
-- **Safe local fix loop** — applies a patch to an isolated workspace, runs allowlisted checks, **rolls back on
-  failure**, and **never commits/pushes** (default dry-run).
+## Generated products (samples)
 
-### Current validation status
+Source kept in-repo; build artifacts/EXEs are git-ignored — publish locally to run. See
+[`generated-products/README.md`](generated-products/README.md).
 
-| Gate | Status |
-|---|---|
-| `dotnet build -c Release` | **0 errors** |
-| `dotnet test` | **235 / 235 pass** |
-| Benchmark (smoke / standard) | **PASS** (KYC/AML fixture Gold 7/7) |
-| UI smoke (`scripts/poc/ui-smoke-test.ps1`) | **PASS** (11 pages 200, incl. `/Support`) |
-| `scripts/poc/verify-poc.ps1` | **PASS** |
-| `dotnet publish` | **151 files / 45 MB** |
+- **LAF Enterprise ERP V5** — clean-room .NET/MSSQL ERP (double-entry GL + P&L + Balance Sheet, stock ledger,
+  maker/checker + audit + RBAC, generated create UI forms, REST APIs). **ERP_PILOT_READY, not ERPNext-grade.**
+- **LAF ScreenStream Assist** — consent-based Windows screen-share with a real server EXE + client-EXE
+  generator. **LAN_READY, not internet/production-grade.**
 
-**Readiness:** overall mean ≈ 57.6% (see `/Readiness` and [`docs/readiness-scorecard.json`](docs/readiness-scorecard.json)).
-**No area is at 100** — scoring is deliberately conservative.
+ERP V1–V4 remain as **historical** generation artifacts (version progression evidence).
 
-## What it is NOT (yet)
-
-No enterprise SSO/IdP; no executed production (IIS/Docker/Express/full-SQL) deployment; no real OCR/CV engine
-(deterministic PDF/cheque-triage prototypes only); no cross-repository estate model; no autonomous fix loop on a
-real repo; no commercial licensing enforcement; **not commercial-GA**. See
-[`docs/Known-Limitations.md`](docs/Known-Limitations.md) and the per-area `proofRequiredFor100` in the scorecard.
-
-## Pilot readiness
-
-Sellable as a **controlled, operator-assisted paid pilot** scoped to the proven core, with OCR/PDF, banking
-compliance, SSO and autonomy-at-scale presented as roadmap. **Not** ready for unattended production or commercial
-general availability. See [`docs/Industrial-Ship-Readiness-Certificate.md`](docs/Industrial-Ship-Readiness-Certificate.md).
-
----
-
-## Setup
+## Quick start
 
 ```powershell
+git clone --branch ke-008-code-symbols https://github.com/xBlueCrayon/LocalAIFactory.git
+cd LocalAIFactory
 dotnet restore
-dotnet build LocalAIFactory.sln -c Release
-# Create the local database (LocalDB; create-if-absent, never drops):
-database/create-localdb.ps1
-# Run (auto-migrates + seeds on first run once the connection string points at a reachable SQL Server):
+dotnet build LocalAIFactory.sln -c Release          # 0 errors
+dotnet test                                          # 240/240
+.\scripts\knowledge\verify-all-knowledge-packs.ps1   # 20 packs / 852 items, PASS
+.\scripts\production\verify-production-readiness-v3.ps1
+```
+
+Run the factory web app (MSSQL-only mode is fine):
+
+```powershell
 dotnet run --project src/LocalAIFactory.Web
 ```
 
-The four core pages (Home, Projects, Knowledge, Models) must always load — on an empty DB, a seeded DB, or in
-MSSQL-only mode. See [`docs/02-Setup.md`](docs/02-Setup.md).
-
-## Validation
+### Run the generated products locally
 
 ```powershell
-dotnet build LocalAIFactory.sln -c Release          # must be 0 errors
-dotnet test tests/LocalAIFactory.Tests              # 235/235
-cd tools/LocalAIFactory.Benchmark; dotnet run -c Release -- --inmemory --suite standard
-scripts/poc/verify-poc.ps1                          # artifacts + build + test + benchmark + hygiene
-scripts/poc/ui-smoke-test.ps1                       # starts app, asserts no 500s
-database/verify-knowledge-base.ps1                  # KB integrity
-scripts/security/security-audit.ps1                 # secrets / dangerous-command / large-artifact scan
-scripts/diagnostics/system-snapshot.ps1             # CPU/RAM/disk/GPU snapshot
+# ERP V5 (publishes to C:\LAFEnterpriseERP-V5, runs on SQLite; set ConnectionStrings:Default for MSSQL)
+pwsh scripts/erp-v5/publish-local-production.ps1
+C:\LAFEnterpriseERP-V5\LafErp.Web.exe        # then open http://localhost:5000
+
+# ScreenStream (publishes to C:\LAFScreenStreamAssist)
+pwsh generated-products/LAF-ScreenStreamAssist/scripts/publish-local-test-folder.ps1 -OutputRoot C:\LAFScreenStreamAssist
+C:\LAFScreenStreamAssist\Server\Start-Server.bat   # dashboard at http://localhost:5090
 ```
 
-## Documentation
+### Regenerate a product (proves the generator)
 
-Start at the **[documentation hub: `docs/README.md`](docs/README.md)** — indexed by role (executive, user, admin,
-operator, developer, deployment, database, security, support, AI governance, knowledge base, ERP/CRM, core
-banking, KYC/AML, market intelligence, autonomous engineering, troubleshooting).
+```powershell
+dotnet run --project tools/LocalAIFactory.Generator -- `
+  --module-spec tools/LocalAIFactory.Generator/specs/erpnext-production-suite.json `
+  --target generated-products/LAF-EnterpriseERP-V5-New --product-name "LAF Enterprise ERP V5"
+```
 
-Key entry points: [Architecture](docs/01-Architecture.md) · [Setup](docs/02-Setup.md) ·
-[Development Workflow](docs/03-Development-Workflow.md) · [Deployment (IIS)](docs/04-Deployment.md) ·
-[Troubleshooting](docs/07-Troubleshooting.md) · [Final 20X Completion Report](docs/Final-20X-Completion-Report.md) ·
-[Gap-Closure Roadmap to 100](docs/Gap-Closure-Roadmap-To-100.md).
+## Repository structure
+
+```
+src/        LocalAIFactory factory (Core/Data/Rag/Agent/Ingestion/Workspaces/Terminal/Web)
+tests/      LocalAIFactory.Tests (240)
+tools/      LocalAIFactory.Generator (data-driven product generator) + benchmark
+scripts/    knowledge/ production/ generator/ erp-v5/ screenstream/ diagnostics/ poc/ security/
+knowledge-packs/        20 default knowledge packs (852 items)
+generated-products/     ERP V5 + ScreenStream (current) + V1-V4 (historical)
+docs/       architecture/setup/operations/knowledge-engine/generated-products/reports
+```
+
+## What is production-ready vs pilot-ready
+
+- **Factory:** near-GA **local** proof; commercial GA needs external proofs (real Entra/OIDC, CA TLS,
+  independent pen-test, signed pilot) — modelled + owned, **not faked**.
+- **ERP V5:** high **pilot**; not ERPNext-grade / not production-grade. Local gaps: EF migrations, edit/delete
+  UI, backup/restore, module depth. External gaps: real auth, TLS, security review, customer acceptance.
+- **ScreenStream:** **LAN_READY**; internet/production needs TLS/WSS, code-signing, operator network setup.
+
+## Known limitations & release
+
+See [`docs/Known-Limitations.md`](docs/Known-Limitations.md). The draft release `v1.0.0-rc` is **not**
+published; there is **no** final `v1.0` tag. **No commercial GA, no ERPNext parity, no internet-ready
+ScreenStream, no fake 100%.**
 
 ## License & contributing
 
-See `CLAUDE.md` for the operating contract and non-negotiable runtime rules (MSSQL-only must work; Qdrant/Ollama
-optional; no blocking external calls on the request path; no destructive DB changes without approval; no secrets
-in the repo). Knowledge-pack content is original professional summaries authored for LocalAIFactory — no
-third-party proprietary text is vendored.
+See `CLAUDE.md` for the operating contract (MSSQL-only must work; Qdrant/Ollama optional; no blocking
+external calls on the request path; no destructive DB changes without approval; no secrets in the repo).
+Knowledge-pack content and generated code are original/clean-room — no third-party proprietary text or
+source is vendored.

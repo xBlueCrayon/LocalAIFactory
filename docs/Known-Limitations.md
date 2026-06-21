@@ -1,3 +1,5 @@
+> **Authoritative current status:** [docs/reports/CURRENT_STATUS.md](reports/CURRENT_STATUS.md) (commit 96fbbc4). This document is point-in-time; where numbers differ, CURRENT_STATUS wins.
+
 # Known Limitations
 
 An honest, comprehensive inventory of what LocalAIFactory does **not** do yet, organized by

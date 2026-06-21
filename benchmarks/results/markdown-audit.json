@@ -1,0 +1,12 @@
+{
+  "kind": "markdown-audit",
+  "generated": "2026-06-21",
+  "commit": "96fbbc4",
+  "branch": "ke-008-code-symbols",
+  "scanned": "docs/**/*.md, generated-products/**/README.md, knowledge-packs metadata",
+  "livingDocsUpdated": 15,
+  "historicalIndexed": 170,
+  "brokenLinksFound": 0,
+  "staleCurrentClaimsFixed": "routed-through-CURRENT_STATUS",
+  "authoritative": "docs/reports/CURRENT_STATUS.md"
+}

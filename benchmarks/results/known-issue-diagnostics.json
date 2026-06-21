@@ -1,6 +1,6 @@
 {
   "syncOverAsync": 0,
+  "extInController": 0,
   "fail": 0,
-  "groupByConst": 0,
-  "extInController": 0
+  "groupByConst": 0
 }

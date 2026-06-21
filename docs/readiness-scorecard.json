@@ -256,7 +256,7 @@
     {
       "id": 8,
       "name": "Data and Knowledge Governance Readiness",
-      "currentScore": 88,
+      "currentScore": 90,
       "confidence": "High",
       "criteria": {
         "0": "none",
@@ -272,7 +272,8 @@
         "source registry validated at install",
         "no-silent-overwrite tests",
         "FULL-PRODUCTION-READINESS: 2 new validated packs (enterprise-workflows-v1 40 items + production-issue-fixes-v1 42 items; 6 packs/520 items offline-validated, 0 UID collisions) + local-LLM proposal governance (propose-never-overwrite, authoritative=false, PENDING_REVIEW)",
-        "FINAL-CLOSURE: integration-expectation library (governed, source-referenced, EMULATED-labelled) + operator-emulation pack (no real secrets, validated); 6 packs/520 items"
+        "FINAL-CLOSURE: integration-expectation library (governed, source-referenced, EMULATED-labelled) + operator-emulation pack (no real secrets, validated); 6 packs/520 items",
+        "REPO-CLEANUP (2026-06-21): Knowledge engine productized: 20 packs / 852 items validated, no UID collisions, knowledge-engine docs + default catalog."
       ],
       "blockers": [
         "no formal PII classification/retention policy",
@@ -331,7 +332,7 @@
     {
       "id": 10,
       "name": "Supportability and Operations Readiness",
-      "currentScore": 74,
+      "currentScore": 76,
       "confidence": "Medium",
       "criteria": {
         "0": "none",
@@ -348,7 +349,8 @@
         "Dashboard mode label",
         "FULL-PRODUCTION-READINESS: 8 diagnostics scripts (IIS 500.30/500.19, sql-apppool-login, https-binding, forwarded-headers, large-repo-clone, ollama, qdrant) + load profile + production-issue-fixes knowledge pack (42 patterns)",
         "FINAL-CLOSURE: 20-system integration-expectation library (auth/endpoints/failure/diagnostic/prevention) + operator-emulation pack + 8 diagnostics + production-issue pack (42) — supportability for a human operator to complete external proofs",
-        "NEAR-GA-CLOSURE (2026-06-21): 8 production-check scripts (env/release/pilot/monitoring/backup/entra) + run-known-issue-diagnostics.ps1 (page-hang/blocking/secret anti-pattern detector) + production-issue-fixes pack expanded to 77 items."
+        "NEAR-GA-CLOSURE (2026-06-21): 8 production-check scripts (env/release/pilot/monitoring/backup/entra) + run-known-issue-diagnostics.ps1 (page-hang/blocking/secret anti-pattern detector) + production-issue-fixes pack expanded to 77 items.",
+        "REPO-CLEANUP (2026-06-21): CURRENT_STATUS.md authoritative status + generated-products + knowledge-engine docs + clean repo hygiene (REPO-CLEANUP sprint)."
       ],
       "blockers": [
         "no supportability dashboard",
@@ -356,7 +358,7 @@
         "no alerting/SLOs"
       ],
       "proofRequiredFor100": "Supportability dashboard + diagnostics bundle + alerting/SLOs operated over a sustained period.",
-      "targetScore": 75,
+      "targetScore": 80,
       "status": "useful-partial",
       "pathTo100": "Advance 65 -> 75 by closing the listed blockers; full path to 100 is in proofRequiredFor100.",
       "nextActions": [
@@ -606,7 +608,7 @@
     {
       "id": 18,
       "name": "User Experience / Demo Readiness",
-      "currentScore": 70,
+      "currentScore": 72,
       "confidence": "High",
       "criteria": {
         "0": "none",
@@ -620,7 +622,8 @@
         "working MVC UI: dashboard, projects, graph explorer, coverage, Base Knowledge, Readiness",
         "HTTP smoke test",
         "POC demo script",
-        "fast page loads (<1s)"
+        "fast page loads (<1s)",
+        "REPO-CLEANUP (2026-06-21): Professional root README + per-product run guides (ERP V5 + ScreenStream publish/run steps)."
       ],
       "blockers": [
         "no Playwright browser tests yet (HTTP smoke only)",
@@ -705,7 +708,7 @@
     {
       "id": 21,
       "name": "Enterprise ERP / Infrastructure Advisory Capability",
-      "currentScore": 70,
+      "currentScore": 72,
       "confidence": "Medium",
       "criteria": {
         "0": "none",
@@ -720,7 +723,8 @@
         "ERP integration contracts (API/migration/extensibility)",
         "sage/sap-b1/sap-hana/oracle/cisco/dynamics/odoo scenarios + comparison + rubric",
         "FINAL-ENTERPRISE-REASONING: enterprise-giant-patterns fixture extends ERP advisory across CRM/ERP/ITSM/core-banking/reporting (Gold 14/14 POV) + Enterprise-Reasoning-Comparison-Matrix + rubric-scored reasoning (mean 94.5)",
-        "NEAR-GA-CLOSURE (2026-06-21): Added ServiceNow Table API, Salesforce REST, Power BI REST and Tableau REST expectation models (auth/endpoints/failure-modes), doc-referenced, no compatibility claimed."
+        "NEAR-GA-CLOSURE (2026-06-21): Added ServiceNow Table API, Salesforce REST, Power BI REST and Tableau REST expectation models (auth/endpoints/failure-modes), doc-referenced, no compatibility claimed.",
+        "REPO-CLEANUP (2026-06-21): ERP V5 (134 tests, create UI, P&L/Balance Sheet) + 2 production ERP knowledge packs."
       ],
       "blockers": [
         "fixtures are synthetic; no delivered ERP/infra engagement",
@@ -738,7 +742,7 @@
     {
       "id": 22,
       "name": "Vendor-Style Solution Design Capability",
-      "currentScore": 65,
+      "currentScore": 67,
       "confidence": "Medium",
       "criteria": {
         "0": "none",
@@ -752,7 +756,8 @@
         "21 playbooks",
         "14 scenarios",
         "Enterprise-Solution-Evaluation-Rubric (0-100 scoring)",
-        "FINAL-ENTERPRISE-REASONING: rubric-scored consultant-grade reasoning across 10 vendor pattern families, structurally grounded in code+schema (14 graph-proven answers) with advisory controls/risks/evidence (mean 94.5, PASS) — explicitly no vendor cloning or certification"
+        "FINAL-ENTERPRISE-REASONING: rubric-scored consultant-grade reasoning across 10 vendor pattern families, structurally grounded in code+schema (14 graph-proven answers) with advisory controls/risks/evidence (mean 94.5, PASS) — explicitly no vendor cloning or certification",
+        "REPO-CLEANUP (2026-06-21): Generated products productized + documented (status, build/run/publish, honest gaps)."
       ],
       "blockers": [
         "designs are advisory, not yet delivered/tested as built solutions",
