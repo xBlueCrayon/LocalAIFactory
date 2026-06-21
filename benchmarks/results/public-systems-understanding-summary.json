@@ -1,0 +1,22 @@
+{
+  "totalQuestions": 588,
+  "meanScore": 55.3,
+  "codeGrounded": 88,
+  "docsFetchedGrounded": 39,
+  "docsMetadataOnly": 430,
+  "unsupportedGap": 0,
+  "byType": {
+    "module": 56.2,
+    "performance": 58.9,
+    "data-model": 55.1,
+    "auth": 56.8,
+    "api": 51.1,
+    "extension": 62.5,
+    "integration": 65.7,
+    "architecture": 55.1,
+    "operational": 54.9,
+    "migration": 62.5
+  },
+  "systemsWithRealCode": 29,
+  "docsFetchedSample": 5
+}

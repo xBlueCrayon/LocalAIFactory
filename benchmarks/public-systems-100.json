@@ -1,0 +1,4335 @@
+{
+  "schemaVersion": 1,
+  "description": "100+ real open-source systems for the LocalAIFactory code+docs benchmark",
+  "systems": [
+    {
+      "id": "odoo",
+      "displayName": "odoo/odoo",
+      "category": "ERP",
+      "sourceRepoUrl": "https://github.com/odoo/odoo",
+      "docsUrl": "https://www.odoo.com/documentation",
+      "apiDocsUrl": "https://www.odoo.com/documentation/master/developer/reference.html",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "LGPL-3.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "JavaScript",
+        "XML",
+        "CSS"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "ERP",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, XML, CSS) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Odoo ERP. Python business logic + JS/XML web client. Cap 1500."
+    },
+    {
+      "id": "erpnext",
+      "displayName": "frappe/erpnext",
+      "category": "ERP",
+      "sourceRepoUrl": "https://github.com/frappe/erpnext",
+      "docsUrl": "https://docs.frappe.io/erpnext",
+      "apiDocsUrl": "https://docs.frappe.io/erpnext/api",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "architectureStyle": "metadata-driven",
+      "domain": "ERP",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "ERPNext on Frappe. Python ERP business logic. Default branch develop."
+    },
+    {
+      "id": "frappe",
+      "displayName": "frappe/frappe",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/frappe/frappe",
+      "docsUrl": "https://docs.frappe.io/framework",
+      "apiDocsUrl": "https://docs.frappe.io/framework/user/en/api",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Vue",
+        "HTML"
+      ],
+      "architectureStyle": "metadata-driven",
+      "domain": "low-code framework",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, Vue, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Frappe low-code framework (powers ERPNext). Default branch develop."
+    },
+    {
+      "id": "dolibarr",
+      "displayName": "Dolibarr/dolibarr",
+      "category": "ERP",
+      "sourceRepoUrl": "https://github.com/Dolibarr/dolibarr",
+      "docsUrl": "https://wiki.dolibarr.org",
+      "apiDocsUrl": "https://wiki.dolibarr.org/index.php/Developer_documentation",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "SQL"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "ERP/CRM",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Dolibarr ERP/CRM. PHP => validation-only; embedded SQL may surface."
+    },
+    {
+      "id": "ever-gauzy",
+      "displayName": "ever-co/ever-gauzy",
+      "category": "ERP",
+      "sourceRepoUrl": "https://github.com/ever-co/ever-gauzy",
+      "docsUrl": "https://docs.gauzy.co",
+      "apiDocsUrl": "https://api.gauzy.co/swg",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "ERP/business-management",
+      "sizeTier": "large",
+      "docsCoverage": "partial",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Ever Gauzy ERP/CRM. NestJS+Angular TS => validation-only."
+    },
+    {
+      "id": "frappe-hrms",
+      "displayName": "frappe/hrms",
+      "category": "ERP",
+      "sourceRepoUrl": "https://github.com/frappe/hrms",
+      "docsUrl": "https://docs.frappe.io/hr",
+      "apiDocsUrl": "https://docs.frappe.io/hr",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "architectureStyle": "metadata-driven",
+      "domain": "HR/payroll",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Frappe HR. Python on Frappe framework. Default branch develop."
+    },
+    {
+      "id": "twenty",
+      "displayName": "twentyhq/twenty",
+      "category": "CRM",
+      "sourceRepoUrl": "https://github.com/twentyhq/twenty",
+      "docsUrl": "https://twenty.com/developers",
+      "apiDocsUrl": "https://twenty.com/developers/rest-api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "CRM",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Twenty CRM. NestJS+React TS => validation-only."
+    },
+    {
+      "id": "chatwoot",
+      "displayName": "chatwoot/chatwoot",
+      "category": "CRM",
+      "sourceRepoUrl": "https://github.com/chatwoot/chatwoot",
+      "docsUrl": "https://www.chatwoot.com/docs",
+      "apiDocsUrl": "https://www.chatwoot.com/developers/api",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Ruby",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Vue"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "customer-engagement",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Ruby not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Chatwoot support/CRM. Rails (Ruby) => validation-only."
+    },
+    {
+      "id": "crater",
+      "displayName": "crater-invoice/crater",
+      "category": "CRM",
+      "sourceRepoUrl": "https://github.com/crater-invoice/crater",
+      "docsUrl": "https://docs.craterapp.com",
+      "apiDocsUrl": "https://docs.craterapp.com",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Vue"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "invoicing",
+      "sizeTier": "small",
+      "docsCoverage": "partial",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Crater invoicing. Laravel PHP => validation-only."
+    },
+    {
+      "id": "wordpress",
+      "displayName": "WordPress/WordPress",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/WordPress/WordPress",
+      "docsUrl": "https://developer.wordpress.org",
+      "apiDocsUrl": "https://developer.wordpress.org/rest-api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "GPL-2.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "CSS"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "CMS/blogging",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "WordPress core (read-only mirror). PHP => validation-only."
+    },
+    {
+      "id": "drupal",
+      "displayName": "drupal/drupal",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/drupal/drupal",
+      "docsUrl": "https://www.drupal.org/docs",
+      "apiDocsUrl": "https://www.drupal.org/docs/develop/drupal-apis",
+      "defaultBranch": "11.x",
+      "pinnedCommitSha": null,
+      "license": "GPL-2.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Twig"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "CMS",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Drupal CMS. PHP/Symfony => validation-only. Default branch 11.x (verify)."
+    },
+    {
+      "id": "joomla",
+      "displayName": "joomla/joomla-cms",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/joomla/joomla-cms",
+      "docsUrl": "https://docs.joomla.org",
+      "apiDocsUrl": "https://manual.joomla.org/docs/general-concepts/apis",
+      "defaultBranch": "5.3-dev",
+      "pinnedCommitSha": null,
+      "license": "GPL-2.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "SCSS"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "CMS",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Joomla CMS. PHP => validation-only. Default branch a version-dev branch (verify)."
+    },
+    {
+      "id": "orchardcore",
+      "displayName": "OrchardCMS/OrchardCore",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/OrchardCMS/OrchardCore",
+      "docsUrl": "https://docs.orchardcore.net",
+      "apiDocsUrl": "https://docs.orchardcore.net/en/latest/reference",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML",
+        "CSS"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "CMS",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, HTML, CSS) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Modular .NET Core CMS. Large C# surface; full extraction."
+    },
+    {
+      "id": "ghost",
+      "displayName": "TryGhost/Ghost",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/TryGhost/Ghost",
+      "docsUrl": "https://ghost.org/docs",
+      "apiDocsUrl": "https://ghost.org/docs/admin-api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "JavaScript",
+      "secondaryLanguages": [
+        "TypeScript",
+        "Handlebars"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "publishing/blogging",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "JavaScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Ghost publishing platform. Node/JS => validation-only."
+    },
+    {
+      "id": "strapi",
+      "displayName": "strapi/strapi",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/strapi/strapi",
+      "docsUrl": "https://docs.strapi.io",
+      "apiDocsUrl": "https://docs.strapi.io/dev-docs/api/rest",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "JavaScript",
+      "secondaryLanguages": [
+        "TypeScript"
+      ],
+      "architectureStyle": "headless",
+      "domain": "headless CMS",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "JavaScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Strapi headless CMS. JS/TS => validation-only."
+    },
+    {
+      "id": "directus",
+      "displayName": "directus/directus",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/directus/directus",
+      "docsUrl": "https://docs.directus.io",
+      "apiDocsUrl": "https://docs.directus.io/reference/introduction.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSL-1.1",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "Vue",
+        "JavaScript"
+      ],
+      "architectureStyle": "headless",
+      "domain": "headless CMS/data platform",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Directus data platform. TS => validation-only. License BSL - verify."
+    },
+    {
+      "id": "statamic",
+      "displayName": "statamic/cms",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/statamic/cms",
+      "docsUrl": "https://statamic.dev",
+      "apiDocsUrl": "https://statamic.dev/rest-api",
+      "defaultBranch": "5.x",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "Vue",
+        "JavaScript"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "flat-file CMS",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Statamic CMS (Laravel addon). PHP => validation-only. License Statamic - verify."
+    },
+    {
+      "id": "october",
+      "displayName": "octobercms/october",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/octobercms/october",
+      "docsUrl": "https://docs.octobercms.com",
+      "apiDocsUrl": "https://docs.octobercms.com",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "CMS",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "October CMS (Laravel). PHP => validation-only. License - verify."
+    },
+    {
+      "id": "processwire",
+      "displayName": "processwire/processwire",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/processwire/processwire",
+      "docsUrl": "https://processwire.com/docs",
+      "apiDocsUrl": "https://processwire.com/api/ref",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MPL-2.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "CMS",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "ProcessWire CMS. PHP => validation-only."
+    },
+    {
+      "id": "basercms",
+      "displayName": "baserproject/basercms",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/baserproject/basercms",
+      "docsUrl": "https://baserproject.github.io",
+      "apiDocsUrl": "https://baserproject.github.io/5/webapi",
+      "defaultBranch": "5.next",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "CMS",
+      "sizeTier": "medium",
+      "docsCoverage": "partial",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "baserCMS (CakePHP). PHP => validation-only. Default branch a dev branch (verify)."
+    },
+    {
+      "id": "pimcore",
+      "displayName": "pimcore/pimcore",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/pimcore/pimcore",
+      "docsUrl": "https://docs.pimcore.com",
+      "apiDocsUrl": "https://pimcore.github.io/datahub/current",
+      "defaultBranch": "11.x",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Twig"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "DXP/PIM/DAM",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Pimcore DXP/PIM. PHP/Symfony => validation-only. Default branch 11.x (verify)."
+    },
+    {
+      "id": "magento2",
+      "displayName": "magento/magento2",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/magento/magento2",
+      "docsUrl": "https://developer.adobe.com/commerce",
+      "apiDocsUrl": "https://developer.adobe.com/commerce/webapi/rest",
+      "defaultBranch": "2.4-develop",
+      "pinnedCommitSha": null,
+      "license": "OSL-3.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "XML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "eCommerce",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Adobe/Magento 2. PHP => validation-only. Default branch 2.4-develop (verify)."
+    },
+    {
+      "id": "woocommerce",
+      "displayName": "woocommerce/woocommerce",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/woocommerce/woocommerce",
+      "docsUrl": "https://woocommerce.com/document/woocommerce-rest-api",
+      "apiDocsUrl": "https://woocommerce.github.io/woocommerce-rest-api-docs",
+      "defaultBranch": "trunk",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "TypeScript"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "eCommerce",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "WooCommerce (WordPress plugin). PHP => validation-only. Default branch trunk."
+    },
+    {
+      "id": "prestashop",
+      "displayName": "PrestaShop/PrestaShop",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/PrestaShop/PrestaShop",
+      "docsUrl": "https://devdocs.prestashop-project.org",
+      "apiDocsUrl": "https://devdocs.prestashop-project.org/8/webservice",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Smarty"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "eCommerce",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "PrestaShop. PHP => validation-only. License OSL/AFL - verify. Default branch develop."
+    },
+    {
+      "id": "opencart",
+      "displayName": "opencart/opencart",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/opencart/opencart",
+      "docsUrl": "https://docs.opencart.com",
+      "apiDocsUrl": "https://docs.opencart.com/en-gb/system/api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Twig"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "eCommerce",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "OpenCart. PHP => validation-only. Default branch master."
+    },
+    {
+      "id": "saleor",
+      "displayName": "saleor/saleor",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/saleor/saleor",
+      "docsUrl": "https://docs.saleor.io",
+      "apiDocsUrl": "https://docs.saleor.io/api-reference",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "GraphQL",
+        "HTML"
+      ],
+      "architectureStyle": "headless",
+      "domain": "eCommerce",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. GraphQL, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Saleor headless commerce. Django/Python; GraphQL SDL is a gap."
+    },
+    {
+      "id": "medusa",
+      "displayName": "medusajs/medusa",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/medusajs/medusa",
+      "docsUrl": "https://docs.medusajs.com",
+      "apiDocsUrl": "https://docs.medusajs.com/api/store",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "headless",
+      "domain": "eCommerce",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Medusa headless commerce. TS => validation-only. Default branch develop."
+    },
+    {
+      "id": "nopcommerce",
+      "displayName": "nopSolutions/nopCommerce",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/nopSolutions/nopCommerce",
+      "docsUrl": "https://docs.nopcommerce.com",
+      "apiDocsUrl": "https://docs.nopcommerce.com/en/developer/index.html",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML",
+        "CSS"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "eCommerce",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, HTML, CSS) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "nopCommerce ASP.NET Core. Full C# + LinqToDB/SQL bridge. License nopCommerce - verify. Default branch develop."
+    },
+    {
+      "id": "bagisto",
+      "displayName": "bagisto/bagisto",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/bagisto/bagisto",
+      "docsUrl": "https://devdocs.bagisto.com",
+      "apiDocsUrl": "https://devdocs.bagisto.com/2.x/api-docs.html",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "Vue",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "eCommerce",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Bagisto (Laravel). PHP => validation-only."
+    },
+    {
+      "id": "spree",
+      "displayName": "spree/spree",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/spree/spree",
+      "docsUrl": "https://docs.spreecommerce.org",
+      "apiDocsUrl": "https://api.spreecommerce.org",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "Ruby",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "eCommerce",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Ruby not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Spree (Rails). Ruby => validation-only."
+    },
+    {
+      "id": "solidus",
+      "displayName": "solidusio/solidus",
+      "category": "eCommerce",
+      "sourceRepoUrl": "https://github.com/solidusio/solidus",
+      "docsUrl": "https://guides.solidus.io",
+      "apiDocsUrl": "https://github.com/solidusio/solidus/tree/main/api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "Ruby",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "eCommerce",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Ruby not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Solidus (Rails, Spree fork). Ruby => validation-only."
+    },
+    {
+      "id": "discourse",
+      "displayName": "discourse/discourse",
+      "category": "blogging/publishing",
+      "sourceRepoUrl": "https://github.com/discourse/discourse",
+      "docsUrl": "https://meta.discourse.org/c/documentation",
+      "apiDocsUrl": "https://docs.discourse.org",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "GPL-2.0",
+      "primaryLanguage": "Ruby",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Ember"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "forum/discussion",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Ruby not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Discourse forum. Rails (Ruby) + Ember => validation-only."
+    },
+    {
+      "id": "mastodon",
+      "displayName": "mastodon/mastodon",
+      "category": "blogging/publishing",
+      "sourceRepoUrl": "https://github.com/mastodon/mastodon",
+      "docsUrl": "https://docs.joinmastodon.org",
+      "apiDocsUrl": "https://docs.joinmastodon.org/methods",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "Ruby",
+      "secondaryLanguages": [
+        "JavaScript",
+        "TypeScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "social/fediverse",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Ruby not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Mastodon. Rails (Ruby) + React => validation-only."
+    },
+    {
+      "id": "pixelfed",
+      "displayName": "pixelfed/pixelfed",
+      "category": "blogging/publishing",
+      "sourceRepoUrl": "https://github.com/pixelfed/pixelfed",
+      "docsUrl": "https://docs.pixelfed.org",
+      "apiDocsUrl": "https://docs.pixelfed.org/technical-documentation/api",
+      "defaultBranch": "dev",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "Vue",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "social/fediverse",
+      "sizeTier": "large",
+      "docsCoverage": "partial",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Pixelfed (Laravel). PHP => validation-only. Default branch dev."
+    },
+    {
+      "id": "openproject",
+      "displayName": "opf/openproject",
+      "category": "workflow/ITSM",
+      "sourceRepoUrl": "https://github.com/opf/openproject",
+      "docsUrl": "https://www.openproject.org/docs",
+      "apiDocsUrl": "https://www.openproject.org/docs/api",
+      "defaultBranch": "dev",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "Ruby",
+      "secondaryLanguages": [
+        "TypeScript",
+        "Angular"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "project-management",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Ruby not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "OpenProject. Rails (Ruby) + Angular => validation-only. Default branch dev."
+    },
+    {
+      "id": "taiga-back",
+      "displayName": "taigaio/taiga-back",
+      "category": "workflow/ITSM",
+      "sourceRepoUrl": "https://github.com/taigaio/taiga-back",
+      "docsUrl": "https://docs.taiga.io",
+      "apiDocsUrl": "https://docs.taiga.io/api.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MPL-2.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "HTML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "project-management",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Taiga backend. Django/Python full extraction; Angular frontend is separate repo."
+    },
+    {
+      "id": "redmine",
+      "displayName": "redmine/redmine",
+      "category": "workflow/ITSM",
+      "sourceRepoUrl": "https://github.com/redmine/redmine",
+      "docsUrl": "https://www.redmine.org/guide",
+      "apiDocsUrl": "https://www.redmine.org/projects/redmine/wiki/Rest_api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "GPL-2.0",
+      "primaryLanguage": "Ruby",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "project-management/issue-tracking",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Ruby not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Redmine (Rails). Ruby => validation-only. Default branch master."
+    },
+    {
+      "id": "n8n",
+      "displayName": "n8n-io/n8n",
+      "category": "workflow-orchestration",
+      "sourceRepoUrl": "https://github.com/n8n-io/n8n",
+      "docsUrl": "https://docs.n8n.io",
+      "apiDocsUrl": "https://docs.n8n.io/api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Vue"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "workflow-automation",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "n8n workflow automation. TS => validation-only. License Sustainable Use - verify. Default branch master."
+    },
+    {
+      "id": "windmill",
+      "displayName": "windmill-labs/windmill",
+      "category": "workflow-orchestration",
+      "sourceRepoUrl": "https://github.com/windmill-labs/windmill",
+      "docsUrl": "https://www.windmill.dev/docs",
+      "apiDocsUrl": "https://app.windmill.dev/openapi.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "Rust",
+      "secondaryLanguages": [
+        "TypeScript",
+        "Python"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "workflow/internal-tools",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Rust not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Windmill. Rust backend + Svelte/TS => validation-only; bundled Python may yield some symbols."
+    },
+    {
+      "id": "novu",
+      "displayName": "novuhq/novu",
+      "category": "workflow-orchestration",
+      "sourceRepoUrl": "https://github.com/novuhq/novu",
+      "docsUrl": "https://docs.novu.co",
+      "apiDocsUrl": "https://docs.novu.co/api-reference",
+      "defaultBranch": "next",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "microservices",
+      "domain": "notification-infrastructure",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Novu notification infra. TS => validation-only. Default branch next."
+    },
+    {
+      "id": "grafana",
+      "displayName": "grafana/grafana",
+      "category": "observability/dashboarding",
+      "sourceRepoUrl": "https://github.com/grafana/grafana",
+      "docsUrl": "https://grafana.com/docs/grafana/latest",
+      "apiDocsUrl": "https://grafana.com/docs/grafana/latest/developers/http_api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "Go",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "observability",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Grafana. TS frontend + Go backend => validation-only."
+    },
+    {
+      "id": "prometheus",
+      "displayName": "prometheus/prometheus",
+      "category": "observability/dashboarding",
+      "sourceRepoUrl": "https://github.com/prometheus/prometheus",
+      "docsUrl": "https://prometheus.io/docs",
+      "apiDocsUrl": "https://prometheus.io/docs/prometheus/latest/querying/api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [
+        "TypeScript"
+      ],
+      "architectureStyle": "microservices",
+      "domain": "monitoring/TSDB",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Prometheus. Go => validation-only."
+    },
+    {
+      "id": "sentry",
+      "displayName": "getsentry/sentry",
+      "category": "observability/dashboarding",
+      "sourceRepoUrl": "https://github.com/getsentry/sentry",
+      "docsUrl": "https://docs.sentry.io",
+      "apiDocsUrl": "https://docs.sentry.io/api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "error-monitoring/APM",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. TypeScript, JavaScript) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Sentry. Django/Python backend (full) + React frontend (gap). License BSL/FSL - verify. Default branch master."
+    },
+    {
+      "id": "metabase",
+      "displayName": "metabase/metabase",
+      "category": "data/BI",
+      "sourceRepoUrl": "https://github.com/metabase/metabase",
+      "docsUrl": "https://www.metabase.com/docs",
+      "apiDocsUrl": "https://www.metabase.com/docs/latest/api-documentation",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "Clojure",
+      "secondaryLanguages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "BI/analytics",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Clojure not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Metabase BI. Clojure + TS => validation-only. License AGPL/commercial - verify. Default branch master."
+    },
+    {
+      "id": "superset",
+      "displayName": "apache/superset",
+      "category": "data/BI",
+      "sourceRepoUrl": "https://github.com/apache/superset",
+      "docsUrl": "https://superset.apache.org/docs/intro",
+      "apiDocsUrl": "https://superset.apache.org/docs/api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "BI/analytics",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. TypeScript, JavaScript) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Apache Superset. Flask/SQLAlchemy Python (full) + SQL bridge; React frontend gap. Default branch master."
+    },
+    {
+      "id": "matomo",
+      "displayName": "matomo-org/matomo",
+      "category": "data/BI",
+      "sourceRepoUrl": "https://github.com/matomo-org/matomo",
+      "docsUrl": "https://matomo.org/docs",
+      "apiDocsUrl": "https://developer.matomo.org/api-reference/reporting-api",
+      "defaultBranch": "5.x-dev",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Vue"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "web-analytics",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Matomo analytics. PHP => validation-only. Default branch a version-dev branch (verify)."
+    },
+    {
+      "id": "plausible",
+      "displayName": "plausible/analytics",
+      "category": "data/BI",
+      "sourceRepoUrl": "https://github.com/plausible/analytics",
+      "docsUrl": "https://plausible.io/docs",
+      "apiDocsUrl": "https://plausible.io/docs/stats-api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "Elixir",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "web-analytics",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Elixir not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Plausible analytics. Elixir/Phoenix => validation-only. Default branch master."
+    },
+    {
+      "id": "posthog",
+      "displayName": "PostHog/posthog",
+      "category": "data/BI",
+      "sourceRepoUrl": "https://github.com/PostHog/posthog",
+      "docsUrl": "https://posthog.com/docs",
+      "apiDocsUrl": "https://posthog.com/docs/api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "product-analytics",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. TypeScript, JavaScript) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "PostHog. Django/Python backend (full) + React frontend (gap). License MIT/commercial - verify. Default branch master."
+    },
+    {
+      "id": "umami",
+      "displayName": "umami-software/umami",
+      "category": "data/BI",
+      "sourceRepoUrl": "https://github.com/umami-software/umami",
+      "docsUrl": "https://umami.is/docs",
+      "apiDocsUrl": "https://umami.is/docs/api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "web-analytics",
+      "sizeTier": "small",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Umami analytics. Next.js TS => validation-only. Default branch master."
+    },
+    {
+      "id": "mlflow",
+      "displayName": "mlflow/mlflow",
+      "category": "ML/data-science",
+      "sourceRepoUrl": "https://github.com/mlflow/mlflow",
+      "docsUrl": "https://mlflow.org/docs/latest",
+      "apiDocsUrl": "https://mlflow.org/docs/latest/python_api/index.html",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "JavaScript",
+        "TypeScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "ML-lifecycle/MLOps",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, TypeScript) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "MLflow. Python (full) + React UI gap. Default branch master."
+    },
+    {
+      "id": "scikit-learn",
+      "displayName": "scikit-learn/scikit-learn",
+      "category": "ML/data-science",
+      "sourceRepoUrl": "https://github.com/scikit-learn/scikit-learn",
+      "docsUrl": "https://scikit-learn.org/stable/documentation.html",
+      "apiDocsUrl": "https://scikit-learn.org/stable/modules/classes.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "Cython",
+        "C++"
+      ],
+      "architectureStyle": "library",
+      "domain": "ML",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. Cython, C++) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "scikit-learn. Python (full); Cython cores are a gap."
+    },
+    {
+      "id": "pandas",
+      "displayName": "pandas-dev/pandas",
+      "category": "ML/data-science",
+      "sourceRepoUrl": "https://github.com/pandas-dev/pandas",
+      "docsUrl": "https://pandas.pydata.org/docs",
+      "apiDocsUrl": "https://pandas.pydata.org/docs/reference/index.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "Cython",
+        "C"
+      ],
+      "architectureStyle": "library",
+      "domain": "data-analysis",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. Cython, C) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "pandas. Python (full); Cython/.pyx is a gap."
+    },
+    {
+      "id": "dbt-core",
+      "displayName": "dbt-labs/dbt-core",
+      "category": "ML/data-science",
+      "sourceRepoUrl": "https://github.com/dbt-labs/dbt-core",
+      "docsUrl": "https://docs.getdbt.com/docs",
+      "apiDocsUrl": "https://docs.getdbt.com/reference/dbt-jinja-functions",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "SQL"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "analytics-engineering/ELT",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. SQL) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "dbt. Python (full) + embedded SQL/Jinja templates bridge. Strong SQL target."
+    },
+    {
+      "id": "airbyte",
+      "displayName": "airbytehq/airbyte",
+      "category": "ML/data-science",
+      "sourceRepoUrl": "https://github.com/airbytehq/airbyte",
+      "docsUrl": "https://docs.airbyte.com",
+      "apiDocsUrl": "https://reference.airbyte.com",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "Java",
+        "Kotlin",
+        "TypeScript"
+      ],
+      "architectureStyle": "microservices",
+      "domain": "data-integration/ELT",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. Java, Kotlin, TypeScript) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Airbyte. Python connectors (full) + Java/Kotlin platform (gap). License ELv2/MIT - verify. Default branch master."
+    },
+    {
+      "id": "airflow",
+      "displayName": "apache/airflow",
+      "category": "workflow-orchestration",
+      "sourceRepoUrl": "https://github.com/apache/airflow",
+      "docsUrl": "https://airflow.apache.org/docs",
+      "apiDocsUrl": "https://airflow.apache.org/docs/apache-airflow/stable/stable-rest-api-ref.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "TypeScript",
+        "HTML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "data-orchestration",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. TypeScript, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Apache Airflow. Python (full) + React UI gap. Cap 1500."
+    },
+    {
+      "id": "temporal",
+      "displayName": "temporalio/temporal",
+      "category": "workflow-orchestration",
+      "sourceRepoUrl": "https://github.com/temporalio/temporal",
+      "docsUrl": "https://docs.temporal.io",
+      "apiDocsUrl": "https://docs.temporal.io/references",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [],
+      "architectureStyle": "microservices",
+      "domain": "durable-workflow-engine",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Temporal. Go => validation-only."
+    },
+    {
+      "id": "keycloak",
+      "displayName": "keycloak/keycloak",
+      "category": "identity/auth",
+      "sourceRepoUrl": "https://github.com/keycloak/keycloak",
+      "docsUrl": "https://www.keycloak.org/documentation",
+      "apiDocsUrl": "https://www.keycloak.org/docs-api/latest/rest-api/index.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Java",
+      "secondaryLanguages": [
+        "TypeScript",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "IAM/SSO",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Java not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Keycloak IAM. Java backend + TS admin UI => validation-only."
+    },
+    {
+      "id": "authentik",
+      "displayName": "goauthentik/authentik",
+      "category": "identity/auth",
+      "sourceRepoUrl": "https://github.com/goauthentik/authentik",
+      "docsUrl": "https://docs.goauthentik.io",
+      "apiDocsUrl": "https://docs.goauthentik.io/developer-docs/api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "TypeScript",
+        "Go"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "IAM/SSO/IdP",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. TypeScript, Go) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "authentik IdP. Django/Python backend (full) + TS/Go (gap). Default branch main."
+    },
+    {
+      "id": "supertokens",
+      "displayName": "supertokens/supertokens-core",
+      "category": "identity/auth",
+      "sourceRepoUrl": "https://github.com/supertokens/supertokens-core",
+      "docsUrl": "https://supertokens.com/docs",
+      "apiDocsUrl": "https://supertokens.com/docs/references",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Java",
+      "secondaryLanguages": [],
+      "architectureStyle": "microservices",
+      "domain": "auth/session-management",
+      "sizeTier": "medium",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Java not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "SuperTokens core. Java => validation-only. Default branch master."
+    },
+    {
+      "id": "kubernetes",
+      "displayName": "kubernetes/kubernetes",
+      "category": "DevOps/infrastructure",
+      "sourceRepoUrl": "https://github.com/kubernetes/kubernetes",
+      "docsUrl": "https://kubernetes.io/docs",
+      "apiDocsUrl": "https://kubernetes.io/docs/reference/kubernetes-api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [],
+      "architectureStyle": "microservices",
+      "domain": "container-orchestration",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Kubernetes. Go => validation-only. Default branch master."
+    },
+    {
+      "id": "terraform",
+      "displayName": "hashicorp/terraform",
+      "category": "DevOps/infrastructure",
+      "sourceRepoUrl": "https://github.com/hashicorp/terraform",
+      "docsUrl": "https://developer.hashicorp.com/terraform/docs",
+      "apiDocsUrl": "https://developer.hashicorp.com/terraform/internals",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BUSL-1.1",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [],
+      "architectureStyle": "plugin-architecture",
+      "domain": "IaC",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Terraform. Go => validation-only. License BUSL - verify. Default branch main."
+    },
+    {
+      "id": "ansible",
+      "displayName": "ansible/ansible",
+      "category": "DevOps/infrastructure",
+      "sourceRepoUrl": "https://github.com/ansible/ansible",
+      "docsUrl": "https://docs.ansible.com/ansible/latest",
+      "apiDocsUrl": "https://docs.ansible.com/ansible/latest/dev_guide",
+      "defaultBranch": "devel",
+      "pinnedCommitSha": null,
+      "license": "GPL-3.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "PowerShell",
+        "Shell"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "config-management/automation",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. PowerShell, Shell) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Ansible. Python (full); PowerShell/shell modules are a gap. Default branch devel."
+    },
+    {
+      "id": "consul",
+      "displayName": "hashicorp/consul",
+      "category": "DevOps/infrastructure",
+      "sourceRepoUrl": "https://github.com/hashicorp/consul",
+      "docsUrl": "https://developer.hashicorp.com/consul/docs",
+      "apiDocsUrl": "https://developer.hashicorp.com/consul/api-docs",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BUSL-1.1",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "microservices",
+      "domain": "service-mesh/discovery",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Consul. Go => validation-only. License BUSL - verify."
+    },
+    {
+      "id": "vault",
+      "displayName": "hashicorp/vault",
+      "category": "DevOps/infrastructure",
+      "sourceRepoUrl": "https://github.com/hashicorp/vault",
+      "docsUrl": "https://developer.hashicorp.com/vault/docs",
+      "apiDocsUrl": "https://developer.hashicorp.com/vault/api-docs",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BUSL-1.1",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [
+        "TypeScript"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "secrets-management",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Vault. Go => validation-only. License BUSL - verify."
+    },
+    {
+      "id": "jenkins",
+      "displayName": "jenkinsci/jenkins",
+      "category": "DevOps/infrastructure",
+      "sourceRepoUrl": "https://github.com/jenkinsci/jenkins",
+      "docsUrl": "https://www.jenkins.io/doc",
+      "apiDocsUrl": "https://www.jenkins.io/doc/book/using/remote-access-api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Java",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "CI/CD",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Java not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Jenkins. Java => validation-only. Default branch master."
+    },
+    {
+      "id": "gitlab",
+      "displayName": "gitlabhq/gitlabhq",
+      "category": "DevOps/infrastructure",
+      "sourceRepoUrl": "https://github.com/gitlabhq/gitlabhq",
+      "docsUrl": "https://docs.gitlab.com",
+      "apiDocsUrl": "https://docs.gitlab.com/ee/api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Ruby",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Vue"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "DevOps-platform/SCM",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Ruby not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "GitLab (Rails). Ruby => validation-only. Default branch master."
+    },
+    {
+      "id": "netbox",
+      "displayName": "netbox-community/netbox",
+      "category": "DevOps/infrastructure",
+      "sourceRepoUrl": "https://github.com/netbox-community/netbox",
+      "docsUrl": "https://netboxlabs.com/docs/netbox",
+      "apiDocsUrl": "https://netboxlabs.com/docs/netbox/en/stable/integrations/rest-api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "DCIM/IPAM",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "NetBox DCIM/IPAM. Django/Python full extraction."
+    },
+    {
+      "id": "postgres",
+      "displayName": "postgres/postgres",
+      "category": "database",
+      "sourceRepoUrl": "https://github.com/postgres/postgres",
+      "docsUrl": "https://www.postgresql.org/docs",
+      "apiDocsUrl": "https://www.postgresql.org/docs/current/reference.html",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "PostgreSQL",
+      "primaryLanguage": "C",
+      "secondaryLanguages": [
+        "PLpgSQL",
+        "Perl"
+      ],
+      "architectureStyle": "process-per-connection",
+      "domain": "RDBMS",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "C not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "PostgreSQL. C core => validation-only; PL/pgSQL regression SQL may surface. Default branch master."
+    },
+    {
+      "id": "redis",
+      "displayName": "redis/redis",
+      "category": "database",
+      "sourceRepoUrl": "https://github.com/redis/redis",
+      "docsUrl": "https://redis.io/docs/latest",
+      "apiDocsUrl": "https://redis.io/docs/latest/commands",
+      "defaultBranch": "unstable",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "C",
+      "secondaryLanguages": [],
+      "architectureStyle": "single-threaded-eventloop",
+      "domain": "in-memory datastore",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "C not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Redis. C => validation-only. License RSALv2/SSPL - verify. Default branch unstable."
+    },
+    {
+      "id": "elasticsearch",
+      "displayName": "elastic/elasticsearch",
+      "category": "database",
+      "sourceRepoUrl": "https://github.com/elastic/elasticsearch",
+      "docsUrl": "https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html",
+      "apiDocsUrl": "https://www.elastic.co/guide/en/elasticsearch/reference/current/rest-apis.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "verify-at-use",
+      "primaryLanguage": "Java",
+      "secondaryLanguages": [
+        "Groovy"
+      ],
+      "architectureStyle": "distributed-cluster",
+      "domain": "search/analytics-engine",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Java not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Elasticsearch. Java => validation-only. License Elastic/SSPL - verify."
+    },
+    {
+      "id": "opensearch",
+      "displayName": "opensearch-project/OpenSearch",
+      "category": "database",
+      "sourceRepoUrl": "https://github.com/opensearch-project/OpenSearch",
+      "docsUrl": "https://opensearch.org/docs/latest",
+      "apiDocsUrl": "https://opensearch.org/docs/latest/api-reference",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Java",
+      "secondaryLanguages": [],
+      "architectureStyle": "distributed-cluster",
+      "domain": "search/analytics-engine",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Java not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "OpenSearch (ES fork). Java => validation-only."
+    },
+    {
+      "id": "kafka",
+      "displayName": "apache/kafka",
+      "category": "database",
+      "sourceRepoUrl": "https://github.com/apache/kafka",
+      "docsUrl": "https://kafka.apache.org/documentation",
+      "apiDocsUrl": "https://kafka.apache.org/documentation/#api",
+      "defaultBranch": "trunk",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Java",
+      "secondaryLanguages": [
+        "Scala"
+      ],
+      "architectureStyle": "distributed-cluster",
+      "domain": "event-streaming/log",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Java not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Apache Kafka. Java/Scala => validation-only. Default branch trunk."
+    },
+    {
+      "id": "minio",
+      "displayName": "minio/minio",
+      "category": "database",
+      "sourceRepoUrl": "https://github.com/minio/minio",
+      "docsUrl": "https://min.io/docs/minio/linux/index.html",
+      "apiDocsUrl": "https://min.io/docs/minio/linux/developers/minio-drivers.html",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [],
+      "architectureStyle": "distributed-cluster",
+      "domain": "object-storage",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "MinIO S3-compatible object store. Go => validation-only. Default branch master."
+    },
+    {
+      "id": "nifi",
+      "displayName": "apache/nifi",
+      "category": "database",
+      "sourceRepoUrl": "https://github.com/apache/nifi",
+      "docsUrl": "https://nifi.apache.org/docs.html",
+      "apiDocsUrl": "https://nifi.apache.org/docs/nifi-docs/rest-api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Java",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "flow-based",
+      "domain": "dataflow/integration",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Java not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Apache NiFi dataflow. Java => validation-only."
+    },
+    {
+      "id": "pocketbase",
+      "displayName": "pocketbase/pocketbase",
+      "category": "database",
+      "sourceRepoUrl": "https://github.com/pocketbase/pocketbase",
+      "docsUrl": "https://pocketbase.io/docs",
+      "apiDocsUrl": "https://pocketbase.io/docs/api-records",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "embedded",
+      "domain": "backend-as-a-service",
+      "sizeTier": "medium",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "PocketBase (SQLite BaaS). Go => validation-only. Default branch master."
+    },
+    {
+      "id": "apisix",
+      "displayName": "apache/apisix",
+      "category": "API-gateway",
+      "sourceRepoUrl": "https://github.com/apache/apisix",
+      "docsUrl": "https://apisix.apache.org/docs/apisix/getting-started/README",
+      "apiDocsUrl": "https://apisix.apache.org/docs/apisix/admin-api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Lua",
+      "secondaryLanguages": [],
+      "architectureStyle": "plugin-architecture",
+      "domain": "API-gateway",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Lua not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Apache APISIX. Lua/OpenResty => validation-only. Default branch master."
+    },
+    {
+      "id": "kong",
+      "displayName": "Kong/kong",
+      "category": "API-gateway",
+      "sourceRepoUrl": "https://github.com/Kong/kong",
+      "docsUrl": "https://docs.konghq.com/gateway",
+      "apiDocsUrl": "https://docs.konghq.com/gateway/latest/admin-api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Lua",
+      "secondaryLanguages": [],
+      "architectureStyle": "plugin-architecture",
+      "domain": "API-gateway",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Lua not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Kong gateway. Lua/OpenResty => validation-only. Default branch master."
+    },
+    {
+      "id": "traefik",
+      "displayName": "traefik/traefik",
+      "category": "API-gateway",
+      "sourceRepoUrl": "https://github.com/traefik/traefik",
+      "docsUrl": "https://doc.traefik.io/traefik",
+      "apiDocsUrl": "https://doc.traefik.io/traefik/reference/dynamic-configuration/kv",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [],
+      "architectureStyle": "plugin-architecture",
+      "domain": "reverse-proxy/ingress",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Traefik. Go => validation-only. Default branch master."
+    },
+    {
+      "id": "hasura",
+      "displayName": "hasura/graphql-engine",
+      "category": "API-gateway",
+      "sourceRepoUrl": "https://github.com/hasura/graphql-engine",
+      "docsUrl": "https://hasura.io/docs/latest",
+      "apiDocsUrl": "https://hasura.io/docs/latest/api-reference/overview",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Haskell",
+      "secondaryLanguages": [
+        "TypeScript",
+        "Go"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "GraphQL-engine/API",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Haskell not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Hasura GraphQL engine. Haskell + TS => validation-only. Default branch master."
+    },
+    {
+      "id": "apisix-dashboard",
+      "displayName": "apache/apisix-dashboard",
+      "category": "API-gateway",
+      "sourceRepoUrl": "https://github.com/apache/apisix-dashboard",
+      "docsUrl": "https://apisix.apache.org/docs/dashboard/USER_GUIDE",
+      "apiDocsUrl": "https://apisix.apache.org/docs/dashboard/USER_GUIDE",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Go",
+      "secondaryLanguages": [
+        "TypeScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "API-gateway-admin",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Go not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "APISIX Dashboard. Go + TS => validation-only. Default branch master."
+    },
+    {
+      "id": "django",
+      "displayName": "django/django",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/django/django",
+      "docsUrl": "https://docs.djangoproject.com/en/stable",
+      "apiDocsUrl": "https://docs.djangoproject.com/en/stable/ref",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "web framework",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Django. Python (full); admin JS/templates gap."
+    },
+    {
+      "id": "fastapi",
+      "displayName": "fastapi/fastapi",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/fastapi/fastapi",
+      "docsUrl": "https://fastapi.tiangolo.com",
+      "apiDocsUrl": "https://fastapi.tiangolo.com/reference",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "HTML"
+      ],
+      "architectureStyle": "library",
+      "domain": "web framework",
+      "sizeTier": "medium",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "FastAPI. Python (full). Default branch master."
+    },
+    {
+      "id": "flask",
+      "displayName": "pallets/flask",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/pallets/flask",
+      "docsUrl": "https://flask.palletsprojects.com",
+      "apiDocsUrl": "https://flask.palletsprojects.com/en/stable/api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [
+        "HTML"
+      ],
+      "architectureStyle": "library",
+      "domain": "web microframework",
+      "sizeTier": "small",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Flask. Python (full). Clean smoke target."
+    },
+    {
+      "id": "spring-boot",
+      "displayName": "spring-projects/spring-boot",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/spring-projects/spring-boot",
+      "docsUrl": "https://docs.spring.io/spring-boot/index.html",
+      "apiDocsUrl": "https://docs.spring.io/spring-boot/api/java/index.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Java",
+      "secondaryLanguages": [
+        "Kotlin",
+        "Groovy"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "web framework",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "Java not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Spring Boot. Java => validation-only."
+    },
+    {
+      "id": "abp",
+      "displayName": "abpframework/abp",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/abpframework/abp",
+      "docsUrl": "https://abp.io/docs/latest",
+      "apiDocsUrl": "https://abp.io/docs/latest/api",
+      "defaultBranch": "dev",
+      "pinnedCommitSha": null,
+      "license": "LGPL-3.0",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [
+        "TypeScript",
+        "JavaScript",
+        "HTML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "web framework",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. TypeScript, JavaScript, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "ABP framework. C# (full) + EF Core bridge; Angular/TS client gap. Default branch dev. Cap 1500."
+    },
+    {
+      "id": "nestjs",
+      "displayName": "nestjs/nest",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/nestjs/nest",
+      "docsUrl": "https://docs.nestjs.com",
+      "apiDocsUrl": "https://docs.nestjs.com/openapi/introduction",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "web framework",
+      "sizeTier": "medium",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "NestJS. TS => validation-only. Default branch master."
+    },
+    {
+      "id": "react",
+      "displayName": "facebook/react",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/facebook/react",
+      "docsUrl": "https://react.dev/learn",
+      "apiDocsUrl": "https://react.dev/reference/react",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "JavaScript",
+      "secondaryLanguages": [
+        "TypeScript"
+      ],
+      "architectureStyle": "library",
+      "domain": "UI library",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "JavaScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "React. JS/TS => validation-only."
+    },
+    {
+      "id": "angular",
+      "displayName": "angular/angular",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/angular/angular",
+      "docsUrl": "https://angular.dev/overview",
+      "apiDocsUrl": "https://angular.dev/api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "web framework",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Angular. TS => validation-only."
+    },
+    {
+      "id": "vuejs-core",
+      "displayName": "vuejs/core",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/vuejs/core",
+      "docsUrl": "https://vuejs.org/guide/introduction.html",
+      "apiDocsUrl": "https://vuejs.org/api",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "library",
+      "domain": "UI framework",
+      "sizeTier": "medium",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Vue 3 core. TS => validation-only."
+    },
+    {
+      "id": "typescript",
+      "displayName": "microsoft/TypeScript",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/microsoft/TypeScript",
+      "docsUrl": "https://www.typescriptlang.org/docs",
+      "apiDocsUrl": "https://www.typescriptlang.org/docs/handbook/compiler-options.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "compiler",
+      "domain": "language/compiler",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "TypeScript compiler. Pure TS => validation-only."
+    },
+    {
+      "id": "nodejs",
+      "displayName": "nodejs/node",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/nodejs/node",
+      "docsUrl": "https://nodejs.org/docs/latest/api",
+      "apiDocsUrl": "https://nodejs.org/docs/latest/api/index.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "JavaScript",
+      "secondaryLanguages": [
+        "C++",
+        "C",
+        "Python"
+      ],
+      "architectureStyle": "runtime",
+      "domain": "JS runtime",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "JavaScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Node.js. JS/C/C++ => validation-only; bundled Python tooling may yield a few symbols."
+    },
+    {
+      "id": "prisma",
+      "displayName": "prisma/prisma",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/prisma/prisma",
+      "docsUrl": "https://www.prisma.io/docs",
+      "apiDocsUrl": "https://www.prisma.io/docs/orm/reference/prisma-client-reference",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "Rust",
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "ORM/data toolkit",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Prisma ORM. TS + Rust => validation-only."
+    },
+    {
+      "id": "supabase",
+      "displayName": "supabase/supabase",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/supabase/supabase",
+      "docsUrl": "https://supabase.com/docs",
+      "apiDocsUrl": "https://supabase.com/docs/reference/api",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "PLpgSQL",
+        "JavaScript"
+      ],
+      "architectureStyle": "microservices",
+      "domain": "backend-as-a-service",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Supabase. TS-heavy + PL/pgSQL; => validation-only, SQL bridge may surface some. Default branch master."
+    },
+    {
+      "id": "appwrite",
+      "displayName": "appwrite/appwrite",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/appwrite/appwrite",
+      "docsUrl": "https://appwrite.io/docs",
+      "apiDocsUrl": "https://appwrite.io/docs/references",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "BSD-3-Clause",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "TypeScript",
+        "Dart"
+      ],
+      "architectureStyle": "microservices",
+      "domain": "backend-as-a-service",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Appwrite BaaS. PHP => validation-only."
+    },
+    {
+      "id": "nextcloud",
+      "displayName": "nextcloud/server",
+      "category": "CMS",
+      "sourceRepoUrl": "https://github.com/nextcloud/server",
+      "docsUrl": "https://docs.nextcloud.com",
+      "apiDocsUrl": "https://docs.nextcloud.com/server/latest/developer_manual/_static/openapi.html",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "PHP",
+      "secondaryLanguages": [
+        "JavaScript",
+        "Vue"
+      ],
+      "architectureStyle": "plugin-architecture",
+      "domain": "file-sync/collaboration",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "PHP not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Nextcloud server. PHP => validation-only. Default branch master."
+    },
+    {
+      "id": "rocketchat",
+      "displayName": "RocketChat/Rocket.Chat",
+      "category": "workflow/ITSM",
+      "sourceRepoUrl": "https://github.com/RocketChat/Rocket.Chat",
+      "docsUrl": "https://docs.rocket.chat",
+      "apiDocsUrl": "https://developer.rocket.chat/apidocs",
+      "defaultBranch": "develop",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "team-chat",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Rocket.Chat. Meteor/TS => validation-only. Default branch develop."
+    },
+    {
+      "id": "formbricks",
+      "displayName": "formbricks/formbricks",
+      "category": "workflow/ITSM",
+      "sourceRepoUrl": "https://github.com/formbricks/formbricks",
+      "docsUrl": "https://formbricks.com/docs",
+      "apiDocsUrl": "https://formbricks.com/docs/api-v2-reference/overview",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "experience-management/surveys",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Formbricks surveys. Next.js TS => validation-only."
+    },
+    {
+      "id": "cal-com",
+      "displayName": "calcom/cal.com",
+      "category": "workflow/ITSM",
+      "sourceRepoUrl": "https://github.com/calcom/cal.com",
+      "docsUrl": "https://cal.com/docs",
+      "apiDocsUrl": "https://cal.com/docs/api-reference",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "AGPL-3.0",
+      "primaryLanguage": "TypeScript",
+      "secondaryLanguages": [
+        "JavaScript"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "scheduling",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "validation-only",
+      "expectedCapability": "Clone + file count + LOC tally only (validation-only).",
+      "expectedGap": "TypeScript not structurally extracted by LocalAIFactory -> UnsupportedLanguage / ValidationOnly (no symbols).",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Cal.com scheduling. Next.js TS => validation-only."
+    },
+    {
+      "id": "jellyfin",
+      "displayName": "jellyfin/jellyfin",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/jellyfin/jellyfin",
+      "docsUrl": "https://jellyfin.org/docs",
+      "apiDocsUrl": "https://api.jellyfin.org",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "GPL-2.0",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [
+        "JavaScript",
+        "HTML"
+      ],
+      "architectureStyle": "modular-monolith",
+      "domain": "media-server",
+      "sizeTier": "large",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. JavaScript, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Jellyfin media server. C# (full) + EF Core bridge. Default branch master."
+    },
+    {
+      "id": "home-assistant",
+      "displayName": "home-assistant/core",
+      "category": "framework/runtime",
+      "sourceRepoUrl": "https://github.com/home-assistant/core",
+      "docsUrl": "https://www.home-assistant.io/docs",
+      "apiDocsUrl": "https://developers.home-assistant.io/docs/api/rest",
+      "defaultBranch": "dev",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Python",
+      "secondaryLanguages": [],
+      "architectureStyle": "plugin-architecture",
+      "domain": "home-automation/IoT",
+      "sizeTier": "xlarge",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. front-end/templates) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Home Assistant core. Python (full, partial under cap). Default branch dev. Cap 1500."
+    },
+    {
+      "id": "eshop",
+      "displayName": "dotnet/eShop",
+      "category": "teaching/sample",
+      "sourceRepoUrl": "https://github.com/dotnet/eShop",
+      "docsUrl": "https://learn.microsoft.com/dotnet/architecture/microservices",
+      "apiDocsUrl": "https://learn.microsoft.com/dotnet/aspire",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [
+        "TypeScript",
+        "HTML",
+        "CSS"
+      ],
+      "architectureStyle": "microservices",
+      "domain": "eCommerce/reference",
+      "sizeTier": "small",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. TypeScript, HTML, CSS) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Microsoft .NET Aspire eShop sample. Full C# + EF Core; Razor/TS gap."
+    },
+    {
+      "id": "eshoponweb",
+      "displayName": "dotnet-architecture/eShopOnWeb",
+      "category": "teaching/sample",
+      "sourceRepoUrl": "https://github.com/dotnet-architecture/eShopOnWeb",
+      "docsUrl": "https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure",
+      "apiDocsUrl": "https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "architectureStyle": "clean-architecture",
+      "domain": "eCommerce/reference",
+      "sizeTier": "small",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. HTML, CSS, JavaScript) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Microsoft eShopOnWeb monolith reference. Full C# + EF Core; clean-architecture layering."
+    },
+    {
+      "id": "clean-architecture",
+      "displayName": "jasontaylordev/CleanArchitecture",
+      "category": "teaching/sample",
+      "sourceRepoUrl": "https://github.com/jasontaylordev/CleanArchitecture",
+      "docsUrl": "https://github.com/jasontaylordev/CleanArchitecture",
+      "apiDocsUrl": "https://github.com/jasontaylordev/CleanArchitecture",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [
+        "TypeScript",
+        "HTML"
+      ],
+      "architectureStyle": "clean-architecture",
+      "domain": "web framework/template",
+      "sizeTier": "tiny",
+      "docsCoverage": "partial",
+      "apiDocsCoverage": "none",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. TypeScript, HTML) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Jason Taylor clean-architecture template. Tiny full C# + EF Core; Angular gap."
+    },
+    {
+      "id": "dapper",
+      "displayName": "DapperLib/Dapper",
+      "category": "teaching/sample",
+      "sourceRepoUrl": "https://github.com/DapperLib/Dapper",
+      "docsUrl": "https://www.learndapper.com",
+      "apiDocsUrl": "https://github.com/DapperLib/Dapper",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [],
+      "architectureStyle": "library",
+      "domain": "micro-ORM",
+      "sizeTier": "small",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. front-end/templates) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Dapper micro-ORM. C# (full) + heavy inline SQL bridge demonstrator."
+    },
+    {
+      "id": "efcore",
+      "displayName": "dotnet/efcore",
+      "category": "teaching/sample",
+      "sourceRepoUrl": "https://github.com/dotnet/efcore",
+      "docsUrl": "https://learn.microsoft.com/ef/core",
+      "apiDocsUrl": "https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [],
+      "architectureStyle": "library",
+      "domain": "ORM",
+      "sizeTier": "large",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. front-end/templates) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 1500,
+      "status": "pending",
+      "notes": "Entity Framework Core. C# (full) + SQL generation bridge."
+    },
+    {
+      "id": "chinook-database",
+      "displayName": "lerocha/chinook-database",
+      "category": "teaching/sample",
+      "sourceRepoUrl": "https://github.com/lerocha/chinook-database",
+      "docsUrl": "https://github.com/lerocha/chinook-database",
+      "apiDocsUrl": "https://github.com/lerocha/chinook-database",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "SQL",
+      "secondaryLanguages": [
+        "C#",
+        "Python"
+      ],
+      "architectureStyle": "sample-db",
+      "domain": "sample-database",
+      "sizeTier": "tiny",
+      "docsCoverage": "partial",
+      "apiDocsCoverage": "none",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. C#, Python) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Chinook sample DB. Pure T-SQL DDL extractor target. Default branch master."
+    },
+    {
+      "id": "sql-server-samples",
+      "displayName": "microsoft/sql-server-samples",
+      "category": "teaching/sample",
+      "sourceRepoUrl": "https://github.com/microsoft/sql-server-samples",
+      "docsUrl": "https://learn.microsoft.com/sql/samples/sql-samples-where-are-they-located",
+      "apiDocsUrl": "https://learn.microsoft.com/sql/samples/wide-world-importers-what-is",
+      "defaultBranch": "master",
+      "pinnedCommitSha": null,
+      "license": "MIT",
+      "primaryLanguage": "SQL",
+      "secondaryLanguages": [
+        "C#",
+        "PowerShell"
+      ],
+      "architectureStyle": "sample-db",
+      "domain": "sample-database",
+      "sizeTier": "medium",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "partial",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. C#, PowerShell) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "Microsoft SQL Server samples (WideWorldImporters etc.). T-SQL + C#. Default branch master."
+    },
+    {
+      "id": "openiddict",
+      "displayName": "openiddict/openiddict-core",
+      "category": "identity/auth",
+      "sourceRepoUrl": "https://github.com/openiddict/openiddict-core",
+      "docsUrl": "https://documentation.openiddict.com",
+      "apiDocsUrl": "https://documentation.openiddict.com/configuration",
+      "defaultBranch": "dev",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "C#",
+      "secondaryLanguages": [],
+      "architectureStyle": "library",
+      "domain": "OAuth2/OIDC server",
+      "sizeTier": "small",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "full",
+      "expectedCapability": "Full C#/T-SQL/Python symbol extraction (classes/functions/EF or SQL bridge), partial under file cap.",
+      "expectedGap": "Non-C#/SQL/Python assets (e.g. front-end/templates) not structurally extracted -> UnsupportedLanguage.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "OpenIddict OAuth2/OIDC stack. Almost pure C# (full) + EF Core store bridge. Default branch dev."
+    },
+    {
+      "id": "oauth2-rfc6749",
+      "displayName": "OAuth 2.0 (RFC 6749)",
+      "category": "DocsOnlyReference",
+      "sourceRepoUrl": null,
+      "docsUrl": "https://datatracker.ietf.org/doc/html/rfc6749",
+      "apiDocsUrl": "https://datatracker.ietf.org/doc/html/rfc6749",
+      "defaultBranch": null,
+      "pinnedCommitSha": null,
+      "license": "RFC",
+      "primaryLanguage": "spec",
+      "secondaryLanguages": [],
+      "architectureStyle": "specification",
+      "domain": "auth standard",
+      "sizeTier": "tiny",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "DocsOnlyReference",
+      "expectedCapability": "Official-docs grounding only; no code extraction expected.",
+      "expectedGap": "No useful extractable source repo -> DocsOnlyReference; answers must cite official docs/spec.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "OAuth 2.0 authorization framework spec. Docs-only reference; no extractable repo."
+    },
+    {
+      "id": "openid-connect-core",
+      "displayName": "OpenID Connect Core 1.0",
+      "category": "DocsOnlyReference",
+      "sourceRepoUrl": null,
+      "docsUrl": "https://openid.net/specs/openid-connect-core-1_0.html",
+      "apiDocsUrl": "https://openid.net/specs/openid-connect-core-1_0.html",
+      "defaultBranch": null,
+      "pinnedCommitSha": null,
+      "license": "OIDF",
+      "primaryLanguage": "spec",
+      "secondaryLanguages": [],
+      "architectureStyle": "specification",
+      "domain": "identity standard",
+      "sizeTier": "tiny",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "DocsOnlyReference",
+      "expectedCapability": "Official-docs grounding only; no code extraction expected.",
+      "expectedGap": "No useful extractable source repo -> DocsOnlyReference; answers must cite official docs/spec.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "OpenID Connect Core spec. Docs-only reference."
+    },
+    {
+      "id": "openapi-spec",
+      "displayName": "OpenAPI Specification",
+      "category": "DocsOnlyReference",
+      "sourceRepoUrl": "https://github.com/OAI/OpenAPI-Specification",
+      "docsUrl": "https://spec.openapis.org/oas/latest.html",
+      "apiDocsUrl": "https://spec.openapis.org/oas/latest.html",
+      "defaultBranch": "main",
+      "pinnedCommitSha": null,
+      "license": "Apache-2.0",
+      "primaryLanguage": "Markdown",
+      "secondaryLanguages": [
+        "YAML"
+      ],
+      "architectureStyle": "specification",
+      "domain": "API description standard",
+      "sizeTier": "tiny",
+      "docsCoverage": "excellent",
+      "apiDocsCoverage": "excellent",
+      "benchmarkMode": "DocsOnlyReference",
+      "expectedCapability": "Official-docs grounding only; no code extraction expected.",
+      "expectedGap": "No useful extractable source repo -> DocsOnlyReference; answers must cite official docs/spec.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "OpenAPI Specification. Docs-only reference; repo is Markdown spec only."
+    },
+    {
+      "id": "iso20022",
+      "displayName": "ISO 20022 Financial Messaging",
+      "category": "DocsOnlyReference",
+      "sourceRepoUrl": null,
+      "docsUrl": "https://www.iso20022.org",
+      "apiDocsUrl": "https://www.iso20022.org/iso-20022-message-definitions",
+      "defaultBranch": null,
+      "pinnedCommitSha": null,
+      "license": "ISO",
+      "primaryLanguage": "spec",
+      "secondaryLanguages": [],
+      "architectureStyle": "specification",
+      "domain": "banking messaging standard",
+      "sizeTier": "tiny",
+      "docsCoverage": "good",
+      "apiDocsCoverage": "good",
+      "benchmarkMode": "DocsOnlyReference",
+      "expectedCapability": "Official-docs grounding only; no code extraction expected.",
+      "expectedGap": "No useful extractable source repo -> DocsOnlyReference; answers must cite official docs/spec.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "ISO 20022 financial messaging standard. Docs-only reference; banking-relevant."
+    },
+    {
+      "id": "iso8583",
+      "displayName": "ISO 8583 Card Messaging",
+      "category": "DocsOnlyReference",
+      "sourceRepoUrl": null,
+      "docsUrl": "https://www.iso.org/standard/31628.html",
+      "apiDocsUrl": "https://www.iso.org/standard/31628.html",
+      "defaultBranch": null,
+      "pinnedCommitSha": null,
+      "license": "ISO",
+      "primaryLanguage": "spec",
+      "secondaryLanguages": [],
+      "architectureStyle": "specification",
+      "domain": "card-payment messaging standard",
+      "sizeTier": "tiny",
+      "docsCoverage": "partial",
+      "apiDocsCoverage": "none",
+      "benchmarkMode": "DocsOnlyReference",
+      "expectedCapability": "Official-docs grounding only; no code extraction expected.",
+      "expectedGap": "No useful extractable source repo -> DocsOnlyReference; answers must cite official docs/spec.",
+      "includePatterns": [
+        "**/*.cs",
+        "**/*.sql",
+        "**/*.py"
+      ],
+      "excludePatterns": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/node_modules/**",
+        "**/.git/**"
+      ],
+      "timeoutSeconds": 180,
+      "maxFilesToAnalyze": 4000,
+      "status": "pending",
+      "notes": "ISO 8583 card-transaction messaging standard. Docs-only reference; banking-relevant."
+    }
+  ]
+}

@@ -1,8 +1,19 @@
 {
   "generated": "source-pack-export",
-  "packCount": 4,
-  "totalItems": 438.0,
+  "packCount": 6,
+  "totalItems": 520.0,
   "packs": [
+    {
+      "folder": "enterprise-workflows-v1",
+      "name": "Enterprise Workflows Knowledge Pack",
+      "version": "1.0.0",
+      "itemCount": 40.0,
+      "manifestItemCount": 40,
+      "categories": {
+        "Enterprise Workflows": 40
+      },
+      "reviewStatus": "Approved"
+    },
     {
       "folder": "financial-institution-operations-v1",
       "name": "Financial Institution Operations v1",
@@ -10,8 +21,8 @@
       "itemCount": 16.0,
       "manifestItemCount": 16,
       "categories": {
-        "Financial Institution Operations": 8,
-        "Operational Controls and Risk": 8
+        "Operational Controls and Risk": 8,
+        "Financial Institution Operations": 8
       },
       "reviewStatus": "Approved"
     },
@@ -34,8 +45,19 @@
       "itemCount": 16.0,
       "manifestItemCount": 16,
       "categories": {
-        "Forecasting and Model Governance": 8,
-        "Market Data and Signals": 8
+        "Market Data and Signals": 8,
+        "Forecasting and Model Governance": 8
+      },
+      "reviewStatus": "Approved"
+    },
+    {
+      "folder": "production-issue-fixes-v1",
+      "name": "Production Issue Fixes Knowledge Pack",
+      "version": "1.0.0",
+      "itemCount": 42.0,
+      "manifestItemCount": 42,
+      "categories": {
+        "Production Issue Fixes": 42
       },
       "reviewStatus": "Approved"
     },
@@ -46,28 +68,28 @@
       "itemCount": 390.0,
       "manifestItemCount": 390,
       "categories": {
-        "Python OCR and Computer Vision Deployment": 25,
-        "Reporting / Templates": 10,
-        "Insurance and Financial Services Controls": 18,
-        "Payments, Transfers, Settlement and Reconciliation": 22,
-        "Financial Market Prediction and Quantitative Analysis": 24,
-        "Operations / Sysadmin": 11,
-        "CRUD / Web to MSSQL": 13,
-        "Security / Access Control": 13,
-        "Leasing, Lending, Credit and Arrears": 18,
+        "AI, Coding and Business Research Notes": 32,
+        "Accounting Standards and Financial Reporting": 23,
+        "Cheque OCR, Signature Forgery Detection and Document Fraud": 29,
         "PDF Reader, Classifier and Summarizer": 18,
         "Finance / Accounting / Banking": 14,
-        "Database / SQL": 13,
+        "Python / AI / Data": 12,
+        "Operations / Sysadmin": 11,
+        "Security / Access Control": 13,
         "Enterprise Solution-Solving Playbooks": 21,
         "Governance / Project Management": 13,
-        "Cheque OCR, Signature Forgery Detection and Document Fraud": 29,
-        "ISO-style Controls / Standards": 12,
-        "Software Engineering": 13,
+        "Mauritius Banking and Financial Services Context": 26,
+        "Reporting / Templates": 10,
+        "Python OCR and Computer Vision Deployment": 25,
+        "CRUD / Web to MSSQL": 13,
+        "Leasing, Lending, Credit and Arrears": 18,
+        "Insurance and Financial Services Controls": 18,
         "Product / Admin Patterns": 10,
-        "Accounting Standards and Financial Reporting": 23,
-        "Python / AI / Data": 12,
-        "AI, Coding and Business Research Notes": 32,
-        "Mauritius Banking and Financial Services Context": 26
+        "Payments, Transfers, Settlement and Reconciliation": 22,
+        "Financial Market Prediction and Quantitative Analysis": 24,
+        "Database / SQL": 13,
+        "ISO-style Controls / Standards": 12,
+        "Software Engineering": 13
       },
       "reviewStatus": "Approved"
     }

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "odoo",
+    "url": "https://www.odoo.com/documentation",
+    "status": 200,
+    "bytes": 417826,
+    "topicsFound": 1,
+    "topicsExpected": 8
+  },
+  {
+    "id": "wordpress",
+    "url": "https://developer.wordpress.org",
+    "status": 200,
+    "bytes": 159569,
+    "topicsFound": 1,
+    "topicsExpected": 7
+  },
+  {
+    "id": "erpnext",
+    "url": "https://docs.frappe.io/erpnext",
+    "status": 200,
+    "bytes": 2282875,
+    "topicsFound": 2,
+    "topicsExpected": 8
+  },
+  {
+    "id": "keycloak",
+    "url": "https://www.keycloak.org/documentation",
+    "status": 200,
+    "bytes": 8230,
+    "topicsFound": 0,
+    "topicsExpected": 7
+  },
+  {
+    "id": "airflow",
+    "url": "https://airflow.apache.org/docs",
+    "status": 200,
+    "bytes": 67089,
+    "topicsFound": 2,
+    "topicsExpected": 6
+  },
+  {
+    "id": "superset",
+    "url": "https://superset.apache.org/docs/intro",
+    "status": 200,
+    "bytes": 313,
+    "topicsFound": 0,
+    "topicsExpected": 7
+  },
+  {
+    "id": "grafana",
+    "url": "https://grafana.com/docs/grafana/latest",
+    "status": 200,
+    "bytes": 391342,
+    "topicsFound": 2,
+    "topicsExpected": 6
+  },
+  {
+    "id": "drupal",
+    "url": "https://www.drupal.org/docs",
+    "status": 200,
+    "bytes": 3036,
+    "topicsFound": 0,
+    "topicsExpected": 7
+  }
+]

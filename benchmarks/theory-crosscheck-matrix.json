@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "name": "Enterprise Theory Cross-Check Matrix",
+  "description": "Cross-checks established enterprise software-engineering and governance theory against how real benchmark systems (open-source ERP/CRM/CMS/e-commerce and reference architectures) represent each concept, and against how LocalAIFactory currently models it. Each row records honest gaps and a concrete proof needed to claim the concept is fully supported. Evidence and proofs are framed at confidence levels; no vendor certification is asserted.",
+  "generatedUtc": "2026-06-21",
+  "concepts": [
+    {
+      "concept": "Domain-Driven Design (DDD)",
+      "family": "Architecture / Modeling",
+      "howRealSystemsRepresentIt": "Bounded contexts, aggregates, entities, value objects, and a ubiquitous language; ERP suites split into modules that act as bounded contexts with their own models.",
+      "evidenceFromBenchmarkSystems": "Open-source ERP/CRM separate accounting, inventory, and CRM into distinct module models; rich domain objects own invariants.",
+      "howLocalAIFactoryModelsIt": "Core project holds domain entities, enums, and abstractions with no framework dependencies; Data/Rag/Agent/Ingestion form context-like boundaries (e.g. knowledge, retrieval, inference).",
+      "gaps": "Boundaries are largely technical layers, not explicitly named bounded contexts; aggregates and invariants are not formally documented as a ubiquitous language.",
+      "confidence": 0.7,
+      "proofToAdvance": "Document bounded contexts and aggregate roots with invariants, and show an import of a real banking domain mapped to them."
+    },
+    {
+      "concept": "Clean Architecture",
+      "family": "Architecture / Modeling",
+      "howRealSystemsRepresentIt": "Concentric dependency rule: domain at the center, frameworks/IO at the edges; dependencies point inward.",
+      "evidenceFromBenchmarkSystems": "Reference .NET solutions split Domain/Application/Infrastructure/Web with inward dependencies and no domain reference to the web framework.",
+      "howLocalAIFactoryModelsIt": "Eight projects with no dependency cycles; Core references nothing; Web is the composition root; verified by the documented project graph.",
+      "gaps": "Application-layer use-case objects are not always explicit; some orchestration lives in controllers/services rather than dedicated use-case handlers.",
+      "confidence": 0.8,
+      "proofToAdvance": "Add an explicit application/use-case layer and a dependency test that fails the build on any inward-rule violation."
+    },
+    {
+      "concept": "Hexagonal / Ports & Adapters",
+      "family": "Architecture / Modeling",
+      "howRealSystemsRepresentIt": "Core logic exposes ports (interfaces); adapters implement them for DB, web, messaging, and external services, enabling swap-in/out.",
+      "evidenceFromBenchmarkSystems": "Pluggable storage/inference adapters in retrieval frameworks; vendor-agnostic interfaces for vector stores and model runtimes.",
+      "howLocalAIFactoryModelsIt": "Abstractions in Core (e.g. health cache, retrieval, model execution) with Qdrant/Ollama as optional adapters that degrade gracefully when absent.",
+      "gaps": "Adapter surface is informal; no formal port catalog; some adapters assume a single implementation.",
+      "confidence": 0.74,
+      "proofToAdvance": "Publish a port/adapter catalog and demonstrate two interchangeable adapters for one port (e.g. an alternate vector store)."
+    },
+    {
+      "concept": "CQRS / Event Sourcing",
+      "family": "Architecture / Modeling",
+      "howRealSystemsRepresentIt": "Separate read and write models; event-sourced systems persist a log of domain events and rebuild state by replay.",
+      "evidenceFromBenchmarkSystems": "High-volume systems use read replicas/materialized views; some use event stores for audit and projections.",
+      "howLocalAIFactoryModelsIt": "Read/write separation is partial: list views use lightweight read-model records (a documented rule); writes go through services. No event sourcing.",
+      "gaps": "No command/query bus, no event store; the read-model pattern is a performance convention, not a formal CQRS implementation.",
+      "confidence": 0.6,
+      "proofToAdvance": "Introduce explicit command/query handlers for one workflow and, if needed, an append-only event log with projection replay."
+    },
+    {
+      "concept": "BPMN / Workflow Orchestration",
+      "family": "Process / Workflow",
+      "howRealSystemsRepresentIt": "Business processes modeled as tasks, gateways, and events; workflow engines execute and track state and approvals.",
+      "evidenceFromBenchmarkSystems": "ERP/ITSM tools embed approval workflows (purchase, change, leave) with state machines and audit trails.",
+      "howLocalAIFactoryModelsIt": "An approval lifecycle for knowledge/agent proposals with explicit gates and an audit trail; documented approval workflow.",
+      "gaps": "No general BPMN engine; workflows are coded, not modeled/configurable; limited to the knowledge/agent approval domain.",
+      "confidence": 0.68,
+      "proofToAdvance": "Express the approval lifecycle as an explicit state machine with a diagram and show a second workflow reusing the engine."
+    },
+    {
+      "concept": "ERP Core Modules",
+      "family": "Enterprise Domain",
+      "howRealSystemsRepresentIt": "General ledger, AP/AR, inventory, procurement, HR, and reporting integrated around a shared chart of accounts.",
+      "evidenceFromBenchmarkSystems": "Open-source ERPs (Odoo, ERPNext) implement these as integrated modules with shared masters and posting rules.",
+      "howLocalAIFactoryModelsIt": "Not an ERP; the professional-base pack carries accounting/finance/banking awareness knowledge, and integration patterns target Odoo/ERPNext.",
+      "gaps": "No native ledger or ERP modules; relationship is integration/advisory, not implementation.",
+      "confidence": 0.55,
+      "proofToAdvance": "Demonstrate importing and reasoning over a real ERP schema and producing correct module-aware guidance."
+    },
+    {
+      "concept": "CRM Lifecycle",
+      "family": "Enterprise Domain",
+      "howRealSystemsRepresentIt": "Lead-to-cash: leads, opportunities, accounts, activities, and pipeline stages with conversion metrics.",
+      "evidenceFromBenchmarkSystems": "CRM modules model stage transitions, ownership, and activity history with reporting.",
+      "howLocalAIFactoryModelsIt": "Not a CRM; awareness-level knowledge only; integration patterns can read CRM data via APIs.",
+      "gaps": "No CRM entities or pipeline modeling natively.",
+      "confidence": 0.5,
+      "proofToAdvance": "Show end-to-end reasoning over an imported CRM pipeline with correct stage/lifecycle interpretation."
+    },
+    {
+      "concept": "ITSM Incident / Change / SLA",
+      "family": "Operations / Governance",
+      "howRealSystemsRepresentIt": "Incident, problem, and change records with priorities, SLAs, approvals, and CMDB linkage.",
+      "evidenceFromBenchmarkSystems": "ITSM tools track incident lifecycle, change advisory approvals, and SLA timers.",
+      "howLocalAIFactoryModelsIt": "The support-issue learning registry plus runbooks (backup/restore, rollback, autonomous-engineering) capture incident patterns and change-with-approval; no SLA timers.",
+      "gaps": "No formal SLA tracking, CMDB, or incident ticket lifecycle; change approval is for engineering proposals, not a general CAB.",
+      "confidence": 0.62,
+      "proofToAdvance": "Add SLA timing and an incident lifecycle to the support registry and link incidents to affected components."
+    },
+    {
+      "concept": "SRE Reliability",
+      "family": "Operations / Governance",
+      "howRealSystemsRepresentIt": "SLOs/SLIs, error budgets, graceful degradation, and blameless postmortems.",
+      "evidenceFromBenchmarkSystems": "Reliability-focused services define SLIs (latency, availability) and degrade non-critical features under failure.",
+      "howLocalAIFactoryModelsIt": "Strong graceful degradation (MSSQL-only mode; optional Qdrant/Ollama), cached health snapshots, and a sub-second page-latency target with request timing logs.",
+      "gaps": "No formal SLOs/error budgets; latency target is a convention, not a tracked SLI with alerting.",
+      "confidence": 0.7,
+      "proofToAdvance": "Define explicit SLOs/SLIs and capture them in the benchmark/health telemetry with breach detection."
+    },
+    {
+      "concept": "DevOps Deployment",
+      "family": "Operations / Governance",
+      "howRealSystemsRepresentIt": "Repeatable CI/CD, infrastructure-as-code, automated release and rollback.",
+      "evidenceFromBenchmarkSystems": "Pipelines build, test, package, and deploy with retained artifacts and rollback paths.",
+      "howLocalAIFactoryModelsIt": "Scripted build/run/migrate, packaging and release docs, deployment-drill scripts, and an IIS deployment runbook; firsthand deploy issues captured in the registry.",
+      "gaps": "Release automation is script-based rather than a full CI/CD pipeline; rollback is documented but partly manual.",
+      "confidence": 0.68,
+      "proofToAdvance": "Run an automated deploy-then-rollback drill and capture artifacts/evidence end to end."
+    },
+    {
+      "concept": "OWASP ASVS",
+      "family": "Security",
+      "howRealSystemsRepresentIt": "A tiered verification standard for application security controls (auth, session, access control, validation, logging).",
+      "evidenceFromBenchmarkSystems": "Security-reviewed apps map features to ASVS requirements at a target level.",
+      "howLocalAIFactoryModelsIt": "Windows/Negotiate auth proven at IIS, least-privilege SQL (is_sysadmin=0), append-only audit, no secrets in repo (Data Protection), 0-HIGH security audit; mapped in docs/security/OWASP-ASVS-Mapping.md.",
+      "gaps": "No external pen-test, self-signed TLS in pilot, app-level auth is dev-grade behind IIS, no formal ASVS-level certification.",
+      "confidence": 0.66,
+      "proofToAdvance": "Complete a targeted ASVS-level self-assessment and an independent security test against the mapping."
+    },
+    {
+      "concept": "NIST SSDF",
+      "family": "Security",
+      "howRealSystemsRepresentIt": "Secure software development practices grouped into prepare-the-organization, protect-the-software, produce-well-secured-software, respond-to-vulnerabilities.",
+      "evidenceFromBenchmarkSystems": "Mature projects evidence secure build, dependency management, and vulnerability response.",
+      "howLocalAIFactoryModelsIt": "Documented architecture rules, no-secrets policy, additive-migration discipline, security audit, and a fix-loop/runbook for response; mapped in docs/security/NIST-SSDF-Mapping.md.",
+      "gaps": "No formal vulnerability-disclosure process, no automated dependency scanning evidence, partial threat modeling.",
+      "confidence": 0.64,
+      "proofToAdvance": "Add dependency-scan evidence, a documented vuln-response SLA, and a recorded threat model."
+    },
+    {
+      "concept": "NIST AI RMF",
+      "family": "AI Governance",
+      "howRealSystemsRepresentIt": "Govern/Map/Measure/Manage functions for trustworthy AI: provenance, human oversight, and risk controls.",
+      "evidenceFromBenchmarkSystems": "Governed AI systems record model/version, human-in-the-loop approval, and output provenance.",
+      "howLocalAIFactoryModelsIt": "Approval lifecycle for AI outputs, output provenance/approval docs, AI governance doc, and human-in-the-loop gates; local-first reduces data-exfiltration risk.",
+      "gaps": "No quantitative model-risk measurement, no bias/eval harness evidence, oversight is procedural not metricized.",
+      "confidence": 0.66,
+      "proofToAdvance": "Add measurable AI evaluation (accuracy/safety) tied to the approval gate and a model-risk register."
+    },
+    {
+      "concept": "Secure SDLC",
+      "family": "Security",
+      "howRealSystemsRepresentIt": "Security woven through requirements, design, build, test, and release with gates at each stage.",
+      "evidenceFromBenchmarkSystems": "Projects show design review, secure-coding standards, and pre-release security gates.",
+      "howLocalAIFactoryModelsIt": "CLAUDE.md as a contract, build+runtime validation gates, security audit before release, and approval gates for changes.",
+      "gaps": "No formal design-phase threat modeling artifact; security gate is audit-based rather than continuous.",
+      "confidence": 0.65,
+      "proofToAdvance": "Introduce a recorded threat-modeling step and continuous security checks in the build gate."
+    },
+    {
+      "concept": "Data Governance",
+      "family": "Governance",
+      "howRealSystemsRepresentIt": "Ownership, classification, lineage, retention, and access policy over data assets.",
+      "evidenceFromBenchmarkSystems": "Enterprise data platforms track lineage and classification with retention rules.",
+      "howLocalAIFactoryModelsIt": "Curated knowledge with an approval lifecycle, provenance retention, data-protection plan, and least-privilege access; MSSQL as the system of record.",
+      "gaps": "No formal data-classification taxonomy or automated lineage across all stores; retention is policy-described not enforced everywhere.",
+      "confidence": 0.66,
+      "proofToAdvance": "Add a classification taxonomy and demonstrate lineage from import through approval to retrieval."
+    },
+    {
+      "concept": "Audit / Provenance",
+      "family": "Governance",
+      "howRealSystemsRepresentIt": "Tamper-evident, append-only audit trails linking who did what, when, and on what version.",
+      "evidenceFromBenchmarkSystems": "Regulated systems keep immutable audit logs and provenance for derived outputs.",
+      "howLocalAIFactoryModelsIt": "Append-only audit model, AI output provenance/approval, and an audit doc; knowledge items carry source attribution and review status.",
+      "gaps": "Append-only is enforced by design/policy; no cryptographic tamper-evidence (hash chaining) demonstrated.",
+      "confidence": 0.7,
+      "proofToAdvance": "Add hash-chained audit entries and verify tamper-evidence with a recorded check."
+    },
+    {
+      "concept": "High-Volume Web Architecture",
+      "family": "Architecture / Performance",
+      "howRealSystemsRepresentIt": "Horizontal scale, stateless app tier, async I/O, and read scaling under high concurrency.",
+      "evidenceFromBenchmarkSystems": "Scalable apps keep the app tier stateless and push state to caches/DB; async throughout.",
+      "howLocalAIFactoryModelsIt": "Async controllers, scope-per-task parallel reads, no blocking external calls on the request path, lightweight read models, sub-second page target.",
+      "gaps": "Single-node by design (local-first); no horizontal-scale or load-test evidence at high concurrency.",
+      "confidence": 0.64,
+      "proofToAdvance": "Run a concurrency/load benchmark and record latency/throughput under realistic load."
+    },
+    {
+      "concept": "Caching / Invalidation",
+      "family": "Architecture / Performance",
+      "howRealSystemsRepresentIt": "Cache-aside/read-through with explicit invalidation and TTLs to avoid stale reads.",
+      "evidenceFromBenchmarkSystems": "Services cache hot reads and invalidate on write or by TTL.",
+      "howLocalAIFactoryModelsIt": "Cached service-health snapshot (IServiceHealthCache) refreshed by a background timer instead of on-request probes; a deliberate, documented pattern.",
+      "gaps": "Caching is focused on health; no general application-data cache or formal invalidation strategy beyond TTL refresh.",
+      "confidence": 0.68,
+      "proofToAdvance": "Define cache keys/TTLs/invalidation for one hot data path and measure hit ratio and staleness bounds."
+    },
+    {
+      "concept": "Database Migration",
+      "family": "Data",
+      "howRealSystemsRepresentIt": "Versioned, forward-only-or-reversible schema changes applied automatically and tracked.",
+      "evidenceFromBenchmarkSystems": "Frameworks apply ordered migrations and track applied versions; prefer additive changes.",
+      "howLocalAIFactoryModelsIt": "EF Core migrations auto-applied on startup, additive-by-default rule, no destructive changes without approval, snapshot kept EF-generated; 34-table schema.",
+      "gaps": "Down-migrations/rollback for destructive changes rely on backups rather than reversible scripts.",
+      "confidence": 0.78,
+      "proofToAdvance": "Demonstrate a reversible migration with a verified up/down and a backup-based recovery drill."
+    },
+    {
+      "concept": "RBAC / ABAC",
+      "family": "Security",
+      "howRealSystemsRepresentIt": "Role-based and attribute-based access control governing who can perform which action on which resource.",
+      "evidenceFromBenchmarkSystems": "ERP/CMS enforce roles and fine-grained permissions; ABAC adds attribute conditions.",
+      "howLocalAIFactoryModelsIt": "Windows-identity auth at IIS, least-privilege SQL roles, claims/roles mapping docs, approval-gated actions; access decisions are role-oriented.",
+      "gaps": "No fine-grained ABAC policy engine; app-level authorization is coarse and tied to Windows identity behind IIS.",
+      "confidence": 0.63,
+      "proofToAdvance": "Implement an explicit role/permission matrix and, if needed, attribute-based conditions with tests."
+    },
+    {
+      "concept": "API Design",
+      "family": "Integration",
+      "howRealSystemsRepresentIt": "Consistent resource modeling, versioning, auth, pagination, error contracts, and idempotency.",
+      "evidenceFromBenchmarkSystems": "Mature REST/GraphQL APIs version endpoints, paginate, and define stable error shapes.",
+      "howLocalAIFactoryModelsIt": "MVC controllers with clear request/response handling; integration knowledge for consuming WordPress/Odoo/Frappe/Woo/Magento/Drupal APIs; no large public API surface of its own.",
+      "gaps": "Internal-first; no formally versioned public API, OpenAPI contract, or idempotency guarantees documented.",
+      "confidence": 0.6,
+      "proofToAdvance": "Publish an OpenAPI contract with versioning, pagination, and error/idempotency conventions for any external API."
+    },
+    {
+      "concept": "Observability / Telemetry",
+      "family": "Operations / Governance",
+      "howRealSystemsRepresentIt": "Structured logs, metrics, and traces with correlation to diagnose production behavior.",
+      "evidenceFromBenchmarkSystems": "Services emit structured logs and request traces with timing and correlation IDs.",
+      "howLocalAIFactoryModelsIt": "RequestTimingMiddleware logs per-request start/complete with duration (warning > 1s) and dashboard build timing; a documented hang-detection technique.",
+      "gaps": "No distributed tracing or metrics backend; observability is log-based and single-node.",
+      "confidence": 0.65,
+      "proofToAdvance": "Add structured metrics/traces with correlation IDs and a queryable telemetry store."
+    },
+    {
+      "concept": "Resilience / Graceful Degradation",
+      "family": "Architecture / Performance",
+      "howRealSystemsRepresentIt": "Timeouts, fallbacks, and feature degradation so a dependency failure does not take down the system.",
+      "evidenceFromBenchmarkSystems": "Resilient apps fall back when optional services are down and never block core pages on them.",
+      "howLocalAIFactoryModelsIt": "Core pages must always render on MSSQL-only; Qdrant/Ollama optional and gated; health read from cache; a hard project rule.",
+      "gaps": "No formal circuit-breaker/retry-policy library; degradation is rule-enforced rather than centrally managed.",
+      "confidence": 0.74,
+      "proofToAdvance": "Add explicit timeout/retry/circuit-breaker policies and prove core pages render with every optional service down."
+    }
+  ]
+}

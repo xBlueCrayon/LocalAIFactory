@@ -1,0 +1,42 @@
+{
+  "totalRequests": 29540.0,
+  "suites": [
+    {
+      "suite": "iis-smoke-load",
+      "appUrl": "https://localhost:8443",
+      "concurrency": 25,
+      "durationSec": 60,
+      "totalRequests": 19300,
+      "http200": 19300,
+      "http500": 0,
+      "otherErrors": 0,
+      "rps": 321.7,
+      "p50ms": 54.8,
+      "p95ms": 81.7,
+      "p99ms": 96.8,
+      "minMs": 2.6,
+      "maxMs": 216.4,
+      "appPoolBefore": "Started",
+      "appPoolAfter": "Started"
+    },
+    {
+      "suite": "iis-search-load",
+      "appUrl": "https://localhost:8443",
+      "concurrency": 20,
+      "durationSec": 60,
+      "totalRequests": 10240,
+      "http200": 10240,
+      "http500": 0,
+      "otherErrors": 0,
+      "rps": 170.7,
+      "p50ms": 74.5,
+      "p95ms": 116.0,
+      "p99ms": 128.9,
+      "minMs": 25.4,
+      "maxMs": 190.2,
+      "appPoolBefore": "Started",
+      "appPoolAfter": "Started"
+    }
+  ],
+  "totalHttp500": 0.0
+}

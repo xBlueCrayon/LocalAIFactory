@@ -1,0 +1,17 @@
+{
+  "packUid": "0a510000-0003-4000-8000-000000000001",
+  "name": "Production Issue Fixes Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Installable knowledge pack of original, concise production-incident fix patterns for the LocalAIFactory deployment estate (ASP.NET Core / IIS / SQL Server Express / EF Core on Windows) plus common third-party integration failures (WordPress, Odoo, ERPNext/Frappe, WooCommerce, Magento, Drupal, Keycloak/OIDC, Entra ID, SFTP/SMTP) and optional-component issues (Ollama, Qdrant, OCR/PDF). Each item encodes symptoms, root cause, a diagnostic command, a known fix, a prevention rule, how LocalAIFactory should detect it, how it should fix or warn, and a confidence score. Several items capture firsthand findings from this project (clone-retry 'destination exists', ANCM absent on a fresh IIS host, Invoke-WebRequest not sending credentials over HTTP, the appcmd attribute-path quirk, and the GroupBy(_ => 1) / large-text page-hang lesson).",
+  "license": "Original professional troubleshooting summaries authored for LocalAIFactory. Free to deploy and modify within the application. No third-party support answer, vendor documentation, or copyrighted text is reproduced verbatim. Community patterns are framed honestly with confidence levels; no vendor certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 42,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "production-issue-fixes.json"
+  ],
+  "legalLimitations": "This pack contains ORIGINAL practical troubleshooting summaries only. It does NOT reproduce vendor documentation, support-forum answers, or any proprietary/official text verbatim, and it does not assert official certification or a compliance claim. Diagnostic commands and fixes are general patterns that must be validated against the deployed product versions; framework, server, and third-party behavior changes between versions. Confidence scores are author estimates, not guarantees. Items derived from public source families are attributed via source-registry.json; firsthand items are observations from this project and are marked as such.",
+  "sourcePolicy": "Original professional summaries and practical patterns only. No proprietary/official text copied verbatim. Generic public source families are registered in source-registry.json for governance and attribution (references only, no copyrighted text). Every item carries an explicit limitation note and a confidence score.",
+  "reviewStatus": "Approved"
+}

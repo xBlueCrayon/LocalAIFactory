@@ -1,0 +1,4120 @@
+{
+  "results": [
+    {
+      "id": "q0001",
+      "systemId": "odoo",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0002",
+      "systemId": "odoo",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0003",
+      "systemId": "odoo",
+      "type": "extension",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0004",
+      "systemId": "odoo",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0005",
+      "systemId": "odoo",
+      "type": "api",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0006",
+      "systemId": "odoo",
+      "type": "migration",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0007",
+      "systemId": "odoo",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0008",
+      "systemId": "odoo",
+      "type": "performance",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0009",
+      "systemId": "odoo",
+      "type": "operational",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0010",
+      "systemId": "odoo",
+      "type": "integration",
+      "score": 90,
+      "basis": "code symbols + fetched official docs"
+    },
+    {
+      "id": "q0011",
+      "systemId": "erpnext",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0012",
+      "systemId": "erpnext",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0013",
+      "systemId": "erpnext",
+      "type": "extension",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0014",
+      "systemId": "erpnext",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0015",
+      "systemId": "erpnext",
+      "type": "api",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0016",
+      "systemId": "erpnext",
+      "type": "migration",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0017",
+      "systemId": "erpnext",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0018",
+      "systemId": "erpnext",
+      "type": "performance",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0019",
+      "systemId": "erpnext",
+      "type": "operational",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0020",
+      "systemId": "erpnext",
+      "type": "integration",
+      "score": 90,
+      "basis": "code symbols + fetched official docs"
+    },
+    {
+      "id": "q0021",
+      "systemId": "frappe",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0022",
+      "systemId": "frappe",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0023",
+      "systemId": "frappe",
+      "type": "extension",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0024",
+      "systemId": "frappe",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0025",
+      "systemId": "frappe",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0026",
+      "systemId": "frappe",
+      "type": "migration",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0027",
+      "systemId": "frappe",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0028",
+      "systemId": "frappe",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0029",
+      "systemId": "frappe",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0030",
+      "systemId": "frappe",
+      "type": "integration",
+      "score": 75,
+      "basis": "code symbols + registered official docs (content not deep-verified)"
+    },
+    {
+      "id": "q0031",
+      "systemId": "dolibarr",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0032",
+      "systemId": "dolibarr",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0033",
+      "systemId": "dolibarr",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0034",
+      "systemId": "ever-gauzy",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0035",
+      "systemId": "ever-gauzy",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0036",
+      "systemId": "ever-gauzy",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0037",
+      "systemId": "frappe-hrms",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0038",
+      "systemId": "frappe-hrms",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0039",
+      "systemId": "frappe-hrms",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0040",
+      "systemId": "twenty",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0041",
+      "systemId": "twenty",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0042",
+      "systemId": "twenty",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0043",
+      "systemId": "chatwoot",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0044",
+      "systemId": "chatwoot",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0045",
+      "systemId": "chatwoot",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0046",
+      "systemId": "crater",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0047",
+      "systemId": "crater",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0048",
+      "systemId": "crater",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0049",
+      "systemId": "wordpress",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0050",
+      "systemId": "wordpress",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0051",
+      "systemId": "wordpress",
+      "type": "extension",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0052",
+      "systemId": "wordpress",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0053",
+      "systemId": "wordpress",
+      "type": "api",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0054",
+      "systemId": "wordpress",
+      "type": "migration",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0055",
+      "systemId": "wordpress",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0056",
+      "systemId": "wordpress",
+      "type": "performance",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0057",
+      "systemId": "wordpress",
+      "type": "operational",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0058",
+      "systemId": "wordpress",
+      "type": "integration",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0059",
+      "systemId": "drupal",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0060",
+      "systemId": "drupal",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0061",
+      "systemId": "drupal",
+      "type": "extension",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0062",
+      "systemId": "drupal",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0063",
+      "systemId": "drupal",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0064",
+      "systemId": "drupal",
+      "type": "migration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0065",
+      "systemId": "drupal",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0066",
+      "systemId": "drupal",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0067",
+      "systemId": "drupal",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0068",
+      "systemId": "drupal",
+      "type": "integration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0069",
+      "systemId": "joomla",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0070",
+      "systemId": "joomla",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0071",
+      "systemId": "joomla",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0072",
+      "systemId": "orchardcore",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0073",
+      "systemId": "orchardcore",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0074",
+      "systemId": "orchardcore",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0075",
+      "systemId": "ghost",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0076",
+      "systemId": "ghost",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0077",
+      "systemId": "ghost",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0078",
+      "systemId": "strapi",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0079",
+      "systemId": "strapi",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0080",
+      "systemId": "strapi",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0081",
+      "systemId": "directus",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0082",
+      "systemId": "directus",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0083",
+      "systemId": "directus",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0084",
+      "systemId": "statamic",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0085",
+      "systemId": "statamic",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0086",
+      "systemId": "statamic",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0087",
+      "systemId": "october",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0088",
+      "systemId": "october",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0089",
+      "systemId": "october",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0090",
+      "systemId": "processwire",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0091",
+      "systemId": "processwire",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0092",
+      "systemId": "processwire",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0093",
+      "systemId": "basercms",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0094",
+      "systemId": "basercms",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0095",
+      "systemId": "basercms",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0096",
+      "systemId": "pimcore",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0097",
+      "systemId": "pimcore",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0098",
+      "systemId": "pimcore",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0099",
+      "systemId": "magento2",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0100",
+      "systemId": "magento2",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0101",
+      "systemId": "magento2",
+      "type": "extension",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0102",
+      "systemId": "magento2",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0103",
+      "systemId": "magento2",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0104",
+      "systemId": "magento2",
+      "type": "migration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0105",
+      "systemId": "magento2",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0106",
+      "systemId": "magento2",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0107",
+      "systemId": "magento2",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0108",
+      "systemId": "magento2",
+      "type": "integration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0109",
+      "systemId": "woocommerce",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0110",
+      "systemId": "woocommerce",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0111",
+      "systemId": "woocommerce",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0112",
+      "systemId": "prestashop",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0113",
+      "systemId": "prestashop",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0114",
+      "systemId": "prestashop",
+      "type": "extension",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0115",
+      "systemId": "prestashop",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0116",
+      "systemId": "prestashop",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0117",
+      "systemId": "prestashop",
+      "type": "migration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0118",
+      "systemId": "prestashop",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0119",
+      "systemId": "prestashop",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0120",
+      "systemId": "prestashop",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0121",
+      "systemId": "prestashop",
+      "type": "integration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0122",
+      "systemId": "opencart",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0123",
+      "systemId": "opencart",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0124",
+      "systemId": "opencart",
+      "type": "extension",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0125",
+      "systemId": "opencart",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0126",
+      "systemId": "opencart",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0127",
+      "systemId": "opencart",
+      "type": "migration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0128",
+      "systemId": "opencart",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0129",
+      "systemId": "opencart",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0130",
+      "systemId": "opencart",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0131",
+      "systemId": "opencart",
+      "type": "integration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0132",
+      "systemId": "saleor",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0133",
+      "systemId": "saleor",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0134",
+      "systemId": "saleor",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0135",
+      "systemId": "medusa",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0136",
+      "systemId": "medusa",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0137",
+      "systemId": "medusa",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0138",
+      "systemId": "nopcommerce",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0139",
+      "systemId": "nopcommerce",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0140",
+      "systemId": "nopcommerce",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0141",
+      "systemId": "bagisto",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0142",
+      "systemId": "bagisto",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0143",
+      "systemId": "bagisto",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0144",
+      "systemId": "spree",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0145",
+      "systemId": "spree",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0146",
+      "systemId": "spree",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0147",
+      "systemId": "solidus",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0148",
+      "systemId": "solidus",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0149",
+      "systemId": "solidus",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0150",
+      "systemId": "discourse",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0151",
+      "systemId": "discourse",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0152",
+      "systemId": "discourse",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0153",
+      "systemId": "mastodon",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0154",
+      "systemId": "mastodon",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0155",
+      "systemId": "mastodon",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0156",
+      "systemId": "pixelfed",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0157",
+      "systemId": "pixelfed",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0158",
+      "systemId": "pixelfed",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0159",
+      "systemId": "openproject",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0160",
+      "systemId": "openproject",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0161",
+      "systemId": "openproject",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0162",
+      "systemId": "taiga-back",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0163",
+      "systemId": "taiga-back",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0164",
+      "systemId": "taiga-back",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0165",
+      "systemId": "redmine",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0166",
+      "systemId": "redmine",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0167",
+      "systemId": "redmine",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0168",
+      "systemId": "n8n",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0169",
+      "systemId": "n8n",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0170",
+      "systemId": "n8n",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0171",
+      "systemId": "windmill",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0172",
+      "systemId": "windmill",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0173",
+      "systemId": "windmill",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0174",
+      "systemId": "novu",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0175",
+      "systemId": "novu",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0176",
+      "systemId": "novu",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0177",
+      "systemId": "grafana",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0178",
+      "systemId": "grafana",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0179",
+      "systemId": "grafana",
+      "type": "extension",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0180",
+      "systemId": "grafana",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0181",
+      "systemId": "grafana",
+      "type": "api",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0182",
+      "systemId": "grafana",
+      "type": "migration",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0183",
+      "systemId": "grafana",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0184",
+      "systemId": "grafana",
+      "type": "performance",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0185",
+      "systemId": "grafana",
+      "type": "operational",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0186",
+      "systemId": "grafana",
+      "type": "integration",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0187",
+      "systemId": "prometheus",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0188",
+      "systemId": "prometheus",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0189",
+      "systemId": "prometheus",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0190",
+      "systemId": "sentry",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0191",
+      "systemId": "sentry",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0192",
+      "systemId": "sentry",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0193",
+      "systemId": "metabase",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0194",
+      "systemId": "metabase",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0195",
+      "systemId": "metabase",
+      "type": "extension",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0196",
+      "systemId": "metabase",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0197",
+      "systemId": "metabase",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0198",
+      "systemId": "metabase",
+      "type": "migration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0199",
+      "systemId": "metabase",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0200",
+      "systemId": "metabase",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0201",
+      "systemId": "metabase",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0202",
+      "systemId": "metabase",
+      "type": "integration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0203",
+      "systemId": "superset",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0204",
+      "systemId": "superset",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0205",
+      "systemId": "superset",
+      "type": "extension",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0206",
+      "systemId": "superset",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0207",
+      "systemId": "superset",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0208",
+      "systemId": "superset",
+      "type": "migration",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0209",
+      "systemId": "superset",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0210",
+      "systemId": "superset",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0211",
+      "systemId": "superset",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0212",
+      "systemId": "superset",
+      "type": "integration",
+      "score": 75,
+      "basis": "code symbols + registered official docs (content not deep-verified)"
+    },
+    {
+      "id": "q0213",
+      "systemId": "matomo",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0214",
+      "systemId": "matomo",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0215",
+      "systemId": "matomo",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0216",
+      "systemId": "plausible",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0217",
+      "systemId": "plausible",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0218",
+      "systemId": "plausible",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0219",
+      "systemId": "posthog",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0220",
+      "systemId": "posthog",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0221",
+      "systemId": "posthog",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0222",
+      "systemId": "umami",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0223",
+      "systemId": "umami",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0224",
+      "systemId": "umami",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0225",
+      "systemId": "mlflow",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0226",
+      "systemId": "mlflow",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0227",
+      "systemId": "mlflow",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0228",
+      "systemId": "scikit-learn",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0229",
+      "systemId": "scikit-learn",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0230",
+      "systemId": "scikit-learn",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0231",
+      "systemId": "pandas",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0232",
+      "systemId": "pandas",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0233",
+      "systemId": "pandas",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0234",
+      "systemId": "dbt-core",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0235",
+      "systemId": "dbt-core",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0236",
+      "systemId": "dbt-core",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0237",
+      "systemId": "airbyte",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0238",
+      "systemId": "airbyte",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0239",
+      "systemId": "airbyte",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0240",
+      "systemId": "airflow",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0241",
+      "systemId": "airflow",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0242",
+      "systemId": "airflow",
+      "type": "extension",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0243",
+      "systemId": "airflow",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0244",
+      "systemId": "airflow",
+      "type": "api",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0245",
+      "systemId": "airflow",
+      "type": "migration",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0246",
+      "systemId": "airflow",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0247",
+      "systemId": "airflow",
+      "type": "performance",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0248",
+      "systemId": "airflow",
+      "type": "operational",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0249",
+      "systemId": "airflow",
+      "type": "integration",
+      "score": 90,
+      "basis": "code symbols + fetched official docs"
+    },
+    {
+      "id": "q0250",
+      "systemId": "temporal",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0251",
+      "systemId": "temporal",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0252",
+      "systemId": "temporal",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0253",
+      "systemId": "keycloak",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0254",
+      "systemId": "keycloak",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0255",
+      "systemId": "keycloak",
+      "type": "extension",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0256",
+      "systemId": "keycloak",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0257",
+      "systemId": "keycloak",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0258",
+      "systemId": "keycloak",
+      "type": "migration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0259",
+      "systemId": "keycloak",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0260",
+      "systemId": "keycloak",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0261",
+      "systemId": "keycloak",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0262",
+      "systemId": "keycloak",
+      "type": "integration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0263",
+      "systemId": "authentik",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0264",
+      "systemId": "authentik",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0265",
+      "systemId": "authentik",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0266",
+      "systemId": "supertokens",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0267",
+      "systemId": "supertokens",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0268",
+      "systemId": "supertokens",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0269",
+      "systemId": "kubernetes",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0270",
+      "systemId": "kubernetes",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0271",
+      "systemId": "kubernetes",
+      "type": "extension",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0272",
+      "systemId": "kubernetes",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0273",
+      "systemId": "kubernetes",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0274",
+      "systemId": "kubernetes",
+      "type": "migration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0275",
+      "systemId": "kubernetes",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0276",
+      "systemId": "kubernetes",
+      "type": "performance",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0277",
+      "systemId": "kubernetes",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0278",
+      "systemId": "kubernetes",
+      "type": "integration",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0279",
+      "systemId": "terraform",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0280",
+      "systemId": "terraform",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0281",
+      "systemId": "terraform",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0282",
+      "systemId": "ansible",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0283",
+      "systemId": "ansible",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0284",
+      "systemId": "ansible",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0285",
+      "systemId": "consul",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0286",
+      "systemId": "consul",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0287",
+      "systemId": "consul",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0288",
+      "systemId": "vault",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0289",
+      "systemId": "vault",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0290",
+      "systemId": "vault",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0291",
+      "systemId": "jenkins",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0292",
+      "systemId": "jenkins",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0293",
+      "systemId": "jenkins",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0294",
+      "systemId": "gitlab",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0295",
+      "systemId": "gitlab",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0296",
+      "systemId": "gitlab",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0297",
+      "systemId": "netbox",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0298",
+      "systemId": "netbox",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0299",
+      "systemId": "netbox",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0300",
+      "systemId": "postgres",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0301",
+      "systemId": "postgres",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0302",
+      "systemId": "postgres",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0303",
+      "systemId": "redis",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0304",
+      "systemId": "redis",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0305",
+      "systemId": "redis",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0306",
+      "systemId": "elasticsearch",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0307",
+      "systemId": "elasticsearch",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0308",
+      "systemId": "elasticsearch",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0309",
+      "systemId": "opensearch",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0310",
+      "systemId": "opensearch",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0311",
+      "systemId": "opensearch",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0312",
+      "systemId": "kafka",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0313",
+      "systemId": "kafka",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0314",
+      "systemId": "kafka",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0315",
+      "systemId": "minio",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0316",
+      "systemId": "minio",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0317",
+      "systemId": "minio",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0318",
+      "systemId": "nifi",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0319",
+      "systemId": "nifi",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0320",
+      "systemId": "nifi",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0321",
+      "systemId": "pocketbase",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0322",
+      "systemId": "pocketbase",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0323",
+      "systemId": "pocketbase",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0324",
+      "systemId": "apisix",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0325",
+      "systemId": "apisix",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0326",
+      "systemId": "apisix",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0327",
+      "systemId": "kong",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0328",
+      "systemId": "kong",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0329",
+      "systemId": "kong",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0330",
+      "systemId": "traefik",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0331",
+      "systemId": "traefik",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0332",
+      "systemId": "traefik",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0333",
+      "systemId": "hasura",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0334",
+      "systemId": "hasura",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0335",
+      "systemId": "hasura",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0336",
+      "systemId": "apisix-dashboard",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0337",
+      "systemId": "apisix-dashboard",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0338",
+      "systemId": "apisix-dashboard",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0339",
+      "systemId": "django",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0340",
+      "systemId": "django",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0341",
+      "systemId": "django",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0342",
+      "systemId": "fastapi",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0343",
+      "systemId": "fastapi",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0344",
+      "systemId": "fastapi",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0345",
+      "systemId": "flask",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0346",
+      "systemId": "flask",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0347",
+      "systemId": "flask",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0348",
+      "systemId": "spring-boot",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0349",
+      "systemId": "spring-boot",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0350",
+      "systemId": "spring-boot",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0351",
+      "systemId": "abp",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0352",
+      "systemId": "abp",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0353",
+      "systemId": "abp",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0354",
+      "systemId": "nestjs",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0355",
+      "systemId": "nestjs",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0356",
+      "systemId": "nestjs",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0357",
+      "systemId": "react",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0358",
+      "systemId": "react",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0359",
+      "systemId": "react",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0360",
+      "systemId": "angular",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0361",
+      "systemId": "angular",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0362",
+      "systemId": "angular",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0363",
+      "systemId": "vuejs-core",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0364",
+      "systemId": "vuejs-core",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0365",
+      "systemId": "vuejs-core",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0366",
+      "systemId": "typescript",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0367",
+      "systemId": "typescript",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0368",
+      "systemId": "typescript",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0369",
+      "systemId": "nodejs",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0370",
+      "systemId": "nodejs",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0371",
+      "systemId": "nodejs",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0372",
+      "systemId": "prisma",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0373",
+      "systemId": "prisma",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0374",
+      "systemId": "prisma",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0375",
+      "systemId": "supabase",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0376",
+      "systemId": "supabase",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0377",
+      "systemId": "supabase",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0378",
+      "systemId": "appwrite",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0379",
+      "systemId": "appwrite",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0380",
+      "systemId": "appwrite",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0381",
+      "systemId": "nextcloud",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0382",
+      "systemId": "nextcloud",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0383",
+      "systemId": "nextcloud",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0384",
+      "systemId": "rocketchat",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0385",
+      "systemId": "rocketchat",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0386",
+      "systemId": "rocketchat",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0387",
+      "systemId": "formbricks",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0388",
+      "systemId": "formbricks",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0389",
+      "systemId": "formbricks",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0390",
+      "systemId": "cal-com",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0391",
+      "systemId": "cal-com",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0392",
+      "systemId": "cal-com",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0393",
+      "systemId": "jellyfin",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0394",
+      "systemId": "jellyfin",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0395",
+      "systemId": "jellyfin",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0396",
+      "systemId": "home-assistant",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0397",
+      "systemId": "home-assistant",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0398",
+      "systemId": "home-assistant",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0399",
+      "systemId": "eshop",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0400",
+      "systemId": "eshop",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0401",
+      "systemId": "eshop",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0402",
+      "systemId": "eshoponweb",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0403",
+      "systemId": "eshoponweb",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0404",
+      "systemId": "eshoponweb",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0405",
+      "systemId": "clean-architecture",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0406",
+      "systemId": "clean-architecture",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0407",
+      "systemId": "clean-architecture",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0408",
+      "systemId": "dapper",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0409",
+      "systemId": "dapper",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0410",
+      "systemId": "dapper",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0411",
+      "systemId": "efcore",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0412",
+      "systemId": "efcore",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0413",
+      "systemId": "efcore",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0414",
+      "systemId": "chinook-database",
+      "type": "architecture",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0415",
+      "systemId": "chinook-database",
+      "type": "data-model",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0416",
+      "systemId": "chinook-database",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0417",
+      "systemId": "sql-server-samples",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0418",
+      "systemId": "sql-server-samples",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0419",
+      "systemId": "sql-server-samples",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0420",
+      "systemId": "openiddict",
+      "type": "architecture",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0421",
+      "systemId": "openiddict",
+      "type": "data-model",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0422",
+      "systemId": "openiddict",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0423",
+      "systemId": "oauth2-rfc6749",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0424",
+      "systemId": "oauth2-rfc6749",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0425",
+      "systemId": "oauth2-rfc6749",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0426",
+      "systemId": "openid-connect-core",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0427",
+      "systemId": "openid-connect-core",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0428",
+      "systemId": "openid-connect-core",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0429",
+      "systemId": "openapi-spec",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0430",
+      "systemId": "openapi-spec",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0431",
+      "systemId": "openapi-spec",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0432",
+      "systemId": "iso20022",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0433",
+      "systemId": "iso20022",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0434",
+      "systemId": "iso20022",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0435",
+      "systemId": "iso8583",
+      "type": "architecture",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0436",
+      "systemId": "iso8583",
+      "type": "data-model",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0437",
+      "systemId": "iso8583",
+      "type": "api",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0438",
+      "systemId": "odoo",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0439",
+      "systemId": "erpnext",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0440",
+      "systemId": "frappe",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0441",
+      "systemId": "dolibarr",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0442",
+      "systemId": "ever-gauzy",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0443",
+      "systemId": "frappe-hrms",
+      "type": "module",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0444",
+      "systemId": "twenty",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0445",
+      "systemId": "chatwoot",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0446",
+      "systemId": "crater",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0447",
+      "systemId": "wordpress",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0448",
+      "systemId": "drupal",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0449",
+      "systemId": "joomla",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0450",
+      "systemId": "orchardcore",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0451",
+      "systemId": "ghost",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0452",
+      "systemId": "strapi",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0453",
+      "systemId": "directus",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0454",
+      "systemId": "statamic",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0455",
+      "systemId": "october",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0456",
+      "systemId": "processwire",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0457",
+      "systemId": "basercms",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0458",
+      "systemId": "pimcore",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0459",
+      "systemId": "magento2",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0460",
+      "systemId": "woocommerce",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0461",
+      "systemId": "prestashop",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0462",
+      "systemId": "opencart",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0463",
+      "systemId": "saleor",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0464",
+      "systemId": "medusa",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0465",
+      "systemId": "nopcommerce",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0466",
+      "systemId": "bagisto",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0467",
+      "systemId": "spree",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0468",
+      "systemId": "solidus",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0469",
+      "systemId": "discourse",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0470",
+      "systemId": "mastodon",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0471",
+      "systemId": "pixelfed",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0472",
+      "systemId": "openproject",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0473",
+      "systemId": "taiga-back",
+      "type": "module",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0474",
+      "systemId": "redmine",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0475",
+      "systemId": "n8n",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0476",
+      "systemId": "windmill",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0477",
+      "systemId": "novu",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0478",
+      "systemId": "grafana",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0479",
+      "systemId": "prometheus",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0480",
+      "systemId": "sentry",
+      "type": "module",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0481",
+      "systemId": "metabase",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0482",
+      "systemId": "superset",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0483",
+      "systemId": "matomo",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0484",
+      "systemId": "plausible",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0485",
+      "systemId": "posthog",
+      "type": "module",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0486",
+      "systemId": "umami",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0487",
+      "systemId": "mlflow",
+      "type": "module",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0488",
+      "systemId": "scikit-learn",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0489",
+      "systemId": "pandas",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0490",
+      "systemId": "dbt-core",
+      "type": "module",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0491",
+      "systemId": "airbyte",
+      "type": "module",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0492",
+      "systemId": "airflow",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0493",
+      "systemId": "temporal",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0494",
+      "systemId": "keycloak",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0495",
+      "systemId": "authentik",
+      "type": "module",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0496",
+      "systemId": "supertokens",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0497",
+      "systemId": "kubernetes",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0498",
+      "systemId": "terraform",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0499",
+      "systemId": "ansible",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0500",
+      "systemId": "consul",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0501",
+      "systemId": "vault",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0502",
+      "systemId": "jenkins",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0503",
+      "systemId": "gitlab",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0504",
+      "systemId": "netbox",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0505",
+      "systemId": "postgres",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0506",
+      "systemId": "redis",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0507",
+      "systemId": "elasticsearch",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0508",
+      "systemId": "opensearch",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0509",
+      "systemId": "kafka",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0510",
+      "systemId": "minio",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0511",
+      "systemId": "nifi",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0512",
+      "systemId": "pocketbase",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0513",
+      "systemId": "apisix",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0514",
+      "systemId": "kong",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0515",
+      "systemId": "traefik",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0516",
+      "systemId": "hasura",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0517",
+      "systemId": "apisix-dashboard",
+      "type": "module",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0518",
+      "systemId": "django",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0519",
+      "systemId": "fastapi",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0520",
+      "systemId": "flask",
+      "type": "module",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0521",
+      "systemId": "odoo",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0522",
+      "systemId": "erpnext",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0523",
+      "systemId": "frappe",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0524",
+      "systemId": "dolibarr",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0525",
+      "systemId": "ever-gauzy",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0526",
+      "systemId": "frappe-hrms",
+      "type": "auth",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0527",
+      "systemId": "twenty",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0528",
+      "systemId": "chatwoot",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0529",
+      "systemId": "crater",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0530",
+      "systemId": "wordpress",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0531",
+      "systemId": "drupal",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0532",
+      "systemId": "joomla",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0533",
+      "systemId": "orchardcore",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0534",
+      "systemId": "ghost",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0535",
+      "systemId": "strapi",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0536",
+      "systemId": "directus",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0537",
+      "systemId": "statamic",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0538",
+      "systemId": "october",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0539",
+      "systemId": "processwire",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0540",
+      "systemId": "basercms",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0541",
+      "systemId": "pimcore",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0542",
+      "systemId": "magento2",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0543",
+      "systemId": "woocommerce",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0544",
+      "systemId": "prestashop",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0545",
+      "systemId": "opencart",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0546",
+      "systemId": "saleor",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0547",
+      "systemId": "medusa",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0548",
+      "systemId": "nopcommerce",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in extracted code symbols"
+    },
+    {
+      "id": "q0549",
+      "systemId": "bagisto",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0550",
+      "systemId": "spree",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0551",
+      "systemId": "solidus",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0552",
+      "systemId": "discourse",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0553",
+      "systemId": "mastodon",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0554",
+      "systemId": "pixelfed",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0555",
+      "systemId": "openproject",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0556",
+      "systemId": "taiga-back",
+      "type": "auth",
+      "score": 50,
+      "basis": "supported language; extractable (not yet extracted)"
+    },
+    {
+      "id": "q0557",
+      "systemId": "redmine",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0558",
+      "systemId": "n8n",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0559",
+      "systemId": "windmill",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0560",
+      "systemId": "novu",
+      "type": "auth",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0561",
+      "systemId": "grafana",
+      "type": "auth",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0562",
+      "systemId": "odoo",
+      "type": "operational",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0563",
+      "systemId": "erpnext",
+      "type": "operational",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0564",
+      "systemId": "frappe",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0565",
+      "systemId": "dolibarr",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0566",
+      "systemId": "ever-gauzy",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0567",
+      "systemId": "frappe-hrms",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0568",
+      "systemId": "twenty",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0569",
+      "systemId": "chatwoot",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0570",
+      "systemId": "crater",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0571",
+      "systemId": "wordpress",
+      "type": "operational",
+      "score": 75,
+      "basis": "grounded in fetched official docs (sample)"
+    },
+    {
+      "id": "q0572",
+      "systemId": "drupal",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0573",
+      "systemId": "joomla",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0574",
+      "systemId": "orchardcore",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0575",
+      "systemId": "ghost",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0576",
+      "systemId": "strapi",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0577",
+      "systemId": "directus",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0578",
+      "systemId": "statamic",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0579",
+      "systemId": "october",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0580",
+      "systemId": "processwire",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0581",
+      "systemId": "basercms",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0582",
+      "systemId": "pimcore",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0583",
+      "systemId": "magento2",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0584",
+      "systemId": "woocommerce",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0585",
+      "systemId": "prestashop",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0586",
+      "systemId": "opencart",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0587",
+      "systemId": "saleor",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    },
+    {
+      "id": "q0588",
+      "systemId": "medusa",
+      "type": "operational",
+      "score": 50,
+      "basis": "official docs registered (metadata-level; content not deep-verified)"
+    }
+  ]
+}

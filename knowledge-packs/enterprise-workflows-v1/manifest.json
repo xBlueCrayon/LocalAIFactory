@@ -1,0 +1,17 @@
+{
+  "packUid": "0a520000-0001-4000-8000-000000000001",
+  "name": "Enterprise Workflows Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Enterprise workflow pattern pack for LocalAIFactory. Covers 40 original workflow families spanning banking controls (maker/checker/approver, four-eyes dual control, multi-level approval matrix, transaction release, payment authorization, direct-debit mandate lifecycle, claim generation/response, rejection-code mapping), financial-crime and onboarding (KYC onboarding, CDD/EDD, AML screening, sanctions/PEP/adverse-media, customer risk scoring, account opening, document collection/verification, cheque OCR review, signature/forgery review), operations and ITSM (exception queue, incident management, change request, SLA escalation, asset intervention, parts consumption, inventory adjustment, support ticket, operational dashboard review, daily ops-manager review), finance and ERP (purchase-order approval, invoice three-way match, GL posting/finance approval, CRM lead-to-opportunity, ERP order-to-cash, ERP procure-to-pay), and governance and platform controls (audit evidence export, backup/restore/rollback, release approval, autonomous patch proposal, human-approval-before-AI-code-change, knowledge import/dedupe/approval, production incident postmortem). Each item describes the roles involved, required data, validations, approval stages, audit trail, exception paths, lifecycle states (initial/allowed/terminal), key controls, and the anti-pattern to avoid. All items are original practical summaries with explicit limitation notes; generic public references are attributed via the source registry.",
+  "license": "Original enterprise-workflow pattern summaries authored for LocalAIFactory. Free to deploy and modify within the application. No third-party source, vendor schema, vendor UI, or copyrighted standard text is vendored or reproduced verbatim.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 40,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "enterprise-workflows.json"
+  ],
+  "legalLimitations": "This pack contains ORIGINAL practical workflow summaries only. It does NOT reproduce BPMN specification text, ITIL publications, FATF/Basel/ISO/NIST/OWASP text, vendor BPM/ERP/CRM documentation, scheme rulebooks, or any other proprietary/official material verbatim, and it does not assert official certification or compliance. Banking-control, AML/KYC, sanctions, and financial-crime items are practical awareness-level summaries, not substitutes for licensed standards, scheme rules, regulator guidance, or formal legal, regulatory, tax, audit, or compliance advice. Cheque OCR and signature/forgery items never assert automatic fraud proof or legally conclusive forgery detection; high-risk decisions require human review, recorded confidence, and retained evidence, and detection is separated from verification. Lifecycle states, thresholds, and approval tiers are illustrative and must be tuned to institution-specific policy. Workflow fixtures referenced by these items are synthetic prototypes, not a deployed production workflow engine.",
+  "sourcePolicy": "Original professional workflow summaries and practical patterns only. No proprietary/official text copied verbatim. Sources are registered in source-registry.json for governance and attribution; conceptual frameworks are registered as topic families. Every item carries an explicit limitation note, an anti-pattern to avoid, and a confidence score.",
+  "reviewStatus": "Approved"
+}

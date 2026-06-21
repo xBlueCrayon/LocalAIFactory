@@ -1,0 +1,65 @@
+{
+  "cap": 90,
+  "tests": [
+    {
+      "id": "01-summarize",
+      "score": 90,
+      "detail": "grounded + relevant (cap 90: proposal, not human-approved)",
+      "chars": 438,
+      "excerpt": "The Maker/Checker Payment Release workflow involves an operations clerk (Maker) submitting a payment instruction, which is then reviewed by "
+    },
+    {
+      "id": "02-extract-roles-states",
+      "score": 90,
+      "detail": "grounded + relevant (cap 90: proposal, not human-approved)",
+      "chars": 132,
+      "excerpt": "### ROLES: 1. Maker 2. Checker 3. Approver ### STATES: 1. Draft 2. Submitted 3. Screened 4. PendingApproval 5. Released 6. Rejected"
+    },
+    {
+      "id": "03-propose-sql",
+      "score": 90,
+      "detail": "grounded + relevant (cap 90: proposal, not human-approved)",
+      "chars": 1585,
+      "excerpt": "To design a minimal SQL Server schema for the described workflow, we need to create several tables to capture the necessary data and relatio"
+    },
+    {
+      "id": "04-service-validations",
+      "score": 90,
+      "detail": "grounded + relevant (cap 90: proposal, not human-approved)",
+      "chars": 665,
+      "excerpt": "### Service-Layer Validation Rules - **Amount > 0**: The payment amount must be greater than zero. - **Debtor ≠ Creditor**: The debtor acco"
+    },
+    {
+      "id": "05-missing-audit",
+      "score": 90,
+      "detail": "grounded + relevant (cap 90: proposal, not human-approved)",
+      "chars": 1876,
+      "excerpt": "The provided C# method `ApprovePayment` does not meet the workflow's audit requirement, which states that every state change must write an a"
+    },
+    {
+      "id": "06-compare-code-to-rule",
+      "score": 90,
+      "detail": "grounded + relevant (cap 90: proposal, not human-approved)",
+      "chars": 196,
+      "excerpt": "No. The code does not satisfy the rule 'the checker must differ from the maker' because it lacks any logic to ensure that the `checker` para"
+    },
+    {
+      "id": "07-test-plan",
+      "score": 90,
+      "detail": "grounded + relevant (cap 90: proposal, not human-approved)",
+      "chars": 1733,
+      "excerpt": "### Test Plan for Maker/Checker Payment Release Workflow #### Test Cases: 1. **Maker Submits Valid Payment** - **Description:** A maker"
+    },
+    {
+      "id": "08-insufficient-evidence",
+      "score": 90,
+      "detail": "refused to fabricate (said insufficient/not provided)",
+      "chars": 21,
+      "excerpt": "INSUFFICIENT EVIDENCE"
+    }
+  ],
+  "pass": true,
+  "meanScore": 90.0,
+  "available": true,
+  "model": "qwen2.5-coder:14b"
+}

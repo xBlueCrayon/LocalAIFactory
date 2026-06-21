@@ -1,0 +1,192 @@
+{
+  "generatedFor": "production-readiness gate",
+  "finalClassification": "PILOT_READY",
+  "pass": 19,
+  "partial": 6,
+  "blockedOperator": 2,
+  "blockedExternal": 2,
+  "blockedCustomer": 1,
+  "fail": 0,
+  "areas": [
+    {
+      "n": 1,
+      "name": "Build",
+      "classification": "PASS",
+      "evidence": "verified by scripts/poc/verify-poc.ps1 (build 0 errors) in the gate suite"
+    },
+    {
+      "n": 2,
+      "name": "Tests",
+      "classification": "PASS",
+      "evidence": "240/240 (verify-poc / dotnet test)"
+    },
+    {
+      "n": 3,
+      "name": "Release package",
+      "classification": "PASS",
+      "evidence": "verify-release-package PASS; checksum tracked"
+    },
+    {
+      "n": 4,
+      "name": "Knowledge packs",
+      "classification": "PASS",
+      "evidence": "verify-all-knowledge-packs (live)"
+    },
+    {
+      "n": 5,
+      "name": "LocalDB proof",
+      "classification": "PASS",
+      "evidence": "reports/LocalDB-POC-Evidence.md"
+    },
+    {
+      "n": 6,
+      "name": "SQL Express proof",
+      "classification": "PASS",
+      "evidence": "reports/DEPLOYMENT_DATABASE_PROOF.md (Mode C)"
+    },
+    {
+      "n": 7,
+      "name": "IIS proof",
+      "classification": "PASS",
+      "evidence": "IIS site LocalAIFactoryPilot state=Started"
+    },
+    {
+      "n": 8,
+      "name": "HTTPS proof",
+      "classification": "PARTIAL",
+      "evidence": "HTTPS 200 over TLS (self-signed pilot cert — NOT production CA)"
+    },
+    {
+      "n": 9,
+      "name": "Windows-auth proof",
+      "classification": "PASS",
+      "evidence": "IIS Negotiate 401 challenge + authenticated 200 over HTTPS"
+    },
+    {
+      "n": 10,
+      "name": "Production environment config",
+      "classification": "PARTIAL",
+      "evidence": "app runs Development dev-auth BEHIND IIS; production ASPNETCORE_ENVIRONMENT + app RBAC under Windows identity NOT bound"
+    },
+    {
+      "n": 11,
+      "name": "SQL least privilege",
+      "classification": "PASS",
+      "evidence": "app-pool login is_sysadmin=0, db_datareader/datawriter+EXECUTE only"
+    },
+    {
+      "n": 12,
+      "name": "Backup/restore",
+      "classification": "PASS",
+      "evidence": "backup OK + restore VERIFY OK (reports/RELIABILITY_ROLLBACK_SUPPORT_HARDENING.md)"
+    },
+    {
+      "n": 13,
+      "name": "Rollback",
+      "classification": "PASS",
+      "evidence": "reports/MODE_A_IIS_ROLLBACK_PROOF.md (stop frees port, restart restores)"
+    },
+    {
+      "n": 14,
+      "name": "Support bundle",
+      "classification": "PASS",
+      "evidence": "support bundle exported (no secrets)"
+    },
+    {
+      "n": 15,
+      "name": "Security audit",
+      "classification": "PASS",
+      "evidence": "security-audit HIGH findings=0"
+    },
+    {
+      "n": 16,
+      "name": "OWASP/ASVS mapping",
+      "classification": "PASS",
+      "evidence": "docs/security/OWASP-ASVS-Mapping.md"
+    },
+    {
+      "n": 17,
+      "name": "NIST/SSDF mapping",
+      "classification": "PASS",
+      "evidence": "docs/security/NIST-SSDF-Mapping.md"
+    },
+    {
+      "n": 18,
+      "name": "Load test",
+      "classification": "PARTIAL",
+      "evidence": "local high-volume SIMULATION (29,540 req, 0 HTTP 500s) — not production load"
+    },
+    {
+      "n": 19,
+      "name": "100-system benchmark",
+      "classification": "PASS",
+      "evidence": "113 systems / 588 questions; 51-repo extraction"
+    },
+    {
+      "n": 20,
+      "name": "Docs/API cross-check",
+      "classification": "PARTIAL",
+      "evidence": "sampled official-docs fetch (5/8 topic-verified); most systems metadata-level"
+    },
+    {
+      "n": 21,
+      "name": "Knowledge pack governance",
+      "classification": "PASS",
+      "evidence": "propose-never-overwrite + permanence guard + source registry"
+    },
+    {
+      "n": 22,
+      "name": "Local LLM reasoning governance",
+      "classification": "PASS",
+      "evidence": "LLM proof mean 90/90-cap + governance (proposal-only, never authoritative)"
+    },
+    {
+      "n": 23,
+      "name": "Issue/fix knowledge pack",
+      "classification": "PASS",
+      "evidence": "production-issue-fixes-v1 (42 items)"
+    },
+    {
+      "n": 24,
+      "name": "License/commercial enforcement",
+      "classification": "BLOCKED_OPERATOR_REQUIRED",
+      "evidence": "edition/license model designed; enforcement NOT active (operator/business decision)"
+    },
+    {
+      "n": 25,
+      "name": "External security review",
+      "classification": "BLOCKED_EXTERNAL_REQUIRED",
+      "evidence": "no third-party pen-test/review performed"
+    },
+    {
+      "n": 26,
+      "name": "Entra/OIDC real tenant",
+      "classification": "BLOCKED_EXTERNAL_REQUIRED",
+      "evidence": "design + read-only validators only; no real tenant"
+    },
+    {
+      "n": 27,
+      "name": "Customer pilot signoff",
+      "classification": "BLOCKED_CUSTOMER_REQUIRED",
+      "evidence": "no signed pilot on sanitized estate data"
+    },
+    {
+      "n": 28,
+      "name": "Production host evidence",
+      "classification": "BLOCKED_OPERATOR_REQUIRED",
+      "evidence": "no Windows Server host; CA cert; production DNS/firewall"
+    },
+    {
+      "n": 29,
+      "name": "Monitoring/alerting",
+      "classification": "PARTIAL",
+      "evidence": "/Support health + support bundle + event log; no SIEM/alerting/SLOs"
+    },
+    {
+      "n": 30,
+      "name": "Incident response",
+      "classification": "PARTIAL",
+      "evidence": "runbooks + rollback; no live on-call/escalation"
+    }
+  ]
+}

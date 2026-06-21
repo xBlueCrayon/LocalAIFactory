@@ -6,14 +6,22 @@ packs on startup (idempotent). All content is original professional summaries wi
 limitation notes — no proprietary/regulatory text is reproduced, and no compliance/financial/fraud
 certainty is claimed.
 
-**Packs:** 4 · **Total items:** 438
+**Packs:** 6 · **Total items:** 520
 
 | Pack | Version | Items | Review |
 |---|---|---:|---|
+| Enterprise Workflows Knowledge Pack (`enterprise-workflows-v1`) | 1.0.0 | 40 | Approved |
 | Financial Institution Operations v1 (`financial-institution-operations-v1`) | 1.0.0 | 16 | Approved |
 | KYC AML Transaction Approval v1 (`kyc-aml-transaction-approval-v1`) | 1.0.0 | 16 | Approved |
 | Market Intelligence and Forecasting v1 (`market-intelligence-forecasting-v1`) | 1.0.0 | 16 | Approved |
+| Production Issue Fixes Knowledge Pack (`production-issue-fixes-v1`) | 1.0.0 | 42 | Approved |
 | Professional Base Knowledge Pack (`professional-base-v1`) | 1.2.0 | 390 | Approved |
+
+## Enterprise Workflows Knowledge Pack — v1.0.0  (40 items)
+
+| Category | Items |
+|---|---:|
+| Enterprise Workflows | 40 |
 
 ## Financial Institution Operations v1 — v1.0.0  (16 items)
 
@@ -35,6 +43,12 @@ certainty is claimed.
 |---|---:|
 | Forecasting and Model Governance | 8 |
 | Market Data and Signals | 8 |
+
+## Production Issue Fixes Knowledge Pack — v1.0.0  (42 items)
+
+| Category | Items |
+|---|---:|
+| Production Issue Fixes | 42 |
 
 ## Professional Base Knowledge Pack — v1.2.0  (390 items)
 
