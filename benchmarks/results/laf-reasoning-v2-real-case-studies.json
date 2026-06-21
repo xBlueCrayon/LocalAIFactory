@@ -1,0 +1,18 @@
+{
+  "kind": "laf-reasoning-v2-real-case-studies",
+  "stamp": "2026-06-21",
+  "note": "Each case study composes the building-block plan deterministically (no model) and honestly reports missing bricks. Backed by the composition benchmark + the code graph over the real ERP Gold product.",
+  "cases": [
+    { "case": "ERP Gold authentication hardening", "blocks": ["secure-login", "password-hashing", "login-lockout", "anti-forgery", "audit-event"], "missing": [], "tests": "AuthTests + AuthHardeningTests + login.spec", "risk": "session/cookie security" },
+    { "case": "ERP Gold manufacturing depth", "blocks": ["manufacturing-order", "stock-movement", "audit-event"], "missing": [], "tests": "ManufacturingTests", "risk": "costing edge cases" },
+    { "case": "ERP Gold report depth", "blocks": ["report-endpoint", "accounting-posting"], "missing": [], "tests": "ReportsDepthTests", "risk": "GL reconciliation" },
+    { "case": "ScreenStream server/client generator", "blocks": ["production-smoke"], "missing": ["screenstream-capture"], "tests": "n/a (separate product)", "risk": "consent + LAN security" },
+    { "case": "LocalAIFactory reasoning engine itself", "blocks": ["xunit-service-test"], "missing": ["codegraph-reasoning"], "tests": "Reasoning + CodeBlocks suites", "risk": "syntax-only graph" },
+    { "case": "Cheque OCR pipeline", "blocks": ["import-export"], "missing": ["cheque-ocr-pipeline"], "tests": "to-be-built", "risk": "OCR accuracy" },
+    { "case": "Odoo inventory connector", "blocks": ["stock-movement"], "missing": ["odoo-inventory-connector"], "tests": "to-be-built", "risk": "external API auth" },
+    { "case": "WooCommerce CSV mapper", "blocks": ["import-export"], "missing": ["woocommerce-csv-mapper"], "tests": "to-be-built", "risk": "schema mapping" },
+    { "case": "Direct Debit mandate approval", "blocks": ["maker-checker", "audit-event"], "missing": ["direct-debit-mandate"], "tests": "to-be-built", "risk": "mandate compliance" },
+    { "case": "Ticketing asset workflow", "blocks": ["maker-checker", "crud-module"], "missing": ["ticketing-asset-workflow"], "tests": "to-be-built", "risk": "SLA + audit" }
+  ],
+  "honest": "For each case the engine composes the present blocks (with dependencies) and flags the genuinely-missing bricks (odoo/woocommerce/cheque-ocr/direct-debit/ticketing/screenstream) rather than pretending they exist. That honesty IS the deliverable: LAF knows what it can compose and what it still lacks."
+}

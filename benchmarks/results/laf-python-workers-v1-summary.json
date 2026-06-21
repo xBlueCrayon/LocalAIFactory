@@ -1,0 +1,28 @@
+{
+  "kind": "laf-python-workers-v1-summary",
+  "stamp": "2026-06-21",
+  "component": "LocalAIFactory.PythonBridge / SafePythonWorkerRunner",
+  "approvedEntrypoints": [
+    "code-mine", "pattern-mine", "doc-extract", "web-scrape", "embed-text",
+    "rerank", "build-dataset", "graph-enrich", "extract-knowledge"
+  ],
+  "approvedEntrypointCount": 9,
+  "arbitraryScriptsAllowed": false,
+  "transport": "JSON over stdin/stdout",
+  "hardTimeout": true,
+  "killOnTimeout": true,
+  "fixedWorkingDir": true,
+  "networkAtBridge": false,
+  "pythonInstalledDuringTests": false,
+  "tests": 9,
+  "passed": 9,
+  "behaviourWithoutPython": "IsAvailable probes `python --version`; when Python is absent every run returns Available=false and never throws.",
+  "pythonSkeleton": {
+    "location": "tools/python/laf_python_worker",
+    "files": ["main.py", "safety.py", "requirements.txt", "README", "__init__.py"],
+    "stdlibOnly": true,
+    "implementedHandlers": ["code-mine", "pattern-mine", "doc-extract", "web-scrape"],
+    "note": "Skeleton runs when Python is present; full ML/scrape workers need a local venv."
+  },
+  "honest": "Bridge is safe-by-construction and tested without Python. The Python side is a stdlib-only skeleton, not a complete ML/scrape worker; real embedding/rerank/dataset/graph workers require a local venv and are not delivered this sprint."
+}

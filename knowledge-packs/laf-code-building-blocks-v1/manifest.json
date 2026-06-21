@@ -1,0 +1,14 @@
+{
+  "packUid": "96ab8c53-da44-4a13-84f5-b64ea3a083ae",
+  "name": "LAF Code Building Blocks Pack",
+  "version": "1.0.0",
+  "description": "The code-as-reusable-bricks concept plus sixteen concrete reusable building blocks LocalAIFactory can compose into features. Defines the CodeBuildingBlock shape (block id, name, purpose, problem solved, required inputs, generated files, code-pattern summary, dependencies, security rules, validation rules, test pattern, Playwright pattern, failure modes, and links to knowledge, code graph, experience, generator template and confidence), then specifies sixteen blocks: secure login, PBKDF2 password hashing, login lockout, audit event, maker/checker workflow, EF migration-safe change, generic CRUD, report endpoint, Playwright proof, xUnit service test, production smoke test, backup/restore script, moving-average stock movement, double-entry accounting posting, document lifecycle, and import/export with rejected-row report. Each block carries purpose, required inputs, generated or edited files, a test and Playwright pattern, security and validation rules, failure modes, and an honest limitation. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of reusable software building blocks authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or other third-party copyrighted material is reproduced verbatim. Blocks describe patterns with confidence levels and honest boundaries; no certification or guarantee of fitness is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 17,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-code-building-blocks.json"
+  ]
+}

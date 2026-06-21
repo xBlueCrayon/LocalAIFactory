@@ -1,0 +1,24 @@
+{
+  "kind": "laf-code-building-blocks-summary",
+  "stamp": "2026-06-21",
+  "component": "LocalAIFactory.CodeBlocks",
+  "seededBlocks": 16,
+  "blocks": [
+    "password-hashing", "audit-event", "anti-forgery", "secure-login", "login-lockout",
+    "maker-checker", "ef-migration", "crud-module", "report-endpoint", "stock-movement",
+    "accounting-posting", "document-lifecycle", "manufacturing-order", "import-export",
+    "playwright-proof", "production-smoke"
+  ],
+  "composer": {
+    "matchesByKeyword": true,
+    "pullsTransitiveDependencies": true,
+    "aggregates": ["files", "tests", "playwright", "security", "migration", "knowledge", "generatorTemplates"],
+    "flagsUncoveredCapabilitiesAsMissingBricks": true,
+    "lowersConfidenceForMissingBricks": true
+  },
+  "extractor": "BlockExtractor detects which blocks are present in a given file set",
+  "tests": 24,
+  "passed": 24,
+  "modelRequired": false,
+  "honest": "16 real seeded blocks grounded in the ERP Gold + reasoning work; the composer honestly reports capabilities it has NO block for (odoo, woocommerce, cheque-ocr, sftp, ticketing, mcib, direct-debit, web-scraper) instead of pretending. Catalogue coverage is partial by design."
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "laf-gpu-ollama-telemetry",
+  "stamp": "2026-06-21",
+  "component": "LocalAIFactory.Reasoning/LocalModels/GpuAwareOrchestration",
+  "gpuDetector": {
+    "signalsRead": ["CUDA_VISIBLE_DEVICES", "HIP_VISIBLE_DEVICES", "OLLAMA_GPU_LAYERS", "GPU_DEVICE_ORDINAL"],
+    "hardDependency": false,
+    "defaultWhenNoSignal": "assume CPU"
+  },
+  "orchestrator": {
+    "serialisesHeavyCalls": true,
+    "queue": "SemaphoreSlim(1,1) run-queue",
+    "perRunTokenBudget": true,
+    "perRunTimeout": true,
+    "maxPromptChars": 8000,
+    "maxRetries": 2,
+    "retryStrategy": "split over-large prompt; retry SMALLER (half prompt + fewer tokens), bounded — never infinite",
+    "telemetryRecorded": true,
+    "gracefulWhenUnavailable": true
+  },
+  "testedWithGpu": false,
+  "testedWithOllama": false,
+  "behaviourWithoutOllamaOrGpu": "Every call reports Available=false after bounded retries; the deterministic caller falls back. Core behaviour requires no GPU.",
+  "honest": "Telemetry shape and degradation are validated WITHOUT a GPU or a live Ollama. No live-GPU throughput numbers are claimed; the run-queue, token budget, and bounded-retry logic are what is proven."
+}

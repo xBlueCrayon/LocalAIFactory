@@ -1,0 +1,45 @@
+{
+  "registryUid": "0c7a210b-5490-415a-84da-e3585c4434a5",
+  "name": "LAF Knowledge Growth Scraper — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["engineering-pattern", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "b152faeb-24f8-45f2-ab9e-ae37e03c2360",
+      "type": "engineering-pattern",
+      "title": "Responsible crawling: allowlists, rate limiting, robots and terms-of-service respect",
+      "reliability": "high",
+      "topic": "responsible-crawling"
+    },
+    {
+      "sourceUid": "2ea68a66-d8a1-4d38-af7b-e87314c8cd13",
+      "type": "engineering-pattern",
+      "title": "Content-hash caching and duplicate-source detection",
+      "reliability": "high",
+      "topic": "content-caching"
+    },
+    {
+      "sourceUid": "f06cfb84-86e2-4d91-8a0b-19f680c07698",
+      "type": "domain-theory",
+      "title": "Clean-room summarisation and citation-metadata provenance",
+      "reliability": "high",
+      "topic": "provenance-and-citation"
+    },
+    {
+      "sourceUid": "dae420c9-5917-43e1-9add-e08104b2da8b",
+      "type": "domain-theory",
+      "title": "Human-in-the-loop knowledge approval lifecycle and proposal governance",
+      "reliability": "high",
+      "topic": "approval-lifecycle"
+    },
+    {
+      "sourceUid": "210856df-7276-469e-b82b-c693fc980876",
+      "type": "engineering-pattern",
+      "title": "Offline-first fallback and local document extraction",
+      "reliability": "high",
+      "topic": "offline-fallback"
+    }
+  ]
+}

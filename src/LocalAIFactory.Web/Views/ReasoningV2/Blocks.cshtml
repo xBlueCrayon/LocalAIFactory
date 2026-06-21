@@ -1,0 +1,28 @@
+@{ ViewData["Title"] = "Code Building Blocks"; }
+<h2 data-testid="blocks-title">Code Building Blocks</h2>
+<p style="color:#6b7280">Reusable engineering bricks the reasoning engine composes into feature plans. No model required.</p>
+<p>Catalogue size: <strong data-testid="block-count">@ViewBag.BlockCount</strong> blocks.</p>
+
+<p>
+    <input id="req" data-testid="compose-input" placeholder="Requirement e.g. build a secure login with lockout" style="width:60%" />
+    <button data-testid="compose-btn" onclick="lafCompose()">Compose plan</button>
+</p>
+<pre data-testid="compose-result" id="out" style="background:#f8fafc;padding:8px;max-height:360px;overflow:auto"></pre>
+
+<h3>Endpoints</h3>
+<ul>
+    <li><code>/api/reasoning/blocks/search?q=</code></li>
+    <li><code>POST /api/reasoning/blocks/compose</code></li>
+    <li><code>POST /api/reasoning/agent/plan</code> (compose-only — never executes)</li>
+    <li><code>/api/reasoning/python/status</code></li>
+</ul>
+
+<script>
+    async function lafCompose() {
+        const r = await fetch('/api/reasoning/blocks/compose', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ requirement: document.getElementById('req').value })
+        });
+        document.getElementById('out').textContent = JSON.stringify(await r.json(), null, 2);
+    }
+</script>

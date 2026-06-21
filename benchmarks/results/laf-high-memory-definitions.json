@@ -1,0 +1,25 @@
+{
+  "kind": "laf-high-memory-definitions",
+  "stamp": "2026-06-21",
+  "note": "V2 knowledge packs added this sprint (high-memory software definitions + building-block + self-improvement + worker patterns + scraper + GPU usage).",
+  "v2Packs": [
+    "laf-high-memory-software-definitions-v1",
+    "laf-code-building-blocks-v1",
+    "laf-gradual-self-improvement-v1",
+    "laf-python-worker-patterns-v1",
+    "laf-web-scraper-knowledge-growth-v1",
+    "laf-local-gpu-model-usage-v1"
+  ],
+  "v2PackCount": 6,
+  "v2ItemCount": 102,
+  "verify": {
+    "result": "PASS",
+    "totalPacks": 45,
+    "totalItems": 1195
+  },
+  "targets": {
+    "packs": { "target": "45+", "actual": 45, "met": true },
+    "items": { "target": "1200+", "actual": 1195, "met": false }
+  },
+  "honest": "Packs target (45) is met exactly. The 1200-item target is NOT quite met (1195). These packs are curated definitions/patterns; they encode how LAF should reason about software, not new runtime features."
+}

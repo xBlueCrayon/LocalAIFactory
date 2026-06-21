@@ -1,0 +1,27 @@
+{
+  "kind": "laf-knowledge-growth-scraper",
+  "stamp": "2026-06-21",
+  "component": "LocalAIFactory.KnowledgeGrowth",
+  "allowlist": {
+    "httpsOnly": true,
+    "defaultDeny": true,
+    "hosts": ["learn.microsoft.com", "docs.python.org", "docs.ollama.com", "modelcontextprotocol.io"],
+    "alsoAllowed": ["*.github.io", "github.com"]
+  },
+  "ingest": {
+    "allowlistChecked": true,
+    "dedupByContentHash": true,
+    "cleanRoomSummarise": true,
+    "maxFactChars": 300,
+    "maxFacts": 20,
+    "storesRawHtml": false,
+    "citationRequired": ["url", "title", "fetchDate", "sourceHash"],
+    "proposalApprovedByDefault": false,
+    "humanApprovalRequired": true
+  },
+  "tests": 13,
+  "passed": 13,
+  "fullyOffline": true,
+  "networkFetchOwner": "the allowlisted Python web-scrape worker (caller supplies already-fetched documents to this service)",
+  "honest": "This service is offline and deterministic: it ingests caller-supplied fetched documents, never performs the network fetch itself. Actual fetching is the allowlisted Python worker's job, which is a stdlib skeleton this sprint."
+}

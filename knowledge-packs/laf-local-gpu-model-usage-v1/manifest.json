@@ -1,0 +1,14 @@
+{
+  "packUid": "d47476f4-a7a3-498b-ac01-002dd7aeb1c9",
+  "name": "LAF Local GPU Model Usage Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Durable rules for GPU-aware local-model orchestration in LocalAIFactory: detect Ollama availability and installed models via the tags endpoint, detect likely GPU availability as a best-effort signal without a hard dependency, apply a role policy that routes code-focused work to a coder model and long-form reasoning to a reasoning model with a larger token budget, serialize heavy calls through a run queue, bound each run with a token budget and timeout, emit telemetry per run, split an over-large prompt and retry smaller on failure, bound retries so loops cannot run forever, avoid GPU out-of-memory and overrun loops, keep the deterministic fallback as the authority, ensure core behaviour and tests never require a GPU or Ollama, and capture prompt and response to an audit log. Each item gives the orchestration rule, why it holds, and an honest limitation. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of established local-inference orchestration, capacity-management, and graceful-degradation practices, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles carry confidence levels; no performance or hardware guarantee is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 17,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-local-gpu-model-usage.json"
+  ]
+}

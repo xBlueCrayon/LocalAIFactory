@@ -1,0 +1,38 @@
+{
+  "registryUid": "ee9caf74-5d5a-4419-9260-c23669dc6304",
+  "name": "LAF Code Building Blocks — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["architecture-principle", "domain-theory", "official-docs"],
+  "sources": [
+    {
+      "sourceUid": "82a01210-7ebe-47da-b9c0-14b7353f6325",
+      "type": "architecture-principle",
+      "title": "Reusable component and code-template composition principles",
+      "reliability": "high",
+      "topic": "reuse-architecture"
+    },
+    {
+      "sourceUid": "2b3f7447-8d8e-4229-a88e-e7213231270a",
+      "type": "domain-theory",
+      "title": "Authentication, authorisation and maker/checker control theory",
+      "reliability": "high",
+      "topic": "security-controls"
+    },
+    {
+      "sourceUid": "6f993cad-3b84-485b-8d6c-5a5ae3c69b70",
+      "type": "domain-theory",
+      "title": "Double-entry posting and moving-average inventory valuation theory",
+      "reliability": "high",
+      "topic": "accounting-inventory"
+    },
+    {
+      "sourceUid": "d3135b05-0ab9-4627-8e3a-d0500d2895e4",
+      "type": "official-docs",
+      "title": "ASP.NET Core MVC, EF Core, xUnit and Playwright testing concept family",
+      "reliability": "high",
+      "topic": "framework-testing"
+    }
+  ]
+}

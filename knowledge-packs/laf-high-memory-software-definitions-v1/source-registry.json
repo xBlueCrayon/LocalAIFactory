@@ -1,0 +1,38 @@
+{
+  "registryUid": "4e02918f-faeb-41da-93fe-1caaecc3ed33",
+  "name": "LAF High Memory Software Definitions — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "architecture-principle", "official-docs"],
+  "sources": [
+    {
+      "sourceUid": "bbc65308-2ca4-4ecb-8164-62118116171b",
+      "type": "architecture-principle",
+      "title": "Retrieval-augmented code-reasoning and curated project-memory architecture",
+      "reliability": "high",
+      "topic": "reasoning-engine"
+    },
+    {
+      "sourceUid": "a208a0dc-b873-429e-a171-7717ec735a66",
+      "type": "architecture-principle",
+      "title": "Deterministic validation gates and human-in-the-loop approval lifecycle",
+      "reliability": "high",
+      "topic": "validation-governance"
+    },
+    {
+      "sourceUid": "168110c4-9996-4b54-92e6-e68d494a195d",
+      "type": "domain-theory",
+      "title": "ERP document lifecycle, immutability-after-posting and reversal theory",
+      "reliability": "high",
+      "topic": "document-lifecycle"
+    },
+    {
+      "sourceUid": "89fb3117-a670-4245-933c-319476047131",
+      "type": "official-docs",
+      "title": "EF Core migration application, design-time factory and provider-specific create behaviour (concept family)",
+      "reliability": "high",
+      "topic": "migration-safety"
+    }
+  ]
+}

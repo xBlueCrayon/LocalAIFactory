@@ -1,0 +1,377 @@
+{
+  "kind": "laf-building-block-composition-benchmark",
+  "stamp": "2026-06-21",
+  "tasks": 20,
+  "passed": 20,
+  "scorePct": 100,
+  "modelRequired": false,
+  "note": "Deterministic composition: a task passes when all expected blocks are composed AND every uncovered capability is honestly flagged as a missing brick.",
+  "results": [
+    {
+      "Id": "1",
+      "Requirement": "Build a secure login",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "secure-login",
+        "password-hashing",
+        "audit-event",
+        "anti-forgery"
+      ],
+      "missing": [],
+      "files": 5,
+      "tests": 4,
+      "playwright": 1,
+      "securityRisks": 7,
+      "migrationRisks": 0,
+      "confidence": 0.918
+    },
+    {
+      "Id": "2",
+      "Requirement": "Build login lockout",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "login-lockout",
+        "secure-login",
+        "password-hashing",
+        "audit-event",
+        "anti-forgery"
+      ],
+      "missing": [],
+      "files": 5,
+      "tests": 5,
+      "playwright": 1,
+      "securityRisks": 9,
+      "migrationRisks": 0,
+      "confidence": 0.914
+    },
+    {
+      "Id": "3",
+      "Requirement": "Build maker/checker approval",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "maker-checker",
+        "audit-event"
+      ],
+      "missing": [],
+      "files": 2,
+      "tests": 2,
+      "playwright": 0,
+      "securityRisks": 1,
+      "migrationRisks": 0,
+      "confidence": 0.91
+    },
+    {
+      "Id": "4",
+      "Requirement": "Build ERP document lifecycle",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "document-lifecycle",
+        "maker-checker",
+        "audit-event"
+      ],
+      "missing": [],
+      "files": 2,
+      "tests": 3,
+      "playwright": 0,
+      "securityRisks": 1,
+      "migrationRisks": 0,
+      "confidence": 0.89
+    },
+    {
+      "Id": "5",
+      "Requirement": "Build a stock transfer",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "stock-movement"
+      ],
+      "missing": [],
+      "files": 1,
+      "tests": 1,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0.85
+    },
+    {
+      "Id": "6",
+      "Requirement": "Build a manufacturing production order",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "manufacturing-order",
+        "stock-movement",
+        "audit-event"
+      ],
+      "missing": [],
+      "files": 4,
+      "tests": 3,
+      "playwright": 0,
+      "securityRisks": 1,
+      "migrationRisks": 0,
+      "confidence": 0.873
+    },
+    {
+      "Id": "7",
+      "Requirement": "Build a report endpoint",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "report-endpoint"
+      ],
+      "missing": [],
+      "files": 2,
+      "tests": 1,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0.85
+    },
+    {
+      "Id": "8",
+      "Requirement": "Build a Playwright proof",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "playwright-proof"
+      ],
+      "missing": [],
+      "files": 1,
+      "tests": 1,
+      "playwright": 1,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0.85
+    },
+    {
+      "Id": "9",
+      "Requirement": "Build an EF migration-safe feature",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "ef-migration"
+      ],
+      "missing": [],
+      "files": 2,
+      "tests": 1,
+      "playwright": 0,
+      "securityRisks": 1,
+      "migrationRisks": 1,
+      "confidence": 0.85
+    },
+    {
+      "Id": "10",
+      "Requirement": "Build a production smoke test",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "production-smoke"
+      ],
+      "missing": [],
+      "files": 3,
+      "tests": 1,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 1,
+      "confidence": 0.8
+    },
+    {
+      "Id": "11",
+      "Requirement": "Build an Odoo inventory connector",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "stock-movement"
+      ],
+      "missing": [
+        "odoo-inventory-connector"
+      ],
+      "files": 1,
+      "tests": 1,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0.638
+    },
+    {
+      "Id": "12",
+      "Requirement": "Build a WooCommerce CSV mapper",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "import-export"
+      ],
+      "missing": [
+        "woocommerce-csv-mapper"
+      ],
+      "files": 1,
+      "tests": 1,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0.6
+    },
+    {
+      "Id": "13",
+      "Requirement": "Build a cheque OCR extraction pipeline",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [],
+      "missing": [
+        "cheque-ocr-pipeline"
+      ],
+      "files": 0,
+      "tests": 0,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0
+    },
+    {
+      "Id": "14",
+      "Requirement": "Build an SFTP file transfer service",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [],
+      "missing": [
+        "sftp-file-transfer"
+      ],
+      "files": 0,
+      "tests": 0,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0
+    },
+    {
+      "Id": "15",
+      "Requirement": "Build a ticketing asset workflow",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "maker-checker",
+        "audit-event"
+      ],
+      "missing": [
+        "ticketing-asset-workflow"
+      ],
+      "files": 2,
+      "tests": 2,
+      "playwright": 0,
+      "securityRisks": 1,
+      "migrationRisks": 0,
+      "confidence": 0.682
+    },
+    {
+      "Id": "16",
+      "Requirement": "Build an MCIB XML export flow",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "import-export"
+      ],
+      "missing": [
+        "mcib-xml-export"
+      ],
+      "files": 1,
+      "tests": 1,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0.6
+    },
+    {
+      "Id": "17",
+      "Requirement": "Build a Direct Debit mandate approval flow",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "maker-checker",
+        "audit-event"
+      ],
+      "missing": [
+        "direct-debit-mandate"
+      ],
+      "files": 2,
+      "tests": 2,
+      "playwright": 0,
+      "securityRisks": 1,
+      "migrationRisks": 0,
+      "confidence": 0.682
+    },
+    {
+      "Id": "18",
+      "Requirement": "Build import/export with a rejected-row report",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "import-export",
+        "report-endpoint"
+      ],
+      "missing": [],
+      "files": 3,
+      "tests": 2,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0.825
+    },
+    {
+      "Id": "19",
+      "Requirement": "Build a web scraper knowledge proposal",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [],
+      "missing": [
+        "web-scraper-knowledge-proposal"
+      ],
+      "files": 0,
+      "tests": 0,
+      "playwright": 0,
+      "securityRisks": 0,
+      "migrationRisks": 0,
+      "confidence": 0
+    },
+    {
+      "Id": "20",
+      "Requirement": "Build a generated CRUD module",
+      "ok": true,
+      "blocksOk": true,
+      "missingOk": true,
+      "composedBlocks": [
+        "crud-module",
+        "audit-event"
+      ],
+      "missing": [],
+      "files": 3,
+      "tests": 2,
+      "playwright": 1,
+      "securityRisks": 1,
+      "migrationRisks": 0,
+      "confidence": 0.9
+    }
+  ]
+}

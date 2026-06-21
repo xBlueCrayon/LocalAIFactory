@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    LAF Python Bridge (V2). A SAFE C# -> Python bridge: runs ONLY approved named entrypoints with JSON in/out,
+    a hard timeout, and a fixed working directory. Detects Python availability gracefully — when Python is absent
+    the bridge reports unavailable (never throws), so all C# tests pass without Python installed. The bridge has
+    no capability to run arbitrary scripts, write outside approved folders, or reach the network.
+  -->
+</Project>

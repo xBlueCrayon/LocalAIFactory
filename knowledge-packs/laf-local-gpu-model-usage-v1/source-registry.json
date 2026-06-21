@@ -1,0 +1,45 @@
+{
+  "registryUid": "d649af99-6483-4453-83d5-c865cb02f92d",
+  "name": "LAF Local GPU Model Usage — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["engineering-pattern", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "23a09085-b670-470a-93db-c1fbf1029692",
+      "type": "engineering-pattern",
+      "title": "Local-inference capability detection and optional-service health probing",
+      "reliability": "high",
+      "topic": "capability-detection"
+    },
+    {
+      "sourceUid": "8f8727c0-8077-4923-8cde-103b4ddaa819",
+      "type": "engineering-pattern",
+      "title": "Run-queue serialization, token budgeting, and timeout control for heavy calls",
+      "reliability": "high",
+      "topic": "run-queue-and-budget"
+    },
+    {
+      "sourceUid": "55521773-a529-4754-91aa-a9ba2c1f180a",
+      "type": "domain-theory",
+      "title": "Model-role routing and reasoning-versus-coding token-budget behaviour",
+      "reliability": "high",
+      "topic": "model-role-policy"
+    },
+    {
+      "sourceUid": "80b49b52-ec3a-415d-9b0c-61c43661bd02",
+      "type": "engineering-pattern",
+      "title": "Bounded retry, prompt-splitting, and out-of-memory avoidance",
+      "reliability": "high",
+      "topic": "retry-and-resource-safety"
+    },
+    {
+      "sourceUid": "ed24b99a-caf8-47dd-96f2-14f46777c244",
+      "type": "domain-theory",
+      "title": "Deterministic fallback authority and non-deterministic-output governance",
+      "reliability": "high",
+      "topic": "fallback-and-governance"
+    }
+  ]
+}

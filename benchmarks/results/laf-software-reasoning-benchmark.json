@@ -1,9 +1,9 @@
 {
   "kind": "laf-software-reasoning-benchmark",
   "stamp": "2026-06-21",
-  "graphNodes": 1322,
-  "graphEdges": 1717,
-  "knowledgeItems": 1093,
+  "graphNodes": 1352,
+  "graphEdges": 1761,
+  "knowledgeItems": 1195,
   "tasks": 15,
   "answered": 14,
   "scorePct": 93.3,

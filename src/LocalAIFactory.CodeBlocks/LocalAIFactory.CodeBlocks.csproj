@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    LAF Code Building Blocks (V2). A catalogue of reusable engineering "bricks" (login, lockout, audit,
+    maker/checker, CRUD, report endpoint, migration-safe change, Playwright proof, ...) that the reasoning
+    engine composes into a feature plan. Dependency-free + deterministic: links to knowledge/codegraph/
+    experience/generator-template are stored as ID strings, so this composes plans without any external service.
+  -->
+</Project>

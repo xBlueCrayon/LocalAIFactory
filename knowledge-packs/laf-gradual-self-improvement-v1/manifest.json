@@ -1,0 +1,14 @@
+{
+  "packUid": "a1e38c26-70c5-4b57-bc21-462c2b99f993",
+  "name": "LAF Gradual Self Improvement Pack",
+  "version": "1.0.0",
+  "description": "The safe learning loop and composition discipline LocalAIFactory follows to improve over time without unsafe autonomy. Covers the observe-extract-mine-search-suggest-validate-propose pipeline, knowledge and code-block proposals that are never auto-approved, experience storage, benchmark updates, generator-template improvement, mandatory human approval before any real mutation, learning from passing and failing tests, build and Playwright failures, bug fixes, generated products and official-doc extraction, duplicate avoidance, evidence linking, rejection of unsafe proposals, the no-self-modification rule, the model-proposes-validation-decides split, composing blocks into a feature plan with honest reporting of missing blocks, and measuring a maturity delta. Each item states an honest limitation: proposals need human approval, matching is lexical rather than semantic, and there is no autonomous mutation. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of a safe, human-gated learning and composition discipline authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or other third-party copyrighted material is reproduced verbatim. The discipline is described with confidence levels and honest boundaries; no claim of autonomous or guaranteed improvement is made.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 17,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-gradual-self-improvement.json"
+  ]
+}

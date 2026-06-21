@@ -1,0 +1,45 @@
+{
+  "registryUid": "da1789e0-6ef4-4772-bf9e-628467f0bd5d",
+  "name": "LAF Python Worker Patterns — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["engineering-pattern", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "ddd1b78d-9749-4e34-bee9-59af60b6f7fc",
+      "type": "engineering-pattern",
+      "title": "Process isolation and sandboxed child-process execution patterns",
+      "reliability": "high",
+      "topic": "process-isolation"
+    },
+    {
+      "sourceUid": "527772e7-84de-457d-8a37-41acb5a8b690",
+      "type": "engineering-pattern",
+      "title": "Structured inter-process communication over stdin/stdout with JSON envelopes",
+      "reliability": "high",
+      "topic": "ipc"
+    },
+    {
+      "sourceUid": "5b85d629-a038-4e5b-84d2-63c6e2809f2b",
+      "type": "engineering-pattern",
+      "title": "Graceful optional-dependency detection and capability degradation",
+      "reliability": "high",
+      "topic": "optional-dependency"
+    },
+    {
+      "sourceUid": "2f8c099b-7ed8-443e-929e-eb8659863874",
+      "type": "domain-theory",
+      "title": "Idempotency, determinism, and reproducible build/run contracts",
+      "reliability": "high",
+      "topic": "reproducibility"
+    },
+    {
+      "sourceUid": "a8c2fb71-7302-4da1-b67a-c53307d20ed1",
+      "type": "engineering-pattern",
+      "title": "Secret hygiene and least-privilege environment for child workers",
+      "reliability": "high",
+      "topic": "secret-hygiene"
+    }
+  ]
+}

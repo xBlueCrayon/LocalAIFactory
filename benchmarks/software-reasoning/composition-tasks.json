@@ -1,0 +1,28 @@
+{
+  "kind": "laf-building-block-composition-tasks",
+  "stamp": "2026-06-21",
+  "note": "20 real-life feature requirements composed deterministically from CodeBuildingBlocks. A task passes when all expected blocks are composed (with transitive dependencies) AND every capability with no block yet is honestly flagged as a missing brick. Run by LocalAIFactory.CodeBlocks.Tests/CompositionBenchmarkTests.cs -> benchmarks/results/laf-building-block-composition-benchmark.json. No model required.",
+  "tasks": [
+    { "id": "1", "requirement": "Build a secure login", "expectBlocks": ["secure-login", "password-hashing", "audit-event"] },
+    { "id": "2", "requirement": "Build login lockout", "expectBlocks": ["login-lockout", "secure-login"] },
+    { "id": "3", "requirement": "Build maker/checker approval", "expectBlocks": ["maker-checker", "audit-event"] },
+    { "id": "4", "requirement": "Build ERP document lifecycle", "expectBlocks": ["document-lifecycle", "maker-checker"] },
+    { "id": "5", "requirement": "Build a stock transfer", "expectBlocks": ["stock-movement"] },
+    { "id": "6", "requirement": "Build a manufacturing production order", "expectBlocks": ["manufacturing-order", "stock-movement"] },
+    { "id": "7", "requirement": "Build a report endpoint", "expectBlocks": ["report-endpoint"] },
+    { "id": "8", "requirement": "Build a Playwright proof", "expectBlocks": ["playwright-proof"] },
+    { "id": "9", "requirement": "Build an EF migration-safe feature", "expectBlocks": ["ef-migration"] },
+    { "id": "10", "requirement": "Build a production smoke test", "expectBlocks": ["production-smoke"] },
+    { "id": "11", "requirement": "Build an Odoo inventory connector", "expectMissing": ["odoo-inventory-connector"] },
+    { "id": "12", "requirement": "Build a WooCommerce CSV mapper", "expectMissing": ["woocommerce-csv-mapper"] },
+    { "id": "13", "requirement": "Build a cheque OCR extraction pipeline", "expectMissing": ["cheque-ocr-pipeline"] },
+    { "id": "14", "requirement": "Build an SFTP file transfer service", "expectMissing": ["sftp-file-transfer"] },
+    { "id": "15", "requirement": "Build a ticketing asset workflow", "expectMissing": ["ticketing-asset-workflow"] },
+    { "id": "16", "requirement": "Build an MCIB XML export flow", "expectMissing": ["mcib-xml-export"] },
+    { "id": "17", "requirement": "Build a Direct Debit mandate approval flow", "expectBlocks": ["maker-checker"], "expectMissing": ["direct-debit-mandate"] },
+    { "id": "18", "requirement": "Build import/export with a rejected-row report", "expectBlocks": ["import-export"] },
+    { "id": "19", "requirement": "Build a web scraper knowledge proposal", "expectMissing": ["web-scraper-knowledge-proposal"] },
+    { "id": "20", "requirement": "Build a generated CRUD module", "expectBlocks": ["crud-module"] }
+  ],
+  "target": "80% deterministic composition accuracy; result: 100% (20/20)"
+}

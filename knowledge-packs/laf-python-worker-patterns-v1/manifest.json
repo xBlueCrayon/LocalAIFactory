@@ -1,0 +1,14 @@
+{
+  "packUid": "e427d76d-1b40-419d-9de9-f4480b1eee26",
+  "name": "LAF Python Worker Patterns Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Durable patterns for a safe C#-to-Python worker bridge inside LocalAIFactory: run only approved named entrypoints, JSON-in/JSON-out over stdin/stdout, hard timeout with kill, a safe working directory, no writes outside approved folders, no network unless allowlisted, structured stdout/stderr logging, structured-JSON error returns that never throw across the bridge, graceful detection of Python availability so the bridge degrades instead of failing, a worker task taxonomy, why Python is preferred for certain library-heavy tasks while C# remains the orchestration and safety authority, idempotent and deterministic-where-possible worker contracts, version-pinned requirements, and no secrets in the worker environment. Each item gives the pattern, why it holds, and an honest limitation. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of established process-isolation, sandboxing, and inter-process-communication engineering patterns, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles carry confidence levels; no security certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 17,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-python-worker-patterns.json"
+  ]
+}

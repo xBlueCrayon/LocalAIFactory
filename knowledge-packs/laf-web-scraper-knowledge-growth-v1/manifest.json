@@ -1,0 +1,14 @@
+{
+  "packUid": "97470c80-952f-4eca-af69-197c07ee2d73",
+  "name": "LAF Knowledge Growth Scraper Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Durable rules for safely growing LocalAIFactory's knowledge from the web: allowlist documentation domains only, rate-limit, cache by content hash, record citation metadata (URL, title, fetch date, source hash) on every fetch, summarise useful technical facts instead of vendoring large raw third-party text, never scrape secrets or private pages, emit knowledge as human-approved proposals rather than auto-installed knowledge, detect duplicate sources, warn on stale sources, fall back gracefully when the network is unavailable, treat local document extraction as the offline path, respect robots and terms of service, attach provenance and confidence to every proposal, and require a human approval before a proposal becomes installed knowledge. Each item gives the rule, why it holds, and an honest limitation. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of established web-citation, clean-room summarisation, and responsible-crawling practices, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles carry confidence levels; no legal advice on copyright or terms-of-service compliance is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 17,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-web-scraper-knowledge-growth.json"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "laf-reasoning-v2-final-validation",
+  "stamp": "2026-06-21",
+  "build": "0 errors (LocalAIFactory.sln)",
+  "tests": {
+    "reasoning": 130, "codeBlocks": 24, "pythonBridge": 9, "knowledgeGrowth": 13,
+    "reasoningFamilyTotal": 176, "factory": 257
+  },
+  "knowledgePacks": { "packs": 45, "items": 1195, "verify": "PASS" },
+  "productionGateV3": "NEAR_GA_READY_WITH_EXTERNAL_PROOF_MODEL",
+  "securityAudit": "PASS (verdict); 8 HIGH lines are the pre-existing seeded demo password in smoke scripts, allowlisted",
+  "benchmarks": { "composition": "20/20 = 100%", "safePatch": "10/10 all safe, rollback proven, no main-repo mutation" },
+  "forbiddenFiles": 0,
+  "targets": {
+    "reasoningTests_220": "NOT met (176)", "factoryTests_300": "NOT met (257)",
+    "packs_45": "MET (45)", "items_1200": "NOT met (1195)",
+    "compositionTasks_20": "MET", "patchTasks_10": "MET", "productMaturity_75": "NOT met (73.6)"
+  },
+  "classification": "LAF_SOFTWARE_REASONING_ENGINE_V2_LOCAL_CORE_READY",
+  "stretchClassification": "NOT reached (LAF_SOFTWARE_DEVELOPMENT_REASONING_AGENT_PILOT_READY)",
+  "honest": "Genuine, tested V2 core (composition, model-driven safe patching, GPU-aware orchestration, Python bridge, knowledge-growth core) delivered and proven without Ollama/GPU/Python/network. Several count targets fell short; the autonomous-agent stretch is intentionally not claimed."
+}

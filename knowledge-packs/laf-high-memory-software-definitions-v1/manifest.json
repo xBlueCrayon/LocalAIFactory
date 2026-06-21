@@ -1,0 +1,14 @@
+{
+  "packUid": "01837d3b-cca1-4b88-b61f-8cb95ef30a3e",
+  "name": "LAF High Memory Software Definitions Pack",
+  "version": "1.0.0",
+  "description": "Durable, retrieve-first definitions that LocalAIFactory should load into context before it reasons about or builds software. Covers the software reasoning engine, code graph, graph retrieval, safe model-assisted reasoning, code building blocks, generator templates, experience memory, the safe agent runner, the model router, deterministic validation gates, the production-readiness ladder, the ERP document lifecycle, authentication hardening, migration safety, Playwright proof, fresh-clone proof, fallback-first design, and model-is-not-the-authority design. Each item is a crisp definition with why it matters and an honest boundary expressed as an implementation, test and generator implication. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of durable software-engineering definitions authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or other third-party copyrighted material is reproduced verbatim. Definitions are framed with confidence levels and honest boundaries; no certification or guarantee is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 17,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-high-memory-definitions.json"
+  ]
+}

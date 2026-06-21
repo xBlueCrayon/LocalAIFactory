@@ -1,0 +1,14 @@
+{
+  "kind": "laf-safe-patch-benchmark",
+  "stamp": "2026-06-21",
+  "tasks": 10,
+  "passed": 10,
+  "scorePct": 100.0,
+  "allSafe": true,
+  "mainRepoMutated": false,
+  "rollbackProven": true,
+  "commitPushCapability": false,
+  "modelRequired": false,
+  "note": "Each scenario is backed by a passing xUnit test (ModelDrivenRunnerTests + AgentRunnerTests). The model-driven loop uses a FAKE planner in tests (no real-model dependency); a real local model would only propose plans, which are then risk-assessed, sandboxed, build/test-gated, and rolled back on failure.",
+  "honest": "This is a SAFE validated-patch loop, not an unattended autonomous agent: it proposes -> validates deterministically -> applies in isolation -> rolls back; a human still approves before anything reaches the main repo."
+}

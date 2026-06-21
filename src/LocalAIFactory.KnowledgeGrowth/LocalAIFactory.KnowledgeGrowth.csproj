@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    LAF Knowledge Growth (V2). The SAFE C# authority over learning-from-the-web: domain allowlist, cache by
+    content hash, required citation metadata, duplicate-source detection, clean-room summarisation (never vendor
+    large raw third-party text), and KNOWLEDGE PROPOSALS that require human approval before they become installed
+    knowledge. The actual network fetch is the allowlisted Python web_scraper's job; this layer governs it and is
+    fully testable offline (no network).
+  -->
+</Project>

@@ -17,6 +17,8 @@
     <ProjectReference Include="..\LocalAIFactory.Workspaces\LocalAIFactory.Workspaces.csproj" />
     <ProjectReference Include="..\LocalAIFactory.Terminal\LocalAIFactory.Terminal.csproj" />
     <ProjectReference Include="..\LocalAIFactory.Reasoning\LocalAIFactory.Reasoning.csproj" />
+    <ProjectReference Include="..\LocalAIFactory.CodeBlocks\LocalAIFactory.CodeBlocks.csproj" />
+    <ProjectReference Include="..\LocalAIFactory.PythonBridge\LocalAIFactory.PythonBridge.csproj" />
   </ItemGroup>
   <!-- R2-ACC-B1: ship the Professional Base Knowledge Pack alongside the app so it can be installed into
        MSSQL at runtime (startup auto-install + admin re-install). Copied to the output content root. -->

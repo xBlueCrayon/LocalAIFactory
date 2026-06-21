@@ -1,0 +1,19 @@
+{
+  "kind": "laf-learning-loop-summary",
+  "stamp": "2026-06-21",
+  "phase": "Phase 7 (gradual self-improvement)",
+  "standaloneModuleBuiltThisSprint": false,
+  "composedFromExistingPieces": true,
+  "composition": [
+    "ModelDrivenPlanPatchVerifyRunner proposes a knowledge proposal + records experience",
+    "IsolatedPatchRunner applies in an isolated worktree with build/test gates and rollback",
+    "ExperienceMemory records accepted/rejected outcomes",
+    "KnowledgeProposal / GrowthProposal are emitted with Approved=false (human approval required)"
+  ],
+  "requireApprovalDisciplineHolds": true,
+  "testedWithLiveModel": false,
+  "testedWithFakePlanner": true,
+  "honest": "LearningLoop was NOT built as a standalone project this sprint. Its flow is COMPOSED from pieces that already exist: the model-driven runner proposes knowledge and records experience, and approval discipline holds. The loop is a safe, validated CORE, not an unattended autonomous agent, and it is tested with a FAKE planner rather than a live model.",
+  "classificationReached": "LAF_SOFTWARE_REASONING_ENGINE_V2_LOCAL_CORE_READY",
+  "stretchNotReached": "LAF_SOFTWARE_DEVELOPMENT_REASONING_AGENT_PILOT_READY"
+}

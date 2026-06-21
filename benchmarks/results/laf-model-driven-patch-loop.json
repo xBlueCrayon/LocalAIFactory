@@ -1,0 +1,28 @@
+{
+  "kind": "laf-model-driven-patch-loop",
+  "stamp": "2026-06-21",
+  "component": "LocalAIFactory.Reasoning/AgentRunner/ModelDrivenPlanPatchVerifyRunner",
+  "flow": "IPatchPlanner proposes a PatchPlan -> AssessRisk -> apply ONLY in an isolated worktree via IsolatedPatchRunner (build/test gated) -> rollback on failure -> record experience -> emit KnowledgeProposal(Approved=false)",
+  "plannerInTests": "FAKE (no live-model dependency)",
+  "riskRules": [
+    "every target path must be inside the worktree sandbox",
+    "forbidden command in a .ps1 patch is blocked",
+    "empty plan is flagged"
+  ],
+  "scenarios": [
+    { "name": "safe change", "outcome": "accepted (build + tests green); knowledge proposal emitted" },
+    { "name": "build failure", "outcome": "rejected + rollback" },
+    { "name": "test failure", "outcome": "rejected + rollback" },
+    { "name": "hallucinated path", "outcome": "blocked before any write" },
+    { "name": "forbidden command in script", "outcome": "blocked" },
+    { "name": "empty plan", "outcome": "flagged" }
+  ],
+  "tasks": 10,
+  "passed": 10,
+  "allSafe": true,
+  "mainRepoMutated": false,
+  "rollbackProven": true,
+  "commitPushCapability": false,
+  "knowledgeAutoApproved": false,
+  "honest": "Tested with a FAKE planner, not a live model. A real local model would only PROPOSE plans, which are then risk-assessed, sandboxed, build/test-gated, and rolled back on failure. A human still approves before anything reaches the main repo. This is a safe validated core, not an unattended autonomous agent."
+}

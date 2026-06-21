@@ -1,0 +1,17 @@
+{
+  "kind": "laf-reasoning-v2-target",
+  "stamp": "2026-06-21",
+  "targetClassification": "LAF_SOFTWARE_REASONING_ENGINE_V2_LOCAL_CORE_READY",
+  "stretchClassification": "LAF_SOFTWARE_DEVELOPMENT_REASONING_AGENT_PILOT_READY",
+  "delivered": {
+    "codeBuildingBlocks": "16-block catalogue + composer + extractor (LocalAIFactory.CodeBlocks)",
+    "compositionBenchmark": "20 real-life tasks, 100% deterministic composition (missing bricks honestly flagged)",
+    "modelDrivenPatchLoop": "Plan -> risk-assess -> isolated apply -> build/test -> rollback -> knowledge proposal (fake-model tested)",
+    "gpuAwareOrchestration": "GPU signal detection (no hard dep) + run queue + budget + bounded retry + telemetry + graceful fallback",
+    "pythonBridge": "Safe C# bridge (allowlisted entrypoints, JSON I/O, timeout, graceful when Python absent) + stdlib worker skeleton",
+    "knowledgeGrowthScraper": "Allowlist + cache-by-hash + citation + dedup + clean-room summarise + human-approval proposals",
+    "uiApiV2": "/Reasoning/Blocks + /api/reasoning/{blocks/search,blocks/compose,agent/plan,python/status}"
+  },
+  "honest": "A genuine, tested V2 core. NOT delivered as full per-component depth: LearningLoop is composed from existing pieces (model-driven runner already proposes knowledge + stores experience) rather than a standalone module; the model-driven loop is tested with a FAKE planner (no live model); Python workers are a stdlib skeleton (full ML/scrape workers need a local venv). Per-component test targets (40-60 each) not all met.",
+  "classificationReached": "LAF_SOFTWARE_REASONING_ENGINE_V2_LOCAL_CORE_READY (core delivered + composition proven); stretch agent classification NOT reached (the model-driven loop is a safe validated core, not an unattended autonomous agent)."
+}

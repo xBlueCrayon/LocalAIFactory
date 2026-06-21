@@ -1,0 +1,31 @@
+{
+  "registryUid": "443746dd-ad91-4281-8481-dcac98691198",
+  "name": "LAF Gradual Self Improvement — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["architecture-principle", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "6b33fab2-b61c-4a33-b99d-0a76e871e109",
+      "type": "architecture-principle",
+      "title": "Human-in-the-loop approval lifecycle and safe-learning-loop design",
+      "reliability": "high",
+      "topic": "learning-loop"
+    },
+    {
+      "sourceUid": "90586434-8b39-4aa2-866e-86cca147b233",
+      "type": "architecture-principle",
+      "title": "Deterministic-validation-as-authority and no-self-modification principles",
+      "reliability": "high",
+      "topic": "validation-authority"
+    },
+    {
+      "sourceUid": "d1b9c242-4082-436f-92b7-4b76125517e2",
+      "type": "domain-theory",
+      "title": "Knowledge deduplication, evidence linking and benchmark/maturity measurement theory",
+      "reliability": "high",
+      "topic": "knowledge-governance"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# LAF Python worker dependencies (version-pinned; install into a local venv only).
+# The bridge runs the stdlib-only skeleton without these; they are for the full workers
+# (embeddings, reranking, scraping, dataset building). Optional — the C# bridge degrades
+# gracefully when Python or these packages are absent.
+requests==2.32.3
+beautifulsoup4==4.12.3
+lxml==5.3.0
+# Optional heavy/ML deps (uncomment when a GPU/CPU model stack is provisioned locally):
+# sentence-transformers==3.0.1
+# numpy==2.1.1
