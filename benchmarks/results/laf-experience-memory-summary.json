@@ -1,0 +1,28 @@
+{
+  "kind": "laf-experience-memory-summary",
+  "stamp": "2026-06-21",
+  "component": "Experience / ExperienceMemory",
+  "project": "src/LocalAIFactory.Reasoning/Experience",
+  "tests": 16,
+  "testsApprox": true,
+  "partOfEngineTotal": 113,
+  "experienceTypes": [
+    "BuildFailure", "TestFailure", "PlaywrightFailure", "SecurityFinding", "BugFix",
+    "GeneratorImprovement", "KnowledgeImprovement", "DeploymentIssue", "RuntimeError", "RegressionPrevented"
+  ],
+  "operations": ["Add", "All", "OfType", "FindSimilar", "PromoteToKnowledge(idempotent)", "LinkCodeNode", "ToJson", "FromJson"],
+  "promotionIdempotent": true,
+  "jsonRoundtrip": true,
+  "corruptStoreDegradesToEmpty": true,
+  "dbRequired": false,
+  "deterministic": true,
+  "modelRequired": false,
+  "targetMet": false,
+  "ambitiousTarget": "40+",
+  "honestLimitations": [
+    "40+ test target not met (~16 delivered).",
+    "In-memory + JSON only; no database-backed store in V1.",
+    "FindSimilar is keyword/term-overlap, not semantic.",
+    "Promotion records the link but does not write a knowledge-pack file itself."
+  ]
+}

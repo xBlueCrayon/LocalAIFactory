@@ -1,0 +1,113 @@
+{
+  "kind": "laf-software-reasoning-target",
+  "stamp": "2026-06-21",
+  "classification": "LAF_SOFTWARE_REASONING_ENGINE_PILOT_READY",
+  "target": {
+    "name": "LAF Software Reasoning Engine V1",
+    "goal": "A local-first, deterministic software-engineering reasoning platform built on the existing Roslyn symbol foundation (KE-008/KE-010), answering concrete engineering questions with no Ollama and no Qdrant required; an optional local model only enriches explanations.",
+    "questionsAnswered": [
+      "What touches this table / entity?",
+      "What tests protect this service?",
+      "What breaks if X changes? (blast radius)",
+      "What is the safest fix?",
+      "What approved knowledge applies to this task?",
+      "Have we fixed something like this before?",
+      "Which template produced this generated file?",
+      "What controllers / services / DbContext exist?"
+    ],
+    "localFirst": true,
+    "modelRequired": false
+  },
+  "components": [
+    {
+      "name": "CodeGraph",
+      "project": "src/LocalAIFactory.Reasoning/CodeGraph",
+      "summary": "In-memory CodeGraphModel + CodeNode + CodeEdge + CodeGraphBuilder over the deterministic syntax-only CSharpSymbolExtractor; roles controller/service/dbcontext/entity/test; edges Contains/References/Inherits/Implements/UsesEntity/UsesDbSet/TestCovers; transitive impact; external nodes for out-of-corpus base types.",
+      "tests": 22,
+      "testsApprox": true
+    },
+    {
+      "name": "Retrieval",
+      "project": "src/LocalAIFactory.Reasoning/Retrieval",
+      "summary": "SoftwareReasoningService: FindSymbol/FindImpact/FindTestsForChange/FindKnowledgeForTask/FindGeneratorTemplateForFile/FindPriorSimilarFix/BuildReasoningContext; KnowledgeIndex deterministic keyword index over pack JSON.",
+      "tests": 13,
+      "testsApprox": true
+    },
+    {
+      "name": "Safety",
+      "project": "src/LocalAIFactory.Reasoning/Safety",
+      "summary": "SafeToolGateway: CommandRiskClassifier default-deny with 4 tiers (ReadOnly/SafeValidation/ControlledWrite/Forbidden); PathSandboxGuard blocks absolute + '..' traversal; controlled writes require a worktree; every decision logged.",
+      "tests": 40,
+      "testsApprox": true,
+      "note": "includes xUnit Theory cases"
+    },
+    {
+      "name": "Experience",
+      "project": "src/LocalAIFactory.Reasoning/Experience",
+      "summary": "ExperienceMemory: add/find-similar/idempotent-promote/link/JSON-roundtrip; 10 experience types.",
+      "tests": 16,
+      "testsApprox": true
+    },
+    {
+      "name": "LocalModels",
+      "project": "src/LocalAIFactory.Reasoning/LocalModels",
+      "summary": "LocalModelRouter: role roster qwen=CodeReviewer, deepseek-r1=Planner/AgentReviewer, nomic-embed=Embedding; health probe; AvailableAsync; ReviewAsync degrades gracefully and never throws when Ollama absent; NullModelClient default; injectable ILocalModelClient.",
+      "tests": 11,
+      "testsApprox": true
+    },
+    {
+      "name": "AgentRunner",
+      "project": "src/LocalAIFactory.Reasoning/AgentRunner",
+      "summary": "IsolatedPatchRunner: validates every write path via the gateway BEFORE writing, snapshots originals, applies inside a worktree, builds+tests via an injected IValidationExecutor, rolls back on failure, records success/failure experience, has NO commit/push capability.",
+      "tests": 7,
+      "testsApprox": false
+    },
+    {
+      "name": "Benchmark",
+      "project": "tests/LocalAIFactory.Reasoning.Tests/BenchmarkTests.cs",
+      "summary": "Builds the graph over the real repo and answers a 15-task suite with no model.",
+      "tests": 1,
+      "testsApprox": false
+    }
+  ],
+  "tests": {
+    "reasoningEngineTotal": 113,
+    "uiApiTests": 11,
+    "grandTotalWithoutOllama": 124,
+    "factoryProjectBefore": 240,
+    "factoryProjectAfter": 251,
+    "mainAppBuildErrors": 0
+  },
+  "perComponentTargets": {
+    "met": false,
+    "note": "The ambitious per-component targets below were NOT individually met. A cohesive, tested engine was delivered at lower counts.",
+    "ambitious": {
+      "CodeGraph": "50+",
+      "Retrieval": "50+",
+      "ModelRouter": "30+",
+      "Safety": "60+",
+      "AgentRunner": "50+",
+      "Experience": "40+",
+      "UIApi": "40+"
+    }
+  },
+  "benchmark": {
+    "graphNodes": 1308,
+    "graphEdges": 1699,
+    "knowledgeItems": 973,
+    "tasks": 15,
+    "answered": 14,
+    "scorePct": 93.3,
+    "modelRequired": false,
+    "resultFile": "benchmarks/results/laf-software-reasoning-benchmark.json",
+    "tasksFile": "benchmarks/software-reasoning/tasks.json"
+  },
+  "honestLimitations": [
+    "PILOT_READY, not GA: 14 of 15 benchmark tasks answered (93.3%).",
+    "Per-component test targets not individually met; delivered at lower counts (124 tests total).",
+    "Retrieval is keyword/term-overlap, not embeddings/vector ranking.",
+    "Graph is syntax-only; reference resolution is name-based, no full semantic type resolution.",
+    "Model-enriched path is optional and not validated end-to-end against a live Ollama this sprint.",
+    "AgentRunner cannot commit or push by design; validated via an abstracted executor, not real dotnet in CI."
+  ]
+}

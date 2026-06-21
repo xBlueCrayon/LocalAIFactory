@@ -1,0 +1,32 @@
+{
+  "kind": "laf-safe-tool-gateway-summary",
+  "stamp": "2026-06-21",
+  "component": "Safety / SafeToolGateway",
+  "project": "src/LocalAIFactory.Reasoning/Safety",
+  "tests": 40,
+  "testsApprox": true,
+  "includesTheoryCases": true,
+  "partOfEngineTotal": 113,
+  "classifier": {
+    "policy": "default-deny",
+    "tiers": ["ReadOnly", "SafeValidation", "ControlledWrite", "Forbidden"],
+    "forbiddenWins": true,
+    "unknownCommandsForbidden": true
+  },
+  "pathSandboxGuard": {
+    "blocksAbsolutePaths": true,
+    "blocksDotDotTraversal": true,
+    "scopedToSingleWorktreeRoot": true
+  },
+  "controlledWritesRequireWorktree": true,
+  "everyDecisionLogged": true,
+  "deterministic": true,
+  "modelRequired": false,
+  "targetMet": false,
+  "ambitiousTarget": "60+",
+  "honestLimitations": [
+    "60+ test target not met (~40 delivered, Theory cases included).",
+    "Allowlist/substring classification, not a full command parser; relies on default-deny for obfuscated input.",
+    "Governs the engine's tool calls; not a general OS-level process sandbox."
+  ]
+}

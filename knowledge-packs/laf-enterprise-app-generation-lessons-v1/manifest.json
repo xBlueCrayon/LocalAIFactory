@@ -1,0 +1,14 @@
+{
+  "packUid": "a069bbf4-8613-44ac-992b-c528f21609d6",
+  "name": "LAF Enterprise App Generation Lessons Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable engineering rules harvested from building the reference ERP engine across accounting, stock, selling, buying, manufacturing, reports, authentication, migrations, UI and Playwright. Captures balanced double-entry posting from documents through maker/checker workflow, append-only audit, immutability of posted documents with soft-delete masters, moving-average stock valuation with a stock ledger, BOM-driven production with issue/quality/receipt at computed cost, PBKDF2 authentication with lockout and policy and audited security events, committed EF migrations with a design-time factory and the Migrate-vs-EnsureCreated split, reflection-driven generic CRUD UI with stable test hooks, company-scoped reports that reconcile to the GL, and the rule that every business rule needs a negative test. Each item carries an implementation, test and generator implication plus an honest boundary. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of enterprise application and ERP engineering practices, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; this is reference-grade depth, not breadth parity, and no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 15,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-enterprise-app-generation-lessons.json"
+  ]
+}

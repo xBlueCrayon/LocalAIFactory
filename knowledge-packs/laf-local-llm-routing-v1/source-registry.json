@@ -1,0 +1,31 @@
+{
+  "registryUid": "cb84ce74-8223-4ab4-bdd8-7a82f0591b33",
+  "name": "LAF Local LLM Routing — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["project-sprint-history", "engineering-practice"],
+  "sources": [
+    {
+      "sourceUid": "a501215a-66c7-4cfe-ae51-2d86cf4a4c5a",
+      "type": "project-sprint-history",
+      "title": "Ollama model evaluations across sprints (role suitability, token budgets, reasoning-model behaviour)",
+      "reliability": "high",
+      "topic": "model-evaluation"
+    },
+    {
+      "sourceUid": "17463c15-4cfe-4a2b-86f3-1ce94f5c1855",
+      "type": "project-sprint-history",
+      "title": "LocalModelRouter design (role-based routing, health probe, graceful degradation, audit log)",
+      "reliability": "high",
+      "topic": "model-routing"
+    },
+    {
+      "sourceUid": "b10c2369-7cd5-440d-a0cd-4c4b2c1ba96e",
+      "type": "engineering-practice",
+      "title": "Governance of non-deterministic model output (review-only role, safe tool gateway, findings-to-action)",
+      "reliability": "high",
+      "topic": "model-governance"
+    }
+  ]
+}

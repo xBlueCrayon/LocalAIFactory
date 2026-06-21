@@ -63,6 +63,18 @@ builder.Services.AddLocalAIFactoryTerminal();
 // Dashboard query service (SQL-Server-friendly counts + structured logging).
 builder.Services.AddScoped<DashboardService>();
 
+// LAF Software Reasoning Engine: a lazily-built, cached code graph + knowledge index over the repo source.
+// Resolves the repo root by walking up for LocalAIFactory.sln; degrades to an empty graph when source is
+// absent (deployed app). The build is deferred to first use, so it never blocks startup or page load.
+builder.Services.AddSingleton(sp =>
+{
+    var start = builder.Environment.ContentRootPath;
+    var root = start;
+    for (var d = new DirectoryInfo(start); d != null; d = d.Parent)
+        if (File.Exists(Path.Combine(d.FullName, "LocalAIFactory.sln"))) { root = d.FullName; break; }
+    return new LocalAIFactory.Reasoning.ReasoningGraphProvider(root);
+});
+
 // R2-ACC-20X: deterministic edition/license evaluation (demo-safe — no DRM, degrades to Community core).
 builder.Services.AddSingleton<LocalAIFactory.Core.Licensing.ILicenseVerifier, LocalAIFactory.Core.Licensing.LicenseVerifier>();
 

@@ -1,0 +1,38 @@
+{
+  "registryUid": "2474bd56-2ba7-4b4d-9563-4b483db49b48",
+  "name": "LAF Agent Safety — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["internal-engineering", "design-decision", "security-control"],
+  "sources": [
+    {
+      "sourceUid": "f31c93a6-2bc5-4b82-9eaa-6b787d9f136f",
+      "type": "internal-engineering",
+      "title": "LocalAIFactory SafeToolGateway — default-deny command classification and four-tier risk model",
+      "reliability": "high",
+      "topic": "command-classification"
+    },
+    {
+      "sourceUid": "7ec55a54-9f56-4884-a360-2346d928b376",
+      "type": "security-control",
+      "title": "Path sandbox guard — worktree confinement, absolute-escape and dot-dot traversal blocking",
+      "reliability": "high",
+      "topic": "path-sandbox"
+    },
+    {
+      "sourceUid": "aa09b4de-1401-49b6-9b8d-16b746b49a3c",
+      "type": "internal-engineering",
+      "title": "IsolatedPatchRunner — snapshot, apply-in-worktree, build-and-test, rollback-on-failure with no commit/push capability",
+      "reliability": "high",
+      "topic": "patch-runner"
+    },
+    {
+      "sourceUid": "3f1f6970-48d8-4f74-998b-d6caab73ca68",
+      "type": "design-decision",
+      "title": "Decision logging and experience capture for both safe and forbidden tool calls",
+      "reliability": "high",
+      "topic": "audit-logging"
+    }
+  ]
+}

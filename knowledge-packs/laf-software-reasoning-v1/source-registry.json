@@ -1,0 +1,38 @@
+{
+  "registryUid": "9a9447f0-2e94-4a65-9e91-0540d331fca1",
+  "name": "LAF Software Reasoning — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["internal-engineering", "design-decision", "benchmark-result"],
+  "sources": [
+    {
+      "sourceUid": "131be140-e994-4e8e-bdfd-1f7f2134ae9d",
+      "type": "internal-engineering",
+      "title": "LocalAIFactory Software Reasoning Engine V1 — CodeGraph construction from a syntax-only Roslyn extractor",
+      "reliability": "high",
+      "topic": "code-graph"
+    },
+    {
+      "sourceUid": "995e01b0-81cd-415d-858f-a1bf738d2c83",
+      "type": "design-decision",
+      "title": "Hybrid retrieval design — exact symbol, substring, graph traversal, deterministic knowledge index, experience memory; embeddings optional",
+      "reliability": "high",
+      "topic": "retrieval"
+    },
+    {
+      "sourceUid": "3abf9ffc-5361-40d6-a08d-8a7da0ecf0cc",
+      "type": "design-decision",
+      "title": "Semantic role inference and transitive impact analysis over typed reference edges",
+      "reliability": "high",
+      "topic": "impact-analysis"
+    },
+    {
+      "sourceUid": "028584aa-9924-4571-a9fa-ea4210af603f",
+      "type": "benchmark-result",
+      "title": "Reasoning benchmark over the real repository (1308 nodes, 1699 edges) scoring above 80% with no model present",
+      "reliability": "high",
+      "topic": "benchmark"
+    }
+  ]
+}

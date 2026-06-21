@@ -1,0 +1,32 @@
+{
+  "kind": "laf-agent-runner-summary",
+  "stamp": "2026-06-21",
+  "component": "AgentRunner / IsolatedPatchRunner",
+  "project": "src/LocalAIFactory.Reasoning/AgentRunner",
+  "tests": 7,
+  "testsApprox": false,
+  "partOfEngineTotal": 113,
+  "loop": [
+    "validate every write path via SafeToolGateway BEFORE writing",
+    "snapshot originals for rollback",
+    "apply inside the isolated worktree",
+    "build via injected IValidationExecutor",
+    "test via injected IValidationExecutor",
+    "roll back on any failure",
+    "record success/failure experience"
+  ],
+  "canCommit": false,
+  "canPush": false,
+  "writesOutsideWorktree": false,
+  "validationExecutorAbstracted": true,
+  "deterministic": true,
+  "modelRequired": false,
+  "targetMet": false,
+  "ambitiousTarget": "50+",
+  "honestLimitations": [
+    "50+ test target not met (7 delivered).",
+    "No commit/push capability by design.",
+    "Validation abstracted via IValidationExecutor; not real dotnet build/test in CI.",
+    "Single-shot patch application; no iterative repair or model-guided patch generation in V1."
+  ]
+}

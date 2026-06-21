@@ -1,0 +1,38 @@
+{
+  "registryUid": "1f7f2a33-a614-4e1d-93d7-709c9fbc24c2",
+  "name": "LAF Generator Training — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["project-sprint-history", "engineering-practice"],
+  "sources": [
+    {
+      "sourceUid": "62fff5af-ddf9-4a66-bdd6-17d0f16c5154",
+      "type": "project-sprint-history",
+      "title": "Data-driven ERP generator design across ERP V1-V5 (templates, module-spec JSON, deterministic emission)",
+      "reliability": "high",
+      "topic": "deterministic-generation"
+    },
+    {
+      "sourceUid": "0900ce0e-6998-444b-953f-092bd5bdbea0",
+      "type": "project-sprint-history",
+      "title": "Governed local-LLM catalogue proposal (validation, collision/reserved-name/hallucination guards, injection markers)",
+      "reliability": "high",
+      "topic": "governed-llm-proposal"
+    },
+    {
+      "sourceUid": "68655b45-86e3-4517-90e3-bb27082b3b5d",
+      "type": "project-sprint-history",
+      "title": "Gold/Hardening/Depth reproduction measurement and write-back discipline (test%/module%/deterministic-surface%)",
+      "reliability": "high",
+      "topic": "reproduction-measurement"
+    },
+    {
+      "sourceUid": "93cc8e31-900f-48b7-a0be-3ff4d6319b4f",
+      "type": "engineering-practice",
+      "title": ".NET 10 solution and project build hygiene (.slnx, EnableDefaultItems=false, explicit Compile, fresh-clone proof)",
+      "reliability": "high",
+      "topic": "build-hygiene"
+    }
+  ]
+}

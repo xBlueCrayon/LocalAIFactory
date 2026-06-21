@@ -1,0 +1,38 @@
+{
+  "registryUid": "ed9c51bf-6dfa-4ebf-b215-039c1b50d33a",
+  "name": "LAF CodeGraph Patterns — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["internal-engineering", "design-decision"],
+  "sources": [
+    {
+      "sourceUid": "47112f84-5295-4e58-8d49-2454aba67e80",
+      "type": "internal-engineering",
+      "title": "LocalAIFactory KE-008/KE-010 symbol foundation — convergent upsert, change-detection digest, and parent-link resolution",
+      "reliability": "high",
+      "topic": "symbol-store"
+    },
+    {
+      "sourceUid": "ea296e54-3aea-4cf6-81e4-1aac8d492315",
+      "type": "design-decision",
+      "title": "Language-pluggable extractor router and deterministic extraction status",
+      "reliability": "high",
+      "topic": "extractor-router"
+    },
+    {
+      "sourceUid": "1b2bd381-3e16-4a83-9ca5-f5c06118cc8b",
+      "type": "design-decision",
+      "title": "Simple-name C# reference capture and best-effort C#-to-SQL bridge via string-literal scanning",
+      "reliability": "high",
+      "topic": "reference-resolution"
+    },
+    {
+      "sourceUid": "f8f1be43-8522-438b-860f-c165c02fe8e5",
+      "type": "internal-engineering",
+      "title": "Syntactic cyclomatic complexity and idempotent, dangling-free graph insertion",
+      "reliability": "high",
+      "topic": "graph-integrity"
+    }
+  ]
+}

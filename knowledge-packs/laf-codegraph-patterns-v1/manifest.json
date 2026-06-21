@@ -1,0 +1,14 @@
+{
+  "packUid": "d1564fa0-16e8-4fe6-9392-d8a2384ba062",
+  "name": "LAF CodeGraph and Symbol Foundation Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable engineering rules harvested from the LocalAIFactory symbol foundation (KE-008/KE-010 in src/LocalAIFactory.Ingestion/Symbols) and the reasoning CodeGraph. Covers convergent upsert keyed on a source-locus key so symbol Uids survive re-extraction, a locus-independent change-detection digest that makes identical re-extraction a no-op, parent-link resolution in a second pass, simple-name C# reference capture resolved later with confidence, a best-effort C#-to-SQL bridge by scanning string literals, syntactic cyclomatic complexity, a language-pluggable extractor router, deterministic extraction status, idempotent node insertion, and the prohibition on dangling edges. Each item carries implementation, test, and generator implications plus an honest boundary, applicability, an example, confidence, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional engineering summaries authored for LocalAIFactory, derived from the project's own symbol-extraction and CodeGraph sprints. Free to deploy and modify within the application. No vendor documentation, Roslyn/Microsoft, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels and explicit limitations; no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 15,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-codegraph-patterns.json"
+  ]
+}

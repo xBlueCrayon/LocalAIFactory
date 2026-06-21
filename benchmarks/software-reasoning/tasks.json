@@ -1,0 +1,23 @@
+{
+  "kind": "laf-software-reasoning-tasks",
+  "stamp": "2026-06-21",
+  "note": "Reasoning tasks answered deterministically by the CodeGraph + KnowledgeIndex + ExperienceMemory over the real repo. No model required to pass; an optional local model only enriches explanations. Executed by LocalAIFactory.Reasoning.Tests/BenchmarkTests.cs which writes benchmarks/results/laf-software-reasoning-benchmark.json.",
+  "tasks": [
+    { "id": "1", "task": "Find all code touching AppUser auth.", "method": "FindSymbol + FindImpact" },
+    { "id": "2", "task": "Find tests covering login lockout (UserAuthService).", "method": "FindTestsForChange" },
+    { "id": "3", "task": "Find what breaks if StockLedgerEntry changes.", "method": "FindImpact" },
+    { "id": "4", "task": "Find generator template for CatalogController.", "method": "FindGeneratorTemplateForFile" },
+    { "id": "5", "task": "Find knowledge pack for manufacturing depth.", "method": "FindKnowledgeForTask" },
+    { "id": "6", "task": "Find all controllers.", "method": "graph role: controller" },
+    { "id": "7", "task": "Find all services.", "method": "graph role: service" },
+    { "id": "8", "task": "Find the DbContext.", "method": "graph role: dbcontext" },
+    { "id": "9", "task": "Find why the LocalDB migration failed earlier.", "method": "ExperienceMemory.FindSimilar" },
+    { "id": "10", "task": "Find what depends on ManufacturingService.", "method": "FindImpact" },
+    { "id": "11", "task": "Find knowledge about external production blockers.", "method": "FindKnowledgeForTask" },
+    { "id": "12", "task": "Build a reasoning context for an auth-hardening task.", "method": "BuildReasoningContext" },
+    { "id": "13", "task": "Find all modelled entities.", "method": "graph role: entity" },
+    { "id": "14", "task": "Locate the ReportsService and its file.", "method": "FindSymbol" },
+    { "id": "15", "task": "Given a stock-test symptom, find relevant knowledge.", "method": "FindKnowledgeForTask" }
+  ],
+  "passCriteria": ">= 80% of tasks answered with deterministic retrieval; model optional"
+}

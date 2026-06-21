@@ -1,0 +1,14 @@
+{
+  "packUid": "22d14ac5-e334-495b-bb7d-68831c12ed40",
+  "name": "LAF Generator Training Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable engineering rules harvested from building the data-driven ERP generator (tools/LocalAIFactory.Generator) across the ERP V1-V5, Gold, Hardening and Depth sprints. Captures the discipline that makes a dependency-free deterministic generator emit a whole solution from templates plus a module-spec JSON plus a governed local-LLM catalogue proposal: deterministic templates write all committed code while the LLM only proposes; injection markers wire catalogue items into templates; every manual fix is written back into templates and re-emitted so the generator reproduces it; reproduction is measured as test/module/deterministic-surface percentages; build hygiene avoids double-compilation; .NET 10 uses .slnx; attribution and knowledge-usage JSON are emitted; and a fresh-clone regeneration proves self-sufficiency. Each item carries an implementation, test and generator implication plus an honest boundary. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of code-generation, build-hygiene and reproduction-measurement engineering practices, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 15,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-generator-training.json"
+  ]
+}

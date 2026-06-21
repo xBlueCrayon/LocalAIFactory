@@ -1,0 +1,31 @@
+{
+  "registryUid": "65e8b31e-b34e-494f-a3cb-fae5ff84c3ed",
+  "name": "LAF Productization Lessons — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["project-sprint-history", "engineering-practice"],
+  "sources": [
+    {
+      "sourceUid": "292486ea-f8f1-42a2-b726-859e12beb3bd",
+      "type": "project-sprint-history",
+      "title": "Repository cleanup and production-readiness gating across sprints (stacked gates, hygiene, fresh-clone proof)",
+      "reliability": "high",
+      "topic": "production-readiness"
+    },
+    {
+      "sourceUid": "43b853c9-585f-47d8-b0ff-a34bdabc8620",
+      "type": "engineering-practice",
+      "title": "Honest classification ladder and external-gate discipline (internal vs GA, named blockers, no faked parity)",
+      "reliability": "high",
+      "topic": "honest-scoring"
+    },
+    {
+      "sourceUid": "9a60cdac-14fa-4df8-9bcf-d07f5df710ae",
+      "type": "engineering-practice",
+      "title": "Release restraint and advisory disclosure (no unrequested tag/merge, honest dev/test-only advisory disclosure)",
+      "reliability": "high",
+      "topic": "release-discipline"
+    }
+  ]
+}

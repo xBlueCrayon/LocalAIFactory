@@ -1,0 +1,45 @@
+@{ ViewData["Title"] = "Software Reasoning"; }
+<h2 data-testid="reasoning-title">LAF Software Reasoning Engine</h2>
+<p style="color:#6b7280">Local-first code graph + knowledge + experience reasoning. No Ollama or Qdrant required.</p>
+
+@if ((bool)ViewBag.Empty)
+{
+    <p data-testid="reasoning-empty" style="color:#b45309">Code graph is empty (no source tree found at the content root). Run inside the repository to populate it.</p>
+}
+else
+{
+    <ul data-testid="reasoning-stats">
+        <li>Graph nodes: <strong>@ViewBag.Nodes</strong></li>
+        <li>Graph edges: <strong>@ViewBag.Edges</strong></li>
+        <li>Knowledge items: <strong>@ViewBag.Knowledge</strong></li>
+    </ul>
+}
+
+<h3>Try it</h3>
+<p>
+    <input id="q" data-testid="reasoning-search" placeholder="Symbol e.g. UserAuthService" />
+    <button data-testid="reasoning-search-btn" onclick="lafSearch()">Find symbol</button>
+    <button data-testid="reasoning-impact-btn" onclick="lafImpact()">Find impact</button>
+</p>
+<pre data-testid="reasoning-results" id="results" style="background:#f8fafc;padding:8px;max-height:320px;overflow:auto"></pre>
+
+<h3>Engine endpoints</h3>
+<ul>
+    <li><code>/api/reasoning/status</code></li>
+    <li><code>/api/reasoning/symbol-search?q=</code></li>
+    <li><code>/api/reasoning/impact?symbol=</code></li>
+    <li><code>/api/reasoning/tests-for-change?symbol=</code></li>
+    <li><code>/api/reasoning/knowledge-for-task?task=</code></li>
+    <li><code>/api/reasoning/experience/search?q=</code></li>
+    <li><code>/api/reasoning/model-router/status</code></li>
+    <li><code>POST /api/reasoning/agent/run-dry</code> (classification only — never executes)</li>
+</ul>
+
+<script>
+    async function lafGet(url) {
+        const r = await fetch(url);
+        document.getElementById('results').textContent = JSON.stringify(await r.json(), null, 2);
+    }
+    function lafSearch() { lafGet('/api/reasoning/symbol-search?q=' + encodeURIComponent(document.getElementById('q').value)); }
+    function lafImpact() { lafGet('/api/reasoning/impact?symbol=' + encodeURIComponent(document.getElementById('q').value)); }
+</script>

@@ -1,0 +1,14 @@
+{
+  "packUid": "ca7ed5d0-bf14-4770-ad97-7c60a5dfcb98",
+  "name": "LAF Software Reasoning Engine Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable engineering rules harvested from building the LocalAIFactory Software Reasoning Engine V1 (src/LocalAIFactory.Reasoning). Covers building an in-memory CodeGraph from a deterministic syntax-only Roslyn extractor, node and typed-edge modelling, semantic role inference from naming and inheritance, transitive impact analysis, external nodes for out-of-corpus base types, hybrid retrieval (exact symbol, substring, graph traversal, deterministic knowledge index, experience memory), generated-to-generator file mapping, reasoning-context aggregation, and benchmarking over the real repository with no model present. Each item carries an implementation, test, and generator implication plus an honest boundary, a worked example, applicability, confidence, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional engineering summaries authored for LocalAIFactory, derived from the project's own Software Reasoning Engine sprint. Free to deploy and modify within the application. No vendor documentation, Roslyn/Microsoft, ERPNext/Frappe, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels and explicit limitations; no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 15,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-software-reasoning.json"
+  ]
+}

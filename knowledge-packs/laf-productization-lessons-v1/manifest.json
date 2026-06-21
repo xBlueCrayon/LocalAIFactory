@@ -1,0 +1,14 @@
+{
+  "packUid": "2bb51551-8b59-4977-a82c-23c2ee9be2f6",
+  "name": "LAF Productization Lessons Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable engineering rules harvested from repository cleanup, production-readiness work and honest-scoring discipline across all sprints. Captures the refusal to fake parity or completion, an honest classification ladder that names exact remaining blockers, the separation of internal completeness from GA-when-external-proofs-supplied, naming of external gates that cannot be closed locally, gating every change on a stacked set of checks, repository hygiene that keeps build and binary artefacts out of source control, source-only generated products, restraint on releasing/tagging/merging without instruction, honest disclosure of transitive dev/test-only advisories, fresh-clone proof each sprint, and an authoritative current-status document. Each item carries an implementation, test and generator implication plus an honest boundary. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of productization, release-gating and honest-assessment practices, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; scores are honest self-assessment, not external certification.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 15,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-productization-lessons.json"
+  ]
+}

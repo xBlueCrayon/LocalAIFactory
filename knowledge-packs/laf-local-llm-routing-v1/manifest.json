@@ -1,0 +1,14 @@
+{
+  "packUid": "c7ed657b-7214-413c-8a02-085dd6f2f81a",
+  "name": "LAF Local LLM Routing Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable engineering rules harvested from evaluating local Ollama models across sprints and building the LocalModelRouter. Captures the governing principle that local models are reviewers, planners and proposers only — never unguarded code writers — together with a role roster, the reasoning-model token-budget lesson for deepseek-r1, role-based routing, health probing via /api/tags, graceful degradation when Ollama is absent, the requirement that core tests pass without a model, prompt-budget and timeout discipline, per-call logging, prompt-and-response audit capture, and the rule that an accepted model finding must become a code fix, test, knowledge item or backlog item. Each item carries an implementation, test and generator implication plus an honest boundary. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of local-LLM orchestration and governance practices, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 15,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-local-llm-routing.json"
+  ]
+}

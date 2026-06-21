@@ -1,0 +1,24 @@
+{
+  "kind": "laf-product-maturity-score",
+  "stamp": "2026-06-21",
+  "scale": "0-100 honest self-assessment of LocalAIFactory as a local-first software reasoning platform; not externally audited",
+  "categories": {
+    "codeUnderstanding":          { "before": 55, "after": 74, "note": "Real Roslyn CodeGraph (1308 nodes/1699 edges over the repo) with roles + typed edges + impact. Syntax-only: no precise call graph." },
+    "graphRetrieval":             { "before": 40, "after": 72, "note": "Deterministic hybrid retrieval (symbol/impact/tests/knowledge/experience); no Qdrant needed. Keyword (not embedding) ranking." },
+    "knowledgeEngine":            { "before": 82, "after": 84, "note": "39 packs / ~1093 items, verified; now queryable by the reasoning engine." },
+    "modelRouting":               { "before": 30, "after": 66, "note": "Role roster + health + graceful Ollama fallback + audit log; never blocks core. No streaming/embedding pipeline yet." },
+    "safeAgentExecution":         { "before": 20, "after": 70, "note": "Default-deny tool gateway + path sandbox + isolated patch runner with rollback; no commit/push capability. Classifier is heuristic, not a full shell parser." },
+    "experienceMemory":           { "before": 15, "after": 68, "note": "Add/find-similar/idempotent-promote/link/persist. Lexical similarity only." },
+    "generatorTraining":          { "before": 70, "after": 72, "note": "Generator reproduces hand-built ERP at ~92%; lessons now harvested into packs." },
+    "generatedProductReproduction":{ "before": 90, "after": 92, "note": "GoldGenerated-* reproduce the deterministic surface 100%." },
+    "localFirstOperation":        { "before": 80, "after": 85, "note": "Entire reasoning core runs with MSSQL-only / no Ollama / no Qdrant; 124 tests pass without a model." },
+    "uiApiUsefulness":            { "before": 60, "after": 66, "note": "Reasoning controller + 8 endpoints + page, graceful when source absent; UI is functional but thin (11 tests, target 40 not met)." },
+    "productionReadiness":        { "before": 65, "after": 66, "note": "Gate V3 NEAR_GA unchanged; reasoning engine is pilot-grade, not production-hardened." },
+    "externalBlockers":           { "before": 50, "after": 50, "note": "Unchanged: customer pilot, external security review, CA TLS, SSO/OIDC remain." }
+  },
+  "overallBefore": 64.55,
+  "overallAfter": 70.6,
+  "target": "72+ if fully implemented",
+  "result": "NOT fully met (70.6) — a genuine, tested reasoning engine was delivered, but per-component test targets (50-60+ each) and a full autonomous agent loop + rich UI were not completed in one sprint.",
+  "classification": "LAF_SOFTWARE_REASONING_ENGINE_PILOT_READY (core delivered; stretch LOCAL_PRODUCTION_READY_CORE not yet reached)"
+}

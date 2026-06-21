@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    LAF Software Reasoning Engine V1 (KE-REASON). Builds an in-memory CodeGraph from the existing
+    deterministic Roslyn symbol extractor, and provides reasoning retrieval, a safe tool gateway,
+    experience memory, and a local-model router. Pure deterministic core: no Qdrant, no Ollama, no DB
+    required to function or to pass tests. Optional Ollama only enriches explanations.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\LocalAIFactory.Core\LocalAIFactory.Core.csproj" />
+    <ProjectReference Include="..\LocalAIFactory.Ingestion\LocalAIFactory.Ingestion.csproj" />
+  </ItemGroup>
+</Project>

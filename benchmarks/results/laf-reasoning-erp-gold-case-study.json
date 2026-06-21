@@ -1,0 +1,21 @@
+{
+  "kind": "laf-reasoning-erp-gold-case-study",
+  "stamp": "2026-06-21",
+  "premise": "Prove LAF can reason over its OWN generated ERP product (LAF-EnterpriseERP-Gold), not just store documents. Answered by the deterministic CodeGraph + KnowledgeIndex + ExperienceMemory; no model required.",
+  "graph": { "nodesOverGold": "1308 (Gold src + reasoning + symbol foundation)", "edges": 1699, "knowledgeItems": 973 },
+  "questions": [
+    { "q": "What code touches authentication?", "answeredBy": "FindSymbol(AppUser/UserAuthService) + FindImpact", "result": "AppUser, UserAuthService, AccountController and their dependents located" },
+    { "q": "What tests cover lockout?", "answeredBy": "FindTestsForChange(UserAuthService)", "result": "auth test classes that reference the service are returned via TestCovers edges" },
+    { "q": "What code touches manufacturing completion?", "answeredBy": "FindSymbol(ManufacturingService) + roles", "result": "ManufacturingService located with its file path" },
+    { "q": "What is impacted if StockLedgerEntry changes?", "answeredBy": "FindImpact(StockLedgerEntry)", "result": "transitive referencers (StockService and dependents) returned" },
+    { "q": "What reports depend on the ledger?", "answeredBy": "graph role: service + FindSymbol(ReportsService)", "result": "ReportsService located; report depth confirmed" },
+    { "q": "What knowledge packs were created from ERP depth?", "answeredBy": "FindKnowledgeForTask('manufacturing depth bom production')", "result": "erp-gold-manufacturing-depth-v1 ranked first" },
+    { "q": "What generator template reproduces a generated file?", "answeredBy": "FindGeneratorTemplateForFile", "result": "maps generated-products/.../CatalogController.cs -> templates/erp-core/.../CatalogController.cs" },
+    { "q": "What controllers / services / entities exist?", "answeredBy": "graph roles", "result": "controllers, services, dbcontext, and entities enumerated from the real Gold graph" },
+    { "q": "Why did the LocalDB migration fail earlier?", "answeredBy": "ExperienceMemory.FindSimilar", "result": "PendingModelChangesWarning -> Gold has LLM modules absent from the committed migration -> apply from the deterministic emit" },
+    { "q": "What is needed to push ERP parity from 45% to 55%?", "answeredBy": "FindKnowledgeForTask + parity score", "result": "HR/payroll/POS/e-commerce flows + delivery-note/return chains + batch/serial stock (from the depth gap matrix)" }
+  ],
+  "benchmarkScorePct": 93.3,
+  "modelRequired": false,
+  "honest": "Reasoning is deterministic retrieval over a syntax-only graph: references are by simple name, so precise call graphs and dynamic dispatch are not modelled; a few questions (e.g. exact Playwright-to-report coverage) are answered via knowledge/file mapping rather than the call graph. An optional local model would only enrich the explanations, not the retrieval."
+}

@@ -1,0 +1,14 @@
+{
+  "packUid": "67f4b90d-9909-4b8b-8ae3-85314bf2fe0d",
+  "name": "LAF Experience Memory Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable rules and encoded exemplars harvested from building the LocalAIFactory ExperienceMemory and from real bugs fixed across sprints. Covers the experience record shape (type, title, symptoms, rootCause, fix, testsAdded, reusableLesson, confidence, and links to code nodes, knowledge, and tests), the experience type taxonomy, deterministic keyword similarity to find prior similar failures, idempotent promotion to a knowledge pack, linking experiences to CodeGraph nodes and tests, and JSON persistence that tolerates corruption by yielding empty memory. Real past experiences are encoded as exemplar items: stale database plus a never-migrating create path causing 500s, an empty form field violating NOT NULL, a service reading the database mid-loop so unsaved rows are invisible, a maker auto-approval making a second approve throw, an EF pending-model-changes warning from non-deterministic modules absent from the committed migration, a using-namespace clash with a same-named type, and the design package reference required on the startup project for the EF tool. Each item carries implementation, test, and generator implications plus an honest boundary, applicability, an example, confidence, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional engineering summaries authored for LocalAIFactory, derived from the project's own experience-memory sprint and real defect history. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels and explicit limitations; no certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 15,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-experience-memory.json"
+  ]
+}

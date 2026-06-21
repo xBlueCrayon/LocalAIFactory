@@ -1,0 +1,29 @@
+{
+  "kind": "laf-ollama-router-eval",
+  "stamp": "2026-06-21",
+  "component": "LocalModels / LocalModelRouter",
+  "project": "src/LocalAIFactory.Reasoning/LocalModels",
+  "tests": 11,
+  "testsApprox": true,
+  "partOfEngineTotal": 113,
+  "roster": [
+    { "role": "CodeReviewer", "model": "qwen2.5-coder:14b" },
+    { "role": "Planner", "model": "deepseek-r1:14b" },
+    { "role": "AgentReviewer", "model": "deepseek-r1:14b" },
+    { "role": "Embedding", "model": "nomic-embed-text" }
+  ],
+  "ollamaRequired": false,
+  "gracefulDegradation": true,
+  "reviewAsyncNeverThrows": true,
+  "defaultClient": "NullModelClient",
+  "injectableClient": "ILocalModelClient",
+  "testedAgainstLiveOllama": false,
+  "targetMet": false,
+  "ambitiousTarget": "30+",
+  "honestLimitations": [
+    "30+ test target not met (~11 delivered).",
+    "Optional model path not validated end-to-end against a live Ollama this sprint.",
+    "Static roster; no model discovery, capability probing, or output-quality scoring.",
+    "Single bounded call; no streaming or multi-turn orchestration."
+  ]
+}

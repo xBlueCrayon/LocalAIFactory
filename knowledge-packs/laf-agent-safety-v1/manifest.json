@@ -1,0 +1,14 @@
+{
+  "packUid": "957e009a-e325-4c74-8851-41de45cf80f3",
+  "name": "LAF Agent Safety Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Reusable safety rules harvested from building the LocalAIFactory SafeToolGateway and IsolatedPatchRunner. Covers default-deny command classification, forbidden-wins precedence over any allowlist substring, four risk tiers (ReadOnly, SafeValidation, ControlledWrite, Forbidden), controlled writes permitted only inside an isolated worktree behind a path sandbox guard, blocking absolute escapes and dot-dot traversal even when it resolves inside, the prohibition on editing the main repo and on push/commit/reset/clean, destructive shell, expression injection, pipe-to-shell and unapproved installs, decision logging, and a patch runner that snapshots, applies in the worktree, builds and tests, and rolls back on any failure while having no capability to commit or push. Each item carries implementation, test, and generator implications plus an honest boundary, applicability, an example, confidence, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional engineering summaries authored for LocalAIFactory, derived from the project's own agent-safety sprint. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels and explicit limitations; no security certification is asserted and the controls are defence-in-depth, not a guarantee.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 15,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "laf-agent-safety.json"
+  ]
+}

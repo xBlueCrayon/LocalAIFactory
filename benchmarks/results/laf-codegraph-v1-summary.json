@@ -1,0 +1,25 @@
+{
+  "kind": "laf-codegraph-v1-summary",
+  "stamp": "2026-06-21",
+  "component": "CodeGraph",
+  "project": "src/LocalAIFactory.Reasoning/CodeGraph",
+  "builtOn": "src/LocalAIFactory.Ingestion/Symbols (CSharpSymbolExtractor, KE-008/KE-010)",
+  "tests": 22,
+  "testsApprox": true,
+  "partOfEngineTotal": 113,
+  "roles": ["controller", "service", "dbcontext", "entity", "test", "apiroute"],
+  "edgeKindsUsed": ["Contains", "References", "Inherits", "Implements", "UsesEntity", "UsesDbSet", "TestCovers"],
+  "capabilities": ["FindByName", "Search", "WithRole", "OutgoingFrom", "IncomingTo", "ReferencersOf", "ImpactOf(transitive)"],
+  "deterministic": true,
+  "modelRequired": false,
+  "externalNodesForOutOfCorpusBaseTypes": true,
+  "benchmarkGraph": { "nodes": 1308, "edges": 1699 },
+  "targetMet": false,
+  "ambitiousTarget": "50+",
+  "honestLimitations": [
+    "50+ test target not met (~22 delivered).",
+    "Syntax-only; name-based reference resolution, no semantic type resolution.",
+    "Unresolved non-base-type references are dropped.",
+    "Impact is a depth-bounded structural over-approximation."
+  ]
+}

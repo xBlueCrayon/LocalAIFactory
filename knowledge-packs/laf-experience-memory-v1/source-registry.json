@@ -1,0 +1,38 @@
+{
+  "registryUid": "adc271fd-0a74-4886-9ec3-19ab78dcd713",
+  "name": "LAF Experience Memory — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["internal-engineering", "design-decision", "defect-postmortem"],
+  "sources": [
+    {
+      "sourceUid": "c59f442c-da3c-43f1-aaf6-f4b04a96e32b",
+      "type": "internal-engineering",
+      "title": "LocalAIFactory ExperienceMemory — record shape, type taxonomy, keyword similarity, and idempotent promotion",
+      "reliability": "high",
+      "topic": "experience-memory"
+    },
+    {
+      "sourceUid": "7465e975-1297-473e-9709-b78dde4e77b6",
+      "type": "design-decision",
+      "title": "Linking experiences to CodeGraph nodes and tests; corruption-tolerant JSON persistence",
+      "reliability": "high",
+      "topic": "persistence-linking"
+    },
+    {
+      "sourceUid": "e7cc0874-3259-4d36-b89d-39c51c83be30",
+      "type": "defect-postmortem",
+      "title": "Database lifecycle and migration defects fixed across sprints (stale db, pending model changes, design package reference)",
+      "reliability": "high",
+      "topic": "database-defects"
+    },
+    {
+      "sourceUid": "47dc9745-220e-41bf-8d73-e2b0c4ec3397",
+      "type": "defect-postmortem",
+      "title": "Domain and persistence defects fixed across sprints (NOT NULL on empty field, mid-loop DB read, maker auto-approval, namespace clash)",
+      "reliability": "high",
+      "topic": "domain-defects"
+    }
+  ]
+}

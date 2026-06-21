@@ -1,0 +1,165 @@
+{
+  "kind": "laf-software-reasoning-benchmark",
+  "stamp": "2026-06-21",
+  "graphNodes": 1322,
+  "graphEdges": 1717,
+  "knowledgeItems": 1093,
+  "tasks": 15,
+  "answered": 14,
+  "scorePct": 93.3,
+  "modelRequired": false,
+  "results": [
+    {
+      "id": "1",
+      "question": "What code touches AppUser?",
+      "answered": true,
+      "answer": [
+        "LafErp.Core.AppUser"
+      ]
+    },
+    {
+      "id": "2",
+      "question": "What tests protect UserAuthService?",
+      "answered": false,
+      "answer": []
+    },
+    {
+      "id": "3",
+      "question": "What is impacted by StockLedgerEntry?",
+      "answered": true,
+      "answer": [
+        "ErpDbContext",
+        "ErpDbContextFactory",
+        "AccountingService",
+        "AuditService",
+        "CatalogCrudService",
+        "DataSeeder",
+        "DemoData",
+        "ManufacturingService"
+      ]
+    },
+    {
+      "id": "4",
+      "question": "What template produced CatalogController?",
+      "answered": true,
+      "answer": "tools/LocalAIFactory.Generator/templates/erp-core/src/LafErp.Web/Controllers/CatalogController.cs"
+    },
+    {
+      "id": "5",
+      "question": "What knowledge covers manufacturing depth?",
+      "answered": true,
+      "answer": [
+        {
+          "Pack": "erp-gold-manufacturing-depth-v1",
+          "Title": "Model a BOM as a header plus typed component lines"
+        },
+        {
+          "Pack": "erp-gold-depth-scenarios-v1",
+          "Title": "Make-to-stock full cycle from components to finished stock"
+        },
+        {
+          "Pack": "erp-gold-manufacturing-depth-v1",
+          "Title": "A BOM must declare at least one component"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "question": "What controllers exist?",
+      "answered": true,
+      "answer": [
+        "AccountController",
+        "CatalogController",
+        "HomeController"
+      ]
+    },
+    {
+      "id": "7",
+      "question": "What services exist?",
+      "answered": true,
+      "answer": [
+        "AccountingService",
+        "AuditService",
+        "CatalogCrudService",
+        "ManufacturingService",
+        "NumberingService",
+        "CrmService",
+        "ProjectService",
+        "SupportService",
+        "AssetService",
+        "PaymentService",
+        "JournalService",
+        "PurchaseService",
+        "RbacService",
+        "ImportService",
+        "ReportsService"
+      ]
+    },
+    {
+      "id": "8",
+      "question": "What is the DbContext?",
+      "answered": true,
+      "answer": [
+        "ErpDbContext",
+        "ErpDbContextFactory"
+      ]
+    },
+    {
+      "id": "9",
+      "question": "Why did the LocalDB migration fail?",
+      "answered": true,
+      "answer": [
+        "apply migrations from the deterministic emit, not the LLM-augmented one"
+      ]
+    },
+    {
+      "id": "10",
+      "question": "What depends on ManufacturingService?",
+      "answered": true,
+      "answer": []
+    },
+    {
+      "id": "11",
+      "question": "What knowledge mentions external blockers?",
+      "answered": true,
+      "answer": [
+        "Name external gates that cannot be closed locally",
+        "Change-approval gates and protected branches",
+        "Treat this as application-level auth and state its boundaries honestly"
+      ]
+    },
+    {
+      "id": "12",
+      "question": "Build reasoning context for an auth task",
+      "answered": true,
+      "answer": {
+        "symbols": 2,
+        "impact": 26,
+        "knowledge": 10
+      }
+    },
+    {
+      "id": "13",
+      "question": "How many entities are modelled?",
+      "answered": true,
+      "answer": 74
+    },
+    {
+      "id": "14",
+      "question": "Locate the ReportsService",
+      "answered": true,
+      "answer": [
+        "D:/AI/Repositories/LocalAIFactory/generated-products/LAF-EnterpriseERP-Gold/src/LafErp.Services/ReportsService.cs"
+      ]
+    },
+    {
+      "id": "15",
+      "question": "Find knowledge for a stock-test symptom",
+      "answered": true,
+      "answer": [
+        "Accumulate material cost from issued-material valuation",
+        "Compute valuation with moving average on every receipt"
+      ]
+    }
+  ]
+}

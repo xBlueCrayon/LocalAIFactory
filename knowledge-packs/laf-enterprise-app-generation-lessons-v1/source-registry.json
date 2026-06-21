@@ -1,0 +1,31 @@
+{
+  "registryUid": "90d61dd3-1456-474c-a1a6-317f7d2571ef",
+  "name": "LAF Enterprise App Generation Lessons — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["project-sprint-history", "domain-theory", "engineering-practice"],
+  "sources": [
+    {
+      "sourceUid": "66894c1a-0c83-45c4-afa5-2728fa59768e",
+      "type": "project-sprint-history",
+      "title": "ERP engine build across accounting, stock, selling, buying and manufacturing modules",
+      "reliability": "high",
+      "topic": "erp-modules"
+    },
+    {
+      "sourceUid": "9b9ba833-dbea-4600-98de-4ae1065ce198",
+      "type": "domain-theory",
+      "title": "Double-entry posting, maker/checker control, valuation and BOM-driven production theory",
+      "reliability": "high",
+      "topic": "erp-domain-controls"
+    },
+    {
+      "sourceUid": "f0146d3a-d7a3-4c3b-9c69-a853e419e3a0",
+      "type": "engineering-practice",
+      "title": "Authentication, EF migrations, reflection-driven CRUD UI and Playwright test-hook practices",
+      "reliability": "high",
+      "topic": "platform-engineering"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "laf-graphrag-v1-summary",
+  "stamp": "2026-06-21",
+  "component": "Retrieval",
+  "project": "src/LocalAIFactory.Reasoning/Retrieval",
+  "tests": 13,
+  "testsApprox": true,
+  "partOfEngineTotal": 113,
+  "operations": [
+    "FindSymbol",
+    "FindImpact",
+    "FindTestsForChange",
+    "FindKnowledgeForTask",
+    "FindGeneratorTemplateForFile",
+    "FindPriorSimilarFix",
+    "BuildReasoningContext"
+  ],
+  "knowledgeIndex": {
+    "type": "deterministic keyword index over pack JSON",
+    "embeddings": false,
+    "qdrant": false,
+    "benchmarkItems": 973
+  },
+  "deterministic": true,
+  "modelRequired": false,
+  "targetMet": false,
+  "ambitiousTarget": "50+",
+  "honestLimitations": [
+    "50+ test target not met (~13 delivered).",
+    "Keyword/term-overlap retrieval, not embeddings/vector ranking.",
+    "BuildReasoningContext seeds from capitalised tokens (heuristic).",
+    "Benchmark task 'What tests protect UserAuthService?' not answered."
+  ]
+}
