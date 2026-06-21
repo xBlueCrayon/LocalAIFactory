@@ -1,0 +1,154 @@
+[
+  {
+    "name": "ERPNext Documentation (docs.frappe.io/erpnext)",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext",
+    "topic": "ERPNext user manual: all business modules (Accounting, Stock, Selling, Buying, CRM, Manufacturing, Assets, Projects, Support, Quality, HR/Payroll, POS)",
+    "reliability": "high",
+    "whatLearned": "Canonical user-facing docs. The legacy docs.erpnext.com host now 301-redirects to docs.frappe.io/erpnext. Module landing pages are high-level; deep concept pages (chart-of-accounts, accounting-reports, asset, workflows) are detailed and authoritative."
+  },
+  {
+    "name": "Frappe Framework Documentation",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/framework",
+    "topic": "Platform layer: DocType model, fields, controllers, workflow, permissions, REST API, naming series, customization",
+    "reliability": "high",
+    "whatLearned": "Authoritative platform documentation. Defines DocType -> tabDoctype table mapping, docstatus model, role/permission model, REST conventions. Older frappeframework.com URLs redirect here."
+  },
+  {
+    "name": "Frappe REST API reference",
+    "type": "official-api",
+    "url": "https://docs.frappe.io/framework/user/en/api/rest",
+    "topic": "Auto-generated REST API: /api/resource/{doctype}, /api/method/{path}, auth (token api_key:api_secret, password/session, OAuth bearer), query params",
+    "reliability": "high",
+    "whatLearned": "All CRUD over /api/resource. GET list (fields, filters, or_filters, order_by, limit_start, limit_page_length), GET single by name, POST create, PUT update (partial), DELETE. Whitelisted Python methods via /api/method/{dotted.path}. Responses wrap payload in 'data' or 'message'; errors carry 'exc'/'exc_type'."
+  },
+  {
+    "name": "Frappe Document API",
+    "type": "official-api",
+    "url": "https://docs.frappe.io/framework/user/en/api/document",
+    "topic": "Server-side document API (frappe.get_doc, get_list, get_all, db.get_value, insert, save, submit, cancel)",
+    "reliability": "high",
+    "whatLearned": "Server-side ORM-like API. submit() sets docstatus=1, cancel() sets docstatus=2; insert/save validate hooks. Underpins the REST resource layer."
+  },
+  {
+    "name": "Frappe Users and Permissions",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/framework/user/en/basics/users-and-permissions",
+    "topic": "Role-based permissions, permission levels, user permissions, perm types (read/write/create/delete/submit/cancel/amend/report/export/import/share/print/email)",
+    "reliability": "high",
+    "whatLearned": "Roles map to DocType perms; permlevel groups fields for field-level control (default 0); User Permissions restrict by link-field value; auto roles Guest/All/Administrator/Desk User. Role Permissions Manager is the admin UI."
+  },
+  {
+    "name": "Frappe/ERPNext Workflow docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/workflow",
+    "topic": "Workflow doctype, Workflow State, Workflow Action, transitions, allowed roles, conditions, multi-level approval",
+    "reliability": "high",
+    "whatLearned": "Workflow drives a document through states via actions gated by role; transitions can carry conditions (e.g. grand_total threshold). States can map document docstatus (0/1/2). Email notifications sent for next available actions."
+  },
+  {
+    "name": "Frappe DocType basics",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/framework/user/en/basics/doctypes",
+    "topic": "DocType as core building block: model+view, JSON definition, tab{Name} table, child/single/virtual doctypes, naming",
+    "reliability": "high",
+    "whatLearned": "Each DocType is JSON metadata that generates a tab{DocType} SQL table. Auto List/Form views. Variants: normal, Child (embedded rows), Single (one record stored in tabSingles), Virtual (no table)."
+  },
+  {
+    "name": "ERPNext Chart of Accounts docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/user/manual/en/chart-of-accounts",
+    "topic": "Account tree, root types (Asset/Liability/Income/Expense/Equity), group vs ledger, account numbering, statement mapping",
+    "reliability": "high",
+    "whatLearned": "CoA is a hierarchical tree; only leaf (non-group) ledger accounts accept postings. 20+ specialized account_type values (Bank, Receivable, Payable, Tax, Depreciation...). Balance Sheet from Asset/Liability/Equity; P&L from Income/Expense."
+  },
+  {
+    "name": "ERPNext Accounting Reports docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/user/manual/en/accounting-reports",
+    "topic": "General Ledger, Trial Balance, Balance Sheet, Profit and Loss, Cash Flow, Accounts Receivable/Payable, ageing",
+    "reliability": "high",
+    "whatLearned": "Core financial reports are filterable by account/cost center/party/project/period/finance book. AR/AP provide ageing buckets."
+  },
+  {
+    "name": "ERPNext Asset module docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/user/manual/en/asset",
+    "topic": "Asset, Asset Category, Asset Location, depreciation methods, maintenance, movement, capitalization",
+    "reliability": "high",
+    "whatLearned": "Depreciation methods: Straight Line, Written Down Value, Double Declining Balance, Manual. Auto-create assets on Purchase Receipt. Depreciation schedule posts Journal Entries. Asset Movement transfers location/custodian."
+  },
+  {
+    "name": "ERPNext GitHub repository (frappe/erpnext)",
+    "type": "official-repo",
+    "url": "https://github.com/frappe/erpnext",
+    "topic": "Source layout, license (GPL-3.0), module directories, tech stack",
+    "reliability": "high",
+    "whatLearned": "GPL-3.0. ~77% Python, ~15% JS, ~5% TS. Modules as top-level packages under erpnext/ (accounts, stock, selling, buying, manufacturing, crm, projects, support, assets, quality_management, regional, setup, controllers). Built on Frappe Framework + Frappe UI (Vue)."
+  },
+  {
+    "name": "Frappe Framework GitHub repository (frappe/frappe)",
+    "type": "official-repo",
+    "url": "https://github.com/frappe/frappe",
+    "topic": "Platform source: DocType engine, ORM, REST, workflow, permissions, naming, reports, print formats",
+    "reliability": "high",
+    "whatLearned": "MIT-licensed metadata-driven framework. Implements docstatus, workflow engine, role/permission engine, report types (Query/Script/Report Builder), Print Format engine, Data Import."
+  },
+  {
+    "name": "Frappe HR docs (frappehr)",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/hr",
+    "topic": "HR/Payroll now a separate Frappe HR app (split out of ERPNext in v14): Employee, Attendance, Leave, Salary Structure, Salary Slip, Payroll Entry, Expense Claim, Appraisal",
+    "reliability": "high",
+    "whatLearned": "HR & Payroll were extracted from ERPNext core into the standalone Frappe HR (hrms) app around v14. 13+ modules covering employee lifecycle, attendance/leave, payroll/taxation, expenses, performance. Integrates with ERPNext accounting."
+  },
+  {
+    "name": "ERPNext Manufacturing docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/user/manual/en/manufacturing",
+    "topic": "BOM, Work Order, Job Card, Production Plan, Workstation, Operation, Routing",
+    "reliability": "high",
+    "whatLearned": "BOM defines components/raw materials; Work Order executes a BOM; Job Card tracks per-operation work at a Workstation; Production Plan drives material/demand planning."
+  },
+  {
+    "name": "ERPNext Stock module docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/user/manual/en/stock",
+    "topic": "Inventory: items, warehouses, stock transactions, reconciliation, valuation, reports",
+    "reliability": "high",
+    "whatLearned": "Stock module covers item management, warehouse-level inventory, stock entries/receipts/deliveries/transfers, reconciliation, and valuation. Stock Ledger Entry is the underlying ledger (confirmed via report/concept docs)."
+  },
+  {
+    "name": "ERPNext Selling module docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/user/manual/en/selling",
+    "topic": "Quotation -> Sales Order -> Delivery Note -> Sales Invoice; Customer, Price List, Pricing Rule, Product Bundle",
+    "reliability": "high",
+    "whatLearned": "Sales lifecycle with Customer master, Price List, Pricing Rule, Product Bundle. Confirms order-to-cash document chain."
+  },
+  {
+    "name": "ERPNext Buying module docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/user/manual/en/buying",
+    "topic": "Material Request -> RFQ -> Supplier Quotation -> Purchase Order -> Purchase Receipt -> Purchase Invoice; Supplier",
+    "reliability": "high",
+    "whatLearned": "Procure-to-pay chain with Supplier master, RFQ comparison, Purchase Orders, receipts and invoices."
+  },
+  {
+    "name": "ERPNext CRM module docs",
+    "type": "official-docs",
+    "url": "https://docs.frappe.io/erpnext/user/manual/en/CRM",
+    "topic": "Lead, Opportunity, Customer, Contact, sales funnel, activities, campaign",
+    "reliability": "high",
+    "whatLearned": "Lead capture/nurture, Opportunity tracking with forecasting, customer profiles, activity scheduling. (Note: there is also a separate standalone Frappe CRM app; ERPNext retains its own CRM module.)"
+  },
+  {
+    "name": "ERPNext version 15 / product pages",
+    "type": "official-docs",
+    "url": "https://erpnext.com/version-15",
+    "topic": "Marketing-level module list and version feature notes",
+    "reliability": "medium",
+    "whatLearned": "Confirms official module taxonomy: Accounting, Procurement (Buying), Sales (Selling), CRM, Stock, Manufacturing, Projects, Assets, POS, Quality, Support, HR & Payroll. Marketing framing rather than technical depth."
+  }
+]

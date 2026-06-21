@@ -1,0 +1,205 @@
+{
+  "modules": [
+    {
+      "module": "Accounting (Accounts)",
+      "purpose": "Double-entry financial accounting: record all financial transactions, manage chart of accounts, produce statutory and management financial reports.",
+      "keyFeatures": [
+        "Hierarchical Chart of Accounts (root types Asset/Liability/Income/Expense/Equity; group vs ledger accounts)",
+        "Double-entry General Ledger (every submitted transaction posts balanced GL Entries)",
+        "Sales Invoice and Purchase Invoice (with taxes, discounts, payment terms)",
+        "Journal Entry for manual/adjusting entries",
+        "Payment Entry and Payment Reconciliation (allocate against invoices)",
+        "Fiscal Year, accounting periods, period-close voucher",
+        "Cost Center and dimension-based accounting; Budget control",
+        "Multi-currency with exchange rate handling",
+        "Taxes and Charges templates (sales/purchase), tax rules, tax withholding (TDS)",
+        "Bank reconciliation, bank statement import",
+        "Financial reports: General Ledger, Trial Balance, Balance Sheet, P&L, Cash Flow, AR/AP ageing"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext/user/manual/en/accounts ; https://docs.frappe.io/erpnext/user/manual/en/chart-of-accounts ; https://docs.frappe.io/erpnext/user/manual/en/accounting-reports"
+    },
+    {
+      "module": "Stock (Inventory)",
+      "purpose": "Track inventory quantity and value across warehouses; maintain an immutable stock ledger and perpetual inventory valuation.",
+      "keyFeatures": [
+        "Item master with Item Groups, variants/attributes, UOM conversions",
+        "Warehouse tree (group/leaf), Bin (per item-warehouse balance cache)",
+        "Stock Ledger Entry: immutable per-movement ledger (qty + valuation)",
+        "Valuation methods: FIFO, Moving Average, and serial/batch-specific valuation",
+        "Stock transactions: Stock Entry (transfer/issue/receipt/manufacture/repack), Delivery Note, Purchase Receipt",
+        "Material Request (purchase/transfer/manufacture/material issue)",
+        "Batch and Serial No tracking; Quality Inspection linkage",
+        "Stock Reconciliation (opening stock / physical count adjustments)",
+        "Reposting engine for back-dated transactions",
+        "Reports: Stock Balance, Stock Ledger, Stock Ageing, Stock Projected Qty"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext/user/manual/en/stock"
+    },
+    {
+      "module": "Selling",
+      "purpose": "Manage the order-to-cash sales cycle from quotation through invoicing.",
+      "keyFeatures": [
+        "Sales cycle: Quotation -> Sales Order -> Delivery Note -> Sales Invoice",
+        "Customer and Customer Group masters; territory and sales person hierarchy",
+        "Price List and Item Price; Pricing Rule (discounts, free items)",
+        "Product Bundle (sales kit/BOM-less bundle)",
+        "Taxes and Charges templates, shipping rules",
+        "Sales analytics and Sales Order Analysis reporting",
+        "Drop-ship and blanket order support"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext/user/manual/en/selling"
+    },
+    {
+      "module": "Buying (Procurement)",
+      "purpose": "Manage the procure-to-pay cycle from requisition through supplier invoicing.",
+      "keyFeatures": [
+        "Procurement cycle: Material Request -> RFQ -> Supplier Quotation -> Purchase Order -> Purchase Receipt -> Purchase Invoice",
+        "Supplier and Supplier Group masters; supplier scorecard",
+        "Request for Quotation with multi-supplier comparison",
+        "Purchase taxes and charges, payment terms",
+        "Subcontracting (supply raw materials to supplier)",
+        "Buying analytics / Purchase Order Analysis"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext/user/manual/en/buying"
+    },
+    {
+      "module": "CRM",
+      "purpose": "Capture and nurture leads, track opportunities, and convert prospects to customers.",
+      "keyFeatures": [
+        "Lead capture and qualification through a sales funnel",
+        "Opportunity tracking with probability and forecasting",
+        "Contact and Address masters shared across parties",
+        "Campaign management and lead sources",
+        "Communication / activity logging (calls, meetings, emails, ToDos)",
+        "Conversion of Lead/Opportunity into Quotation/Customer"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext/user/manual/en/CRM"
+    },
+    {
+      "module": "Projects",
+      "purpose": "Plan and execute projects, track tasks, time, and profitability.",
+      "keyFeatures": [
+        "Project and Task hierarchy with dependencies and Gantt",
+        "Timesheet capture and billing",
+        "Project costing and profitability (budget vs actual)",
+        "Activity Type and Activity Cost",
+        "Integration with Sales Invoice (billable timesheets) and issues"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext ; https://github.com/frappe/erpnext"
+    },
+    {
+      "module": "Support / Helpdesk",
+      "purpose": "Manage customer support tickets, SLAs, and service agreements.",
+      "keyFeatures": [
+        "Issue (support ticket) tracking with priority/status",
+        "Service Level Agreement (SLA) with response/resolution targets and holiday lists",
+        "Warranty Claim and Maintenance linkage",
+        "Email-to-ticket and customer portal access",
+        "Note: ERPNext core has Issue; a separate standalone Frappe Helpdesk app provides HD Ticket and a modern helpdesk UI."
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext ; https://docs.frappe.io/helpdesk"
+    },
+    {
+      "module": "Assets",
+      "purpose": "Manage fixed assets across their lifecycle: acquisition, depreciation, maintenance, movement, disposal.",
+      "keyFeatures": [
+        "Asset and Asset Category (shared depreciation rules)",
+        "Depreciation methods: Straight Line, Written Down Value, Double Declining Balance, Manual",
+        "Auto-create assets on Purchase Receipt; manual and composite (capitalization) creation",
+        "Depreciation schedule posting Journal Entries; salvage value, pro-rata, shift-based depreciation",
+        "Asset Maintenance, Asset Repair, Asset Movement (location/custodian)",
+        "Asset disposal: scrap, sell, value adjustment"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext/user/manual/en/asset"
+    },
+    {
+      "module": "Manufacturing",
+      "purpose": "Plan and execute production: define product structures, schedule and run work orders, consume materials.",
+      "keyFeatures": [
+        "Bill of Materials (BOM) with sub-assemblies, operations, scrap, costing",
+        "Work Order: execute a BOM, track material transfer and finished goods",
+        "Job Card: per-operation tracking at a Workstation, time logs",
+        "Production Plan: demand-driven material requests and work orders",
+        "Operation, Routing, Workstation masters",
+        "Subcontracting and multi-level BOM; BOM update tool"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext/user/manual/en/manufacturing"
+    },
+    {
+      "module": "HR / Payroll",
+      "purpose": "Manage the employee lifecycle, attendance, leave, and payroll. Now delivered as the separate Frappe HR (hrms) app (split out of ERPNext core around v14).",
+      "keyFeatures": [
+        "Employee master and lifecycle (onboarding, promotion/transfer, separation)",
+        "Attendance (incl. geolocation check-in), Shift management, Holiday List",
+        "Leave Application, Leave Allocation, Leave Policy, Leave Type",
+        "Salary Structure, Salary Component, Salary Slip, Payroll Entry",
+        "Income tax / statutory configuration; off-cycle and bonus payments",
+        "Expense Claim and Employee Advance with multi-level approval",
+        "Recruitment (Job Opening, Job Applicant), Appraisal (KRA/goals)"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/hr ; https://docs.frappe.io/erpnext/user/manual/en/human-resources"
+    },
+    {
+      "module": "Quality",
+      "purpose": "Quality management: inspections, quality goals, procedures, reviews, and non-conformance.",
+      "keyFeatures": [
+        "Quality Inspection (incoming/in-process/outgoing) with parameter readings",
+        "Quality Inspection Template (parameters and acceptance criteria)",
+        "Quality Goal, Quality Procedure, Quality Review, Quality Meeting",
+        "Non Conformance and Quality Action / Feedback",
+        "Linkage from Purchase Receipt, Delivery Note, Work Order, Stock Entry"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext ; https://github.com/frappe/erpnext"
+    },
+    {
+      "module": "Maintenance",
+      "purpose": "Schedule and record preventive and corrective maintenance for sold/owned items and assets.",
+      "keyFeatures": [
+        "Maintenance Schedule (periodic visit plan per item/serial)",
+        "Maintenance Visit (record of service performed)",
+        "Asset Maintenance and Asset Maintenance Log (asset-side)",
+        "Warranty Claim linkage from Support"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext ; https://docs.frappe.io/erpnext/user/manual/en/asset"
+    },
+    {
+      "module": "Website / Portal",
+      "purpose": "Built-in website builder and customer/supplier self-service portal driven by Frappe's web framework.",
+      "keyFeatures": [
+        "Web Page, Blog Post, Web Form (no-code forms backed by DocTypes)",
+        "Portal pages: customer can view orders/invoices/issues; supplier RFQ portal",
+        "Navbar/footer/website settings, themes",
+        "Web Form -> DocType submission; portal sidebar and homepage configuration"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/framework ; https://docs.frappe.io/erpnext"
+    },
+    {
+      "module": "eCommerce / POS",
+      "purpose": "Sell online (web shop) and at point of sale.",
+      "keyFeatures": [
+        "Webshop (separate Frappe Webshop app in recent versions): item listing, cart, online orders",
+        "POS Profile (warehouse, payment modes, price list, write-off account)",
+        "POS Invoice (offline-capable point-of-sale Sales Invoice)",
+        "POS Opening Entry / POS Closing Entry (shift cash reconciliation)",
+        "Loyalty Program, Mode of Payment"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/erpnext ; https://erpnext.com/version-15"
+    },
+    {
+      "module": "Frappe Platform Layer",
+      "purpose": "The metadata-driven low-code framework that ERPNext is built on; provides the data model, UI, API, workflow, permissions, reporting and customization engine.",
+      "keyFeatures": [
+        "DocType: metadata defines a model+view and generates a tab{DocType} SQL table; normal/child/single/virtual variants",
+        "Workflow engine: Workflow, Workflow State, Workflow Action, Workflow Transition with role-gated transitions and conditions",
+        "Roles & Permissions: Role, DocPerm (read/write/create/delete/submit/cancel/amend/report/export/import/share/print/email), permlevel field-level control, User Permissions",
+        "Reports: Report Builder, Query Report (SQL), Script Report (Python), Dashboard/Number/Chart",
+        "Print Formats: standard auto print, Print Format Builder, Jinja/HTML formats",
+        "REST API: auto-generated /api/resource/{doctype} CRUD and /api/method/{path} whitelisted calls; token & OAuth auth",
+        "Customization: Custom Field, Property Setter (Customize Form), Naming Series, Client Script, Server Script, Notification, Email Alert",
+        "Data Import / Export (CSV/Excel) and Bulk Update",
+        "Audit: docstatus (0 draft / 1 submitted / 2 cancelled), Version doctype (field-level change log), Document Follow, comments/activity"
+      ],
+      "officialSourceRef": "https://docs.frappe.io/framework ; https://docs.frappe.io/framework/user/en/basics/doctypes ; https://docs.frappe.io/framework/user/en/api/rest ; https://docs.frappe.io/framework/user/en/basics/users-and-permissions"
+    }
+  ]
+}

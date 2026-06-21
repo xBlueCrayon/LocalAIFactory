@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LAF Enterprise ERP</title>
+    <style>
+        body { font-family: system-ui, Arial, sans-serif; margin: 0; color: #1f2937; }
+        header { background: #0f766e; color: #fff; padding: 12px 20px; }
+        header a { color: #fff; text-decoration: none; font-weight: 600; }
+        nav { background: #134e4a; padding: 8px 20px; display: flex; flex-wrap: wrap; gap: 14px; }
+        nav a { color: #d1fae5; text-decoration: none; font-size: 14px; }
+        nav a:hover { color: #fff; text-decoration: underline; }
+        main { padding: 20px; max-width: 1100px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 14px; }
+        th, td { border: 1px solid #e5e7eb; padding: 6px 10px; text-align: left; }
+        th { background: #f0fdfa; }
+        .cards { display: flex; flex-wrap: wrap; gap: 14px; }
+        .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 18px; min-width: 150px; }
+        .card .n { font-size: 26px; font-weight: 700; color: #0f766e; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .Draft { background: #fef3c7; } .Submitted { background: #d1fae5; } .Cancelled { background: #fee2e2; }
+        .PendingApproval { background: #fde68a; } .Approved { background: #d1fae5; } .Rejected { background: #fee2e2; }
+    </style>
+</head>
+<body>
+    <header><a href="/">LAF Enterprise ERP</a> <span style="font-size:12px;opacity:.8">&nbsp; clean-room ERP &middot; generated proof product</span></header>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/Home/Customers">Customers</a>
+        <a href="/Home/Items">Items</a>
+        <a href="/Home/SalesInvoices">Sales Invoices</a>
+        <a href="/Home/GeneralLedger">General Ledger</a>
+        <a href="/Home/StockBalance">Stock Balance</a>
+        <a href="/Home/WorkflowInbox">Workflow Inbox</a>
+        <a href="/Home/AuditLog">Audit Log</a>
+        <a href="/Home/Login">Switch User</a>
+        <a href="/api/health">API</a>
+    </nav>
+    <main>
+        <h2>@ViewData["Title"]</h2>
+        @RenderBody()
+    </main>
+</body>
+</html>

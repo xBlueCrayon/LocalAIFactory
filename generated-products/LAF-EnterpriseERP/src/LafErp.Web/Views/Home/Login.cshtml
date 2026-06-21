@@ -1,0 +1,9 @@
+@{ ViewData["Title"] = "Switch User (Dev Auth)"; }
+<p style="font-size:14px;color:#6b7280">Dev auth for the proof: pick an identity + roles. Production binds this to Windows/SSO.</p>
+<form method="post" action="/Home/Login" data-testid="login-form">
+    <p><label>Username <input name="username" value="alice" /></label></p>
+    <p><label>Roles (pipe-separated)
+        <input name="roles" size="60" value="Sales User|Accounts User" /></label></p>
+    <p><button type="submit">Sign in</button></p>
+</form>
+<p style="font-size:13px;color:#6b7280">Examples: <code>alice</code> = <code>Sales User|Accounts User</code>; <code>bob</code> = <code>Accounts Manager</code>; <code>admin</code> = <code>System Manager</code>.</p>

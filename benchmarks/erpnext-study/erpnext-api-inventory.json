@@ -1,0 +1,30 @@
+{
+  "_note": "Conventions summarized from https://docs.frappe.io/framework/user/en/api/rest and the Document API docs. {doctype} is the DocType name URL-encoded (spaces -> %20). {name} is the document's primary key (often its auto-generated series name). Responses wrap the payload in a 'data' key (resource API) or 'message' key (method API); errors carry 'exc' and 'exc_type'.",
+  "auth": [
+    {"scheme": "Token (API key + secret)", "header": "Authorization: token <api_key>:<api_secret>", "notes": "Recommended for server-to-server / headless integration. Key/secret generated per User."},
+    {"scheme": "Password / session", "header": "Cookie session after POST /api/method/login", "notes": "Browser/session style; maintains sid cookie."},
+    {"scheme": "OAuth2 Bearer", "header": "Authorization: Bearer <access_token>", "notes": "For OAuth-registered clients."}
+  ],
+  "apis": [
+    {"resource": "List of documents", "method": "GET", "path": "/api/resource/{doctype}", "purpose": "List records of a DocType. Query params: fields=[\"a\",\"b\"], filters=[[field,op,value]], or_filters, order_by, limit_start, limit_page_length (default 20), as_dict. Respects role/user permissions."},
+    {"resource": "Single document", "method": "GET", "path": "/api/resource/{doctype}/{name}", "purpose": "Fetch one full document by name (including child tables). ?expand_links=True expands linked references."},
+    {"resource": "Create document", "method": "POST", "path": "/api/resource/{doctype}", "purpose": "Create a new document; JSON body holds field values (and child table rows). Returns the created doc."},
+    {"resource": "Update document", "method": "PUT", "path": "/api/resource/{doctype}/{name}", "purpose": "Partial update (PATCH-like): send only changed fields. Cannot directly change docstatus for submit/cancel."},
+    {"resource": "Delete document", "method": "DELETE", "path": "/api/resource/{doctype}/{name}", "purpose": "Delete a document by name (subject to delete permission and link constraints)."},
+    {"resource": "Count / aggregate", "method": "GET", "path": "/api/method/frappe.client.get_count", "purpose": "Get a filtered count for a DocType (doctype + filters params). frappe.client also exposes get_value, get_list, set_value, insert, save."},
+    {"resource": "Get single field value", "method": "GET", "path": "/api/method/frappe.client.get_value", "purpose": "Read specific field(s) of a document without fetching the whole record (doctype, filters, fieldname)."},
+    {"resource": "Whitelisted method call (read)", "method": "GET", "path": "/api/method/{dotted.module.path.function}", "purpose": "Invoke a server-side @frappe.whitelist() Python function (read-only). Args passed as query params."},
+    {"resource": "Whitelisted method call (write)", "method": "POST", "path": "/api/method/{dotted.module.path.function}", "purpose": "Invoke a state-changing whitelisted method; auto-commits the DB transaction. Args in JSON body or form-encoded."},
+    {"resource": "Login (session auth)", "method": "POST", "path": "/api/method/login", "purpose": "Authenticate with usr + pwd to establish a session cookie."},
+    {"resource": "Logout", "method": "GET", "path": "/api/method/logout", "purpose": "Invalidate the current session."},
+    {"resource": "Submit document", "method": "POST", "path": "/api/method/frappe.client.submit", "purpose": "Submit a document (docstatus 0 -> 1). Pass the doc JSON; runs validation and on_submit hooks. (Some integrations submit via the doc's own whitelisted methods.)"},
+    {"resource": "Cancel document", "method": "POST", "path": "/api/method/frappe.client.cancel", "purpose": "Cancel a submitted document (docstatus 1 -> 2), reversing GL/stock effects via on_cancel hooks."},
+    {"resource": "Insert document (method form)", "method": "POST", "path": "/api/method/frappe.client.insert", "purpose": "Create a document by passing a full doc JSON object; alternative to POST /api/resource."},
+    {"resource": "Run a Query/Script Report", "method": "GET", "path": "/api/method/frappe.desk.query_report.run", "purpose": "Execute a saved Report (report_name + filters JSON) and return columns + result rows. Used for General Ledger, Trial Balance, Stock Balance, etc."},
+    {"resource": "Report-style list (Report View)", "method": "GET", "path": "/api/method/frappe.client.get_list", "purpose": "List with explicit doctype/fields/filters/order_by/limit args via method endpoint (alternative to /api/resource)."},
+    {"resource": "Upload file", "method": "POST", "path": "/api/method/upload_file", "purpose": "Upload a file (multipart/form-data); optionally attach to a doctype/docname and mark private/public."},
+    {"resource": "Get DocType meta", "method": "GET", "path": "/api/method/frappe.client.get", "purpose": "Fetch a document (doctype + name) as a method call; complements the resource GET."},
+    {"resource": "Frappe metadata (DocType schema)", "method": "GET", "path": "/api/resource/DocType/{doctype}", "purpose": "Retrieve a DocType definition (fields, permissions) since DocType is itself a DocType - useful for schema discovery."},
+    {"resource": "Webhooks (outbound)", "method": "n/a (config)", "path": "Webhook DocType", "purpose": "Configure outbound HTTP callbacks on document events (after_insert, on_submit, etc.) - the inverse of the inbound REST API."}
+  ]
+}

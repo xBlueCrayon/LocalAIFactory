@@ -1,0 +1,11 @@
+@model List<LafErp.Core.Item>
+@{ ViewData["Title"] = "Items"; }
+<table data-testid="items-table">
+    <thead><tr><th>Code</th><th>Name</th><th>UOM</th><th>Sell Rate</th><th>Buy Rate</th><th>Stock Item</th></tr></thead>
+    <tbody>
+    @foreach (var i in Model)
+    {
+        <tr><td>@i.Code</td><td>@i.Name</td><td>@i.Uom</td><td>@i.StandardRate.ToString("N2")</td><td>@i.StandardBuyRate.ToString("N2")</td><td>@i.IsStockItem</td></tr>
+    }
+    </tbody>
+</table>

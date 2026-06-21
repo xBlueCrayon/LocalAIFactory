@@ -1,0 +1,78 @@
+{
+  "_note": "ERPNext/Frappe ships submittable documents that already have an implicit docstatus lifecycle (Draft -> Submitted -> Cancelled). Named approval Workflows are OPTIONAL and configured per site via the Workflow DocType; the examples below are typical/representative configurations described in the official workflow docs (https://docs.frappe.io/erpnext/workflow). Roles shown are conventional ERPNext role names. The Leave Application example is from the Frappe HR app.",
+  "docstatusModel": {
+    "0": "Draft - editable, not yet posted to ledgers",
+    "1": "Submitted - locked, GL/stock/other side-effects posted (on_submit)",
+    "2": "Cancelled - reversed side-effects (on_cancel); a cancelled doc can be Amended into a new draft (copy with incremented amendment suffix)",
+    "submitFlow": "save (draft) -> submit (docstatus 1) -> optionally cancel (docstatus 2) -> optionally amend (new draft linked via amended_from)",
+    "workflowRelation": "Each Workflow Document State maps to a doc_status (0/1/2). Reaching a state whose doc_status=1 submits the document; a state with doc_status=2 cancels it. The workflow_state field stores the human-readable state; transitions are gated by 'allowed' role and an optional Python condition expression."
+  },
+  "workflows": [
+    {
+      "name": "Sales Order Approval (representative)",
+      "doctype": "Sales Order",
+      "purpose": "Require manager sign-off on customer orders, optionally above a value threshold, before they are submitted and acted upon.",
+      "states": ["Draft", "Pending Approval", "Approved", "Rejected"],
+      "transitions": [
+        {"from": "Draft", "to": "Pending Approval", "action": "Submit for Approval", "role": "Sales User"},
+        {"from": "Pending Approval", "to": "Approved", "action": "Approve", "role": "Sales Manager"},
+        {"from": "Pending Approval", "to": "Rejected", "action": "Reject", "role": "Sales Manager"}
+      ]
+    },
+    {
+      "name": "Purchase Order Approval (representative)",
+      "doctype": "Purchase Order",
+      "purpose": "Multi-level procurement approval; high-value POs can require an additional approver via a transition condition (e.g. grand_total > threshold).",
+      "states": ["Draft", "Pending Approval", "Approved", "Rejected"],
+      "transitions": [
+        {"from": "Draft", "to": "Pending Approval", "action": "Submit for Approval", "role": "Purchase User"},
+        {"from": "Pending Approval", "to": "Approved", "action": "Approve", "role": "Purchase Manager"},
+        {"from": "Pending Approval", "to": "Rejected", "action": "Reject", "role": "Purchase Manager"}
+      ]
+    },
+    {
+      "name": "Journal Entry Approval (representative)",
+      "doctype": "Journal Entry",
+      "purpose": "Maker-checker control over manual accounting entries before they post to the GL.",
+      "states": ["Draft", "Pending Approval", "Approved", "Rejected"],
+      "transitions": [
+        {"from": "Draft", "to": "Pending Approval", "action": "Submit for Approval", "role": "Accounts User"},
+        {"from": "Pending Approval", "to": "Approved", "action": "Approve", "role": "Accounts Manager"},
+        {"from": "Pending Approval", "to": "Rejected", "action": "Reject", "role": "Accounts Manager"}
+      ]
+    },
+    {
+      "name": "Leave Application Approval (Frappe HR)",
+      "doctype": "Leave Application",
+      "purpose": "Route employee leave requests to the designated leave approver/manager before they are submitted and deducted from balance.",
+      "states": ["Open", "Pending Approval", "Approved", "Rejected"],
+      "transitions": [
+        {"from": "Open", "to": "Pending Approval", "action": "Apply", "role": "Employee"},
+        {"from": "Pending Approval", "to": "Approved", "action": "Approve", "role": "Leave Approver"},
+        {"from": "Pending Approval", "to": "Rejected", "action": "Reject", "role": "Leave Approver"}
+      ]
+    },
+    {
+      "name": "Expense Claim Approval (Frappe HR)",
+      "doctype": "Expense Claim",
+      "purpose": "Approve employee reimbursement claims before posting the accounting entry.",
+      "states": ["Draft", "Pending Approval", "Approved", "Rejected"],
+      "transitions": [
+        {"from": "Draft", "to": "Pending Approval", "action": "Submit for Approval", "role": "Employee"},
+        {"from": "Pending Approval", "to": "Approved", "action": "Approve", "role": "Expense Approver"},
+        {"from": "Pending Approval", "to": "Rejected", "action": "Reject", "role": "Expense Approver"}
+      ]
+    },
+    {
+      "name": "Material Request Approval (representative)",
+      "doctype": "Material Request",
+      "purpose": "Gate internal purchase/stock requests behind a stock or purchase manager before they become purchase orders.",
+      "states": ["Draft", "Pending Approval", "Approved", "Rejected"],
+      "transitions": [
+        {"from": "Draft", "to": "Pending Approval", "action": "Submit for Approval", "role": "Stock User"},
+        {"from": "Pending Approval", "to": "Approved", "action": "Approve", "role": "Stock Manager"},
+        {"from": "Pending Approval", "to": "Rejected", "action": "Reject", "role": "Stock Manager"}
+      ]
+    }
+  ]
+}

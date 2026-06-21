@@ -1,0 +1,2255 @@
+{
+  "generated": "2026-06-21",
+  "product": "LAF Enterprise ERP",
+  "cleanRoom": true,
+  "sourceBasis": "Behavioral parity targets derived solely from official ERPNext (docs.erpnext.com) and Frappe Framework (frappeframework.com / docs.frappe.io / github.com/frappe) documentation. No ERPNext/Frappe source code or UI assets were inspected or copied. Implementation is original clean-room C#/.NET. See docs/reports/ERP_CLONE_LICENSE_AND_CLEAN_ROOM_DECISION.md.",
+  "priorityLegend": {
+    "P0": "Minimal real ERP core: setup, accounting GL, inventory, sales, purchase, payments, workflow, audit, RBAC, key reports, REST APIs.",
+    "P1": "CRM, projects, support, assets, import/export.",
+    "P2": "Manufacturing, HR/Payroll.",
+    "P3": "POS, website/portal, eCommerce, advanced/optional."
+  },
+  "statusLegend": {
+    "implementationStatus": "NotStarted | InProgress | Complete (orchestrator updates after building).",
+    "parityScore": "0-100 behavioral-parity self-assessment against the official-doc target (orchestrator updates)."
+  },
+  "features": [
+    {
+      "featureId": "CORE-001",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Company",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/company-setup",
+      "businessPurpose": "Represents a legal entity that owns the books of accounts; root of accounting, taxation, and the default cost center / warehouse for all transactions.",
+      "requiredEntities": [
+        "Company",
+        "CompanySettings",
+        "DefaultAccountMapping"
+      ],
+      "requiredWorkflows": [
+        "Create company and auto-provision default Chart of Accounts, root Cost Center and root Warehouse"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST/PUT /api/companies"
+      ],
+      "requiredUiScreens": [
+        "Company list",
+        "Company create/edit form"
+      ],
+      "requiredTests": [
+        "Creating a company seeds default CoA, cost center, warehouse",
+        "Company default accounts resolve in transactions"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Default currency and abbreviation drive numbering and account naming."
+    },
+    {
+      "featureId": "CORE-002",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Fiscal Year",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/fiscal-year",
+      "businessPurpose": "Defines the accounting period boundaries used to scope GL posting, period closing, and financial statements.",
+      "requiredEntities": [
+        "FiscalYear",
+        "FiscalYearCompany"
+      ],
+      "requiredWorkflows": [
+        "Define fiscal year",
+        "Resolve fiscal year from posting date",
+        "Block posting outside open fiscal years"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST /api/fiscal-years"
+      ],
+      "requiredUiScreens": [
+        "Fiscal Year list/form"
+      ],
+      "requiredTests": [
+        "Posting date maps to correct fiscal year",
+        "Posting into closed year is rejected"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Supports non-calendar fiscal years."
+    },
+    {
+      "featureId": "CORE-003",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Currency & Exchange Rate",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/currency",
+      "businessPurpose": "Enables multi-currency transactions; stores exchange rates so foreign-currency documents post to the GL in company base currency.",
+      "requiredEntities": [
+        "Currency",
+        "CurrencyExchange"
+      ],
+      "requiredWorkflows": [
+        "Maintain exchange rates",
+        "Convert document currency to base currency at posting"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST /api/currencies",
+        "GET/POST /api/exchange-rates"
+      ],
+      "requiredUiScreens": [
+        "Currency list",
+        "Exchange Rate form"
+      ],
+      "requiredTests": [
+        "Foreign-currency invoice posts base-currency GL using stored rate",
+        "Exchange gain/loss handled on settlement"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Base currency = company currency; transaction currency may differ."
+    },
+    {
+      "featureId": "CORE-004",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Chart of Accounts",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/chart-of-accounts",
+      "businessPurpose": "Hierarchical tree of ledger and group accounts (Asset, Liability, Income, Expense, Equity) that all GL postings reference.",
+      "requiredEntities": [
+        "Account",
+        "AccountType",
+        "RootType"
+      ],
+      "requiredWorkflows": [
+        "Build/import CoA tree",
+        "Mark group vs ledger accounts",
+        "Prevent posting to group accounts"
+      ],
+      "requiredReports": [
+        "Chart of Accounts tree view"
+      ],
+      "requiredApis": [
+        "GET/POST/PUT /api/accounts",
+        "GET /api/accounts/tree"
+      ],
+      "requiredUiScreens": [
+        "CoA tree screen",
+        "Account form"
+      ],
+      "requiredTests": [
+        "Group accounts cannot be posted to",
+        "Account root type drives report classification"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Standard CoA template seeded per company."
+    },
+    {
+      "featureId": "CORE-005",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Cost Center",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/cost-center",
+      "businessPurpose": "Dimensional tag on GL entries enabling departmental/branch profitability and budget tracking independent of the account.",
+      "requiredEntities": [
+        "CostCenter"
+      ],
+      "requiredWorkflows": [
+        "Build cost center tree",
+        "Default cost center per transaction",
+        "Tag GL entries with cost center"
+      ],
+      "requiredReports": [
+        "Cost center wise P&L"
+      ],
+      "requiredApis": [
+        "GET/POST /api/cost-centers",
+        "GET /api/cost-centers/tree"
+      ],
+      "requiredUiScreens": [
+        "Cost Center tree/form"
+      ],
+      "requiredTests": [
+        "GL entries carry cost center",
+        "Cost-center-filtered P&L balances"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Hierarchical like CoA."
+    },
+    {
+      "featureId": "CORE-006",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Naming Series / Numbering",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/basics/doctypes/naming",
+      "businessPurpose": "Generates sequential, prefix-based, gapless document identifiers (e.g. SINV-.YYYY.-#####) for auditability and legal numbering requirements.",
+      "requiredEntities": [
+        "NamingSeries",
+        "NamingSeriesCounter"
+      ],
+      "requiredWorkflows": [
+        "Resolve series pattern",
+        "Atomically increment counter on document save"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST /api/naming-series"
+      ],
+      "requiredUiScreens": [
+        "Naming Series settings"
+      ],
+      "requiredTests": [
+        "Concurrent saves produce no duplicate numbers",
+        "Series pattern tokens (year, prefix) expand correctly"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Must be concurrency-safe under SQL Server."
+    },
+    {
+      "featureId": "CORE-007",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Tax Templates & Tax Rules",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/setting-up-taxes",
+      "businessPurpose": "Defines sales/purchase tax templates, rates, and account heads applied to transaction lines and totals for compliant tax calculation.",
+      "requiredEntities": [
+        "TaxTemplate",
+        "TaxTemplateRow",
+        "TaxCategory",
+        "TaxRule"
+      ],
+      "requiredWorkflows": [
+        "Apply tax template to documents",
+        "Compute item/total taxes",
+        "Post tax to designated GL heads"
+      ],
+      "requiredReports": [
+        "Tax summary"
+      ],
+      "requiredApis": [
+        "GET/POST /api/tax-templates"
+      ],
+      "requiredUiScreens": [
+        "Sales/Purchase Tax Template form"
+      ],
+      "requiredTests": [
+        "On-net and on-total tax types calculate correctly",
+        "Tax posts to configured account head"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Charge types: On Net Total, On Previous Row Amount/Total, Actual."
+    },
+    {
+      "featureId": "CORE-008",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Multi-company",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/managing-multiple-companies",
+      "businessPurpose": "Supports several legal entities in one install with isolated books and optional inter-company transactions/consolidation.",
+      "requiredEntities": [
+        "Company",
+        "CompanyHierarchy"
+      ],
+      "requiredWorkflows": [
+        "Scope all transactions/reports by company",
+        "Inter-company journal entries",
+        "Group consolidation"
+      ],
+      "requiredReports": [
+        "Consolidated financial statements"
+      ],
+      "requiredApis": [
+        "Company filter on all financial endpoints"
+      ],
+      "requiredUiScreens": [
+        "Company switcher / company filter"
+      ],
+      "requiredTests": [
+        "Data isolation across companies",
+        "Inter-company JE balances both books"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Parent company enables consolidation tree."
+    },
+    {
+      "featureId": "CORE-009",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Multi-warehouse",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/warehouse",
+      "businessPurpose": "Models multiple physical/logical stock locations as a warehouse tree so stock is tracked per location and optionally linked to inventory accounts.",
+      "requiredEntities": [
+        "Warehouse",
+        "WarehouseAccountLink"
+      ],
+      "requiredWorkflows": [
+        "Build warehouse tree",
+        "Resolve default warehouse per company",
+        "Link warehouse to inventory account (perpetual)"
+      ],
+      "requiredReports": [
+        "Warehouse-wise stock"
+      ],
+      "requiredApis": [
+        "GET/POST /api/warehouses",
+        "GET /api/warehouses/tree"
+      ],
+      "requiredUiScreens": [
+        "Warehouse tree/form"
+      ],
+      "requiredTests": [
+        "Stock segregated per warehouse",
+        "Perpetual inventory posts to warehouse account"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Group warehouses are non-transactable parents."
+    },
+    {
+      "featureId": "CORE-010",
+      "module": "Core Setup",
+      "erpnextFeatureName": "Role Permission Matrix (RBAC)",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/basics/users-and-permissions",
+      "businessPurpose": "Role-based access control: per-role, per-doctype read/write/create/delete/submit/cancel/amend/print/email/import/export rights plus permission levels.",
+      "requiredEntities": [
+        "Role",
+        "User",
+        "UserRole",
+        "DocPermission",
+        "PermissionLevel"
+      ],
+      "requiredWorkflows": [
+        "Assign roles to users",
+        "Enforce CRUD/submit/cancel rights per role",
+        "Permission-level field masking"
+      ],
+      "requiredReports": [
+        "Permitted-roles report per document type"
+      ],
+      "requiredApis": [
+        "GET/POST /api/roles",
+        "GET/POST /api/user-roles",
+        "permission enforcement on every endpoint"
+      ],
+      "requiredUiScreens": [
+        "Role Permission Manager",
+        "User-role assignment"
+      ],
+      "requiredTests": [
+        "Unauthorized action returns 403",
+        "Submit/cancel rights enforced separately from write"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Mirror Frappe role-permission semantics; not user/role data."
+    },
+    {
+      "featureId": "CORE-011",
+      "module": "Core Setup",
+      "erpnextFeatureName": "User Permissions (row-level)",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/basics/users-and-permissions",
+      "businessPurpose": "Restricts a user to specific records of a linked master (e.g. only Company X, Warehouse Y) for fine-grained data scoping.",
+      "requiredEntities": [
+        "UserPermission"
+      ],
+      "requiredWorkflows": [
+        "Define allowed values per user per master",
+        "Filter queries/reports by user permission"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST /api/user-permissions"
+      ],
+      "requiredUiScreens": [
+        "User Permission form"
+      ],
+      "requiredTests": [
+        "User sees only permitted records",
+        "Restricted record fetch returns 403/empty"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Implemented",
+      "parityScore": 68,
+      "notes": "Row-level filter layered on top of role permissions."
+    },
+    {
+      "featureId": "ACC-001",
+      "module": "Accounting",
+      "erpnextFeatureName": "Journal Entry",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/journal-entry",
+      "businessPurpose": "General-purpose double-entry voucher where total debits equal total credits; used for adjustments, payroll, depreciation, inter-company entries.",
+      "requiredEntities": [
+        "JournalEntry",
+        "JournalEntryLine"
+      ],
+      "requiredWorkflows": [
+        "Draft -> Submit (post GL) -> Cancel (reverse GL)",
+        "Debit=Credit validation"
+      ],
+      "requiredReports": [
+        "Journal Entry register"
+      ],
+      "requiredApis": [
+        "GET/POST/PUT /api/journal-entries",
+        "POST submit/cancel"
+      ],
+      "requiredUiScreens": [
+        "Journal Entry form with line grid"
+      ],
+      "requiredTests": [
+        "Unbalanced entry rejected",
+        "Submit creates GL entries",
+        "Cancel reverses GL"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 55,
+      "notes": "Foundational posting primitive."
+    },
+    {
+      "featureId": "ACC-002",
+      "module": "Accounting",
+      "erpnextFeatureName": "Payment Entry",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/payment-entry",
+      "businessPurpose": "Records receipt/payment/internal-transfer of money and allocates it against outstanding invoices, updating party balances and the GL.",
+      "requiredEntities": [
+        "PaymentEntry",
+        "PaymentEntryReference"
+      ],
+      "requiredWorkflows": [
+        "Receive/Pay/Internal Transfer",
+        "Allocate against invoices",
+        "Submit posts GL and reduces outstanding"
+      ],
+      "requiredReports": [
+        "Payment register"
+      ],
+      "requiredApis": [
+        "GET/POST /api/payment-entries",
+        "POST submit/cancel"
+      ],
+      "requiredUiScreens": [
+        "Payment Entry form with reference allocation grid"
+      ],
+      "requiredTests": [
+        "Allocation reduces invoice outstanding",
+        "GL posts to bank/cash and party account",
+        "Over-allocation rejected"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 55,
+      "notes": "Supports advance payments and multi-currency settlement."
+    },
+    {
+      "featureId": "ACC-003",
+      "module": "Accounting",
+      "erpnextFeatureName": "GL Posting Engine",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/accounting-entries",
+      "businessPurpose": "Central immutable ledger: every submitted accounting document writes balanced GL Entries; cancellation writes reversing entries. Single source of financial truth.",
+      "requiredEntities": [
+        "GLEntry"
+      ],
+      "requiredWorkflows": [
+        "Generate balanced GL entries on submit",
+        "Write reversal on cancel",
+        "Enforce immutability of posted entries"
+      ],
+      "requiredReports": [
+        "General Ledger (see ACC-006)"
+      ],
+      "requiredApis": [
+        "GET /api/gl-entries (read-only)"
+      ],
+      "requiredUiScreens": [
+        "GL Entry drill-down from any voucher"
+      ],
+      "requiredTests": [
+        "Every voucher produces net-zero GL",
+        "GL entries are append-only (no edit/delete)",
+        "Cancel mirrors original signs"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 55,
+      "notes": "Append-only; corrections via reversal, never edit."
+    },
+    {
+      "featureId": "ACC-004",
+      "module": "Accounting",
+      "erpnextFeatureName": "Accounts Receivable (AR)",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/accounts-receivable",
+      "businessPurpose": "Tracks money owed by customers: outstanding sales invoices, ageing buckets, and collection status by party.",
+      "requiredEntities": [
+        "SalesInvoice",
+        "GLEntry",
+        "PaymentEntryReference"
+      ],
+      "requiredWorkflows": [
+        "Compute outstanding per invoice/party",
+        "Age receivables into buckets"
+      ],
+      "requiredReports": [
+        "Accounts Receivable",
+        "AR Ageing"
+      ],
+      "requiredApis": [
+        "GET /api/reports/accounts-receivable"
+      ],
+      "requiredUiScreens": [
+        "AR report with ageing filters"
+      ],
+      "requiredTests": [
+        "Outstanding = invoiced - allocated payments",
+        "Ageing buckets total to AR balance"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 55,
+      "notes": "Derived from GL + payment references."
+    },
+    {
+      "featureId": "ACC-005",
+      "module": "Accounting",
+      "erpnextFeatureName": "Accounts Payable (AP)",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/accounts-payable",
+      "businessPurpose": "Tracks money owed to suppliers: outstanding purchase invoices, ageing, and payment scheduling by party.",
+      "requiredEntities": [
+        "PurchaseInvoice",
+        "GLEntry",
+        "PaymentEntryReference"
+      ],
+      "requiredWorkflows": [
+        "Compute payable per invoice/party",
+        "Age payables into buckets"
+      ],
+      "requiredReports": [
+        "Accounts Payable",
+        "AP Ageing"
+      ],
+      "requiredApis": [
+        "GET /api/reports/accounts-payable"
+      ],
+      "requiredUiScreens": [
+        "AP report with ageing filters"
+      ],
+      "requiredTests": [
+        "Payable = billed - paid",
+        "Ageing buckets total to AP balance"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 55,
+      "notes": "Symmetric to AR."
+    },
+    {
+      "featureId": "ACC-006",
+      "module": "Accounting",
+      "erpnextFeatureName": "General Ledger Report",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/general-ledger",
+      "businessPurpose": "Detailed transaction listing per account/party/cost-center over a period with running balance; the primary audit/drill report.",
+      "requiredEntities": [
+        "GLEntry"
+      ],
+      "requiredWorkflows": [
+        "Filter by account, party, cost center, project, period",
+        "Compute opening/closing and running balance"
+      ],
+      "requiredReports": [
+        "General Ledger"
+      ],
+      "requiredApis": [
+        "GET /api/reports/general-ledger"
+      ],
+      "requiredUiScreens": [
+        "General Ledger report screen"
+      ],
+      "requiredTests": [
+        "Closing = opening + net movement",
+        "Filters narrow rows correctly",
+        "Drill-down opens source voucher"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 55,
+      "notes": "Built directly on GLEntry table."
+    },
+    {
+      "featureId": "ACC-007",
+      "module": "Accounting",
+      "erpnextFeatureName": "Trial Balance",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/trial-balance",
+      "businessPurpose": "Per-account opening, debit, credit, and closing balances proving total debits equal total credits across the ledger.",
+      "requiredEntities": [
+        "GLEntry",
+        "Account"
+      ],
+      "requiredWorkflows": [
+        "Aggregate debit/credit per account for period",
+        "Roll up group accounts"
+      ],
+      "requiredReports": [
+        "Trial Balance"
+      ],
+      "requiredApis": [
+        "GET /api/reports/trial-balance"
+      ],
+      "requiredUiScreens": [
+        "Trial Balance report screen"
+      ],
+      "requiredTests": [
+        "Total debits = total credits",
+        "Group rollups equal sum of children"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 55,
+      "notes": "Sanity check on GL integrity."
+    },
+    {
+      "featureId": "ACC-008",
+      "module": "Accounting",
+      "erpnextFeatureName": "Profit and Loss Statement",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/profit-and-loss-statement",
+      "businessPurpose": "Income-statement view: income minus expense over a period yielding net profit, by period column and cost center.",
+      "requiredEntities": [
+        "GLEntry",
+        "Account"
+      ],
+      "requiredWorkflows": [
+        "Classify Income/Expense root types",
+        "Period-column aggregation",
+        "Compute net profit"
+      ],
+      "requiredReports": [
+        "Profit and Loss Statement"
+      ],
+      "requiredApis": [
+        "GET /api/reports/profit-and-loss"
+      ],
+      "requiredUiScreens": [
+        "P&L report screen"
+      ],
+      "requiredTests": [
+        "Net profit = income - expense",
+        "Period columns sum to total column"
+      ],
+      "priority": "P0",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Net profit flows to Balance Sheet equity."
+    },
+    {
+      "featureId": "ACC-009",
+      "module": "Accounting",
+      "erpnextFeatureName": "Balance Sheet",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/balance-sheet",
+      "businessPurpose": "Statement of financial position: Assets = Liabilities + Equity (including current-period earnings) as of a date.",
+      "requiredEntities": [
+        "GLEntry",
+        "Account"
+      ],
+      "requiredWorkflows": [
+        "Aggregate Asset/Liability/Equity root types cumulatively",
+        "Inject current-year earnings"
+      ],
+      "requiredReports": [
+        "Balance Sheet"
+      ],
+      "requiredApis": [
+        "GET /api/reports/balance-sheet"
+      ],
+      "requiredUiScreens": [
+        "Balance Sheet report screen"
+      ],
+      "requiredTests": [
+        "Assets = Liabilities + Equity",
+        "Retained earnings include P&L result"
+      ],
+      "priority": "P0",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Cumulative since inception."
+    },
+    {
+      "featureId": "ACC-010",
+      "module": "Accounting",
+      "erpnextFeatureName": "Period Closing Voucher",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/period-closing-voucher",
+      "businessPurpose": "Closes income/expense balances into a retained-earnings account at year end so the new year opens clean.",
+      "requiredEntities": [
+        "PeriodClosingVoucher",
+        "GLEntry"
+      ],
+      "requiredWorkflows": [
+        "Compute P&L balances",
+        "Post closing entry to retained earnings"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "POST /api/period-closing"
+      ],
+      "requiredUiScreens": [
+        "Period Closing Voucher form"
+      ],
+      "requiredTests": [
+        "Income/expense net to zero after closing",
+        "Retained earnings credited with net profit"
+      ],
+      "priority": "P1",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Year-end only."
+    },
+    {
+      "featureId": "INV-001",
+      "module": "Inventory",
+      "erpnextFeatureName": "Item Master",
+      "officialSourceRef": "https://docs.erpnext.com/docs/v12/user/manual/en/stock/item",
+      "businessPurpose": "Central catalog of products/services with UOM, valuation method, stock flag, default warehouse, and accounting defaults used across selling, buying, and stock.",
+      "requiredEntities": [
+        "Item",
+        "ItemDefault",
+        "ItemUOMConversion",
+        "ItemPrice"
+      ],
+      "requiredWorkflows": [
+        "Create item with UOM and valuation method",
+        "Resolve defaults in transactions"
+      ],
+      "requiredReports": [
+        "Item-wise report"
+      ],
+      "requiredApis": [
+        "GET/POST/PUT /api/items"
+      ],
+      "requiredUiScreens": [
+        "Item list",
+        "Item form"
+      ],
+      "requiredTests": [
+        "Stock vs non-stock item behavior",
+        "Default warehouse/account resolved from item"
+      ],
+      "priority": "P0",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Valuation method (FIFO/Moving Average) frozen after first stock transaction."
+    },
+    {
+      "featureId": "INV-002",
+      "module": "Inventory",
+      "erpnextFeatureName": "Item Group",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/item-group",
+      "businessPurpose": "Hierarchical classification of items used for defaults, reporting groupings, and price/tax rules.",
+      "requiredEntities": [
+        "ItemGroup"
+      ],
+      "requiredWorkflows": [
+        "Build item group tree",
+        "Inherit defaults from group"
+      ],
+      "requiredReports": [
+        "Item-group-wise stock/sales"
+      ],
+      "requiredApis": [
+        "GET/POST /api/item-groups",
+        "GET /api/item-groups/tree"
+      ],
+      "requiredUiScreens": [
+        "Item Group tree/form"
+      ],
+      "requiredTests": [
+        "Group tree integrity",
+        "Group-wise aggregation correct"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 48,
+      "notes": "Tree master like CoA."
+    },
+    {
+      "featureId": "INV-003",
+      "module": "Inventory",
+      "erpnextFeatureName": "Stock Ledger Entry",
+      "officialSourceRef": "https://docs.erpnext.com/docs/v13/user/manual/en/stock/stock-ledger",
+      "businessPurpose": "Immutable per-movement record (qty in/out, valuation rate, balance qty, balance value) per item+warehouse; the source of truth for stock quantity and value.",
+      "requiredEntities": [
+        "StockLedgerEntry"
+      ],
+      "requiredWorkflows": [
+        "Append SLE on every stock movement",
+        "Recompute running balance and valuation",
+        "Reverse on cancel"
+      ],
+      "requiredReports": [
+        "Stock Ledger"
+      ],
+      "requiredApis": [
+        "GET /api/reports/stock-ledger"
+      ],
+      "requiredUiScreens": [
+        "Stock Ledger report"
+      ],
+      "requiredTests": [
+        "Running balance qty/value correct",
+        "Negative stock policy enforced",
+        "Cancel reverses SLE"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 48,
+      "notes": "Append-only, mirrors GL discipline for stock."
+    },
+    {
+      "featureId": "INV-004",
+      "module": "Inventory",
+      "erpnextFeatureName": "Stock Balance Report",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/stock-balance",
+      "businessPurpose": "Current on-hand quantity and value per item per warehouse as of a date, for stock-take and valuation.",
+      "requiredEntities": [
+        "StockLedgerEntry",
+        "Item",
+        "Warehouse"
+      ],
+      "requiredWorkflows": [
+        "Aggregate latest balance per item+warehouse as of date"
+      ],
+      "requiredReports": [
+        "Stock Balance"
+      ],
+      "requiredApis": [
+        "GET /api/reports/stock-balance"
+      ],
+      "requiredUiScreens": [
+        "Stock Balance report"
+      ],
+      "requiredTests": [
+        "Balance matches sum of SLE movements",
+        "As-of-date snapshot correct"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 48,
+      "notes": "Derived from SLE."
+    },
+    {
+      "featureId": "INV-005",
+      "module": "Inventory",
+      "erpnextFeatureName": "Stock Entry / Adjustment",
+      "officialSourceRef": "https://docs.erpnext.com/docs/v12/user/manual/en/stock/stock-entry",
+      "businessPurpose": "Records material receipt, issue, transfer, manufacture, and reconciliation movements with optional additional costs affecting valuation.",
+      "requiredEntities": [
+        "StockEntry",
+        "StockEntryDetail"
+      ],
+      "requiredWorkflows": [
+        "Material Receipt/Issue/Transfer/Manufacture types",
+        "Submit creates SLE and (perpetual) GL",
+        "Add landed/additional costs to valuation"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST /api/stock-entries",
+        "POST submit/cancel"
+      ],
+      "requiredUiScreens": [
+        "Stock Entry form with item grid"
+      ],
+      "requiredTests": [
+        "Transfer moves qty between warehouses",
+        "Additional cost raises valuation rate",
+        "Perpetual posting hits inventory account"
+      ],
+      "priority": "P0",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Also covers stock reconciliation/adjustment use case."
+    },
+    {
+      "featureId": "INV-006",
+      "module": "Inventory",
+      "erpnextFeatureName": "Item Valuation (FIFO / Moving Average)",
+      "officialSourceRef": "https://docs.erpnext.com/docs/v12/user/manual/en/stock/articles/item-valuation-fifo-and-moving-average",
+      "businessPurpose": "Computes valuation rate on consumption using FIFO queue or Moving Average so COGS and stock value are accurate.",
+      "requiredEntities": [
+        "StockLedgerEntry",
+        "FifoQueue"
+      ],
+      "requiredWorkflows": [
+        "FIFO consumption from earliest layers",
+        "Moving-average recompute on receipt"
+      ],
+      "requiredReports": [
+        "Stock valuation in Stock Ledger/Balance"
+      ],
+      "requiredApis": [
+        "Internal valuation service"
+      ],
+      "requiredUiScreens": [
+        "Valuation visible in stock reports"
+      ],
+      "requiredTests": [
+        "FIFO consumes oldest cost first",
+        "Moving average recalculated each receipt",
+        "Valuation method immutable after first transaction"
+      ],
+      "priority": "P0",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Default FIFO; method locked after first stock transaction."
+    },
+    {
+      "featureId": "INV-007",
+      "module": "Inventory",
+      "erpnextFeatureName": "Perpetual Inventory (Auto Stock Accounting)",
+      "officialSourceRef": "https://docs.erpnext.com/docs/v12/user/manual/en/stock/perpetual-inventory",
+      "businessPurpose": "Automatically posts GL entries for stock movements (stock-in-hand, COGS, stock received but not billed) keeping inventory accounts synced with the stock ledger.",
+      "requiredEntities": [
+        "GLEntry",
+        "StockLedgerEntry",
+        "WarehouseAccountLink"
+      ],
+      "requiredWorkflows": [
+        "On stock movement, post matching GL",
+        "Reconcile stock value to ledger account"
+      ],
+      "requiredReports": [
+        "Stock vs accounts reconciliation"
+      ],
+      "requiredApis": [
+        "Internal posting service"
+      ],
+      "requiredUiScreens": [],
+      "requiredTests": [
+        "Inventory GL value equals SLE value",
+        "COGS posted on delivery/issue"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 48,
+      "notes": "Can be toggled off (periodic) per company."
+    },
+    {
+      "featureId": "SELL-001",
+      "module": "Selling",
+      "erpnextFeatureName": "Customer Master",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/customer",
+      "businessPurpose": "Party master for buyers holding billing/shipping, credit limit, price list, and receivable account defaults.",
+      "requiredEntities": [
+        "Customer",
+        "CustomerGroup",
+        "Address",
+        "Contact"
+      ],
+      "requiredWorkflows": [
+        "Create customer with defaults",
+        "Resolve receivable account/price list in sales docs"
+      ],
+      "requiredReports": [
+        "Customer-wise sales"
+      ],
+      "requiredApis": [
+        "GET/POST/PUT /api/customers"
+      ],
+      "requiredUiScreens": [
+        "Customer list/form"
+      ],
+      "requiredTests": [
+        "Defaults flow into Sales Invoice",
+        "Credit limit check on order"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 42,
+      "notes": "Customer group is a tree master."
+    },
+    {
+      "featureId": "SELL-002",
+      "module": "Selling",
+      "erpnextFeatureName": "Quotation",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/quotation",
+      "businessPurpose": "Non-binding price proposal to a customer or lead that can be converted into a Sales Order.",
+      "requiredEntities": [
+        "Quotation",
+        "QuotationItem"
+      ],
+      "requiredWorkflows": [
+        "Draft -> Submit",
+        "Convert to Sales Order",
+        "Mark lost/expired"
+      ],
+      "requiredReports": [
+        "Quotation conversion"
+      ],
+      "requiredApis": [
+        "GET/POST /api/quotations",
+        "POST convert-to-sales-order"
+      ],
+      "requiredUiScreens": [
+        "Quotation form"
+      ],
+      "requiredTests": [
+        "Convert carries items/pricing to SO",
+        "No stock/GL impact at quotation stage"
+      ],
+      "priority": "P0",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Can be raised against Lead or Customer."
+    },
+    {
+      "featureId": "SELL-003",
+      "module": "Selling",
+      "erpnextFeatureName": "Sales Order",
+      "officialSourceRef": "https://docs.erpnext.com/docs/v13/user/manual/en/selling/sales-order",
+      "businessPurpose": "Confirmed customer commitment that drives downstream delivery and billing, with per-line delivered/billed tracking.",
+      "requiredEntities": [
+        "SalesOrder",
+        "SalesOrderItem"
+      ],
+      "requiredWorkflows": [
+        "Draft -> Submit",
+        "Create Delivery Note / Sales Invoice from SO",
+        "Track delivered & billed qty per line"
+      ],
+      "requiredReports": [
+        "Sales Order analysis / pending to deliver"
+      ],
+      "requiredApis": [
+        "GET/POST /api/sales-orders",
+        "POST create-delivery",
+        "POST create-invoice"
+      ],
+      "requiredUiScreens": [
+        "Sales Order form"
+      ],
+      "requiredTests": [
+        "Over-delivery beyond tolerance blocked",
+        "Billed/delivered status updates from downstream docs"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 42,
+      "notes": "Central selling hub document."
+    },
+    {
+      "featureId": "SELL-004",
+      "module": "Selling",
+      "erpnextFeatureName": "Sales Invoice",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/sales-invoice",
+      "businessPurpose": "Bills the customer, posts receivable and income to the GL, applies taxes, and (if update-stock) moves inventory.",
+      "requiredEntities": [
+        "SalesInvoice",
+        "SalesInvoiceItem",
+        "SalesTaxLine"
+      ],
+      "requiredWorkflows": [
+        "Draft -> Submit (post GL/AR, optional SLE) -> Cancel",
+        "Apply taxes",
+        "Track outstanding"
+      ],
+      "requiredReports": [
+        "Sales register"
+      ],
+      "requiredApis": [
+        "GET/POST /api/sales-invoices",
+        "POST submit/cancel"
+      ],
+      "requiredUiScreens": [
+        "Sales Invoice form"
+      ],
+      "requiredTests": [
+        "GL debits receivable, credits income+tax",
+        "Outstanding tracked",
+        "update_stock posts SLE+COGS"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 42,
+      "notes": "Core revenue posting document."
+    },
+    {
+      "featureId": "SELL-005",
+      "module": "Selling",
+      "erpnextFeatureName": "Delivery Note",
+      "officialSourceRef": "https://docs.erpnext.com/docs/v13/user/manual/en/stock/delivery-note",
+      "businessPurpose": "Records goods shipped to the customer; on submit creates outgoing Stock Ledger Entries (and COGS under perpetual inventory).",
+      "requiredEntities": [
+        "DeliveryNote",
+        "DeliveryNoteItem"
+      ],
+      "requiredWorkflows": [
+        "Create from Sales Order",
+        "Submit posts outgoing SLE",
+        "Bill from delivery"
+      ],
+      "requiredReports": [
+        "Delivered items"
+      ],
+      "requiredApis": [
+        "GET/POST /api/delivery-notes",
+        "POST submit/cancel"
+      ],
+      "requiredUiScreens": [
+        "Delivery Note form"
+      ],
+      "requiredTests": [
+        "Submit reduces stock at warehouse",
+        "SO delivered qty updated",
+        "Cancel reverses SLE"
+      ],
+      "priority": "P0",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Stock-affecting selling document."
+    },
+    {
+      "featureId": "BUY-001",
+      "module": "Buying",
+      "erpnextFeatureName": "Supplier Master",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/supplier",
+      "businessPurpose": "Party master for vendors holding payable account, currency, and purchase defaults.",
+      "requiredEntities": [
+        "Supplier",
+        "SupplierGroup",
+        "Address",
+        "Contact"
+      ],
+      "requiredWorkflows": [
+        "Create supplier with defaults",
+        "Resolve payable account in purchase docs"
+      ],
+      "requiredReports": [
+        "Supplier-wise purchases"
+      ],
+      "requiredApis": [
+        "GET/POST/PUT /api/suppliers"
+      ],
+      "requiredUiScreens": [
+        "Supplier list/form"
+      ],
+      "requiredTests": [
+        "Defaults flow into Purchase Invoice",
+        "Supplier group tree integrity"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 42,
+      "notes": "Symmetric to Customer."
+    },
+    {
+      "featureId": "BUY-002",
+      "module": "Buying",
+      "erpnextFeatureName": "Purchase Order",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/purchase-order",
+      "businessPurpose": "Formal order to a supplier that drives receipt and billing, with per-line received/billed tracking.",
+      "requiredEntities": [
+        "PurchaseOrder",
+        "PurchaseOrderItem"
+      ],
+      "requiredWorkflows": [
+        "Draft -> Submit",
+        "Create Purchase Receipt / Purchase Invoice",
+        "Track received & billed qty"
+      ],
+      "requiredReports": [
+        "Purchase Order analysis / pending to receive"
+      ],
+      "requiredApis": [
+        "GET/POST /api/purchase-orders",
+        "POST create-receipt",
+        "POST create-invoice"
+      ],
+      "requiredUiScreens": [
+        "Purchase Order form"
+      ],
+      "requiredTests": [
+        "Over-receipt beyond tolerance blocked",
+        "Received/billed status updates from downstream docs"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 42,
+      "notes": "Central buying hub document."
+    },
+    {
+      "featureId": "BUY-003",
+      "module": "Buying",
+      "erpnextFeatureName": "Purchase Invoice",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/purchase-invoice",
+      "businessPurpose": "Records the supplier bill, posts payable and expense/asset to the GL, applies taxes, and (if update-stock) receives inventory.",
+      "requiredEntities": [
+        "PurchaseInvoice",
+        "PurchaseInvoiceItem",
+        "PurchaseTaxLine"
+      ],
+      "requiredWorkflows": [
+        "Draft -> Submit (post GL/AP, optional SLE) -> Cancel",
+        "Apply taxes",
+        "Track outstanding payable"
+      ],
+      "requiredReports": [
+        "Purchase register"
+      ],
+      "requiredApis": [
+        "GET/POST /api/purchase-invoices",
+        "POST submit/cancel"
+      ],
+      "requiredUiScreens": [
+        "Purchase Invoice form"
+      ],
+      "requiredTests": [
+        "GL credits payable, debits expense/asset+tax",
+        "Payable outstanding tracked",
+        "update_stock posts incoming SLE"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 42,
+      "notes": "Core expense posting document."
+    },
+    {
+      "featureId": "BUY-004",
+      "module": "Buying",
+      "erpnextFeatureName": "Purchase Receipt",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/purchase-receipt",
+      "businessPurpose": "Records goods received from a supplier; on submit creates incoming Stock Ledger Entries and (perpetual) stock-received-but-not-billed GL.",
+      "requiredEntities": [
+        "PurchaseReceipt",
+        "PurchaseReceiptItem"
+      ],
+      "requiredWorkflows": [
+        "Create from Purchase Order",
+        "Submit posts incoming SLE",
+        "Bill from receipt"
+      ],
+      "requiredReports": [
+        "Received items"
+      ],
+      "requiredApis": [
+        "GET/POST /api/purchase-receipts",
+        "POST submit/cancel"
+      ],
+      "requiredUiScreens": [
+        "Purchase Receipt form"
+      ],
+      "requiredTests": [
+        "Submit increases stock + valuation",
+        "PO received qty updated",
+        "Cancel reverses SLE"
+      ],
+      "priority": "P0",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Stock-affecting buying document."
+    },
+    {
+      "featureId": "CRM-001",
+      "module": "CRM",
+      "erpnextFeatureName": "Lead",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/lead",
+      "businessPurpose": "Captures a potential customer's interest before qualification; convertible to Opportunity/Customer.",
+      "requiredEntities": [
+        "Lead",
+        "LeadSource"
+      ],
+      "requiredWorkflows": [
+        "Capture lead",
+        "Qualify -> convert to Opportunity/Customer",
+        "Status pipeline"
+      ],
+      "requiredReports": [
+        "Lead funnel"
+      ],
+      "requiredApis": [
+        "GET/POST /api/leads",
+        "POST convert"
+      ],
+      "requiredUiScreens": [
+        "Lead list/form/kanban"
+      ],
+      "requiredTests": [
+        "Conversion creates Customer/Opportunity",
+        "Status transitions valid"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 35,
+      "notes": "Top of sales funnel."
+    },
+    {
+      "featureId": "CRM-002",
+      "module": "CRM",
+      "erpnextFeatureName": "Opportunity",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/opportunity",
+      "businessPurpose": "Qualified sales prospect with expected value and stage; convertible to Quotation.",
+      "requiredEntities": [
+        "Opportunity",
+        "OpportunityItem"
+      ],
+      "requiredWorkflows": [
+        "Create from Lead",
+        "Stage/probability pipeline",
+        "Convert to Quotation"
+      ],
+      "requiredReports": [
+        "Sales pipeline / opportunity analysis"
+      ],
+      "requiredApis": [
+        "GET/POST /api/opportunities",
+        "POST convert-to-quotation"
+      ],
+      "requiredUiScreens": [
+        "Opportunity form/kanban"
+      ],
+      "requiredTests": [
+        "Convert carries items to Quotation",
+        "Pipeline value aggregates by stage"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 35,
+      "notes": "Bridges CRM to Selling."
+    },
+    {
+      "featureId": "PROJ-001",
+      "module": "Projects",
+      "erpnextFeatureName": "Project",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/project",
+      "businessPurpose": "Container for tasks, timesheets, and costing that tracks progress, billing, and profitability of a body of work.",
+      "requiredEntities": [
+        "Project",
+        "ProjectType"
+      ],
+      "requiredWorkflows": [
+        "Create project",
+        "Roll up task completion and cost",
+        "Link to billing"
+      ],
+      "requiredReports": [
+        "Project profitability",
+        "Project summary"
+      ],
+      "requiredApis": [
+        "GET/POST /api/projects"
+      ],
+      "requiredUiScreens": [
+        "Project list/form/dashboard"
+      ],
+      "requiredTests": [
+        "Percent complete rolls up from tasks",
+        "Costs aggregate from timesheets/expenses"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 30,
+      "notes": "Cost-center tag enables project P&L."
+    },
+    {
+      "featureId": "PROJ-002",
+      "module": "Projects",
+      "erpnextFeatureName": "Task",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/tasks",
+      "businessPurpose": "Unit of work under a project with status, dependencies, and assignment.",
+      "requiredEntities": [
+        "Task",
+        "TaskDependency"
+      ],
+      "requiredWorkflows": [
+        "Create/assign task",
+        "Status transitions",
+        "Dependency enforcement"
+      ],
+      "requiredReports": [
+        "Task list / Gantt"
+      ],
+      "requiredApis": [
+        "GET/POST /api/tasks"
+      ],
+      "requiredUiScreens": [
+        "Task form / Gantt / kanban"
+      ],
+      "requiredTests": [
+        "Dependent task cannot start before predecessor",
+        "Status rolls up to project"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 30,
+      "notes": "Supports parent/child and dependencies."
+    },
+    {
+      "featureId": "PROJ-003",
+      "module": "Projects",
+      "erpnextFeatureName": "Timesheet",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/timesheets",
+      "businessPurpose": "Records time logged against tasks/projects for costing and billing; can feed Sales Invoice and payroll.",
+      "requiredEntities": [
+        "Timesheet",
+        "TimesheetDetail"
+      ],
+      "requiredWorkflows": [
+        "Log time entries",
+        "Compute costing/billing amount",
+        "Bill from timesheet"
+      ],
+      "requiredReports": [
+        "Timesheet summary / billable hours"
+      ],
+      "requiredApis": [
+        "GET/POST /api/timesheets"
+      ],
+      "requiredUiScreens": [
+        "Timesheet form"
+      ],
+      "requiredTests": [
+        "Billing amount = hours x rate",
+        "Overlapping entries flagged"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 30,
+      "notes": "Links project time to billing/costing."
+    },
+    {
+      "featureId": "SUP-001",
+      "module": "Support",
+      "erpnextFeatureName": "Issue / Ticket",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/issues",
+      "businessPurpose": "Customer support ticket capturing problem, status, priority, and resolution, optionally linked to an SLA.",
+      "requiredEntities": [
+        "Issue",
+        "IssueType",
+        "IssuePriority"
+      ],
+      "requiredWorkflows": [
+        "Open -> Replied -> Resolved -> Closed",
+        "Assign agent",
+        "Link to Customer"
+      ],
+      "requiredReports": [
+        "Issue summary / open tickets"
+      ],
+      "requiredApis": [
+        "GET/POST /api/issues"
+      ],
+      "requiredUiScreens": [
+        "Issue list/form/kanban"
+      ],
+      "requiredTests": [
+        "Status lifecycle enforced",
+        "Resolution time captured"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 30,
+      "notes": "Customer-facing helpdesk core."
+    },
+    {
+      "featureId": "SUP-002",
+      "module": "Support",
+      "erpnextFeatureName": "SLA & Escalation",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/service-level-agreement",
+      "businessPurpose": "Tracks response/resolution deadlines per priority and escalates or flags breaches.",
+      "requiredEntities": [
+        "ServiceLevelAgreement",
+        "SlaPriorityRow"
+      ],
+      "requiredWorkflows": [
+        "Apply SLA by priority",
+        "Track response/resolution-by times",
+        "Flag/escalate on breach"
+      ],
+      "requiredReports": [
+        "SLA breach report"
+      ],
+      "requiredApis": [
+        "GET/POST /api/service-level-agreements"
+      ],
+      "requiredUiScreens": [
+        "SLA form"
+      ],
+      "requiredTests": [
+        "Breach detected when deadline passed",
+        "Hold time pauses SLA clock"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 30,
+      "notes": "Escalation = breach detection + status/assignment change."
+    },
+    {
+      "featureId": "AST-001",
+      "module": "Assets",
+      "erpnextFeatureName": "Asset",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/asset",
+      "businessPurpose": "Tracks fixed assets with acquisition value, depreciation schedule, and book value; integrates with accounting.",
+      "requiredEntities": [
+        "Asset",
+        "AssetCategory",
+        "DepreciationSchedule"
+      ],
+      "requiredWorkflows": [
+        "Capitalize asset from purchase",
+        "Generate depreciation schedule",
+        "Post periodic depreciation JE",
+        "Disposal/scrap"
+      ],
+      "requiredReports": [
+        "Asset register",
+        "Depreciation schedule"
+      ],
+      "requiredApis": [
+        "GET/POST /api/assets"
+      ],
+      "requiredUiScreens": [
+        "Asset form",
+        "Asset Category form"
+      ],
+      "requiredTests": [
+        "Depreciation reduces book value over schedule",
+        "Disposal posts gain/loss"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 25,
+      "notes": "Straight-line and written-down-value methods."
+    },
+    {
+      "featureId": "AST-002",
+      "module": "Assets",
+      "erpnextFeatureName": "Asset Maintenance",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/asset-maintenance",
+      "businessPurpose": "Schedules and logs preventive/corrective maintenance tasks against assets.",
+      "requiredEntities": [
+        "AssetMaintenance",
+        "AssetMaintenanceTask",
+        "AssetMaintenanceLog"
+      ],
+      "requiredWorkflows": [
+        "Schedule recurring maintenance",
+        "Log completion",
+        "Track next due date"
+      ],
+      "requiredReports": [
+        "Upcoming maintenance"
+      ],
+      "requiredApis": [
+        "GET/POST /api/asset-maintenance"
+      ],
+      "requiredUiScreens": [
+        "Asset Maintenance form"
+      ],
+      "requiredTests": [
+        "Next due date advances on completion",
+        "Overdue tasks flagged"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 25,
+      "notes": "Maintenance scheduling, no GL impact."
+    },
+    {
+      "featureId": "MFG-001",
+      "module": "Manufacturing",
+      "erpnextFeatureName": "Bill of Materials (BOM)",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/bill-of-materials",
+      "businessPurpose": "Defines components, quantities, operations, and costing needed to manufacture an item; basis for Work Orders and material planning.",
+      "requiredEntities": [
+        "BOM",
+        "BOMItem",
+        "BOMOperation"
+      ],
+      "requiredWorkflows": [
+        "Define multi-level BOM",
+        "Cost rollup from components+operations",
+        "Set active/default BOM"
+      ],
+      "requiredReports": [
+        "BOM explosion / costing"
+      ],
+      "requiredApis": [
+        "GET/POST /api/boms"
+      ],
+      "requiredUiScreens": [
+        "BOM form with item/operation grids"
+      ],
+      "requiredTests": [
+        "Cost rollup sums components+operations",
+        "Circular BOM rejected"
+      ],
+      "priority": "P2",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Heart of manufacturing; supports nesting."
+    },
+    {
+      "featureId": "MFG-002",
+      "module": "Manufacturing",
+      "erpnextFeatureName": "Work Order",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/work-order",
+      "businessPurpose": "Authorizes production of a quantity of a finished item per a BOM, driving material issue and finished-goods receipt.",
+      "requiredEntities": [
+        "WorkOrder",
+        "WorkOrderItem",
+        "WorkOrderOperation"
+      ],
+      "requiredWorkflows": [
+        "Create from BOM",
+        "Issue raw materials (Stock Entry)",
+        "Receive finished goods",
+        "Track produced qty"
+      ],
+      "requiredReports": [
+        "Work Order summary"
+      ],
+      "requiredApis": [
+        "GET/POST /api/work-orders",
+        "POST start/finish"
+      ],
+      "requiredUiScreens": [
+        "Work Order form"
+      ],
+      "requiredTests": [
+        "Material transfer matches BOM qty",
+        "Finished-goods SLE created on completion"
+      ],
+      "priority": "P2",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Consumes raw materials, yields finished goods."
+    },
+    {
+      "featureId": "MFG-003",
+      "module": "Manufacturing",
+      "erpnextFeatureName": "Quality Inspection",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/quality-inspection",
+      "businessPurpose": "Records acceptance/rejection of items against quality parameters at receipt, production, or delivery.",
+      "requiredEntities": [
+        "QualityInspection",
+        "QualityInspectionTemplate",
+        "QualityInspectionReading"
+      ],
+      "requiredWorkflows": [
+        "Define parameter template",
+        "Inspect against acceptance criteria",
+        "Block transaction if inspection required and failing"
+      ],
+      "requiredReports": [
+        "Quality Inspection summary"
+      ],
+      "requiredApis": [
+        "GET/POST /api/quality-inspections"
+      ],
+      "requiredUiScreens": [
+        "Quality Inspection form"
+      ],
+      "requiredTests": [
+        "Reading outside range = Rejected",
+        "Mandatory inspection blocks receipt/delivery"
+      ],
+      "priority": "P2",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Can be mandatory via item/BOM flag."
+    },
+    {
+      "featureId": "HR-001",
+      "module": "HR/Payroll",
+      "erpnextFeatureName": "Employee",
+      "officialSourceRef": "https://docs.frappe.io/hr/employee",
+      "businessPurpose": "Master record for staff holding personal, employment, department, and reporting-structure data; basis for HR and payroll.",
+      "requiredEntities": [
+        "Employee",
+        "Department",
+        "Designation"
+      ],
+      "requiredWorkflows": [
+        "Create employee",
+        "Set reporting manager",
+        "Status (Active/Left) lifecycle"
+      ],
+      "requiredReports": [
+        "Employee directory / headcount"
+      ],
+      "requiredApis": [
+        "GET/POST /api/employees"
+      ],
+      "requiredUiScreens": [
+        "Employee list/form"
+      ],
+      "requiredTests": [
+        "Reporting hierarchy valid (no cycles)",
+        "Status lifecycle enforced"
+      ],
+      "priority": "P2",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "HR app (frappe/hrms) is GPLv3; clean-room target only."
+    },
+    {
+      "featureId": "HR-002",
+      "module": "HR/Payroll",
+      "erpnextFeatureName": "Salary Structure / Payroll Skeleton",
+      "officialSourceRef": "https://docs.frappe.io/hr/payroll",
+      "businessPurpose": "Defines earning/deduction components and a salary structure to compute a Salary Slip; minimal skeleton for payroll posting.",
+      "requiredEntities": [
+        "SalaryComponent",
+        "SalaryStructure",
+        "SalaryStructureAssignment",
+        "SalarySlip"
+      ],
+      "requiredWorkflows": [
+        "Assign structure to employee",
+        "Generate salary slip",
+        "Post payroll JE"
+      ],
+      "requiredReports": [
+        "Salary register"
+      ],
+      "requiredApis": [
+        "GET/POST /api/salary-structures",
+        "POST payroll-entry"
+      ],
+      "requiredUiScreens": [
+        "Salary Structure form",
+        "Salary Slip form"
+      ],
+      "requiredTests": [
+        "Net pay = earnings - deductions",
+        "Payroll JE balances"
+      ],
+      "priority": "P2",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Skeleton scope: structure -> slip -> JE; statutory tax rules out of scope for now."
+    },
+    {
+      "featureId": "PORTAL-001",
+      "module": "Website/Portal/POS",
+      "erpnextFeatureName": "Point of Sale (POS) Skeleton",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/point-of-sales",
+      "businessPurpose": "Fast retail checkout that creates a Sales Invoice with immediate payment; skeleton scope = cart, item lookup, payment, invoice creation.",
+      "requiredEntities": [
+        "POSProfile",
+        "POSInvoice"
+      ],
+      "requiredWorkflows": [
+        "Cart build",
+        "Tender payment",
+        "Create+submit POS Sales Invoice"
+      ],
+      "requiredReports": [
+        "POS day-end / Z-report"
+      ],
+      "requiredApis": [
+        "POST /api/pos-invoices"
+      ],
+      "requiredUiScreens": [
+        "POS screen"
+      ],
+      "requiredTests": [
+        "POS invoice posts AR/income + payment",
+        "Day-end totals reconcile"
+      ],
+      "priority": "P3",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Skeleton only; offline sync out of scope."
+    },
+    {
+      "featureId": "PORTAL-002",
+      "module": "Website/Portal/POS",
+      "erpnextFeatureName": "Customer/Supplier Portal Skeleton",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/portal",
+      "businessPurpose": "Self-service web portal for customers/suppliers to view their orders, invoices, and tickets; skeleton scope = authenticated read views.",
+      "requiredEntities": [
+        "PortalUser",
+        "PortalSettings"
+      ],
+      "requiredWorkflows": [
+        "Portal login scoped by party",
+        "List own orders/invoices/issues"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET /api/portal/me/orders",
+        "GET /api/portal/me/invoices"
+      ],
+      "requiredUiScreens": [
+        "Portal dashboard",
+        "Portal document views"
+      ],
+      "requiredTests": [
+        "Portal user sees only own party data",
+        "Unauthenticated access blocked"
+      ],
+      "priority": "P3",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Reuses User Permission row-level scoping (CORE-011)."
+    },
+    {
+      "featureId": "PORTAL-003",
+      "module": "Website/Portal/POS",
+      "erpnextFeatureName": "Website / eCommerce Skeleton",
+      "officialSourceRef": "https://docs.erpnext.com/docs/user/manual/en/e-commerce",
+      "businessPurpose": "Public catalog and shopping-cart skeleton that turns published items into web orders/quotations.",
+      "requiredEntities": [
+        "WebsiteItem",
+        "ShoppingCartSettings"
+      ],
+      "requiredWorkflows": [
+        "Publish item to web",
+        "Add to cart",
+        "Place order -> Quotation/Sales Order"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET /api/shop/items",
+        "POST /api/shop/cart"
+      ],
+      "requiredUiScreens": [
+        "Catalog page",
+        "Cart/checkout"
+      ],
+      "requiredTests": [
+        "Only published items visible",
+        "Checkout creates Quotation/SO"
+      ],
+      "priority": "P3",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Advanced/optional; lowest priority."
+    },
+    {
+      "featureId": "RPT-001",
+      "module": "Reports/Dashboards",
+      "erpnextFeatureName": "Query/Script Report Framework",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/desk/reports",
+      "businessPurpose": "Generic reporting layer (filters, columns, grouping, export) that all financial and operational reports plug into for a consistent UX.",
+      "requiredEntities": [
+        "ReportDefinition",
+        "ReportColumn",
+        "ReportFilter"
+      ],
+      "requiredWorkflows": [
+        "Define report with filters/columns",
+        "Run with parameters",
+        "Export results"
+      ],
+      "requiredReports": [
+        "Hosts GL, Trial Balance, P&L, Balance Sheet, Stock, AR/AP reports"
+      ],
+      "requiredApis": [
+        "GET /api/reports/{name}/run"
+      ],
+      "requiredUiScreens": [
+        "Report viewer with filter panel"
+      ],
+      "requiredTests": [
+        "Filters apply correctly",
+        "Column totals correct",
+        "Export round-trips data"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 30,
+      "notes": "Shared substrate for ACC-006..009, INV-003/004, AR/AP."
+    },
+    {
+      "featureId": "RPT-002",
+      "module": "Reports/Dashboards",
+      "erpnextFeatureName": "Dashboard / Number Cards & Charts",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/desk/dashboards",
+      "businessPurpose": "At-a-glance KPI cards and charts (cash, receivables, sales trend) aggregating ledger/stock data for management.",
+      "requiredEntities": [
+        "Dashboard",
+        "NumberCard",
+        "DashboardChart"
+      ],
+      "requiredWorkflows": [
+        "Define KPI cards/charts",
+        "Refresh from aggregated data"
+      ],
+      "requiredReports": [
+        "Dashboard widgets"
+      ],
+      "requiredApis": [
+        "GET /api/dashboards/{name}"
+      ],
+      "requiredUiScreens": [
+        "Dashboard page"
+      ],
+      "requiredTests": [
+        "KPI values match underlying reports",
+        "Charts render time-series correctly"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 30,
+      "notes": "Must follow LocalAIFactory cached-aggregation rules (no GroupBy-constant)."
+    },
+    {
+      "featureId": "WF-001",
+      "module": "Workflow/Approvals",
+      "erpnextFeatureName": "Document Workflow Engine (maker-checker)",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/guides/desk/workflow",
+      "businessPurpose": "Configurable state machine with states, transitions, and per-transition allowed roles enforcing maker-checker / approval separation of duties.",
+      "requiredEntities": [
+        "Workflow",
+        "WorkflowState",
+        "WorkflowTransition",
+        "WorkflowActionLog"
+      ],
+      "requiredWorkflows": [
+        "Define states/transitions per document type",
+        "Enforce allowed-role per transition",
+        "Maker cannot self-approve when configured"
+      ],
+      "requiredReports": [
+        "Pending-approval queue",
+        "Workflow action log"
+      ],
+      "requiredApis": [
+        "POST /api/{doctype}/{id}/workflow-action"
+      ],
+      "requiredUiScreens": [
+        "Workflow action buttons",
+        "Approval inbox"
+      ],
+      "requiredTests": [
+        "Unauthorized transition blocked",
+        "Maker-checker separation enforced",
+        "Illegal state jump rejected"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Tested",
+      "parityScore": 65,
+      "notes": "Critical for banking-grade separation of duties."
+    },
+    {
+      "featureId": "WF-002",
+      "module": "Workflow/Approvals",
+      "erpnextFeatureName": "Submit / Cancel / Amend Lifecycle",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/understanding-submittable-documents",
+      "businessPurpose": "Submittable-document semantics (Draft 0 / Submitted 1 / Cancelled 2): submitted docs are immutable, corrections via cancel+amend, preserving audit integrity.",
+      "requiredEntities": [
+        "DocumentState",
+        "AmendmentLink"
+      ],
+      "requiredWorkflows": [
+        "Draft -> Submit (lock + post effects)",
+        "Cancel (reverse effects)",
+        "Amend (new linked version)"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "POST submit/cancel/amend on submittable doctypes"
+      ],
+      "requiredUiScreens": [
+        "Submit/Cancel/Amend buttons",
+        "docstatus indicator"
+      ],
+      "requiredTests": [
+        "Submitted document is read-only",
+        "Cancel reverses GL/SLE",
+        "Amend links to original"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Tested",
+      "parityScore": 65,
+      "notes": "Underpins every posting document's integrity."
+    },
+    {
+      "featureId": "AUDIT-001",
+      "module": "Audit Trail",
+      "erpnextFeatureName": "Document Version / Change Log",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/api/document",
+      "businessPurpose": "Records who changed what and when on every document (field-level diffs) for traceability and compliance.",
+      "requiredEntities": [
+        "DocumentVersion",
+        "FieldChange"
+      ],
+      "requiredWorkflows": [
+        "Capture before/after on every save",
+        "Attribute change to user+timestamp"
+      ],
+      "requiredReports": [
+        "Change log per document"
+      ],
+      "requiredApis": [
+        "GET /api/{doctype}/{id}/versions"
+      ],
+      "requiredUiScreens": [
+        "Document timeline / version history"
+      ],
+      "requiredTests": [
+        "Each edit produces a version entry",
+        "Diff captures changed fields only"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Tested",
+      "parityScore": 68,
+      "notes": "Field-level change history."
+    },
+    {
+      "featureId": "AUDIT-002",
+      "module": "Audit Trail",
+      "erpnextFeatureName": "Activity / Access Log",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/api/document",
+      "businessPurpose": "Immutable log of logins, submits, cancels, and sensitive actions for security audit and incident investigation.",
+      "requiredEntities": [
+        "ActivityLog",
+        "AccessLog"
+      ],
+      "requiredWorkflows": [
+        "Log auth events and document submit/cancel",
+        "Append-only retention"
+      ],
+      "requiredReports": [
+        "Activity log report"
+      ],
+      "requiredApis": [
+        "GET /api/activity-log"
+      ],
+      "requiredUiScreens": [
+        "Activity log viewer"
+      ],
+      "requiredTests": [
+        "Login/submit events logged",
+        "Log is append-only (no edit/delete)"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Tested",
+      "parityScore": 68,
+      "notes": "Append-only; banking compliance requirement."
+    },
+    {
+      "featureId": "API-001",
+      "module": "REST APIs",
+      "erpnextFeatureName": "Resource REST API (CRUD)",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/api/rest",
+      "businessPurpose": "Uniform REST surface to list/get/create/update/delete documents with filtering, pagination, and field selection — the integration backbone.",
+      "requiredEntities": [
+        "All transactable doctypes"
+      ],
+      "requiredWorkflows": [
+        "GET list with filters/paging/fields",
+        "GET single",
+        "POST/PUT/DELETE with permission checks"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST/PUT/DELETE /api/resource/{doctype}"
+      ],
+      "requiredUiScreens": [
+        "API docs / Swagger"
+      ],
+      "requiredTests": [
+        "Filter/paging/field-selection work",
+        "Permission enforced per request",
+        "Validation errors return structured 4xx"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 45,
+      "notes": "Behavioral parity with Frappe resource API conventions; original implementation."
+    },
+    {
+      "featureId": "API-002",
+      "module": "REST APIs",
+      "erpnextFeatureName": "RPC / Method API & Token Auth",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/api/rest",
+      "businessPurpose": "Calls whitelisted server methods (submit, cancel, convert, run report) and authenticates via api_key:api_secret token in the Authorization header.",
+      "requiredEntities": [
+        "ApiKey",
+        "WhitelistedMethod"
+      ],
+      "requiredWorkflows": [
+        "Token auth (key:secret)",
+        "Invoke whitelisted method",
+        "Role check on method"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "POST /api/method/{name}",
+        "token Authorization header"
+      ],
+      "requiredUiScreens": [
+        "API key management"
+      ],
+      "requiredTests": [
+        "Valid token authenticates",
+        "Non-whitelisted method blocked",
+        "Method role check enforced"
+      ],
+      "priority": "P0",
+      "implementationStatus": "Partial",
+      "parityScore": 45,
+      "notes": "Mirror token scheme conventions; do not copy Frappe auth code."
+    },
+    {
+      "featureId": "IO-001",
+      "module": "Import/Export",
+      "erpnextFeatureName": "Data Import",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/guides/data/importing-data-using-csv-file",
+      "businessPurpose": "Bulk-create/update records from CSV/XLSX with template generation, field mapping, validation, and per-row error reporting.",
+      "requiredEntities": [
+        "DataImport",
+        "DataImportLog"
+      ],
+      "requiredWorkflows": [
+        "Download template per doctype",
+        "Upload + map columns",
+        "Validate + insert/update",
+        "Report row errors"
+      ],
+      "requiredReports": [
+        "Import result/error log"
+      ],
+      "requiredApis": [
+        "POST /api/data-import"
+      ],
+      "requiredUiScreens": [
+        "Data Import wizard"
+      ],
+      "requiredTests": [
+        "Valid rows imported",
+        "Invalid rows reported with reason",
+        "Update mode matches on key"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 25,
+      "notes": "Insert and update modes."
+    },
+    {
+      "featureId": "IO-002",
+      "module": "Import/Export",
+      "erpnextFeatureName": "Data Export",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/desk/reports",
+      "businessPurpose": "Exports list/report data to CSV/XLSX honoring filters and permissions for offline analysis and backup.",
+      "requiredEntities": [
+        "ExportRequest"
+      ],
+      "requiredWorkflows": [
+        "Export filtered list/report",
+        "Respect read permissions in export"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET /api/export/{doctype}"
+      ],
+      "requiredUiScreens": [
+        "Export button on lists/reports"
+      ],
+      "requiredTests": [
+        "Export honors current filters",
+        "Restricted fields/rows excluded"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 25,
+      "notes": "Pairs with Data Import."
+    },
+    {
+      "featureId": "CUST-001",
+      "module": "Customization",
+      "erpnextFeatureName": "Custom Fields",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/customize-form",
+      "businessPurpose": "Add user-defined fields to standard documents without code, persisted and surfaced in forms, APIs, and reports.",
+      "requiredEntities": [
+        "CustomField",
+        "DocFieldMeta"
+      ],
+      "requiredWorkflows": [
+        "Define custom field on a doctype",
+        "Persist + render in form/API",
+        "Validate per field type"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST /api/custom-fields",
+        "custom fields included in resource API"
+      ],
+      "requiredUiScreens": [
+        "Customize Form screen"
+      ],
+      "requiredTests": [
+        "Custom field saved + returned by API",
+        "Type validation enforced"
+      ],
+      "priority": "P1",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Metadata-driven extensibility; banking estate needs domain fields."
+    },
+    {
+      "featureId": "CUST-002",
+      "module": "Customization",
+      "erpnextFeatureName": "Naming Series Customization",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/basics/doctypes/naming",
+      "businessPurpose": "Lets admins configure per-document naming series patterns/prefixes and current counters at runtime.",
+      "requiredEntities": [
+        "NamingSeries",
+        "NamingSeriesCounter"
+      ],
+      "requiredWorkflows": [
+        "Edit series pattern per doctype",
+        "Adjust current counter (audited)"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/PUT /api/naming-series"
+      ],
+      "requiredUiScreens": [
+        "Naming Series settings"
+      ],
+      "requiredTests": [
+        "Pattern change applies to next document",
+        "Counter edit is audited"
+      ],
+      "priority": "P1",
+      "implementationStatus": "Partial",
+      "parityScore": 18,
+      "notes": "Runtime extension of CORE-006."
+    },
+    {
+      "featureId": "CUST-003",
+      "module": "Customization",
+      "erpnextFeatureName": "Property Setter / Form Customization",
+      "officialSourceRef": "https://docs.frappe.io/framework/user/en/customize-form",
+      "businessPurpose": "Override standard field properties (mandatory, hidden, label, read-only, options) per doctype without altering core code.",
+      "requiredEntities": [
+        "PropertySetter"
+      ],
+      "requiredWorkflows": [
+        "Override field property",
+        "Apply override at render/validation time"
+      ],
+      "requiredReports": [],
+      "requiredApis": [
+        "GET/POST /api/property-setters"
+      ],
+      "requiredUiScreens": [
+        "Customize Form screen"
+      ],
+      "requiredTests": [
+        "Mandatory override enforced on save",
+        "Hidden/read-only honored in form+API"
+      ],
+      "priority": "P2",
+      "implementationStatus": "NotStarted",
+      "parityScore": 0,
+      "notes": "Metadata override layer."
+    }
+  ],
+  "updatedBy": "ERP-GENERATION-PROOF 2026-06-21: statuses reflect the built LAF Enterprise ERP"
+}

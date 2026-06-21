@@ -1,0 +1,27 @@
+# Build output
+**/bin/
+**/obj/
+**/publish/
+
+# Local databases (SQLite dev DB + journals)
+*.db
+*.db-shm
+*.db-wal
+*.mdf
+*.ldf
+
+# Logs
+*.log
+run*.out.log
+run*.err.log
+
+# Node / Playwright
+playwright/node_modules/
+playwright/test-results/
+playwright/playwright-report*/
+playwright/playwright-report.json
+playwright/.cache/
+
+# OS / IDE
+.vs/
+*.user
