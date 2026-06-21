@@ -35,7 +35,11 @@ deployment, true fresh-VM install — see the gates report.
 
 ## Readiness
 
-Mean ≈ **61.2%** (max 88, **none at 100**). The **MODE-A-IIS-PROOF** pass executed a **real IIS pilot**
+Mean ≈ **62.0%** (max 88, **none at 100**). The **MULTI-AGENT-HARDENING** pass proved **HTTPS + Windows/Negotiate
+authenticated round-trip** over IIS (401 → 200 with Windows credentials; production-posture healthcheck PASS,
+0 HTTP 500s) and a **51-real-public-repo benchmark** (123,849 C# + 241,730 Python symbols over 7.56M LOC),
+raising Deployment 80→83, Benchmark/Evidence 82→86, Repository Understanding 80→82, Security 76→78, Controlled
+Pilot 72→74, Scalability 45→50. Earlier, the **MODE-A-IIS-PROOF** pass executed a **real IIS pilot**
 (IIS enabled + Hosting Bundle/ANCM; app served through IIS — `Server: Microsoft-IIS/10.0` — against SQL
 Express with a **least-privilege** app-pool login; 0 HTTP 500s; rollback proven) and raised **Deployment
 Readiness 73 → 80** and **Controlled Pilot 70 → 72**. Proof ladder: **Local POC ✅ → Published-app + SQL

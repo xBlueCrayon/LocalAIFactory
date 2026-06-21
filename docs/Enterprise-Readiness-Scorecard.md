@@ -118,3 +118,16 @@ demonstrated; rollback proven (stop frees port, restart restores). Honest raises
 → 80** (real IIS pilot — **not** production/blue-green/HTTPS), **Controlled Pilot 70 → 72**. Proof ladder:
 **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → Production ⬜ → Commercial GA ⬜.** See
 `reports/MODE_A_IIS_*`. **None at 100.**
+
+## MULTI-AGENT-HARDENING update (overall mean ≈ 61.2% → ≈ 62.0%)
+
+Proved **HTTPS + Windows/Negotiate authenticated round-trip** over IIS (HTTPS `:8443` self-signed; **401
+without creds → 200 with Windows credentials over HTTPS**; production-posture healthcheck `15` PASS, 0 HTTP
+500s) and a **51-real-public-repo benchmark** (22 Passed / 7 Partial / 5 ValidationOnly / 5
+UnsupportedLanguage / 12 CloneFailed-or-TimedOut; **123,849 C# + 241,730 Python symbols + 1,733 SQL objects**
+over 7.56M LOC; avg 60.8 — honest gaps for TS/JS + xlarge repos). Proof-backed raises: **Deployment 80→83,
+Benchmark/Evidence 82→86, Repository Understanding 80→82, Security 76→78, Controlled Pilot 72→74, Scalability
+45→50.** Rejected (no proof): Enterprise Product/SSO/OIDC, external audit, Cross-System/Estate, Commercial.
+Proof ladder: **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → IIS HTTPS/Windows-auth pilot ✅
+→ 50-real-project benchmark ✅ → Production ⬜ → Commercial GA ⬜.** See `reports/MULTI_AGENT_*`,
+`reports/IIS_HTTPS_BINDING_PROOF.md`, `reports/PUBLIC_50_PROJECT_BENCHMARK_RESULTS.md`. **None at 100.**

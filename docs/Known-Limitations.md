@@ -93,7 +93,16 @@ This list is a feature, not an apology: over-claiming is the failure mode we are
   Windows/Negotiate authenticated round-trip + RBAC (the pilot used dev-auth for reachability and showed the
   IIS 401 Negotiate challenge), a Windows **Server** edition, and a staged/blue-green rollout with operations
   over time.
-- Deployment proof ladder: **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → Production ⬜ → Commercial GA ⬜**.
+- **Update (2026-06-21): HTTPS + Windows/Negotiate authenticated round-trip proven over IIS.** HTTPS binding
+  (`:8443`, **self-signed localhost** — not a CA-issued production cert), all pages 200 over TLS, and a
+  **401 → 200-with-Windows-credentials** round-trip (`reports/IIS_*`). The app still runs **dev-auth behind
+  IIS** for page reachability; wiring app RBAC to the IIS Windows identity (production scheme + bootstrap
+  admin) + a **CA cert + TLS hardening** remain the production steps.
+- **A 51-real-public-repo benchmark was run.** 22 Passed / 7 Partial / 5 ValidationOnly / 5 UnsupportedLanguage
+  (TS/JS) / 12 CloneFailed-or-TimedOut (xlarge scale gap); honest coverage limits documented in
+  `reports/PUBLIC_50_PROJECT_FAILURE_ANALYSIS.md`. TS/JS/Java/Go are **not** extracted; xlarge monorepos
+  exceed the per-repo budget.
+- Deployment proof ladder: **Local POC ✅ → Published-app + SQL Express ✅ → IIS pilot ✅ → IIS HTTPS/Windows-auth pilot ✅ → 50-real-project benchmark ✅ → Production ⬜ → Commercial GA ⬜**.
 
 - **Docker and SQL Express were not exercised on the build host.** The build/validation host did not
   run the Docker-based or SQL-Express scenarios; those paths are documented but not host-verified

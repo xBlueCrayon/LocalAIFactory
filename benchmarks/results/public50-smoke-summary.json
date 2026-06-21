@@ -1,0 +1,31 @@
+{
+  "suite": "public50-smoke",
+  "attempted": 5,
+  "byStatus": {
+    "Passed": 4,
+    "UnsupportedLanguage": 1
+  },
+  "byLanguage": {
+    "Python": 2,
+    "C#": 2,
+    "JavaScript": 1
+  },
+  "bySizeTier": {
+    "small": 3,
+    "tiny": 2
+  },
+  "cloned": 5,
+  "passedFull": 4,
+  "passedPartial": 0,
+  "validationOnly": 0,
+  "unsupported": 1,
+  "failed": 0,
+  "totalSupportedFiles": 891.0,
+  "totalCSharpSymbols": 1030.0,
+  "totalPythonSymbols": 7397.0,
+  "totalSqlObjects": 2.0,
+  "totalLoc": 91058.0,
+  "totalDurationSec": 9.8,
+  "averageScore": 85.0,
+  "largestRepoAttempted": "scrapy/scrapy (628 files, Passed)"
+}

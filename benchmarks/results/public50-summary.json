@@ -1,0 +1,42 @@
+{
+  "suite": "public50",
+  "attempted": 51,
+  "byStatus": {
+    "UnsupportedLanguage": 5,
+    "Passed": 22,
+    "CloneFailed": 12,
+    "ValidationOnly": 5,
+    "PassedPartial": 7
+  },
+  "byLanguage": {
+    "TypeScript": 8,
+    "C#": 13,
+    "JavaScript": 3,
+    "Python": 17,
+    "Java": 5,
+    "Clojure": 1,
+    "SQL": 2,
+    "Go": 2
+  },
+  "bySizeTier": {
+    "small": 7,
+    "large": 21,
+    "xlarge": 15,
+    "tiny": 3,
+    "medium": 5
+  },
+  "cloned": 39,
+  "passedFull": 22,
+  "passedPartial": 7,
+  "validationOnly": 5,
+  "unsupported": 5,
+  "failed": 12,
+  "totalSupportedFiles": 86134.0,
+  "totalCSharpSymbols": 123849.0,
+  "totalPythonSymbols": 241730.0,
+  "totalSqlObjects": 1733.0,
+  "totalLoc": 7565513.0,
+  "totalDurationSec": 824.5,
+  "averageScore": 60.8,
+  "largestRepoAttempted": "odoo/odoo (47928 files, PassedPartial)"
+}

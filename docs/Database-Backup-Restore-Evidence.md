@@ -124,3 +124,16 @@ provenance, audit). It does **not** include:
 - `docs/Backup-Restore-Runbook.md` — full procedure + retention guidance.
 - `docs/Database-Operations-Runbook.md` — day-2 operations.
 - `docs/Upgrade-Rollback-Runbook.md` — pre-upgrade backup gate.
+
+## MULTI-AGENT-HARDENING evidence (2026-06-21, SQL Express)
+
+The backup/restore path was re-verified against the **SQL Express** deployment DB used by the IIS pilot
+(`LocalAIFactory_IISProof`) — a disposable, isolated DB (the main LocalDB was untouched):
+
+| Step | Command | Result |
+|---|---|---|
+| Backup | `database/backup-database.ps1 -Server .\SQLEXPRESS -Database LocalAIFactory_IISProof` | **OK** — 1,890 pages → `./backups/*.bak` (git-ignored) |
+| Restore verify | `database/restore-verify-database.ps1 -BackupFile <bak>` | **VERIFY OK** — backup set valid/restorable (`RESTORE VERIFYONLY`) |
+
+`backups/` is **git-ignored**; `.bak` files are never committed. No destructive restore was performed over
+an active database.
