@@ -43,7 +43,8 @@ $sb = New-Object System.Text.StringBuilder
 [void]$sb.AppendLine("**Packs:** $($packs.Count) · **Total items:** $grandItems`n")
 [void]$sb.AppendLine("| Pack | Version | Items | Review |")
 [void]$sb.AppendLine("|---|---|---:|---|")
-foreach ($p in $packs) { [void]$sb.AppendLine("| $($p.name) (`$($p.folder)`) | $($p.version) | $($p.itemCount) | $($p.reviewStatus) |") }
+$bt = [char]96  # literal backtick for the markdown code span (avoids the `$ escape collision)
+foreach ($p in $packs) { [void]$sb.AppendLine("| $($p.name) ($bt$($p.folder)$bt) | $($p.version) | $($p.itemCount) | $($p.reviewStatus) |") }
 foreach ($p in $packs) {
   [void]$sb.AppendLine("`n## $($p.name) — v$($p.version)  ($($p.itemCount) items)")
   [void]$sb.AppendLine("`n| Category | Items |`n|---|---:|")

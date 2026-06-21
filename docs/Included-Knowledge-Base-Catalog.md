@@ -10,10 +10,10 @@ certainty is claimed.
 
 | Pack | Version | Items | Review |
 |---|---|---:|---|
-| Financial Institution Operations v1 ($(System.Collections.Specialized.OrderedDictionary.folder)) | 1.0.0 | 16 | Approved |
-| KYC AML Transaction Approval v1 ($(System.Collections.Specialized.OrderedDictionary.folder)) | 1.0.0 | 16 | Approved |
-| Market Intelligence and Forecasting v1 ($(System.Collections.Specialized.OrderedDictionary.folder)) | 1.0.0 | 16 | Approved |
-| Professional Base Knowledge Pack ($(System.Collections.Specialized.OrderedDictionary.folder)) | 1.2.0 | 390 | Approved |
+| Financial Institution Operations v1 (`financial-institution-operations-v1`) | 1.0.0 | 16 | Approved |
+| KYC AML Transaction Approval v1 (`kyc-aml-transaction-approval-v1`) | 1.0.0 | 16 | Approved |
+| Market Intelligence and Forecasting v1 (`market-intelligence-forecasting-v1`) | 1.0.0 | 16 | Approved |
+| Professional Base Knowledge Pack (`professional-base-v1`) | 1.2.0 | 390 | Approved |
 
 ## Financial Institution Operations v1 — v1.0.0  (16 items)
 
