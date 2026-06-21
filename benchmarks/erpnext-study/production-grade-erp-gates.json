@@ -1,0 +1,33 @@
+{
+  "kind": "production-grade-erp-gates",
+  "generated": "2026-06-21",
+  "appliesTo": "LAF Enterprise ERP V3",
+  "note": "Machine-checkable production-grade gate set. Critical-but-external gates (real auth, TLS, external pen-test) and MSSQL production load are operator/external-owned and CAP the score until supplied.",
+  "gates": [
+    { "id": "C-01", "requirement": "Build green", "blocking": "Critical", "local": true, "evidence": "dotnet build LAF-EnterpriseERP-V3.slnx", "status": "PASS" },
+    { "id": "C-02", "requirement": "Automated tests green", "blocking": "Critical", "local": true, "evidence": "dotnet test (108 tests)", "status": "PASS" },
+    { "id": "C-03", "requirement": "Double-entry GL balances; unbalanced rejected", "blocking": "Critical", "local": true, "evidence": "AccountingTests + trial balance 2250=2250", "status": "PASS" },
+    { "id": "C-04", "requirement": "Maker/checker enforced", "blocking": "Critical", "local": true, "evidence": "WorkflowTests + scenario", "status": "PASS" },
+    { "id": "C-05", "requirement": "Audit trail on every transition", "blocking": "Critical", "local": true, "evidence": "audit tests", "status": "PASS" },
+    { "id": "C-06", "requirement": "RBAC enforced", "blocking": "Critical", "local": true, "evidence": "Rbac matrix tests", "status": "PASS" },
+    { "id": "C-07", "requirement": "No HTTP 500 on any page", "blocking": "Critical", "local": true, "evidence": "run proof + Playwright", "status": "PASS" },
+    { "id": "C-13", "requirement": "Real authentication (Windows/SSO/OIDC)", "blocking": "Critical", "local": false, "evidence": "operator-supplied", "status": "BLOCKED_EXTERNAL" },
+    { "id": "C-14", "requirement": "TLS / HTTPS with CA cert", "blocking": "Critical", "local": false, "evidence": "operator-supplied", "status": "BLOCKED_EXTERNAL" },
+    { "id": "C-15", "requirement": "External security review / pen-test", "blocking": "Critical", "local": false, "evidence": "external firm", "status": "BLOCKED_EXTERNAL" },
+    { "id": "H-01", "requirement": "Inventory: stock ledger + valuation + negative guard", "blocking": "High", "local": true, "evidence": "StockTests", "status": "PASS" },
+    { "id": "H-02", "requirement": "Profit & Loss report", "blocking": "High", "local": true, "evidence": "AccountingReportsTests + /api/reports/profit-and-loss", "status": "PASS" },
+    { "id": "H-03", "requirement": "Balance Sheet report (balances)", "blocking": "High", "local": true, "evidence": "AccountingReportsTests + /api/reports/balance-sheet", "status": "PASS" },
+    { "id": "H-04", "requirement": "REST API coverage of core + modules", "blocking": "High", "local": true, "evidence": "ApiTests + 15 catalog endpoints", "status": "PASS" },
+    { "id": "H-05", "requirement": "Playwright browser + login", "blocking": "High", "local": true, "evidence": "13 Playwright tests + screenshots", "status": "PASS" },
+    { "id": "H-06", "requirement": "Real-life business scenario test", "blocking": "High", "local": true, "evidence": "RealLifeScenarioTests", "status": "PASS" },
+    { "id": "H-07", "requirement": "UI create/edit CRUD pages for all modules", "blocking": "High", "local": true, "evidence": "Razor", "status": "PARTIAL", "note": "list/read pages + catalog POST API; no general create/edit forms" },
+    { "id": "H-17", "requirement": "MSSQL production-scale load test", "blocking": "High", "local": false, "evidence": "operator host", "status": "BLOCKED_EXTERNAL" },
+    { "id": "M-01", "requirement": "Manufacturing BOM / Work Order / Quality", "blocking": "Medium", "local": true, "evidence": "spec-generated CRUD modules", "status": "PARTIAL", "note": "CRUD skeletons, not full MRP" },
+    { "id": "M-02", "requirement": "HR employees / payroll", "blocking": "Medium", "local": true, "evidence": "Employee/SalaryComponent CRUD", "status": "PARTIAL" },
+    { "id": "M-03", "requirement": "POS", "blocking": "Medium", "local": true, "evidence": "PosProfile CRUD", "status": "PARTIAL" },
+    { "id": "M-08", "requirement": "Deployment + backup/restore docs", "blocking": "Medium", "local": true, "evidence": "docs", "status": "PARTIAL" },
+    { "id": "M-10", "requirement": "EF migrations (not EnsureCreated)", "blocking": "Medium", "local": true, "evidence": "—", "status": "FAIL", "note": "EnsureCreated used" },
+    { "id": "L-01", "requirement": "Notifications", "blocking": "Low", "local": true, "evidence": "NotificationRule CRUD", "status": "PARTIAL" },
+    { "id": "L-03", "requirement": "Website / eCommerce", "blocking": "Low", "local": true, "evidence": "WebProduct CRUD", "status": "PARTIAL" }
+  ]
+}

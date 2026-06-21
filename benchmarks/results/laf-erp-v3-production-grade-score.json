@@ -1,0 +1,34 @@
+{
+  "kind": "laf-erp-v3-production-grade-score",
+  "product": "LAF Enterprise ERP V3",
+  "generated": "2026-06-21",
+  "disclaimer": "Honest self-assessment. NOT production-grade. Capped by 3 external Critical gates (real auth, TLS, external pen-test) + MSSQL production load, all operator/external-owned.",
+  "categories": {
+    "functionalCompleteness": 46,
+    "accountingCorrectness": 80,
+    "inventoryCorrectness": 60,
+    "workflowControlCorrectness": 70,
+    "rbacSecurity": 45,
+    "auditability": 70,
+    "apiCompleteness": 62,
+    "uiCompleteness": 35,
+    "testCoverage": 78,
+    "playwrightCoverage": 55,
+    "realLifeScenarioCoverage": 42,
+    "performance": 35,
+    "deploymentReadiness": 35,
+    "maintainability": 75,
+    "documentation": 72,
+    "generatorAutonomy": 100
+  },
+  "gateSummary": {
+    "totalGates": 25,
+    "pass": 14,
+    "partial": 7,
+    "fail": 1,
+    "blockedExternal": 4,
+    "criticalExternalBlocked": ["C-13 real auth", "C-14 TLS", "C-15 external pen-test"]
+  },
+  "overallProductionGradePct": 48,
+  "verdict": "PILOT-grade, not production-grade. V3 adds real accounting depth (P&L + Balance Sheet, balanced), 15 data-driven CRUD modules (manufacturing/HR/POS/eCommerce/maintenance/customization skeletons), and 108 tests, lifting production readiness ~35%->~48%. The ceiling is hard: real authentication, TLS, an external security review, and MSSQL production load are operator/external-owned and cannot be produced locally; they cap the score until supplied. 100% is impossible locally for exactly these reasons."
+}

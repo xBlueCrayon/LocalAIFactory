@@ -1,0 +1,38 @@
+{
+  "registryUid": "9347664b-b14e-4f50-a677-7fcffcf892aa",
+  "name": "LocalAIFactory ERP Generation Lessons — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["official-docs", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "9347664b-b14e-4f50-a677-7fcffcf892ab",
+      "type": "official-docs",
+      "title": "ASP.NET Core MVC, minimal-API, and EF Core behaviour concept family",
+      "reliability": "high",
+      "topic": "framework-codegen"
+    },
+    {
+      "sourceUid": "9347664b-b14e-4f50-a677-7fcffcf892ac",
+      "type": "domain-theory",
+      "title": "Code-generation, template-splicing, and collision-resolution theory",
+      "reliability": "high",
+      "topic": "code-generation"
+    },
+    {
+      "sourceUid": "9347664b-b14e-4f50-a677-7fcffcf892ad",
+      "type": "domain-theory",
+      "title": "Local large-language-model output reliability and structured-parsing theory",
+      "reliability": "medium",
+      "topic": "llm-reliability"
+    },
+    {
+      "sourceUid": "9347664b-b14e-4f50-a677-7fcffcf892ae",
+      "type": "domain-theory",
+      "title": "LocalAIFactory firsthand runtime-audit and generation-gate findings",
+      "reliability": "high",
+      "topic": "firsthand-findings"
+    }
+  ]
+}

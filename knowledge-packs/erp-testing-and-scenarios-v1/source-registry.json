@@ -1,0 +1,31 @@
+{
+  "registryUid": "d75cd89f-c20a-4476-bb06-80c74f0ead82",
+  "name": "ERP Testing and Scenarios — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["official-docs", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "e12656a4-7824-4911-a1be-1d21a9d47652",
+      "type": "official-docs",
+      "title": "xUnit.net unit-testing framework concept family",
+      "reliability": "high",
+      "topic": "unit-testing"
+    },
+    {
+      "sourceUid": "86c84e08-c512-4425-84fe-7bd71a1c0ebd",
+      "type": "official-docs",
+      "title": "Playwright end-to-end browser-testing concept family",
+      "reliability": "high",
+      "topic": "e2e-testing"
+    },
+    {
+      "sourceUid": "7873cdfe-008e-4b76-8f27-ecf82c31ceb2",
+      "type": "domain-theory",
+      "title": "ERP business-process scenario and invariant-based test-design theory",
+      "reliability": "high",
+      "topic": "scenario-design"
+    }
+  ]
+}

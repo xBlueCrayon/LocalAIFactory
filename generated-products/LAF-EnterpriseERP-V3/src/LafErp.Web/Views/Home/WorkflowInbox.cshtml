@@ -1,0 +1,11 @@
+@model List<LafErp.Core.WorkflowInstance>
+@{ ViewData["Title"] = "Workflow Inbox"; }
+<table data-testid="workflow-table">
+    <thead><tr><th>Doc Type</th><th>Doc Id</th><th>State</th><th>Submitted By</th><th>Amount</th></tr></thead>
+    <tbody>
+    @foreach (var w in Model)
+    {
+        <tr><td>@w.DocType</td><td>@w.DocumentId</td><td><span class="badge @w.CurrentState">@w.CurrentState</span></td><td>@w.SubmittedBy</td><td>@w.Amount.ToString("N2")</td></tr>
+    }
+    </tbody>
+</table>

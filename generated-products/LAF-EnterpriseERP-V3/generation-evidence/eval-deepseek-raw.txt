@@ -1,0 +1,67 @@
+```json
+{
+  "entities": [
+    {
+      "name": "ProductCategory",
+      "fields": [
+        { "name": "Name", "type": "string" },
+        { "name": "Description", "type": "string" },
+        { "name": "IsActive", "type": "bool" },
+        { "name": "SortOrder", "type": "int" },
+        { "name": "CreatedOn", "type": "DateTime?" }
+      ]
+    },
+    {
+      "name": "CustomerSegment",
+      "fields": [
+        { "name": "Name", "type": "string" },
+        { "name": "Description", "type": "string" },
+        { "name": "Criteria", "type": "string" },
+        { "name": "IsActive", "type": "bool" },
+        { "name": "EffectiveDate", "type": "DateTime?" }
+      ]
+    },
+    {
+      "name": "TrainingProgram",
+      "fields": [
+        { "name": "Name", "type": "string" },
+        { "name": "Description", "type": "string" },
+        { "name": "Duration", "type": "int" },
+        { "name": "IsActive", "type": "bool" },
+        { "name": "StartDate", "type": "DateTime?" }
+      ]
+    },
+    {
+      "name": "VendorClassification",
+      "fields": [
+        { "name": "Name", "type": "string" },
+        { "name": "Description", "type": "string" },
+        { "name": "ClassificationType", "type": "string" },
+        { "name": "IsActive", "type": "bool" },
+        { "name": "EffectiveDate", "type": "DateTime?" }
+      ]
+    },
+    {
+      "name": "AssetCategory",
+      "fields": [
+        { "name": "Name", "type": "string" },
+        { "name": "Description", "type": "string" },
+        { "name": "CategoryType", "type": "string" },
+        { "name": "IsActive", "type": "bool" },
+        { "name": "CreatedOn", "type": "DateTime?" }
+      ]
+    },
+    {
+      "name": "ProjectPhase",
+      "fields": [
+        { "name": "Name", "type": "string" },
+        { "name": "Description", "type": "string" },
+        { "name": "StartDate", "type": "DateTime?" },
+        { "name": "EndDate", "type": "DateTime?" },
+        { "name": "IsActive", "type": "bool" },
+        { "name": "PhaseOrder", "type": "int" }
+      ]
+    }
+  ]
+}
+```

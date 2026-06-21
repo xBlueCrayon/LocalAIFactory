@@ -1,0 +1,30 @@
+{
+  "productName": "LAF Enterprise ERP V3",
+  "target": "generated-products/LAF-EnterpriseERP-V3",
+  "requirement": "benchmarks/erpnext-study/laf-erp-v3-production-grade-requirement.md",
+  "moduleSpec": "tools/LocalAIFactory.Generator/specs/erpnext-grade-modules.json",
+  "templateEngineFiles": 71,
+  "generatedCrudModules": 15,
+  "specDrivenModules": 10,
+  "localLlmModules": 5,
+  "generatedEntities": [
+    "BillOfMaterials",
+    "WorkOrder",
+    "QualityInspection",
+    "Employee",
+    "SalaryComponent",
+    "PosProfile",
+    "WebProduct",
+    "MaintenanceSchedule",
+    "CustomFieldDef",
+    "NotificationRule",
+    "CustomerSegment",
+    "ProductCategory",
+    "EmployeeRole",
+    "MarketingCampaign",
+    "VendorContract"
+  ],
+  "totalProductFiles": 73,
+  "generationAutonomyPct": 100,
+  "localLlmUsed": true
+}

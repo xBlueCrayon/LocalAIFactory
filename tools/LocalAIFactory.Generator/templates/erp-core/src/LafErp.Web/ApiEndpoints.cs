@@ -67,6 +67,8 @@ public static class ApiEndpoints
             Results.Ok(acc.GeneralLedger(companyId, DateTime.UtcNow.Date.AddYears(-1), DateTime.UtcNow.Date.AddDays(1))));
 
         api.MapGet("/reports/trial-balance", (AccountingService acc, int companyId) => Results.Ok(acc.TrialBalance(companyId)));
+        api.MapGet("/reports/profit-and-loss", (AccountingService acc, int companyId) => { var p = acc.ProfitAndLoss(companyId); return Results.Ok(new { income = p.Income, expense = p.Expense, netProfit = p.NetProfit }); });
+        api.MapGet("/reports/balance-sheet", (AccountingService acc, int companyId) => { var b = acc.BalanceSheet(companyId); return Results.Ok(new { assets = b.Assets, liabilities = b.Liabilities, equity = b.Equity, balanced = b.Balanced }); });
 
         api.MapGet("/reports/stock-balance", (ErpDbContext db, StockService stock) =>
         {

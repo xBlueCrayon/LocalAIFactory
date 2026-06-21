@@ -1,0 +1,28 @@
+{
+  "finalPassingTests": 108,
+  "stopReason": "B: two consecutive iterations with no measurable improvement (converged at the generator's current capability)",
+  "iterations": [
+    {
+      "iteration": 1,
+      "build": "ok",
+      "tests": "green",
+      "passingTests": 108,
+      "improvedVsPrev": true
+    },
+    {
+      "iteration": 2,
+      "build": "ok",
+      "tests": "green",
+      "passingTests": 108,
+      "improvedVsPrev": false
+    },
+    {
+      "iteration": 3,
+      "build": "ok",
+      "tests": "green",
+      "passingTests": 108,
+      "improvedVsPrev": false
+    }
+  ],
+  "policy": "adaptive-no-fixed-limit"
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "erp-v1-v2-v3-vs-erpnext",
+  "generated": "2026-06-21",
+  "disclaimer": "Honest. None is an ERPNext clone or ERPNext-compatible. V3's gains over V2 are real but modest in parity; the structural win is a data-driven generator + accounting depth + knowledge base.",
+  "rows": {
+    "erpNextParityPct": { "v1": 36, "v2": 37, "v3": 42 },
+    "productionGradePct": { "v1": 35, "v2": 35, "v3": 48 },
+    "dotnetTests": { "v1": 74, "v2": 82, "v3": 108 },
+    "playwrightTests": { "v1": 12, "v2": 13, "v3": 13 },
+    "generatedCrudModules": { "v1": 0, "v2": 3, "v3": 15 },
+    "accountingReports": { "v1": "GL,TB,AR,AP", "v2": "GL,TB,AR,AP", "v3": "GL,TB,AR,AP,P&L,BalanceSheet" },
+    "howBuilt": { "v1": "hand-written", "v2": "generated (template-copy)", "v3": "generated (data-driven module spec + LLM)" },
+    "generationAutonomyPct": { "v1": 0, "v2": 100, "v3": 100 },
+    "manualProductSourceEditsPct": { "v1": 100, "v2": 0, "v3": 0 },
+    "localLlm": { "v1": "no", "v2": "qwen (catalog)", "v3": "qwen winner of qwen-vs-deepseek eval (catalog)" }
+  },
+  "scores": {
+    "erpNextParityV1": 36, "erpNextParityV2": 37, "erpNextParityV3": 42,
+    "v3ImprovementVsV2Pct": 5,
+    "lafGenerationAutonomyPct": 100,
+    "manualInterventionPct": 0,
+    "productionGradeV3Pct": 48,
+    "testConfidenceV3Pct": 80
+  },
+  "missingModules": ["full manufacturing MRP", "full HR/payroll", "full POS", "full website/eCommerce", "quotation/delivery/receipt/returns", "create/edit UI forms", "real auth/TLS", "EF migrations"],
+  "verdict": "V3 > V2: +5% parity (42%), +13% production-grade (48%), +26 tests (108), 15 data-driven modules vs 3, and a real P&L/Balance Sheet. Still PILOT-grade. The generator became genuinely data-driven (module-spec JSON), and the local LLM was selected by a real qwen-vs-deepseek eval. ERPNext remains far larger; the remaining distance is documented, not faked."
+}

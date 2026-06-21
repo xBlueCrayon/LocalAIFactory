@@ -1,0 +1,14 @@
+{
+  "packUid": "9347664b-b14e-4f50-a677-7fcffcf892ff",
+  "name": "LocalAIFactory ERP Generation Lessons Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Installable knowledge pack of original, concise lessons LocalAIFactory uses to generate working ERPs with local models. Covers generator failure patterns and fixes (minimal-API open-generic binding needing explicit [FromServices]/[FromBody]; MVC controller/view/route name agreement; template markers on their own line; EnsureCreated versus migrations; declared decimal money precision; cross-provider decimal aggregation that must materialize; avoiding GroupBy-constant aggregation and large-text materialization that hang pages), local-LLM hallucination patterns (entities colliding with core, JSON wrapped in markdown fences, invented framework APIs), collision-guard rules for names, routes, and naming series, module-spec design rules covering entities, fields, types, and relationships with a pre-codegen validation gate, UI and API generation patterns, parity-scoring rules weighted by invariant criticality, a bounded evidence-driven autonomous fix loop, and a build+test+Playwright+run validation gate including a runtime page-load probe. Each item carries applicability, a worked example, a required limitation, a confidence level, and tags.",
+  "license": "Original engineering lessons authored for LocalAIFactory, several capturing firsthand observations from this project's own runtime-audit and generation work. Free to deploy and modify within the application. No vendor documentation or third-party copyrighted material is reproduced verbatim. Confidence levels are author estimates, not guarantees.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 22,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "generation-lessons.json"
+  ]
+}

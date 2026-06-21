@@ -13,6 +13,8 @@ string target = argMap.GetValueOrDefault("target", "generated-products/LAF-Enter
 string productName = argMap.GetValueOrDefault("product-name", "LAF Enterprise ERP V2");
 bool preferLocalLlm = argMap.ContainsKey("prefer-local-llm");
 string attributionPath = argMap.GetValueOrDefault("attribution", "benchmarks/results/laf-erp-v2-generation-attribution.json");
+string specPath = argMap.GetValueOrDefault("module-spec", "");
+string summaryPathArg = argMap.GetValueOrDefault("summary", "benchmarks/results/laf-erp-v2-generation-summary.json");
 string toolDir = AppContext.BaseDirectory;
 string templateRoot = FindTemplates(toolDir);
 
@@ -37,8 +39,11 @@ var reserved = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 };
 var validTypes = new HashSet<string> { "string", "int", "decimal", "bool", "DateTime", "DateTime?" };
 
-var (catalog, governance) = LoadAndGovernCatalog(target, reserved, validTypes, preferLocalLlm);
-Console.WriteLine($"catalog entities accepted: {catalog.Count} (rejected: {governance.Count(g => g.Status != "ACCEPTED")})");
+var (llm, governance) = LoadAndGovernCatalog(target, reserved, validTypes, preferLocalLlm);
+var (spec, specGov) = LoadModuleSpec(specPath, reserved, validTypes, llm);
+governance.AddRange(specGov);
+var generated = spec.Concat(llm).ToList();
+Console.WriteLine($"generated CRUD modules: {generated.Count} (spec={spec.Count}, llm={llm.Count}, rejected={governance.Count(g => g.Status != "ACCEPTED")})");
 
 // ---- 2. Emit the engine from templates ----
 var emitted = new List<(string Path, string Class)>();
@@ -50,24 +55,33 @@ foreach (var srcFile in Directory.EnumerateFiles(engineRoot, "*", SearchOption.A
     Directory.CreateDirectory(Path.GetDirectoryName(dst)!);
     var text = File.ReadAllText(srcFile);
     text = text.Replace("{{PRODUCT_NAME}}", productName);
-    text = InjectCatalog(rel, text, catalog);
+    text = InjectCatalog(rel, text, generated);
     File.WriteAllText(dst, text);
     emitted.Add((rel, "LAF_GENERATED"));
 }
 
 // ---- 3. Generate catalog modules (LLM-proposed) ----
-if (catalog.Count > 0)
+if (spec.Count > 0)
 {
-    Write(target, "src/LafErp.Core/CatalogEntities.cs", GenCatalogEntities(catalog), emitted, "LOCAL_LLM_PROPOSAL_USED");
-    Write(target, "src/LafErp.Services/CatalogCrudService.cs", GenCatalogService(), emitted, "LAF_GENERATED");
-    Write(target, "src/LafErp.Web/Controllers/CatalogController.cs", GenCatalogController(catalog), emitted, "LOCAL_LLM_PROPOSAL_USED");
-    Write(target, "src/LafErp.Web/Views/Catalog/Index.cshtml", GenCatalogView(), emitted, "LOCAL_LLM_PROPOSAL_USED");
-    Write(target, "tests/LafErp.Tests/CatalogGeneratedTests.cs", GenCatalogTests(catalog), emitted, "LOCAL_LLM_PROPOSAL_USED");
+    Write(target, "src/LafErp.Core/ModuleEntities.cs", GenEntitiesFile(spec, "spec-driven modules (data-driven generation)"), emitted, "LAF_GENERATED");
+    Write(target, "tests/LafErp.Tests/ModuleGeneratedTests.cs", GenTestsFile(spec, "ModuleGeneratedTests"), emitted, "LAF_GENERATED");
 }
-Write(target, "tests/LafErp.Tests/GenerationProvenanceTests.cs", GenProvenanceTests(catalog), emitted, "LAF_GENERATED");
+if (llm.Count > 0)
+{
+    Write(target, "src/LafErp.Core/CatalogEntities.cs", GenEntitiesFile(llm, "governed local-LLM catalog proposal"), emitted, "LOCAL_LLM_PROPOSAL_USED");
+    Write(target, "tests/LafErp.Tests/CatalogGeneratedTests.cs", GenTestsFile(llm, "CatalogGeneratedTests"), emitted, "LOCAL_LLM_PROPOSAL_USED");
+}
+if (generated.Count > 0)
+{
+    Write(target, "src/LafErp.Services/CatalogCrudService.cs", GenCatalogService(), emitted, "LAF_GENERATED");
+    Write(target, "src/LafErp.Web/Controllers/CatalogController.cs", GenCatalogController(generated), emitted, "LAF_GENERATED");
+    Write(target, "src/LafErp.Web/Views/Catalog/Index.cshtml", GenCatalogView(), emitted, "LAF_GENERATED");
+}
+Write(target, "tests/LafErp.Tests/GenerationProvenanceTests.cs", GenProvenanceTests(generated), emitted, "LAF_GENERATED");
 
 // ---- 4. Solution file ----
-Write(target, "LAF-EnterpriseERP-LAFGenerated.slnx", GenSolution(), emitted, "LAF_GENERATED");
+var slnName = Path.GetFileName(target.TrimEnd('/', '\\'));
+Write(target, $"{slnName}.slnx", GenSolution(), emitted, "LAF_GENERATED");
 
 // ---- 5. Attribution ----
 var llmCount = emitted.Count(e => e.Class == "LOCAL_LLM_PROPOSAL_USED");
@@ -80,7 +94,8 @@ var attribution = new
     generatedUtc = argMap.GetValueOrDefault("stamp", "generation-time"),
     productName,
     generator = "tools/LocalAIFactory.Generator (LAF_GENERATOR_INFRASTRUCTURE)",
-    localLlm = governance.Any(g => g.Status == "ACCEPTED") ? "qwen2.5-coder:14b (governed proposal, collision-guarded)" : "deterministic-fallback",
+    localLlm = llm.Count > 0 ? "qwen2.5-coder:14b (governed proposal, collision-guarded)" : "deterministic-fallback",
+    specModules = spec.Count,
     totalProductFiles = emitted.Count,
     classification = emitted.GroupBy(e => e.Class).ToDictionary(g => g.Key, g => g.Count()),
     catalogGovernance = governance,
@@ -98,16 +113,18 @@ Directory.CreateDirectory(Path.GetDirectoryName(attributionPath)!);
 File.WriteAllText(attributionPath, JsonSerializer.Serialize(attribution, new JsonSerializerOptions { WriteIndented = true }));
 
 // ---- 6. Generation summary ----
-var summaryPath = "benchmarks/results/laf-erp-v2-generation-summary.json";
-File.WriteAllText(summaryPath, JsonSerializer.Serialize(new
+Directory.CreateDirectory(Path.GetDirectoryName(summaryPathArg)!);
+File.WriteAllText(summaryPathArg, JsonSerializer.Serialize(new
 {
-    productName, target, requirement,
+    productName, target, requirement, moduleSpec = specPath,
     templateEngineFiles = emitted.Count(e => e.Class == "LAF_GENERATED"),
-    catalogModulesGenerated = catalog.Count,
-    catalogEntities = catalog.Select(c => c.Name),
+    generatedCrudModules = generated.Count,
+    specDrivenModules = spec.Count,
+    localLlmModules = llm.Count,
+    generatedEntities = generated.Select(c => c.Name),
     totalProductFiles = emitted.Count,
     generationAutonomyPct = autonomyPct,
-    localLlmUsed = governance.Any(g => g.Status == "ACCEPTED")
+    localLlmUsed = llm.Count > 0
 }, new JsonSerializerOptions { WriteIndented = true }));
 
 Console.WriteLine($"== emitted {emitted.Count} product files; autonomy {autonomyPct}% ==");
@@ -191,6 +208,50 @@ static (List<CatalogEntity>, List<Gov>) LoadAndGovernCatalog(string target, Hash
     return (accepted, gov);
 }
 
+static (List<CatalogEntity>, List<Gov>) LoadModuleSpec(string specPath, HashSet<string> reserved, HashSet<string> validTypes, List<CatalogEntity> existing)
+{
+    var gov = new List<Gov>();
+    var accepted = new List<CatalogEntity>();
+    if (string.IsNullOrWhiteSpace(specPath)) return (accepted, gov);
+    if (!File.Exists(specPath)) { gov.Add(new Gov("(spec)", "REJECTED", $"module spec not found: {specPath}")); return (accepted, gov); }
+    JsonElement root;
+    try { root = JsonDocument.Parse(File.ReadAllText(specPath)).RootElement; }
+    catch { gov.Add(new Gov("(spec)", "REJECTED", "module spec not valid JSON")); return (accepted, gov); }
+    if (!root.TryGetProperty("modules", out var mods) || mods.ValueKind != JsonValueKind.Array)
+    { gov.Add(new Gov("(spec)", "REJECTED", "no 'modules' array")); return (accepted, gov); }
+    var taken = new HashSet<string>(existing.Select(e => e.Name), StringComparer.OrdinalIgnoreCase);
+    foreach (var m in mods.EnumerateArray())
+    {
+        if (!m.TryGetProperty("entities", out var ents) || ents.ValueKind != JsonValueKind.Array) continue;
+        foreach (var e in ents.EnumerateArray())
+        {
+            string name = e.TryGetProperty("name", out var n) ? n.GetString() ?? "" : "";
+            if (string.IsNullOrWhiteSpace(name) || !IsPascal(name)) { gov.Add(new Gov(name, "REJECTED", "invalid/empty name (spec)")); continue; }
+            if (reserved.Contains(name)) { gov.Add(new Gov(name, "REJECTED", "collision with a core engine entity (spec)")); continue; }
+            if (taken.Contains(name)) { gov.Add(new Gov(name, "REJECTED", "duplicate entity name (spec)")); continue; }
+            var fields = new List<(string, string)>();
+            if (e.TryGetProperty("fields", out var fs) && fs.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var f in fs.EnumerateArray())
+                {
+                    string fn = f.TryGetProperty("name", out var fnv) ? fnv.GetString() ?? "" : "";
+                    string ft = f.TryGetProperty("type", out var ftv) ? ftv.GetString() ?? "" : "";
+                    if (fn.Equals("Id", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (!IsPascal(fn) || !validTypes.Contains(ft)) continue;
+                    if (fields.Any(x => x.Item1 == fn)) continue;
+                    fields.Add((fn, ft));
+                }
+            }
+            if (!fields.Any(x => x.Item1 == "Name" && x.Item2 == "string")) fields.Insert(0, ("Name", "string"));
+            if (fields.Count == 0) { gov.Add(new Gov(name, "REJECTED", "no valid fields (spec)")); continue; }
+            accepted.Add(new CatalogEntity(name, fields));
+            taken.Add(name);
+            gov.Add(new Gov(name, "ACCEPTED", $"spec module: {fields.Count} fields"));
+        }
+    }
+    return (accepted, gov);
+}
+
 static string? TryReadProposal(string target)
 {
     var p = Path.Combine(target, "generation-evidence", "llm-catalog-raw-response.txt");
@@ -248,12 +309,12 @@ static void Write(string target, string rel, string content, List<(string, strin
     emitted.Add((rel.Replace('\\', '/'), attr));
 }
 
-static string GenCatalogEntities(List<CatalogEntity> cat)
+static string GenEntitiesFile(List<CatalogEntity> cat, string headerComment)
 {
     var sb = new StringBuilder();
     sb.AppendLine("namespace LafErp.Core;");
     sb.AppendLine();
-    sb.AppendLine("// Catalog entities generated by the LocalAIFactory generator from a governed local-LLM proposal.");
+    sb.AppendLine($"// Entities generated by the LocalAIFactory generator from the {headerComment}.");
     foreach (var c in cat)
     {
         sb.AppendLine($"public class {c.Name} : EntityBase");
@@ -341,7 +402,7 @@ static string GenCatalogView() => """
 </table>
 """;
 
-static string GenCatalogTests(List<CatalogEntity> cat)
+static string GenTestsFile(List<CatalogEntity> cat, string className)
 {
     var sb = new StringBuilder();
     sb.AppendLine("using LafErp.Core;");
@@ -350,7 +411,7 @@ static string GenCatalogTests(List<CatalogEntity> cat)
     sb.AppendLine();
     sb.AppendLine("namespace LafErp.Tests;");
     sb.AppendLine();
-    sb.AppendLine("public class CatalogGeneratedTests");
+    sb.AppendLine($"public class {className}");
     sb.AppendLine("{");
     foreach (var c in cat)
     {

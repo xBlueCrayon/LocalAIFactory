@@ -1,0 +1,24 @@
+{
+  "note": "Winner's proposal is used (governed + collision-guarded) for V3 catalog generation; deterministic templates produce the compiling code.",
+  "winner": "qwen2.5-coder:14b",
+  "generated": "2026-06-21",
+  "task": "catalog-entity-proposal",
+  "models": [
+    {
+      "validJson": true,
+      "chars": 2161,
+      "model": "qwen2.5-coder:14b",
+      "durationSec": 18.7,
+      "entityCount": 6,
+      "score": 78.1
+    },
+    {
+      "validJson": true,
+      "chars": 2034,
+      "model": "deepseek-r1:14b",
+      "durationSec": 26.0,
+      "entityCount": 6,
+      "score": 77.4
+    }
+  ]
+}

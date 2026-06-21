@@ -28,28 +28,35 @@ can be reconciled. The live check is optional; the offline validation remains au
 
 ---
 
-## 2. Validation results (4 packs / 438 items)
+## 2. Validation results (10 packs / 648 items)
 
-| Pack (folder) | Version | Items | UIDs valid GUID | Within-pack dups | Limitation + tags |
-|---|---|---:|---|---|---|
-| Professional Base Knowledge Pack (`professional-base-v1`) | 1.2.0 | 390 | yes | none | every item |
-| Financial Institution Operations v1 (`financial-institution-operations-v1`) | 1.0.0 | 16 | yes | none | every item |
-| KYC AML Transaction Approval v1 (`kyc-aml-transaction-approval-v1`) | 1.0.0 | 16 | yes | none | every item |
-| Market Intelligence and Forecasting v1 (`market-intelligence-forecasting-v1`) | 1.0.0 | 16 | yes | none | every item |
-| **Total** | — | **438** | **438 distinct, all valid GUIDs** | **0** | **all 438** |
+| Pack (folder) | Items | UIDs valid GUID | Within-pack dups | Limitation + tags |
+|---|---:|---|---|---|
+| Professional Base Knowledge Pack (`professional-base-v1`) | 390 | yes | none | every item |
+| Production Issue Fixes Knowledge Pack (`production-issue-fixes-v1`) | 77 | yes | none | every item |
+| Enterprise Workflows Knowledge Pack (`enterprise-workflows-v1`) | 40 | yes | none | every item |
+| Engineering Leadership and Innovation (`engineering-leadership-and-innovation-v1`) | 25 | yes | none | every item |
+| ERP Testing and Scenarios (`erp-testing-and-scenarios-v1`) | 24 | yes | none | every item |
+| Production-Grade ERP Controls (`production-grade-erp-controls-v1`) | 22 | yes | none | every item |
+| LAF ERP Generation Lessons (`laf-erp-generation-lessons-v1`) | 22 | yes | none | every item |
+| Financial Institution Operations v1 (`financial-institution-operations-v1`) | 16 | yes | none | every item |
+| KYC AML Transaction Approval v1 (`kyc-aml-transaction-approval-v1`) | 16 | yes | none | every item |
+| Market Intelligence and Forecasting v1 (`market-intelligence-forecasting-v1`) | 16 | yes | none | every item |
+| **Total** | **648** | **648 distinct, all valid GUIDs** | **0** | **all 648** |
 
-Cross-pack check: **438 distinct UIDs for 438 items → no within-pack and no cross-pack collisions.**
-Each item's `manifest.itemCount` matches its actual item count.
+Cross-pack check: **648 distinct UIDs for 648 items → no within-pack and no cross-pack collisions.**
+Each item's `manifest.itemCount` matches its actual item count. (A pre-existing `itemCount`
+discrepancy in `engineering-leadership-and-innovation-v1` — 26 declared vs 25 actual — was corrected
+to 25 as part of this sprint.)
 
 **Result line printed by the script:** `VERIFY-ALL-KNOWLEDGE-PACKS: PASS`
 
-### Per-pack category breakdown
+### New packs in this sprint
 
-The full per-category counts are generated into `docs/Included-Knowledge-Base-Catalog.md`
-(see the Install Runbook for how to regenerate it). In summary, the 390-item professional base spans
-22 categories (engineering, SQL, security, accounting/finance, payments, OCR/CV, governance, and
-Mauritius banking context, among others); each of the three 16-item domain packs is split into two
-8-item categories.
+Three packs were added in the ERP V3 self-improvement sprint and validate cleanly:
+`erp-testing-and-scenarios-v1` (24), `production-grade-erp-controls-v1` (22), and
+`laf-erp-generation-lessons-v1` (22). See `docs/Included-Knowledge-Base-Catalog.md` for the full
+per-pack catalog.
 
 ---
 

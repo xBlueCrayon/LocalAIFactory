@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LAF ERP module spec",
+  "description": "Declarative module/entity spec consumed by the LocalAIFactory generator to emit CRUD modules (entity, DbSet, generic CRUD service, REST endpoints, list UI, tests) beyond the templated accounting/stock/workflow engine.",
+  "type": "object",
+  "required": ["product", "modules"],
+  "properties": {
+    "product": { "type": "string" },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["module", "entities"],
+        "properties": {
+          "module": { "type": "string" },
+          "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3"] },
+          "entities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "fields"],
+              "properties": {
+                "name": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]+$" },
+                "fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "type"],
+                    "properties": {
+                      "name": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]+$" },
+                      "type": { "type": "string", "enum": ["string", "int", "decimal", "bool", "DateTime", "DateTime?"] }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "registryUid": "fdabf9cb-232e-4fbd-a545-a7a5cbe4b481",
+  "name": "Production-Grade ERP Controls — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["official-docs", "domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "80967b32-8e2d-4b80-adf9-9011ff9c8643",
+      "type": "domain-theory",
+      "title": "Double-entry bookkeeping and general-ledger accounting principles",
+      "reliability": "high",
+      "topic": "accounting-controls"
+    },
+    {
+      "sourceUid": "4432cb41-ad67-455a-a165-9d1f6cece1a9",
+      "type": "domain-theory",
+      "title": "Perpetual inventory, stock-ledger and valuation method theory",
+      "reliability": "high",
+      "topic": "inventory-controls"
+    },
+    {
+      "sourceUid": "110d6d42-2790-4cec-93f5-04a675bea3a8",
+      "type": "domain-theory",
+      "title": "Internal control, segregation of duties and approval-workflow theory",
+      "reliability": "high",
+      "topic": "workflow-and-controls"
+    },
+    {
+      "sourceUid": "772c6b42-52a0-44f2-9851-03e6471935e5",
+      "type": "official-docs",
+      "title": "Relational decimal precision and transaction-isolation behaviour (SQL Server / EF Core concept family)",
+      "reliability": "high",
+      "topic": "data-integrity"
+    }
+  ]
+}
