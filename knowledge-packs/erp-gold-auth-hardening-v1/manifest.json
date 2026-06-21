@@ -1,0 +1,14 @@
+{
+  "packUid": "19ed9a42-66eb-43a0-8ea3-08b4f02debf6",
+  "name": "ERP Gold Auth Hardening Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules a LocalAIFactory generator maps directly to code for hardened application-level authentication in a generated ERP core: failed-login lockout after a threshold with a lockout window; a password policy of minimum length plus character classes; auditing every security event; resetting the failure count and stamping last-login on success; not revealing whether a username exists; anti-forgery tokens on all login and logout POST forms; a hardened auth cookie (HttpOnly, SameSite, secure-behind-TLS, sliding 30-minute expiry); admin password reset that enforces policy and rehashes; a MustChangePassword flag; tests for lockout, policy and audits; and the honest boundary that this is app-level auth without MFA, SSO, OIDC or Windows auth. Each item carries an explicit implementation implication and test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established application authentication and account-hardening principles, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, Microsoft, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 12,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-auth-hardening.json"
+  ]
+}

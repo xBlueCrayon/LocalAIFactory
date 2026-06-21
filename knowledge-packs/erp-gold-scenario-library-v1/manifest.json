@@ -1,0 +1,14 @@
+{
+  "packUid": "ecbbfadb-278a-41d4-ae86-e1e76a4083a8",
+  "name": "ERP Gold Scenario Library Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules a LocalAIFactory generator maps directly to reusable end-to-end test scenarios for a generated ERP core: company plus chart-of-accounts setup; quote-to-cash; procure-to-pay; inventory receipt, issue, transfer and adjustment; journal approval; a month-end trial-balance, profit-and-loss and balance-sheet check; an RBAC-negative scenario where a user without a role is blocked; a maker/checker-negative scenario where a maker cannot approve their own document; an audit-trail assertion scenario; and the honest boundary that these scenarios prove correctness of the implemented engine rather than full ERPNext business breadth. Each item carries an explicit implementation implication and test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established end-to-end ERP test-scenario patterns, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, Microsoft, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 10,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-scenario-library.json"
+  ]
+}

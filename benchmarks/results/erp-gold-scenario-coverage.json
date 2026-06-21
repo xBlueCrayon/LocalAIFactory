@@ -1,0 +1,31 @@
+{
+  "kind": "erp-gold-scenario-coverage",
+  "stamp": "2026-06-21",
+  "product": "generated-products/LAF-EnterpriseERP-Gold",
+  "endToEndScenarioMethods": [
+    { "name": "Trading_company_buy_sell_pay_cycle", "file": "RealLifeScenarioTests.cs",
+      "covers": ["purchase/stock receipt", "maker-checker sale", "approver-gated payment", "GL/audit/workflow integrity"] },
+    { "name": "Scenario_company_and_chart_of_accounts_setup", "file": "ScenarioLibraryTests.cs", "covers": ["company + fiscal year + all 5 account root types"] },
+    { "name": "Scenario_quote_to_cash_clears_receivable", "file": "ScenarioLibraryTests.cs", "covers": ["sell with maker/checker -> AR 2000 -> payment -> AR 0"] },
+    { "name": "Scenario_procure_to_pay_clears_payable", "file": "ScenarioLibraryTests.cs", "covers": ["buy on credit -> AP 6000 -> pay supplier -> AP 0"] },
+    { "name": "Scenario_inventory_receipt_increases_qty_and_value", "file": "ScenarioLibraryTests.cs", "covers": ["receipt -> qty 50, value 500"] },
+    { "name": "Scenario_inventory_issue_uses_moving_average", "file": "ScenarioLibraryTests.cs", "covers": ["two receipts -> moving-average rate 15 on issue"] },
+    { "name": "Scenario_inventory_transfer_conserves_total_qty", "file": "ScenarioLibraryTests.cs", "covers": ["transfer between two warehouses conserves total 100"] },
+    { "name": "Scenario_inventory_adjustment_writes_entry", "file": "ScenarioLibraryTests.cs", "covers": ["adjustment writes a signed ledger entry"] },
+    { "name": "Scenario_insufficient_stock_issue_is_blocked", "file": "ScenarioLibraryTests.cs", "covers": ["negative-stock control blocks over-issue"] },
+    { "name": "Scenario_balanced_journal_keeps_gl_balanced", "file": "ScenarioLibraryTests.cs", "covers": ["balanced journal (maker Accounts User) keeps GL balanced"] },
+    { "name": "Scenario_month_end_trial_balance_balances", "file": "ScenarioLibraryTests.cs", "covers": ["post-activity trial balance debit==credit>0"] },
+    { "name": "Scenario_maker_cannot_approve_own_document", "file": "ScenarioLibraryTests.cs", "covers": ["maker/checker negative"] },
+    { "name": "Scenario_rbac_negative_and_audit_trail", "file": "ScenarioLibraryTests.cs", "covers": ["role-less user cannot approve; audit append-only with actor"] }
+  ],
+  "scenarioMethodCount": 13,
+  "target": "10+ real-life scenarios",
+  "result": "MET (13 explicit end-to-end scenario methods, all green; reproduced in GoldGenerated-Hardened)",
+  "supportingFocusedScenarioTests": {
+    "AccountingTests.cs": ["Global_gl_always_balances_after_full_cycle", "Payment_reduces_outstanding_receivable", "Trial_balance_is_balanced", "Sales_invoice_posts_balanced_gl_with_tax", "Purchase_invoice_increases_payable"],
+    "AccountingReportsTests.cs": ["Profit_and_loss_reflects_revenue_minus_cogs", "Balance_sheet_balances_after_a_cycle"],
+    "WorkflowTests.cs": ["Maker_cannot_approve_own_document", "Separate_checker_can_approve", "Amount_within_threshold_auto_approves_on_submit", "Amount_over_threshold_requires_separate_approver", "Reject_returns_document_to_draft_and_records_reason"],
+    "OpsAndImportTests.cs": ["Lead_converts_to_customer", "Support_ticket_escalates_and_resolves", "Asset_can_be_scheduled_for_maintenance"]
+  },
+  "honest": "13 explicit end-to-end scenarios cover setup, quote-to-cash, procure-to-pay, the four inventory movements, journals, month-end, and the RBAC/maker-checker/stock negative paths. Manufacturing/HR/POS skeletons are NOT exercised end-to-end."
+}

@@ -1,0 +1,13 @@
+<!-- Isolates LAF Enterprise ERP from the parent LocalAIFactory MSBuild props.
+     MSBuild stops its upward search for Directory.Build.props here, so the ERP
+     is a self-contained generated product and does not inherit the factory's
+     central package management or build settings. -->
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <Product>LAF Enterprise ERP</Product>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,30 @@
+{
+  "kind": "erp-gold-erpnext-parity-score",
+  "stamp": "2026-06-21",
+  "scale": "0-100 vs ERPNext breadth/depth (clean-room; no ERPNext code studied or copied)",
+  "note": "Parity is intentionally NOT the goal of this product; this score is kept honest and low rather than inflated.",
+  "areas": {
+    "accountingDepth":        55,
+    "stockDepth":             52,
+    "sellingBuyingDepth":     52,
+    "manufacturing":          30,
+    "hrPayroll":              22,
+    "pos":                    20,
+    "ecommerce":              18,
+    "crmProjects":            40,
+    "assets":                 35,
+    "workflowRbacAudit":      62,
+    "reportingBI":            42,
+    "importExport":           48,
+    "customizationFramework": 20,
+    "apiBreadth":             45,
+    "moduleBreadth":          35,
+    "multiCompanyMultiCurrency": 40
+  },
+  "weightedParityPct": 39,
+  "result": "NOT ERPNext-grade. ~39% of ERPNext breadth/depth, by honest self-assessment.",
+  "blockersToParity": [
+    "Manufacturing MRP/routing engine", "Payroll engine", "POS + offline sync", "Storefront/cart",
+    "DocType customization framework", "Print/report designer", "Far larger module + report catalog"
+  ]
+}

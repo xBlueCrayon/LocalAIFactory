@@ -15,6 +15,38 @@
       "items": 24
     },
     {
+      "pack": "erp-gold-auth-hardening-v1",
+      "items": 12
+    },
+    {
+      "pack": "erp-gold-ef-migrations-v1",
+      "items": 10
+    },
+    {
+      "pack": "erp-gold-local-production-and-reproduction-v1",
+      "items": 12
+    },
+    {
+      "pack": "erp-gold-rbac-company-audit-v1",
+      "items": 10
+    },
+    {
+      "pack": "erp-gold-real-authentication-v1",
+      "items": 12
+    },
+    {
+      "pack": "erp-gold-reporting-import-export-v1",
+      "items": 10
+    },
+    {
+      "pack": "erp-gold-scenario-library-v1",
+      "items": 10
+    },
+    {
+      "pack": "erp-gold-ui-crud-workflows-v1",
+      "items": 11
+    },
+    {
       "pack": "erp-hr-pos-ecommerce-customization-v1",
       "items": 18
     },
@@ -47,7 +79,7 @@
       "items": 77
     }
   ],
-  "totalErpKnowledgeItems": 322,
+  "totalErpKnowledgeItems": 409,
   "generatedModules": 28,
   "moduleToKnowledgeCategory": [
     {

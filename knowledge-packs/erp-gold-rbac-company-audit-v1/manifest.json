@@ -1,0 +1,14 @@
+{
+  "packUid": "ca4f4fbc-0657-40f3-8065-d84016976de2",
+  "name": "ERP Gold RBAC Company Audit Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules a LocalAIFactory generator maps directly to code for role-based access control, maker-checker controls and immutable auditing in a generated ERP core: a role-permission matrix keyed per doctype and action; maker-cannot-approve with approval thresholds; rejection requiring a reason; append-only audit rows that cannot be edited or deleted; audit stamps of actor plus UTC plus entity; company-scoped data; unique business keys enforced at the model; a RowVersion concurrency token on documents for SQL Server; tests for RBAC-negative, maker/checker-negative and audit immutability; and the honest boundary that company isolation is enforced in queries and services rather than row-level database security. Each item carries an explicit implementation implication and test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established RBAC, maker-checker and audit-immutability principles, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, Microsoft, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 10,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-rbac-company-audit.json"
+  ]
+}

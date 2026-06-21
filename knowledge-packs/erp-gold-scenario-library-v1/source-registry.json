@@ -1,0 +1,31 @@
+{
+  "registryUid": "ae61f43d-0586-4d2d-b62f-2bc344556a19",
+  "name": "ERP Gold Scenario Library — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "implementation-experience"],
+  "sources": [
+    {
+      "sourceUid": "3310e114-7cce-4d9d-9e1c-bc82a34f173e",
+      "type": "domain-theory",
+      "title": "End-to-end ERP business-cycle patterns: quote-to-cash, procure-to-pay, inventory movements and period close",
+      "reliability": "high",
+      "topic": "business-cycles"
+    },
+    {
+      "sourceUid": "4d13cc50-2539-4548-9b7c-f6399ea2dd72",
+      "type": "implementation-experience",
+      "title": "Reusable end-to-end scenarios and negative control scenarios authored against the implemented engine this sprint",
+      "reliability": "high",
+      "topic": "generation-rules"
+    },
+    {
+      "sourceUid": "6ad301ba-acc5-4179-9a2b-9a2366952bc1",
+      "type": "domain-theory",
+      "title": "Negative-path testing of access control, segregation of duties and audit immutability",
+      "reliability": "high",
+      "topic": "control-testing"
+    }
+  ]
+}

@@ -5,9 +5,9 @@
   "generator": "tools/LocalAIFactory.Generator (LAF_GENERATOR_INFRASTRUCTURE)",
   "localLlm": "qwen2.5-coder:14b (governed proposal, collision-guarded)",
   "specModules": 23,
-  "totalProductFiles": 83,
+  "totalProductFiles": 103,
   "classification": {
-    "LAF_GENERATED": 81,
+    "LAF_GENERATED": 101,
     "LOCAL_LLM_PROPOSAL_USED": 2
   },
   "catalogGovernance": [
@@ -158,8 +158,8 @@
     }
   ],
   "autonomy": {
-    "autonomousFiles": 83,
-    "lafGenerated": 81,
+    "autonomousFiles": 103,
+    "lafGenerated": 101,
     "localLlmProposalUsed": 2,
     "generationAutonomyPct": 100,
     "note": "Autonomy = (LAF_GENERATED \u002B LAF_GENERATED_THEN_FIXED_BY_LAF \u002B LOCAL_LLM_PROPOSAL_USED) / total product files. The generator itself is LAF_GENERATOR_INFRASTRUCTURE and excluded from the product denominator."
@@ -175,6 +175,10 @@
     },
     {
       "path": "Directory.Packages.props",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "docs/DEPLOYMENT.md",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -198,6 +202,18 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "playwright/tests/auth-hardening.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/tests/catalog-crud.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/tests/catalog-pages.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "playwright/tests/create-form.spec.ts",
       "attribution": "LAF_GENERATED"
     },
@@ -214,11 +230,35 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "scripts/apply-migrations.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/backup-db.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "scripts/backup-restore-health.ps1",
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "scripts/generate-sql-script.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "scripts/publish-local-production.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/restore-db.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/run-production-smoke.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/setup-sql-express.ps1",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -266,7 +306,23 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Data/ErpDbContextFactory.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Data/LafErp.Data.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/Migrations/20260621151632_InitialCreate.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/Migrations/20260621151632_InitialCreate.Designer.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/Migrations/ErpDbContextModelSnapshot.cs",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -307,6 +363,10 @@
     },
     {
       "path": "src/LafErp.Services/PasswordHasher.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/PasswordPolicy.cs",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -398,7 +458,15 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Web/Views/Catalog/Edit.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Web/Views/Catalog/Index.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Catalog/List.cshtml",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -454,6 +522,10 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "tests/LafErp.Tests/AuthHardeningTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "tests/LafErp.Tests/AuthTests.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -474,6 +546,10 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "tests/LafErp.Tests/MigrationsTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "tests/LafErp.Tests/ModuleGeneratedTests.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -483,6 +559,10 @@
     },
     {
       "path": "tests/LafErp.Tests/RealLifeScenarioTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/ScenarioLibraryTests.cs",
       "attribution": "LAF_GENERATED"
     },
     {

@@ -1,0 +1,31 @@
+{
+  "registryUid": "1989e524-6a14-4622-bf22-e47302037a61",
+  "name": "ERP Gold UI CRUD Workflows — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "implementation-experience"],
+  "sources": [
+    {
+      "sourceUid": "6cc2a52b-796c-4336-8b1b-ca5ad3471ece",
+      "type": "domain-theory",
+      "title": "Master-data CRUD, soft-delete and reflection-driven form principles",
+      "reliability": "high",
+      "topic": "crud-ui"
+    },
+    {
+      "sourceUid": "d622199b-68bd-4b50-9d74-31ebfa9dc814",
+      "type": "implementation-experience",
+      "title": "Generic CatalogCrudService, empty-string form-binding fix and Playwright testid hooks added this sprint",
+      "reliability": "high",
+      "topic": "generation-rules"
+    },
+    {
+      "sourceUid": "db808d41-6b24-4818-aed9-89f83ce5a37f",
+      "type": "domain-theory",
+      "title": "Master-data mutability versus posted-document immutability in transactional systems",
+      "reliability": "high",
+      "topic": "document-lifecycle"
+    }
+  ]
+}

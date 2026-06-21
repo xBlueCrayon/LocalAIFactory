@@ -1,0 +1,22 @@
+{
+  "kind": "erp-gold-hardening-ollama-review",
+  "stamp": "2026-06-21",
+  "ollamaPresent": true,
+  "models": ["qwen2.5-coder:14b (code/security reviewer)", "deepseek-r1:14b (architect/planner)"],
+  "authority": "Local models REVIEW only; deterministic templates write all committed code; every code change was human-authored and tested.",
+  "findings": [
+    { "by": "qwen2.5-coder:14b", "finding": "Password complexity must be stringent enough to resist brute force.",
+      "disposition": "ALREADY DONE", "action": "PasswordPolicy (min length + 4 char classes) + failed-login lockout already implemented and tested." },
+    { "by": "qwen2.5-coder:14b", "finding": "Proper session expiration/renewal to mitigate hijacking.",
+      "disposition": "ALREADY DONE", "action": "30-min sliding cookie expiry + HttpOnly + SameSite + SecurePolicy already configured." },
+    { "by": "qwen2.5-coder:14b", "finding": "Data encryption at rest for sensitive data.",
+      "disposition": "ACCEPTED -> BACKLOG", "action": "Documented as a deployment requirement (SQL Server TDE / column encryption). Out of local app scope; added to DEPLOYMENT security checklist and parity gaps." },
+    { "by": "deepseek-r1:14b", "finding": "Comprehensive CRM.",
+      "disposition": "PARTIAL", "action": "CrmService (Lead/Opportunity) skeleton exists; full CRM depth is a documented parity gap." },
+    { "by": "deepseek-r1:14b", "finding": "Mobile applications for field access.",
+      "disposition": "ACCEPTED -> BACKLOG", "action": "Out of scope for a local server ERP this sprint; recorded as a future backlog item." },
+    { "by": "deepseek-r1:14b", "finding": "Advanced reporting & analytics / dashboards.",
+      "disposition": "ACCEPTED -> BACKLOG", "action": "Query-based reports exist; BI/dashboard/print-designer is a documented ERPNext-parity gap (erp-gold-erpnext-parity-score.json)." }
+  ],
+  "outcome": "No accepted finding contradicts the honest classification. Two new backlog items (encryption-at-rest deployment guidance, BI/analytics) recorded; the rest were already implemented or already documented as parity gaps."
+}

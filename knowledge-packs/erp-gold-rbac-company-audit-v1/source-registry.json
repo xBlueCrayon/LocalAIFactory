@@ -1,0 +1,31 @@
+{
+  "registryUid": "49c593d7-c5fb-4365-aae2-8a3f149af233",
+  "name": "ERP Gold RBAC Company Audit — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "implementation-experience"],
+  "sources": [
+    {
+      "sourceUid": "42dc04c0-5d4b-4191-ad3d-2e1fdf8f06ec",
+      "type": "domain-theory",
+      "title": "Role-based access control, segregation-of-duties and maker-checker control principles",
+      "reliability": "high",
+      "topic": "access-control"
+    },
+    {
+      "sourceUid": "602ba7fa-0a3d-4576-a7a6-47d85fcb3503",
+      "type": "implementation-experience",
+      "title": "RolePermission matrix, append-only audit, company scoping and RowVersion tokens wired this sprint",
+      "reliability": "high",
+      "topic": "generation-rules"
+    },
+    {
+      "sourceUid": "ed595b7e-bb1a-4868-804f-b224f22d2b4b",
+      "type": "domain-theory",
+      "title": "Audit immutability, unique business keys and optimistic-concurrency principles on SQL Server",
+      "reliability": "high",
+      "topic": "data-integrity"
+    }
+  ]
+}

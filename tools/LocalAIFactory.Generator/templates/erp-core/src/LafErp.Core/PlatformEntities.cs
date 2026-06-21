@@ -67,6 +67,11 @@ public class AppUser : EntityBase
     public string? PasswordHash { get; set; }
     public string FullName { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
+    // Production auth hardening: failed-login lockout + login tracking.
+    public int FailedLoginCount { get; set; }
+    public DateTime? LockoutEndUtc { get; set; }
+    public DateTime? LastLoginUtc { get; set; }
+    public bool MustChangePassword { get; set; }
     public List<AppUserRole> Roles { get; set; } = new();
 }
 

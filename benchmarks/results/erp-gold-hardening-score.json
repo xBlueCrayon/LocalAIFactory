@@ -1,0 +1,27 @@
+{
+  "kind": "erp-gold-hardening-score",
+  "stamp": "2026-06-21",
+  "before": {
+    "classification": "high ERP_PILOT_READY (most ERP_LOCAL_PRODUCTION_READY criteria)",
+    "dotnetTests": 138, "playwrightTests": 16, "reproductionTestPct": 93, "meanLocalProductionScore": 67,
+    "openLocalBlockers": [
+      "No committed EF migration history",
+      "Create/list/read only; no edit/delete UI",
+      "Auth lacked lockout/password-policy/anti-forgery/secure-cookie"
+    ]
+  },
+  "after": {
+    "classification": "ERP_LOCAL_PRODUCTION_READY (core local criteria met) + documented residual depth/external gates",
+    "dotnetTests": 222, "playwrightTests": 38, "endToEndScenarios": 13, "reproductionTestPct": 91.0, "meanLocalProductionScore": 78,
+    "closedLocalBlockers": [
+      "Committed EF migration history (65 tables) + apply/SQL-script/SQL-Express scripts + verification tests",
+      "Generic edit + soft-delete UI + tests for every catalog module; documents stay immutable-after-posting by design",
+      "Auth hardened: lockout, password policy, anti-forgery, secure cookie, session timeout, audited login/logout/failed/lockout/reset"
+    ],
+    "remaining": {
+      "localDepth": ["Manufacturing/HR/POS are CRUD skeletons", "Edit/delete intentionally restricted on posted documents", "EF migration not applied on a live SQL Express in this environment"],
+      "external": ["Real SSO/OIDC (Entra)", "CA-signed TLS", "Independent external security review", "Signed customer acceptance"]
+    }
+  },
+  "delta": { "dotnetTests": "+84", "playwrightTests": "+22", "endToEndScenarios": "+12", "meanLocalProductionScore": "+11", "blockersClosed": 3 }
+}

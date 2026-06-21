@@ -1,15 +1,38 @@
 {
-  "productName": "LAF Enterprise ERP V2",
-  "target": "generated-products/LAF-EnterpriseERP-LAFGenerated",
+  "productName": "LafErpMigGen",
+  "target": "C:\\Users\\Admin\\AppData\\Local\\Temp\\laf-mig-gen",
   "requirement": "benchmarks/erpnext-study/laf-erp-v2-generation-requirement.md",
-  "templateEngineFiles": 66,
-  "catalogModulesGenerated": 3,
-  "catalogEntities": [
-    "CustomerSegment",
-    "PaymentTerm",
-    "TaxCode"
+  "moduleSpec": "tools/LocalAIFactory.Generator/specs/erp-gold-reference.json",
+  "templateEngineFiles": 86,
+  "generatedCrudModules": 23,
+  "specDrivenModules": 23,
+  "localLlmModules": 0,
+  "generatedEntities": [
+    "Quotation",
+    "DeliveryNote",
+    "CreditNote",
+    "PurchaseReceipt",
+    "MaterialRequest",
+    "DebitNote",
+    "StockTransfer",
+    "StockReconciliation",
+    "PriceList",
+    "BillOfMaterials",
+    "WorkOrder",
+    "JobCard",
+    "QualityInspection",
+    "Employee",
+    "AttendanceRecord",
+    "LeaveApplication",
+    "SalaryComponent",
+    "Timesheet",
+    "PosProfile",
+    "WebProduct",
+    "MaintenanceSchedule",
+    "CustomFieldDef",
+    "NotificationRule"
   ],
-  "totalProductFiles": 70,
+  "totalProductFiles": 86,
   "generationAutonomyPct": 100,
-  "localLlmUsed": true
+  "localLlmUsed": false
 }

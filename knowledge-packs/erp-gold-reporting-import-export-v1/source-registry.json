@@ -1,0 +1,31 @@
+{
+  "registryUid": "ddfcc48d-5ac3-41ec-ae87-c759116d4a7e",
+  "name": "ERP Gold Reporting Import Export — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "implementation-experience"],
+  "sources": [
+    {
+      "sourceUid": "4c4680af-0b4f-4a58-b3d5-bafd80552a60",
+      "type": "domain-theory",
+      "title": "Deterministic financial and inventory reporting from an immutable ledger, scoped per company",
+      "reliability": "high",
+      "topic": "reporting"
+    },
+    {
+      "sourceUid": "32eebf4e-3b61-4531-a1d4-8a2556e30f5e",
+      "type": "implementation-experience",
+      "title": "Query-based reports, CSV import with ImportBatch row-count and error capture, and audited import/export this sprint",
+      "reliability": "high",
+      "topic": "generation-rules"
+    },
+    {
+      "sourceUid": "789be337-4f48-492c-8f9d-a9789520039b",
+      "type": "domain-theory",
+      "title": "Bulk-import validation, rejected-row capture and audited data-movement principles",
+      "reliability": "high",
+      "topic": "data-import"
+    }
+  ]
+}

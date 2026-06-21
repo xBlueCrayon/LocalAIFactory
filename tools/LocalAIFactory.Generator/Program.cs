@@ -113,6 +113,8 @@ if (generated.Count > 0)
     Write(target, "src/LafErp.Web/Controllers/CatalogController.cs", GenCatalogController(generated), emitted, "LAF_GENERATED");
     Write(target, "src/LafErp.Web/Views/Catalog/Index.cshtml", GenCatalogView(), emitted, "LAF_GENERATED");
     Write(target, "src/LafErp.Web/Views/Catalog/Create.cshtml", GenCatalogCreateView(), emitted, "LAF_GENERATED");
+    Write(target, "src/LafErp.Web/Views/Catalog/List.cshtml", GenCatalogListView(), emitted, "LAF_GENERATED");
+    Write(target, "src/LafErp.Web/Views/Catalog/Edit.cshtml", GenCatalogEditView(), emitted, "LAF_GENERATED");
 }
 Write(target, "tests/LafErp.Tests/GenerationProvenanceTests.cs", GenProvenanceTests(generated), emitted, "LAF_GENERATED");
 
@@ -417,20 +419,47 @@ public class CatalogCrudService<T> where T : EntityBase, new()
     private readonly AuditService _audit;
     public CatalogCrudService(ErpDbContext db, AuditService audit) { _db = db; _audit = audit; }
 
-    public List<T> List() => _db.Set<T>().OrderByDescending(x => x.Id).Take(500).ToList();
-    public int Count() => _db.Set<T>().Count();
-    public T? Get(int id) => _db.Set<T>().FirstOrDefault(x => x.Id == id);
+    public List<T> List() => _db.Set<T>().Where(x => !x.IsDeleted).OrderByDescending(x => x.Id).Take(500).ToList();
+    public int Count() => _db.Set<T>().Count(x => !x.IsDeleted);
+    public T? Get(int id) => _db.Set<T>().FirstOrDefault(x => x.Id == id && !x.IsDeleted);
 
     public T Create(T entity)
+    {
+        RequireName(entity);
+        _db.Set<T>().Add(entity);
+        _audit.Record(typeof(T).Name, 0, "Create", null);
+        _db.SaveChanges();
+        return entity;
+    }
+
+    /// <summary>Edit an existing master record (master data is mutable; posted documents are not).</summary>
+    public T Update(T entity)
+    {
+        RequireName(entity);
+        var existing = _db.Set<T>().FirstOrDefault(x => x.Id == entity.Id)
+                       ?? throw new DomainException($"{typeof(T).Name} {entity.Id} not found.");
+        _db.Entry(existing).CurrentValues.SetValues(entity);
+        _audit.Record(typeof(T).Name, entity.Id, "Update", null);
+        _db.SaveChanges();
+        return existing;
+    }
+
+    /// <summary>Soft-delete (deactivate) a master record — never a hard delete, so audit/history is preserved.</summary>
+    public void Deactivate(int id)
+    {
+        var existing = _db.Set<T>().FirstOrDefault(x => x.Id == id)
+                       ?? throw new DomainException($"{typeof(T).Name} {id} not found.");
+        existing.IsDeleted = true;
+        _audit.Record(typeof(T).Name, id, "Deactivate", null);
+        _db.SaveChanges();
+    }
+
+    private static void RequireName(T entity)
     {
         var nameProp = typeof(T).GetProperty("Name");
         if (nameProp != null && nameProp.PropertyType == typeof(string) &&
             string.IsNullOrWhiteSpace(nameProp.GetValue(entity) as string))
             throw new DomainException($"{typeof(T).Name}: Name is required.");
-        _db.Set<T>().Add(entity);
-        _audit.Record(typeof(T).Name, 0, "Create", null);
-        _db.SaveChanges();
-        return entity;
     }
 }
 """;
@@ -492,6 +521,81 @@ public class CatalogController : Controller
         return RedirectToAction("Index");
     }
 
+    [HttpGet]
+    public IActionResult List(string entity)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        ViewBag.Entity = entity;
+        var set = (System.Collections.IEnumerable)_db.GetType().GetMethod("Set", Type.EmptyTypes)!
+            .MakeGenericMethod(t).Invoke(_db, null)!;
+        var rows = set.Cast<EntityBase>().Where(x => !x.IsDeleted).OrderByDescending(x => x.Id).Take(500).ToList();
+        return View("List", rows);
+    }
+
+    [HttpGet]
+    public IActionResult Edit(string entity, int id)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        var row = _db.Find(t, id) as EntityBase;
+        if (row == null) return NotFound();
+        ViewBag.Entity = entity; ViewBag.Id = id;
+        return View("Edit", Fields(t).Select(f =>
+            new CatalogFieldValue(f.Name, f.Type, t.GetProperty(f.Name)!.GetValue(row)?.ToString() ?? "")).ToList());
+    }
+
+    [HttpPost]
+    public IActionResult Edit(string entity, int id, IFormCollection form)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        var row = _db.Find(t, id) as EntityBase;
+        if (row == null) return NotFound();
+        foreach (var p in t.GetProperties().Where(Editable))
+        {
+            if (!form.TryGetValue(p.Name, out var v)) continue;
+            try
+            {
+                var underlying = Nullable.GetUnderlyingType(p.PropertyType);
+                if (string.IsNullOrWhiteSpace(v))
+                {
+                    if (p.PropertyType == typeof(string)) p.SetValue(row, "");
+                    else if (underlying != null) p.SetValue(row, null); // nullable value type -> null
+                    // non-nullable value type with no input: leave the existing value unchanged
+                }
+                else
+                {
+                    p.SetValue(row, Convert.ChangeType(v.ToString(), underlying ?? p.PropertyType));
+                }
+            }
+            catch { }
+        }
+        var nameProp = t.GetProperty("Name");
+        if (nameProp != null && string.IsNullOrWhiteSpace(nameProp.GetValue(row) as string))
+        {
+            ViewBag.Entity = entity; ViewBag.Id = id; ViewBag.Error = "Name is required.";
+            return View("Edit", Fields(t).Select(f => new CatalogFieldValue(f.Name, f.Type, form[f.Name].ToString())).ToList());
+        }
+        _audit.Record(entity, id, "Update", "via UI form");
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult Deactivate(string entity, int id)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        if (_db.Find(t, id) is EntityBase row)
+        {
+            row.IsDeleted = true;
+            _audit.Record(entity, id, "Deactivate", "via UI");
+            _db.SaveChanges();
+        }
+        return RedirectToAction("Index");
+    }
+
     private static Type? Resolve(string entity) => typeof(EntityBase).Assembly.GetType("LafErp.Core." + entity);
     private static bool Editable(System.Reflection.PropertyInfo p) =>
         p.CanWrite && !Skip.Contains(p.Name) &&
@@ -504,22 +608,61 @@ public class CatalogController : Controller
 
 public record CatalogRow(string EntityType, int Count);
 public record CatalogField(string Name, string Type);
+public record CatalogFieldValue(string Name, string Type, string Value);
 """;
 }
 
 static string GenCatalogView() => """
 @model List<LafErp.Web.Controllers.CatalogRow>
 @{ ViewData["Title"] = "Catalog (generated modules)"; }
-<p style="font-size:14px;color:#6b7280">Generated CRUD modules (spec-driven + governed local-LLM). Each has a create form.</p>
+<p style="font-size:14px;color:#6b7280">Generated CRUD modules (spec-driven + governed local-LLM). Each has create, edit and deactivate.</p>
 <table data-testid="catalog-table">
-    <thead><tr><th>Entity</th><th>Rows</th><th></th></tr></thead>
+    <thead><tr><th>Entity</th><th>Rows</th><th></th><th></th></tr></thead>
     <tbody>
     @foreach (var r in Model)
     {
-        <tr><td>@r.EntityType</td><td>@r.Count</td><td><a href="/Catalog/Create?entity=@r.EntityType" data-testid="create-@r.EntityType">+ Create</a></td></tr>
+        <tr><td>@r.EntityType</td><td>@r.Count</td>
+            <td><a href="/Catalog/Create?entity=@r.EntityType" data-testid="create-@r.EntityType">+ Create</a></td>
+            <td><a href="/Catalog/List?entity=@r.EntityType" data-testid="list-@r.EntityType">View / edit</a></td></tr>
     }
     </tbody>
 </table>
+""";
+
+static string GenCatalogListView() => """
+@model List<LafErp.Core.EntityBase>
+@{ ViewData["Title"] = (string)ViewBag.Entity + " records"; }
+<h3>@ViewBag.Entity</h3>
+<p><a href="/Catalog/Create?entity=@ViewBag.Entity" data-testid="create-link">+ Create</a> &middot; <a href="/Catalog">Back to catalog</a></p>
+<table data-testid="record-table">
+    <thead><tr><th>Id</th><th>Name</th><th></th><th></th></tr></thead>
+    <tbody>
+    @foreach (var row in Model)
+    {
+        var name = row.GetType().GetProperty("Name")?.GetValue(row)?.ToString();
+        <tr data-testid="row-@row.Id"><td>@row.Id</td><td>@name</td>
+            <td><a href="/Catalog/Edit?entity=@ViewBag.Entity&id=@row.Id" data-testid="edit-@row.Id">Edit</a></td>
+            <td><form method="post" action="/Catalog/Deactivate?entity=@ViewBag.Entity&id=@row.Id" style="display:inline">
+                <button type="submit" data-testid="deactivate-@row.Id">Deactivate</button></form></td></tr>
+    }
+    </tbody>
+</table>
+""";
+
+static string GenCatalogEditView() => """
+@model List<LafErp.Web.Controllers.CatalogFieldValue>
+@{ ViewData["Title"] = "Edit " + (string)ViewBag.Entity; }
+<h3>Edit @ViewBag.Entity #@ViewBag.Id</h3>
+@if (ViewBag.Error != null) { <p style="color:#b91c1c" data-testid="form-error">@ViewBag.Error</p> }
+<form method="post" action="/Catalog/Edit?entity=@ViewBag.Entity&id=@ViewBag.Id" data-testid="edit-form">
+@foreach (var f in Model)
+{
+    <p><label style="display:inline-block;width:180px">@f.Name (@f.Type)</label>
+    <input name="@f.Name" value="@f.Value" data-testid="field-@f.Name" /></p>
+}
+    <button type="submit" data-testid="edit-submit">Save</button>
+</form>
+<p><a href="/Catalog/List?entity=@ViewBag.Entity">Back to list</a></p>
 """;
 
 static string GenCatalogCreateView() => """
@@ -543,6 +686,7 @@ static string GenTestsFile(List<CatalogEntity> cat, string className)
     var sb = new StringBuilder();
     sb.AppendLine("using LafErp.Core;");
     sb.AppendLine("using LafErp.Services;");
+    sb.AppendLine("using Microsoft.EntityFrameworkCore;");
     sb.AppendLine("using Xunit;");
     sb.AppendLine();
     sb.AppendLine("namespace LafErp.Tests;");
@@ -567,6 +711,28 @@ static string GenTestsFile(List<CatalogEntity> cat, string className)
         sb.AppendLine("        using var h = new TestHost();");
         sb.AppendLine($"        var svc = new CatalogCrudService<{c.Name}>(h.Db, h.Audit);");
         sb.AppendLine($"        Assert.Throws<DomainException>(() => svc.Create(new {c.Name} {{ Name = \"\" }}));");
+        sb.AppendLine("    }");
+        sb.AppendLine();
+        sb.AppendLine($"    [Fact]");
+        sb.AppendLine($"    public void {c.Name}_edit_updates_name()");
+        sb.AppendLine("    {");
+        sb.AppendLine("        using var h = new TestHost();");
+        sb.AppendLine($"        var svc = new CatalogCrudService<{c.Name}>(h.Db, h.Audit);");
+        sb.AppendLine($"        var e = svc.Create(new {c.Name} {{ Name = \"Before {c.Name}\" }});");
+        sb.AppendLine($"        e.Name = \"After {c.Name}\";");
+        sb.AppendLine($"        svc.Update(e);");
+        sb.AppendLine($"        Assert.Contains(svc.List(), x => x.Name == \"After {c.Name}\");");
+        sb.AppendLine("    }");
+        sb.AppendLine();
+        sb.AppendLine($"    [Fact]");
+        sb.AppendLine($"    public void {c.Name}_deactivate_soft_deletes()");
+        sb.AppendLine("    {");
+        sb.AppendLine("        using var h = new TestHost();");
+        sb.AppendLine($"        var svc = new CatalogCrudService<{c.Name}>(h.Db, h.Audit);");
+        sb.AppendLine($"        var e = svc.Create(new {c.Name} {{ Name = \"Temp {c.Name}\" }});");
+        sb.AppendLine($"        svc.Deactivate(e.Id);");
+        sb.AppendLine($"        Assert.DoesNotContain(svc.List(), x => x.Id == e.Id);");
+        sb.AppendLine($"        Assert.True(h.Db.Set<{c.Name}>().IgnoreQueryFilters().First(x => x.Id == e.Id).IsDeleted);");
         sb.AppendLine("    }");
         sb.AppendLine();
     }

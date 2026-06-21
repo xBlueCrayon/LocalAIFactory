@@ -77,6 +77,81 @@ public class CatalogController : Controller
         return RedirectToAction("Index");
     }
 
+    [HttpGet]
+    public IActionResult List(string entity)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        ViewBag.Entity = entity;
+        var set = (System.Collections.IEnumerable)_db.GetType().GetMethod("Set", Type.EmptyTypes)!
+            .MakeGenericMethod(t).Invoke(_db, null)!;
+        var rows = set.Cast<EntityBase>().Where(x => !x.IsDeleted).OrderByDescending(x => x.Id).Take(500).ToList();
+        return View("List", rows);
+    }
+
+    [HttpGet]
+    public IActionResult Edit(string entity, int id)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        var row = _db.Find(t, id) as EntityBase;
+        if (row == null) return NotFound();
+        ViewBag.Entity = entity; ViewBag.Id = id;
+        return View("Edit", Fields(t).Select(f =>
+            new CatalogFieldValue(f.Name, f.Type, t.GetProperty(f.Name)!.GetValue(row)?.ToString() ?? "")).ToList());
+    }
+
+    [HttpPost]
+    public IActionResult Edit(string entity, int id, IFormCollection form)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        var row = _db.Find(t, id) as EntityBase;
+        if (row == null) return NotFound();
+        foreach (var p in t.GetProperties().Where(Editable))
+        {
+            if (!form.TryGetValue(p.Name, out var v)) continue;
+            try
+            {
+                var underlying = Nullable.GetUnderlyingType(p.PropertyType);
+                if (string.IsNullOrWhiteSpace(v))
+                {
+                    if (p.PropertyType == typeof(string)) p.SetValue(row, "");
+                    else if (underlying != null) p.SetValue(row, null); // nullable value type -> null
+                    // non-nullable value type with no input: leave the existing value unchanged
+                }
+                else
+                {
+                    p.SetValue(row, Convert.ChangeType(v.ToString(), underlying ?? p.PropertyType));
+                }
+            }
+            catch { }
+        }
+        var nameProp = t.GetProperty("Name");
+        if (nameProp != null && string.IsNullOrWhiteSpace(nameProp.GetValue(row) as string))
+        {
+            ViewBag.Entity = entity; ViewBag.Id = id; ViewBag.Error = "Name is required.";
+            return View("Edit", Fields(t).Select(f => new CatalogFieldValue(f.Name, f.Type, form[f.Name].ToString())).ToList());
+        }
+        _audit.Record(entity, id, "Update", "via UI form");
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult Deactivate(string entity, int id)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        if (_db.Find(t, id) is EntityBase row)
+        {
+            row.IsDeleted = true;
+            _audit.Record(entity, id, "Deactivate", "via UI");
+            _db.SaveChanges();
+        }
+        return RedirectToAction("Index");
+    }
+
     private static Type? Resolve(string entity) => typeof(EntityBase).Assembly.GetType("LafErp.Core." + entity);
     private static bool Editable(System.Reflection.PropertyInfo p) =>
         p.CanWrite && !Skip.Contains(p.Name) &&
@@ -89,3 +164,4 @@ public class CatalogController : Controller
 
 public record CatalogRow(string EntityType, int Count);
 public record CatalogField(string Name, string Type);
+public record CatalogFieldValue(string Name, string Type, string Value);

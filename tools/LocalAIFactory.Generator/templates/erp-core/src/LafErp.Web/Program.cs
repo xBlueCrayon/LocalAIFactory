@@ -23,7 +23,19 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, HttpCurrentUser>();
 builder.Services.AddErpServices();
 builder.Services.AddControllersWithViews();
-builder.Services.AddAuthentication("LafErpCookie").AddCookie("LafErpCookie", o => { o.LoginPath = "/Account/Login"; o.AccessDeniedPath = "/Account/Login"; });
+builder.Services.AddAuthentication("LafErpCookie").AddCookie("LafErpCookie", o =>
+{
+    o.LoginPath = "/Account/Login";
+    o.AccessDeniedPath = "/Account/Login";
+    // Production-hardened cookie: HttpOnly, SameSite, HTTPS-aware, sliding session timeout.
+    o.Cookie.HttpOnly = true;
+    o.Cookie.SameSite = SameSiteMode.Lax;
+    o.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // becomes Always behind TLS
+    o.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    o.SlidingExpiration = true;
+});
+// Anti-forgery for all POST forms (login/logout already validate the token).
+builder.Services.AddAntiforgery(o => { o.Cookie.HttpOnly = true; o.Cookie.SameSite = SameSiteMode.Lax; });
 
 // Utility: `dotnet run -- schema` prints the SQL Server DDL for the model and exits (no DB connection needed).
 if (args.Length > 0 && args[0] == "schema")
@@ -41,7 +53,12 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ErpDbContext>();
-    db.Database.EnsureCreated();
+    // SQL Server gets a real, committed migration history; the portable SQLite mode uses EnsureCreated so
+    // tests and zero-config local runs stay fast (relational migrations target SQL Server).
+    if (db.Database.IsSqlServer())
+        db.Database.Migrate();
+    else
+        db.Database.EnsureCreated();
     var seed = DataSeeder.Seed(db);
     // Startup has no HttpContext, so ICurrentUser resolves to admin with all roles -> demo posts auto-approve.
     DemoData.Post(db,

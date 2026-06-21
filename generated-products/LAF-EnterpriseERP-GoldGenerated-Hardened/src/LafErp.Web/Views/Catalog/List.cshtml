@@ -1,0 +1,17 @@
+@model List<LafErp.Core.EntityBase>
+@{ ViewData["Title"] = (string)ViewBag.Entity + " records"; }
+<h3>@ViewBag.Entity</h3>
+<p><a href="/Catalog/Create?entity=@ViewBag.Entity" data-testid="create-link">+ Create</a> &middot; <a href="/Catalog">Back to catalog</a></p>
+<table data-testid="record-table">
+    <thead><tr><th>Id</th><th>Name</th><th></th><th></th></tr></thead>
+    <tbody>
+    @foreach (var row in Model)
+    {
+        var name = row.GetType().GetProperty("Name")?.GetValue(row)?.ToString();
+        <tr data-testid="row-@row.Id"><td>@row.Id</td><td>@name</td>
+            <td><a href="/Catalog/Edit?entity=@ViewBag.Entity&id=@row.Id" data-testid="edit-@row.Id">Edit</a></td>
+            <td><form method="post" action="/Catalog/Deactivate?entity=@ViewBag.Entity&id=@row.Id" style="display:inline">
+                <button type="submit" data-testid="deactivate-@row.Id">Deactivate</button></form></td></tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,37 @@
+{
+  "kind": "erp-gold-ui-coverage",
+  "stamp": "2026-06-21",
+  "product": "generated-products/LAF-EnterpriseERP-Gold",
+  "blocker": "Create/list/read only; no edit/delete UI -> CLOSED for masters",
+  "service": "CatalogCrudService<T> (Create/Update/Deactivate(soft-delete)/List/Get)",
+  "controller": "CatalogController (List/Edit/Deactivate)",
+  "views": ["Catalog/List.cshtml", "Catalog/Edit.cshtml"],
+  "catalogModulesTotal": 28,
+  "mastersWithEditAndSoftDelete": {
+    "note": "5 LLM-proposed catalog entities have full create/list/edit/deactivate xUnit coverage in CatalogGeneratedTests.cs",
+    "entities": [
+      "CustomerSegment",
+      "ProductCategory",
+      "EmployeeRole",
+      "MarketingCampaign",
+      "VendorContract"
+    ],
+    "operationsPerEntity": ["create+list", "requires-name", "edit-updates-name", "deactivate-soft-deletes"]
+  },
+  "playwrightCatalogListLoopEntities": [
+    "Quotation", "DeliveryNote", "CreditNote", "PurchaseReceipt", "MaterialRequest",
+    "DebitNote", "StockTransfer", "PriceList", "WorkOrder", "JobCard",
+    "QualityInspection", "Employee", "LeaveApplication", "Timesheet", "WebProduct"
+  ],
+  "playwrightCatalogListLoopCount": 15,
+  "documentsBehavior": "Posted transactional documents are submit/approve/cancel/reverse only; immutable after posting; no hard delete, by design",
+  "bugFixed": "Empty-string form fields now map to \"\" for non-nullable string columns (not null) to avoid a NOT-NULL 500",
+  "tests": {
+    "xunitCatalogCrud": { "file": "CatalogGeneratedTests.cs", "facts": 20 },
+    "playwright": [
+      { "file": "catalog-crud.spec.ts", "tests": 4, "covers": "overview links + create->edit->deactivate lifecycle" },
+      { "file": "catalog-pages.spec.ts", "tests": 15, "covers": "list-render loop over 15 entities" }
+    ]
+  },
+  "honest": "Edit/soft-delete is for mutable masters/catalog only; posted documents immutable by design; manufacturing/HR/POS are CRUD skeletons; some bespoke pages thin."
+}

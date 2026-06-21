@@ -1,0 +1,31 @@
+{
+  "registryUid": "9ded0366-9e37-4cda-8188-3e51ef4bea00",
+  "name": "ERP Gold EF Migrations — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "implementation-experience"],
+  "sources": [
+    {
+      "sourceUid": "b48faa9a-6d3f-4173-9b16-85d0968ffb8d",
+      "type": "domain-theory",
+      "title": "EF Core migration history, design-time tooling and database-bootstrap principles",
+      "reliability": "high",
+      "topic": "ef-migrations"
+    },
+    {
+      "sourceUid": "c73cff31-db69-48b1-a555-61c1187c21ae",
+      "type": "implementation-experience",
+      "title": "Generator template hardening: committed InitialCreate, operator scripts and migration-verification tests",
+      "reliability": "high",
+      "topic": "generation-rules"
+    },
+    {
+      "sourceUid": "64241448-7bf6-411e-ba55-030319fc7be6",
+      "type": "domain-theory",
+      "title": "Database.Migrate versus EnsureCreated semantics and the stale-schema pitfall on portable SQLite",
+      "reliability": "high",
+      "topic": "schema-lifecycle"
+    }
+  ]
+}

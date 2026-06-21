@@ -1,0 +1,31 @@
+{
+  "registryUid": "cc6b19bb-9b22-455a-94e7-947614395657",
+  "name": "ERP Gold Auth Hardening — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "implementation-experience"],
+  "sources": [
+    {
+      "sourceUid": "8f068eec-8522-43bf-b929-ab82d9658b03",
+      "type": "domain-theory",
+      "title": "Application authentication hardening: lockout, password policy, salted hashing and user-enumeration defence",
+      "reliability": "high",
+      "topic": "authentication"
+    },
+    {
+      "sourceUid": "fe45334a-06cc-45ca-8b4d-c6b91e6c1e6c",
+      "type": "implementation-experience",
+      "title": "Hardened auth cookie, anti-forgery on auth POSTs, admin reset and MustChangePassword wired this sprint",
+      "reliability": "high",
+      "topic": "generation-rules"
+    },
+    {
+      "sourceUid": "21f8d69e-277d-47b0-8828-9d5caa705866",
+      "type": "domain-theory",
+      "title": "Security-event auditing and session-cookie hardening principles",
+      "reliability": "high",
+      "topic": "session-security"
+    }
+  ]
+}

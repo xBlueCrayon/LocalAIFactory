@@ -1,0 +1,14 @@
+{
+  "packUid": "836af110-725c-4602-b7d0-e6e642be7ede",
+  "name": "ERP Gold Reporting Import Export Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules a LocalAIFactory generator maps directly to code for deterministic reporting and data import/export in a generated ERP core: General Ledger, Trial Balance, Profit-and-Loss, Balance Sheet, AR and AP aging, Stock Ledger and Stock Balance, and Sales and Purchase summary reports built as deterministic queries that respect company scope; CSV import with per-row validation and rejected-row capture through an ImportBatch tracking TotalRows, ImportedRows, FailedRows and Errors; import and export recorded as audit actions; reports respecting role and company scope; and the honest boundary that reports are query-based with no BI or print-designer and partial export coverage. Each item carries an explicit implementation implication and test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established financial-reporting and bulk-import/export principles, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, Microsoft, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 10,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-reporting-import-export.json"
+  ]
+}

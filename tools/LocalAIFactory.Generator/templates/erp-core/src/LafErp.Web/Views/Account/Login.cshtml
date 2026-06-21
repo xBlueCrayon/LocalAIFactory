@@ -4,6 +4,7 @@
 <code>alice</code> / <code>Alice#12345</code>, <code>bob</code> / <code>Bob#12345</code>.</p>
 @if (ViewBag.Error != null) { <p style="color:#b91c1c" data-testid="login-error">@ViewBag.Error</p> }
 <form method="post" action="/Account/Login" data-testid="login-form">
+    @Html.AntiForgeryToken()
     <p><label style="display:inline-block;width:110px">Username</label><input name="username" data-testid="username" /></p>
     <p><label style="display:inline-block;width:110px">Password</label><input name="password" type="password" data-testid="password" /></p>
     <button type="submit" data-testid="login-submit">Sign in</button>

@@ -1,0 +1,13 @@
+@model List<LafErp.Web.Controllers.CatalogFieldValue>
+@{ ViewData["Title"] = "Edit " + (string)ViewBag.Entity; }
+<h3>Edit @ViewBag.Entity #@ViewBag.Id</h3>
+@if (ViewBag.Error != null) { <p style="color:#b91c1c" data-testid="form-error">@ViewBag.Error</p> }
+<form method="post" action="/Catalog/Edit?entity=@ViewBag.Entity&id=@ViewBag.Id" data-testid="edit-form">
+@foreach (var f in Model)
+{
+    <p><label style="display:inline-block;width:180px">@f.Name (@f.Type)</label>
+    <input name="@f.Name" value="@f.Value" data-testid="field-@f.Name" /></p>
+}
+    <button type="submit" data-testid="edit-submit">Save</button>
+</form>
+<p><a href="/Catalog/List?entity=@ViewBag.Entity">Back to list</a></p>

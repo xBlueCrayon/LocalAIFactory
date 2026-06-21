@@ -1,50 +1,140 @@
 {
   "kind": "laf-erp-v2-generation-attribution",
-  "generatedUtc": "generation-time",
-  "productName": "LAF Enterprise ERP V2",
+  "generatedUtc": "2026-06-21",
+  "productName": "LafErpMigGen",
   "generator": "tools/LocalAIFactory.Generator (LAF_GENERATOR_INFRASTRUCTURE)",
-  "localLlm": "qwen2.5-coder:14b (governed proposal, collision-guarded)",
-  "totalProductFiles": 70,
+  "localLlm": "deterministic-fallback",
+  "specModules": 23,
+  "totalProductFiles": 86,
   "classification": {
-    "LAF_GENERATED": 66,
-    "LOCAL_LLM_PROPOSAL_USED": 4
+    "LAF_GENERATED": 86
   },
   "catalogGovernance": [
     {
-      "Entity": "Supplier",
+      "Entity": "(none)",
       "Status": "REJECTED",
-      "Reason": "collision with a core engine entity (hallucination/overlap guard)"
+      "Reason": "no local-LLM proposal available; deterministic fallback (0 catalog entities)"
     },
     {
-      "Entity": "CustomerSegment",
+      "Entity": "Quotation",
       "Status": "ACCEPTED",
-      "Reason": "3 valid fields"
+      "Reason": "spec module: 5 fields"
     },
     {
-      "Entity": "Currency",
-      "Status": "REJECTED",
-      "Reason": "collision with a core engine entity (hallucination/overlap guard)"
-    },
-    {
-      "Entity": "PaymentTerm",
+      "Entity": "DeliveryNote",
       "Status": "ACCEPTED",
-      "Reason": "3 valid fields"
+      "Reason": "spec module: 5 fields"
     },
     {
-      "Entity": "Warehouse",
-      "Status": "REJECTED",
-      "Reason": "collision with a core engine entity (hallucination/overlap guard)"
-    },
-    {
-      "Entity": "TaxCode",
+      "Entity": "CreditNote",
       "Status": "ACCEPTED",
-      "Reason": "3 valid fields"
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "PurchaseReceipt",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 5 fields"
+    },
+    {
+      "Entity": "MaterialRequest",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "DebitNote",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "StockTransfer",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 5 fields"
+    },
+    {
+      "Entity": "StockReconciliation",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "PriceList",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 3 fields"
+    },
+    {
+      "Entity": "BillOfMaterials",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "WorkOrder",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 5 fields"
+    },
+    {
+      "Entity": "JobCard",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "QualityInspection",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "Employee",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 6 fields"
+    },
+    {
+      "Entity": "AttendanceRecord",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "LeaveApplication",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 5 fields"
+    },
+    {
+      "Entity": "SalaryComponent",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 3 fields"
+    },
+    {
+      "Entity": "Timesheet",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "PosProfile",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 3 fields"
+    },
+    {
+      "Entity": "WebProduct",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "MaintenanceSchedule",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "CustomFieldDef",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
+    },
+    {
+      "Entity": "NotificationRule",
+      "Status": "ACCEPTED",
+      "Reason": "spec module: 4 fields"
     }
   ],
   "autonomy": {
-    "autonomousFiles": 70,
-    "lafGenerated": 66,
-    "localLlmProposalUsed": 4,
+    "autonomousFiles": 86,
+    "lafGenerated": 86,
+    "localLlmProposalUsed": 0,
     "generationAutonomyPct": 100,
     "note": "Autonomy = (LAF_GENERATED \u002B LAF_GENERATED_THEN_FIXED_BY_LAF \u002B LOCAL_LLM_PROPOSAL_USED) / total product files. The generator itself is LAF_GENERATOR_INFRASTRUCTURE and excluded from the product denominator."
   },
@@ -62,7 +152,7 @@
       "attribution": "LAF_GENERATED"
     },
     {
-      "path": "LAF-EnterpriseERP-LAFGenerated.slnx",
+      "path": "laf-mig-gen.slnx",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -82,7 +172,15 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "playwright/tests/create-form.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "playwright/tests/erp.spec.ts",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "playwright/tests/login.spec.ts",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -90,8 +188,12 @@
       "attribution": "LAF_GENERATED"
     },
     {
-      "path": "src/LafErp.Core/CatalogEntities.cs",
-      "attribution": "LOCAL_LLM_PROPOSAL_USED"
+      "path": "scripts/backup-restore-health.ps1",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "scripts/publish-local-production.ps1",
+      "attribution": "LAF_GENERATED"
     },
     {
       "path": "src/LafErp.Core/Common.cs",
@@ -107,6 +209,10 @@
     },
     {
       "path": "src/LafErp.Core/MasterEntities.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Core/ModuleEntities.cs",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -127,6 +233,10 @@
     },
     {
       "path": "src/LafErp.Data/ErpDbContext.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Data/ErpDbContextFactory.cs",
       "attribution": "LAF_GENERATED"
     },
     {
@@ -170,6 +280,14 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Services/PasswordHasher.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Services/PasswordPolicy.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Services/PaymentJournalService.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -194,6 +312,10 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Services/UserAuthService.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Services/WorkflowService.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -210,8 +332,12 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Web/Controllers/AccountController.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Web/Controllers/CatalogController.cs",
-      "attribution": "LOCAL_LLM_PROPOSAL_USED"
+      "attribution": "LAF_GENERATED"
     },
     {
       "path": "src/LafErp.Web/Controllers/HomeController.cs",
@@ -242,8 +368,24 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "src/LafErp.Web/Views/Account/Login.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Catalog/Create.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Catalog/Edit.cshtml",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "src/LafErp.Web/Views/Catalog/Index.cshtml",
-      "attribution": "LOCAL_LLM_PROPOSAL_USED"
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "src/LafErp.Web/Views/Catalog/List.cshtml",
+      "attribution": "LAF_GENERATED"
     },
     {
       "path": "src/LafErp.Web/Views/Home/AuditLog.cshtml",
@@ -286,6 +428,10 @@
       "attribution": "LAF_GENERATED"
     },
     {
+      "path": "tests/LafErp.Tests/AccountingReportsTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
       "path": "tests/LafErp.Tests/AccountingTests.cs",
       "attribution": "LAF_GENERATED"
     },
@@ -294,8 +440,12 @@
       "attribution": "LAF_GENERATED"
     },
     {
-      "path": "tests/LafErp.Tests/CatalogGeneratedTests.cs",
-      "attribution": "LOCAL_LLM_PROPOSAL_USED"
+      "path": "tests/LafErp.Tests/AuthHardeningTests.cs",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/AuthTests.cs",
+      "attribution": "LAF_GENERATED"
     },
     {
       "path": "tests/LafErp.Tests/ControlsAndValidationTests.cs",
@@ -307,6 +457,10 @@
     },
     {
       "path": "tests/LafErp.Tests/LafErp.Tests.csproj",
+      "attribution": "LAF_GENERATED"
+    },
+    {
+      "path": "tests/LafErp.Tests/ModuleGeneratedTests.cs",
       "attribution": "LAF_GENERATED"
     },
     {

@@ -1,0 +1,24 @@
+{
+  "kind": "erp-gold-auth-hardening",
+  "stamp": "2026-06-21",
+  "product": "generated-products/LAF-EnterpriseERP-Gold",
+  "blocker": "Auth lacked lockout/password-policy/anti-forgery/secure-cookie -> CLOSED",
+  "controls": [
+    { "control": "Failed-login lockout (5 attempts -> 15 min)", "provenBy": "AuthHardeningTests.Account_locks_after_max_failed_attempts" },
+    { "control": "Failure counter increments on wrong password", "provenBy": "AuthHardeningTests.Wrong_password_increments_failure_count" },
+    { "control": "Reset failure count + stamp LastLoginUtc on success", "provenBy": "AuthHardeningTests.Successful_login_resets_failure_count_and_stamps_last_login" },
+    { "control": "PasswordPolicy (min 8 + upper/lower/digit/symbol)", "provenBy": "AuthHardeningTests.Password_policy_enforces_complexity (Theory, 6 cases)" },
+    { "control": "Anti-forgery ([ValidateAntiForgeryToken] + @Html.AntiForgeryToken())", "provenBy": "playwright/auth-hardening.spec.ts (token field present; tokenless POST rejected)" },
+    { "control": "Hardened cookie (HttpOnly, SameSite=Lax, SecurePolicy=SameAsRequest, 30-min sliding expiry)", "provenBy": "Program.cs config; deployment-evidence/production-smoke-proof.json (authCookie true)" },
+    { "control": "Audited failed-login", "provenBy": "AuthHardeningTests.Failed_login_is_audited" },
+    { "control": "Audited account-locked", "provenBy": "AuthHardeningTests.Lockout_is_audited" },
+    { "control": "Audited logout", "provenBy": "AuthHardeningTests.Logout_is_audited" },
+    { "control": "Admin SetPassword enforces policy + rehash + audited reset + MustChangePassword", "provenBy": "AuthHardeningTests.Admin_password_reset_enforces_policy_and_rehashes" },
+    { "control": "No username enumeration (generic failure)", "provenBy": "deployment-evidence/production-smoke-proof.json (wrongPassword not 302)" }
+  ],
+  "tests": {
+    "xunit": { "file": "AuthHardeningTests.cs", "facts": 7, "theories": 1, "theoryCases": 6 },
+    "playwright": { "file": "auth-hardening.spec.ts", "tests": 3 }
+  },
+  "honest": "App-level auth only; no MFA/SSO/OIDC/Windows-auth yet (documented extension points). CA-signed TLS is an external gate."
+}

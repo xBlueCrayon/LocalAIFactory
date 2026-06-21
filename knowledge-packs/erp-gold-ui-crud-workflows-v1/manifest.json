@@ -1,0 +1,14 @@
+{
+  "packUid": "9a28dbf4-1e42-46e7-bcbf-38d44f47ec67",
+  "name": "ERP Gold UI CRUD Workflows Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules a LocalAIFactory generator maps directly to code for master-data CRUD UI in a generated ERP core: a generic CatalogCrudService<T> exposing Create, Update, Deactivate (soft-delete), List and Get; soft-delete through an IsDeleted flag with list queries excluding deleted rows; reflection-driven create and edit forms; the master-data-is-mutable versus posted-documents-are-immutable distinction; the empty-string versus null form-binding rule that fixed a real NOT-NULL 500 error; required-Name validation surfaced in the UI; stable data-testid hooks for Playwright; and per-entity CRUD tests. Each item carries an explicit implementation implication and test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established CRUD-UI, soft-delete and form-binding principles, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, Microsoft, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 11,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-ui-crud-workflows.json"
+  ]
+}

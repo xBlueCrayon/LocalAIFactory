@@ -1,0 +1,11 @@
+{
+  "baseUrl": "http://localhost:5091",
+  "stamp": "smoke",
+  "loginPage": 200,
+  "antiForgeryTokenPresent": true,
+  "wrongPassword": 200,
+  "goodPassword": 302,
+  "authCookie": true,
+  "noHttp500": true,
+  "pass": true
+}
