@@ -35,7 +35,10 @@ deployment, true fresh-VM install — see the gates report.
 
 ## Readiness
 
-Mean ≈ **60.6%** (max 88, **none at 100**). The **FINAL-ENTERPRISE-REASONING** pass added a synthetic
+Mean ≈ **60.8%** (max 88, **none at 100**). The **DEPLOYMENT-HARDENING** pass executed a Mode C
+published-app + **SQL Server Express 2022** deployment (fresh DB, 14 migrations + 4 packs/438 items, 13
+routes 200, 0 HTTP 500s, healthcheck + rollback proven — **not IIS, not production**) and raised only
+**Deployment Readiness 70 → 73**. Earlier, the **FINAL-ENTERPRISE-REASONING** pass added a synthetic
 enterprise giant-pattern reasoning benchmark (10 public pattern families, Gold 14/14 structural + 17 advisory,
 mean 94.5, reproducible — no vendor clone) and raised only four areas where it gives proof: Benchmark/Evidence
 80→**82**, Business Workflow Consulting 45→**55**, ERP/Infra Advisory 65→**68**, Vendor-Style Design 55→**65**.

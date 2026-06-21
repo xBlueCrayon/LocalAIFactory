@@ -93,3 +93,15 @@ reproducible proof: Benchmark/Evidence 80→**82**, Business Workflow Consulting
 65→**68**, Vendor-Style Design 55→**65**. Blocked areas (production, SSO, OCR, estate, GA) **unchanged**. See
 `Enterprise-Giant-Solution-Reasoning-Benchmark.md` and `reports/ENTERPRISE_REASONING_BENCHMARK_RESULTS.md`.
 **None at 100.**
+
+## DEPLOYMENT-HARDENING update (overall mean ≈ 60.6% → ≈ 60.8%)
+
+IIS is not installed on this host, so the strongest **truthful** deployment was executed: **Mode C —
+published-app binaries run against SQL Server Express 2022** with a fresh `LocalAIFactory_DeploymentProof`
+database (app auto-migrated **14** + seeded **4 packs / 438 items**), **13 HTTP routes 200 / 0 HTTP 500s**,
+new `scripts/deployment-drill/09-post-deploy-healthcheck.ps1` **PASS**, support bundle + rollback proven.
+Honest **modest** raise (published-app fallback, **not IIS, not production**): **Deployment Readiness 70 →
+73**. NOT raised: Controlled Pilot 70 (no real-estate-data pilot + sign-off), Enterprise Product 30 (no
+IIS/SSO/production), SSO, external review, OCR/CNN, license enforcement. Deployment proof ladder: **Local
+POC → Published-app (done) → IIS pilot → Production → Commercial GA**. See `reports/DEPLOYMENT_*`.
+**None at 100.**

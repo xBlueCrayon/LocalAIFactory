@@ -41,7 +41,7 @@ calibrate every claim below against the real, current state of the repository.
   Development-only dev-auth handler. RBAC (Viewer < Analyst < Admin) and per-project
   `ProjectAccess` ACLs are enforced server-side and audited. There is **no** enterprise
   SSO / OIDC / Entra ID integration — that is design and additive hooks only.
-- **Readiness (reported honestly):** mean ~**60.6%**, max **88**, **none at 100**
+- **Readiness (reported honestly):** mean ~**60.8%**, max **88**, **none at 100**
   (per the `/Readiness` page and `readiness-scorecard.json`).
 
 ### Cross-references (existing in this repository)
@@ -76,7 +76,7 @@ calibrate every claim below against the real, current state of the repository.
 | # | Blocker | Current status | Priority | Est. effort | Risk |
 |---|---------|----------------|----------|-------------|------|
 | 1 | Real Windows Server / IIS deployment | Dry-run drill only; never executed on a real server | P0 | 3–5 days | High |
-| 2 | SQL Server Express deployment (deployed app) | Provisioning script exists; not run end-to-end as a deployed app | P0 | 2–3 days | Medium |
+| 2 | SQL Server Express deployment (deployed app) | **Substantially DONE (Mode C): published app executed against SQL Express 2022 — migrated+seeded+served, healthcheck PASS.** Remaining: behind IIS + production posture | P0 | 2–3 days | Medium |
 | 3 | Full SQL Server deployment | Provisioning script exists; not executed | P1 | 2–4 days | Medium |
 | 4 | Docker deployment | Docker not installed on build host; no Dockerfile proven | P2 | 3–5 days | Medium |
 | 5 | Entra ID / OIDC / SSO | Design + additive hooks only; validators read-only; no real tenant | P0 | 5–10 days | High |
@@ -145,10 +145,13 @@ trail the first P0 wave; **P2** = needed for full-scope GA but can be staged.
 
 ## 2. SQL Server Express deployment (as a deployed app)
 
-- **Current status:** `database/create-sqlexpress-db.ps1` exists and SQL Express
-  (`MSSQL$SQLEXPRESS`) is present on the build host. The script has **not** been run
-  end-to-end as the backing store for a *deployed* application — the demo runs against
-  **LocalDB**, not the Express instance under a deployed site.
+- **Current status: SUBSTANTIALLY DONE (Mode C, 2026-06-21).** Executed: the **published app**
+  was run against **SQL Server Express 2022** (`MSSQL$SQLEXPRESS`) with a fresh
+  `LocalAIFactory_DeploymentProof` database — the app **migrated (14), seeded 4 packs / 438 items,
+  and served** 13 HTTP routes (all 200, 0 HTTP 500s); `09-post-deploy-healthcheck` **PASS**; rollback
+  proven. Evidence: `reports/DEPLOYMENT_DATABASE_PROOF.md`, `reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md`.
+  Remaining for full closure: run Express **behind IIS** (blocker 1) with a least-privilege app-pool SQL
+  login, and a production (non-dev-auth) posture.
 - **Why it blocks 20/20:** SQL Express is the stated minimum production-capable store
   for a small pilot. The product must be proven to migrate, seed, and serve from a real
   Express instance behind a deployed app, not only from LocalDB in a dev session.
@@ -571,5 +574,5 @@ captured evidence:
 
 Until those four are simultaneously true, the product remains a **controlled,
 operator-assisted pilot/demo**, and the final `v1.0` release (blocker 15) stays
-**unpublished by design**. Readiness today is reported honestly at mean ~60.6%, max 88,
+**unpublished by design**. Readiness today is reported honestly at mean ~60.8%, max 88,
 **none at 100** — consistent with this roadmap. See also `docs/Known-Limitations.md`.

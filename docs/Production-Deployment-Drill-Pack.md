@@ -12,13 +12,19 @@ on an approved host.
 
 ### Honesty banner — read this first
 
-This procedure has **NOT** been executed on a real production server. The drill scripts are
-**dry-run by default** and require `-Execute` for any real change; the read-only steps (`00`, `01`,
-`06`, `08`) change nothing at all. As of this writing:
+This **production / IIS** procedure has **NOT** been executed on a real production server. The drill
+scripts are **dry-run by default** and require `-Execute` for any real change; the read-only steps (`00`,
+`01`, `06`, `08`, and the new `09`) change nothing at all. As of this writing:
 
 - No representative production host has been provisioned.
-- No SQL Express deployment, full SQL Server deployment, or Docker target has been stood up in this work.
 - **Docker is not installed** on the build host, and **IIS is not installed** on the build host.
+
+> **However — a Mode C deployment WAS executed (2026-06-21).** Because IIS is unavailable, the strongest
+> truthful deployment was performed: the **published app** running against **SQL Server Express 2022**
+> (fresh `LocalAIFactory_DeploymentProof` DB, 14 migrations + 4 packs/438 items, 13 routes 200, 0 HTTP
+> 500s, `09-post-deploy-healthcheck` PASS, rollback proven). See `reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md`.
+> A new read-only step **`09-post-deploy-healthcheck.ps1`** certifies a deployed endpoint (HTTP + DB +
+> pack counts + migrations). The IIS (`-Execute`) path below remains the documented next step (Mode A).
 
 What *has* been verified is that the dry-run pass runs cleanly (see "Verified dry-run facts" below).
 That proves the **procedure and the scripts**, not a fresh-server production deployment. Do not read

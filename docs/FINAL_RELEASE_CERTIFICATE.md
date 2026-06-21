@@ -15,6 +15,7 @@ certainty, or production guarantee.
 | Tests | `dotnet test` | **235 / 235 pass** |
 | Benchmark | `--inmemory --suite standard` | **PASS** — ERP/CRM Gold 6/6, core-banking Gold 6/6, **KYC/AML Gold 7/7**, **enterprise giant-patterns Gold 14/14** |
 | Enterprise reasoning | `scripts/benchmark/run-enterprise-reasoning-benchmark.ps1` | **PASS** — 31 questions (14 structural @100 + 17 advisory @90), **mean 94.5**; synthetic public patterns, no vendor clone |
+| Deployment (Mode C) | published app → **SQL Server Express 2022** | **EXECUTED** — fresh `LocalAIFactory_DeploymentProof` DB, 14 migrations + 4 packs/438 items seeded, 13 routes 200, 0 HTTP 500s, `09-post-deploy-healthcheck` PASS, rollback proven. **Not IIS, not production.** |
 | verify-poc | `scripts/poc/verify-poc.ps1` | **PASS** (build + test + benchmark + artifacts + hygiene) |
 | UI smoke | `scripts/poc/ui-smoke-test.ps1` | **PASS** (11 pages 200, incl. `/Support`) |
 | Included KB | `scripts/knowledge/verify-all-knowledge-packs.ps1` | **PASS** — 4 packs, 438 items, 438 distinct UIDs, no collisions; **live DB 4 packs / 438 items** |
@@ -46,10 +47,14 @@ certainty, or production guarantee.
 - **Not present:** executed production deployment; enterprise SSO; cross-repository estate model; autonomy on a
   real repo; **external penetration test / security audit**; commercial licensing enforcement.
 
-## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 60.6%, max 88, none at 100)
+## Readiness (authoritative: `readiness-scorecard.json`, mean ≈ 60.8%, max 88, none at 100)
+
+> DEPLOYMENT-HARDENING raised only **Deployment Readiness 70 → 73** — a Mode C published-app + SQL Express
+> deployment was **executed** (not IIS, not production). Deployment proof ladder:
+> **Local POC → Published-app (done) → IIS pilot → Production → Commercial GA**.
 
 Technical POC **88** · Data/Knowledge Governance **85** · Benchmark **82** · Repository Understanding **80** ·
-Security **76** · Controlled Pilot **70** · Deployment **70** · UX/Demo **70** · Audit **70** · Banking **70** ·
+Security **76** · Deployment **73** · Controlled Pilot **70** · UX/Demo **70** · Audit **70** · Banking **70** ·
 ERP/Infra Advisory **68** · Supportability **65** · Vendor-Style **65** · Autonomous **55** · Business Workflow
 Consulting **55** · Cross-System/Estate **45** · Packaging/Licensing **45** · Scalability **45** · Document/OCR
 **35** · Commercial Product **35** · Legacy **30** · Enterprise Product **30**.

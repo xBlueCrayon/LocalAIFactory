@@ -4,8 +4,16 @@ The specifics of deploying LocalAIFactory on **SQL Server Express** for a small,
 This page covers only what differs from the shared database contract; for auth, encryption, and
 migrations see [`SQL-Server-Deployment-Guide.md`](SQL-Server-Deployment-Guide.md).
 
-> Honest note: **SQL Express was not exercised on the build host** this release (the validation host
-> used LocalDB). The commands and scripts below are committed and follow the same safe contract, but
+> **Update (2026-06-21): SQL Express HAS now been exercised (Mode C).** The published app was deployed
+> against **SQL Server Express 2022** (`MSSQL$SQLEXPRESS`) with a fresh `LocalAIFactory_DeploymentProof`
+> database — it migrated (14), seeded 4 packs / 438 items, and served 13 HTTP routes (all 200, 0 HTTP
+> 500s); `09-post-deploy-healthcheck` PASS; rollback proven. See
+> [`reports/DEPLOYMENT_DATABASE_PROOF.md`](reports/DEPLOYMENT_DATABASE_PROOF.md) and
+> [`reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md`](reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md). What is still
+> **not** proven: SQL Express **behind IIS** (IIS is not installed on the host) and a production posture.
+>
+> Original honest note (still true for the IIS path): the validation host used LocalDB for the dev demo.
+> The commands and scripts below are committed and follow the same safe contract, but
 > Express itself is documented, not host-verified here ([`Known-Limitations.md`](Known-Limitations.md) §5).
 
 ---

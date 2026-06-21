@@ -77,10 +77,16 @@ This list is a feature, not an apology: over-claiming is the failure mode we are
 
 ## 5. Deployment & runtime proof
 
-- **No production deployment is proven here.** The IIS deployment path is documented but a real
-  production deploy has not been demonstrated as part of this work.
-  - *Close with:* a deployment to a representative IIS host with the core-page smoke checks passing
-    on that host.
+- **A SQL-Express published-app deployment IS proven (Mode C); IIS and production are NOT.** On
+  2026-06-21 the **published binaries** were executed against **SQL Server Express 2022** (fresh
+  `LocalAIFactory_DeploymentProof` DB, 14 migrations + 4 packs/438 items seeded, 13 routes 200, 0 HTTP
+  500s, healthcheck + rollback proven — see `reports/DEPLOYMENT_PUBLISHED_APP_PROOF.md`). What remains
+  unproven: **IIS** (not installed on the host — no Hosting Bundle/ANCM), **full SQL Server**, **Docker**,
+  and a **production posture** (the proof ran with Development dev-auth for page reachability).
+  - *Close with:* install IIS + the ASP.NET Core Hosting Bundle, run the drill `04`/`05` in `-Execute`
+    (Mode A) with a least-privilege app-pool SQL login, and re-run the core-page + `09` health checks on
+    that host under Windows/Negotiate auth.
+- Deployment proof ladder: **Local POC → Published-app (done) → IIS pilot → Production → Commercial GA**.
 
 - **Docker and SQL Express were not exercised on the build host.** The build/validation host did not
   run the Docker-based or SQL-Express scenarios; those paths are documented but not host-verified
