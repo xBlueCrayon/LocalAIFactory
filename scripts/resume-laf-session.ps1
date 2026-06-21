@@ -1,7 +1,8 @@
 <#
-.SYNOPSIS  Orientation for resuming LocalAIFactory work on a new machine (e.g. over SSH).
-.DESCRIPTION  Prints repo status, latest commit, branch, the key current reports, the next recommended task,
-              and the validation commands to run. Read-only — it changes nothing.
+.SYNOPSIS  Orientation for resuming LocalAIFactory work in a NEW SSH terminal on the SAME machine/folder.
+.DESCRIPTION  Same-machine SSH handoff (e.g. reconnecting from Android/Termux): the repo, disk, Git state, GPU
+              and Ollama are unchanged — do NOT re-clone. Prints repo status, latest commit, branch, how to
+              resume Claude Code, the key reports, the next task, and validation commands. Read-only.
 #>
 $ErrorActionPreference = "SilentlyContinue"
 $repo = Split-Path -Parent $PSScriptRoot
@@ -18,6 +19,12 @@ Write-Host "  status : $([string]::IsNullOrWhiteSpace($dirty) ? 'clean' : "$((($
 git fetch origin 2>$null | Out-Null
 $local = git rev-parse HEAD; $remote = git rev-parse "origin/$(git branch --show-current)"
 Write-Host "  remote : $([string]::Equals($local,$remote) ? 'in sync with origin' : 'DIVERGED from origin — reconcile first')"
+
+H "Resume Claude Code (same machine, this folder)"
+Write-Host "  claude --continue   # continue the MOST RECENT Claude Code session for this folder (primary)"
+Write-Host "  claude --resume     # fallback: pick a PREVIOUS saved session manually"
+Write-Host "  /resume             # inside an open Claude Code: opens the session picker"
+Write-Host "  (Same machine/disk/repo/GPU/Ollama as before — do NOT re-clone.)"
 
 H "Recent commits"
 git log --oneline -5 | ForEach-Object { Write-Host "  $_" }

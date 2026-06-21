@@ -1,6 +1,12 @@
 # SSH Session Handoff — LocalAIFactory
 
-**Generated:** 2026-06-21 · For resuming work from another machine over SSH.
+**Generated:** 2026-06-21 · **Same-machine SSH terminal handoff** — NOT a new-machine clone.
+
+> You are reconnecting to the **same Windows development machine** over SSH (e.g. from Android/Termux), into
+> the **same `D:\AI\Repositories\LocalAIFactory` folder**. Same disk, same Git state, same GPU, same RAM/CPU,
+> same Ollama install, same Claude Code install, same local files, same pushed branch. **Do NOT re-clone** —
+> just `cd` back into the existing repo folder and continue. The clone command is kept only as a disaster-
+> recovery fallback for a genuinely different machine.
 
 ## 1. Git state
 
@@ -69,19 +75,26 @@ A local-first software-reasoning product layer, built on the V1 engine and the K
 
 Wire a **live local model** into the model-driven Plan→Patch→Verify loop (replace the fake `IPatchPlanner` with one backed by the `LocalModelRouter`/`GpuAwareOrchestrator`) **behind the existing safety gates** — the runner, risk assessment, sandbox, and rollback are already in place. Then build the **standalone LearningLoop** module and the **full Python workers** (embeddings/rerank/scrape) in a local venv. In parallel, begin the **external gates** (security review, CA TLS, SSO/OIDC, customer pilot).
 
-## 8. Resume commands from another SSH machine
+## 8. Resume commands (same machine, new SSH terminal)
+
+You are on the **same machine and same folder** — no clone, no pull-from-scratch. Just go back to the repo
+and continue the Claude Code session.
 
 ```powershell
-# 1. Clone / pull the branch
-git clone --branch ke-008-code-symbols https://github.com/xBlueCrayon/LocalAIFactory.git
-cd LocalAIFactory
-# (or, if already cloned)
-git fetch origin && git checkout ke-008-code-symbols && git pull --ff-only
+# 1. Go to the existing repo folder (it is unchanged on the same disk)
+cd D:\AI\Repositories\LocalAIFactory
 
-# 2. Quick orientation
+# 2. Resume Claude Code in this folder
+claude --continue        # continue the MOST RECENT Claude Code session for this folder (primary)
+# Fallbacks:
+claude --resume          # pick a PREVIOUS saved Claude Code session manually
+#   ...and inside an already-open Claude Code, the slash command  /resume  opens the session picker too.
+
+# 3. (Optional) Quick orientation + sanity check that nothing changed while away
 pwsh -File scripts/resume-laf-session.ps1
+git status            # expect: clean, on ke-008-code-symbols, in sync with origin
 
-# 3. Validate (must all pass before new work)
+# 4. Validate before new work (only needed if you suspect drift — the tree was clean at handoff)
 dotnet build LocalAIFactory.sln -c Release
 dotnet test tests/LocalAIFactory.Tests/LocalAIFactory.Tests.csproj -c Release
 dotnet test tests/LocalAIFactory.Reasoning.Tests/LocalAIFactory.Reasoning.Tests.csproj -c Release
@@ -94,6 +107,13 @@ pwsh -File scripts/security/security-audit.ps1
 ```
 
 > Note: the toolchain is **.NET 10**; the solution is `.slnx`-aware. `dotnet-ef 10.0.9` is needed only for ERP-Gold migrations, not the reasoning engine. Ollama, GPU, Qdrant and Python are all **optional** — every test passes without them.
+
+### Disaster-recovery only (DIFFERENT machine — not your case here)
+```powershell
+git clone --branch ke-008-code-symbols https://github.com/xBlueCrayon/LocalAIFactory.git
+cd LocalAIFactory
+# then run the validation block above
+```
 
 ## 9. Important report paths
 
