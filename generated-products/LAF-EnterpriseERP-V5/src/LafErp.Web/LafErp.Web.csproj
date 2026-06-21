@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="..\LafErp.Core\LafErp.Core.csproj" />
+    <ProjectReference Include="..\LafErp.Data\LafErp.Data.csproj" />
+    <ProjectReference Include="..\LafErp.Services\LafErp.Services.csproj" />
+  </ItemGroup>
+</Project>

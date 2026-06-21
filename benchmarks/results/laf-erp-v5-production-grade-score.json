@@ -1,0 +1,23 @@
+{
+  "kind": "laf-erp-v5-production-grade-score",
+  "product": "LAF Enterprise ERP V5",
+  "generated": "2026-06-21",
+  "classification": "ERP_PILOT_READY",
+  "classificationScale": ["ERP_NOT_READY", "ERP_DEMO_READY", "ERP_PILOT_READY", "ERP_LOCAL_PRODUCTION_READY", "ERP_PRODUCTION_READY_WITH_EXTERNAL_PROOFS", "ERP_PRODUCTION_READY_FULL"],
+  "overallProductionGradePct": 57,
+  "disclaimer": "Honest. High ERP_PILOT_READY, materially closer to ERP_LOCAL_PRODUCTION_READY. NOT production-grade or ERPNext-grade.",
+  "localGatesPassed": [
+    "build 0 errors", "134 xUnit tests", "14 Playwright tests (incl. create-form UI)", "runs on SQLite + MSSQL-compatible engine",
+    "publish script + published app runs (health ok, trial balance seeded)", "double-entry GL balances + P&L + Balance Sheet",
+    "immutable stock ledger + negative guard", "maker/checker + threshold + audit on every transition", "RBAC matrix enforced",
+    "generated create UI forms persist records (proven)", "seed/demo data", "no secrets in source"
+  ],
+  "localGatesRemaining": [
+    "EF migrations (currently EnsureCreated)", "edit/delete + list-detail UI (V5 added CREATE only)",
+    "backup/restore drill", "performance load test on real hardware", "full module depth (MRP, payroll, POS, storefront, returns)"
+  ],
+  "externalGatesRemaining": [
+    "real authentication (Windows/SSO/OIDC)", "CA TLS / HTTPS", "external security review / pen-test", "signed customer pilot / business acceptance"
+  ],
+  "verdict": "ERP V5 is a high ERP_PILOT_READY clean-room ERP: generated at 100% autonomy, 134+14 tests, real double-entry + P&L/Balance Sheet, maker/checker + audit + RBAC, generated CREATE UI forms, and a local-production publish that runs. To reach ERP_LOCAL_PRODUCTION_READY it needs EF migrations + full edit/delete UI + backup/restore. ERPNext free-grade and full production additionally need the external gates above. No fake production-grade."
+}

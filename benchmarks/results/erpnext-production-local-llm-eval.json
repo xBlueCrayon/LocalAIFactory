@@ -1,0 +1,8 @@
+{
+  "task": "ERPNext production gap detection + code-gen approach",
+  "model": "qwen2.5-coder:14b",
+  "conclusion": "Local LLM (qwen2.5-coder:14b) is best as REVIEWER/PLANNER for ERP (gap detection, scenario/control review). DETERMINISTIC templates + knowledge packs write the compiling code: they produced V5 at 100% autonomy with 134 tests; the LLM does not write product source.",
+  "usefulForReviewPlanning": true,
+  "durationSec": 10.3,
+  "generated": "2026-06-21"
+}

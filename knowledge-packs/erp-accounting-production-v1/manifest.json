@@ -1,0 +1,14 @@
+{
+  "packUid": "5670045c-b047-4a0c-ae07-249df34f8922",
+  "name": "ERP Accounting Production Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules a LocalAIFactory generator maps directly to code for a production-grade ERP accounting module: chart-of-accounts depth and account types, journal entry posting, payment entry, GL posting engine, trial balance, profit-and-loss versus balance-sheet classification, AR/AP control accounts, cost-centre dimensions, fiscal-year and period close, opening balances, bank and cash accounts, invoice posting templates, payment reconciliation skeleton, and tax computation. Each item carries an explicit implementation implication and a test implication, an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established accounting and ERP general-ledger principles, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, SAP, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 22,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-accounting.json"
+  ]
+}

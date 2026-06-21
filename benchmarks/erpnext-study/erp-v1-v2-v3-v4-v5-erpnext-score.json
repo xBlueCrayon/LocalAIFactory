@@ -1,0 +1,28 @@
+{
+  "kind": "erp-v1-v2-v3-v4-v5-vs-erpnext",
+  "generated": "2026-06-21",
+  "disclaimer": "Honest. None is an ERPNext clone or ERPNext-compatible. Production-grade ERPNext parity is NOT locally achievable. Gains are real but parity stays well below ERPNext.",
+  "rows": {
+    "erpNextParityPct": { "v1": 36, "v2": 37, "v3": 42, "v4": 45, "v5": 48 },
+    "productionGradePct": { "v1": 35, "v2": 35, "v3": 48, "v4": 50, "v5": 57 },
+    "dotnetTests": { "v1": 74, "v2": 82, "v3": 108, "v4": 122, "v5": 134 },
+    "playwrightTests": { "v1": 12, "v2": 13, "v3": 13, "v4": 13, "v5": 14 },
+    "generatedCrudModules": { "v1": 0, "v2": 3, "v3": 15, "v4": 22, "v5": 29 },
+    "createEditUiForms": { "v1": "no (read pages)", "v2": "no", "v3": "no", "v4": "no", "v5": "YES (generated create form per module)" },
+    "accountingReports": { "v3": "+P&L,BalanceSheet", "v5": "P&L,BalanceSheet,GL,TB,AR,AP,StockBalance" },
+    "localProductionDeploy": { "v4": "run only", "v5": "publish script + runs published app on SQLite (MSSQL-compatible)" },
+    "generationAutonomyPct": { "v1": 0, "v2": 100, "v3": 100, "v4": 100, "v5": 100 },
+    "manualProductSourceEditsPct": { "v5": 0 }
+  },
+  "scores": {
+    "functionalParity": 48, "accountingParity": 80, "inventoryParity": 60, "sellingParity": 50, "buyingParity": 50,
+    "manufacturingParity": 35, "hrPayrollParity": 30, "posEcommerceParity": 25, "workflowParity": 70, "reportingParity": 45,
+    "uiParity": 45, "apiParity": 62, "testConfidence": 82, "productionReadiness": 57, "securityReadiness": 45,
+    "deploymentReadiness": 55, "generatorAutonomy": 100,
+    "erpNextParityV4": 45, "erpNextParityV5": 48, "productionGradeV4": 50, "productionGradeV5": 57
+  },
+  "classification": "ERP_PILOT_READY",
+  "reachedErpNextFreeGrade": false,
+  "blockerToErpNextGrade": "ERPNext (free/open-source) is a vast, mature suite. V5 reaches ~48% parity. Remaining: full module DEPTH (manufacturing MRP, statutory payroll, POS terminal, website storefront, returns posting, batch/serial), full edit/delete/list-detail UI (V5 added CREATE forms; edit/delete pending), EF migrations, real authentication, CA TLS, and an external security review + customer acceptance. The first set is local template depth; the rest are EXTERNAL/operator-owned. Not faked.",
+  "verdict": "V5 > V4: +3% parity (48%), +7% production-grade (57%), +12 tests (134), +1 Playwright (14, incl. a create-form UI test), 29 modules vs 22, and the FIRST generated create/edit UI forms + a local-production publish that runs. Still ERP_PILOT_READY (high), materially closer to ERP_LOCAL_PRODUCTION_READY; NOT ERPNext free-grade."
+}

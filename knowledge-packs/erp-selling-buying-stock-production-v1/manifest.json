@@ -1,0 +1,14 @@
+{
+  "packUid": "1e2f4290-0950-4f6f-ac91-9d3d40666b0b",
+  "name": "ERP Selling, Buying and Stock Production Knowledge Pack",
+  "version": "1.0.0",
+  "description": "Generation-oriented rules a LocalAIFactory generator maps to code for the production-grade selling, buying, and inventory pipelines of an ERP: the selling flow (lead, opportunity, customer, quotation, sales order, delivery note, sales invoice, payment receipt, credit note), the buying flow (supplier, purchase order, purchase receipt, purchase invoice, supplier payment, debit note), and stock (item, item group, warehouse, stock ledger, stock balance, receipt, issue, transfer, adjustment, valuation, reorder skeleton). Items include explicit controls: an immutable append-only stock ledger, a negative-stock guard, and correction-by-reversal rather than edit. Each item carries an applicability note, a worked example, a required limitation, a confidence level, and tags. All items are original summaries; no third-party text is reproduced.",
+  "license": "Original professional summaries of widely-established ERP selling, buying and inventory control principles, authored for LocalAIFactory. Free to deploy and modify within the application. No vendor documentation, ERPNext/Frappe, SAP, or other third-party copyrighted material is reproduced verbatim. Principles are framed with confidence levels; no jurisdiction-specific compliance or certification is asserted.",
+  "createdUtc": "2026-06-21",
+  "lastReviewedUtc": "2026-06-21",
+  "itemCount": 26,
+  "sourceRegistry": "source-registry.json",
+  "files": [
+    "erp-selling-buying-stock.json"
+  ]
+}

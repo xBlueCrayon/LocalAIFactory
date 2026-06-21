@@ -1,0 +1,38 @@
+{
+  "registryUid": "e0448879-e83a-428b-9b01-c2f2ded956c1",
+  "name": "ERP Accounting Production — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory", "official-docs"],
+  "sources": [
+    {
+      "sourceUid": "b3fd0a35-8172-4b1e-9c83-44b786bb71ae",
+      "type": "domain-theory",
+      "title": "Chart-of-accounts structure, account-type classification and general-ledger posting theory",
+      "reliability": "high",
+      "topic": "general-ledger"
+    },
+    {
+      "sourceUid": "e03a3a74-fba3-4d9d-b1c0-c2138dd8e8ee",
+      "type": "domain-theory",
+      "title": "Trial balance, profit-and-loss and balance-sheet preparation principles",
+      "reliability": "high",
+      "topic": "financial-statements"
+    },
+    {
+      "sourceUid": "c8f38281-836d-4381-a7ca-57cda3c56d90",
+      "type": "domain-theory",
+      "title": "Accounts-receivable / accounts-payable control accounts and reconciliation theory",
+      "reliability": "high",
+      "topic": "subledger-controls"
+    },
+    {
+      "sourceUid": "9e5f6b5d-5e7b-4309-84bd-72bca098688c",
+      "type": "official-docs",
+      "title": "Fixed-precision decimal storage and transaction-isolation behaviour (SQL Server / EF Core concept family)",
+      "reliability": "high",
+      "topic": "data-integrity"
+    }
+  ]
+}

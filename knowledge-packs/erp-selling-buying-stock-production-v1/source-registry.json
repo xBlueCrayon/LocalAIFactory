@@ -1,0 +1,45 @@
+{
+  "registryUid": "c223a5be-3530-46ea-80b2-b3b57b58f5c8",
+  "name": "ERP Selling, Buying and Stock Production — Source Registry",
+  "version": "1.0.0",
+  "registeredUtc": "2026-06-21",
+  "policy": "original summaries; no third-party source vendored",
+  "sourceTypes": ["domain-theory"],
+  "sources": [
+    {
+      "sourceUid": "0d6c9cce-ae42-4bf6-a72e-5260911bcf3c",
+      "type": "domain-theory",
+      "title": "Order-to-cash selling pipeline and document-flow theory",
+      "reliability": "high",
+      "topic": "selling"
+    },
+    {
+      "sourceUid": "80f0240f-3c5c-40ce-ab07-e56e5c9ac44c",
+      "type": "domain-theory",
+      "title": "Procure-to-pay buying pipeline and three-way-match theory",
+      "reliability": "high",
+      "topic": "buying"
+    },
+    {
+      "sourceUid": "eecf7d13-e497-489c-bee2-ab69b47693f5",
+      "type": "domain-theory",
+      "title": "Perpetual inventory, stock-ledger and valuation-method theory",
+      "reliability": "high",
+      "topic": "inventory"
+    },
+    {
+      "sourceUid": "8d5a63d9-e5b3-4f67-8498-c95cb8f67ef6",
+      "type": "domain-theory",
+      "title": "Internal-control principles for inventory and document reversal",
+      "reliability": "high",
+      "topic": "stock-controls"
+    },
+    {
+      "sourceUid": "adb6ca5d-6a0c-405f-86a7-5379dcae710d",
+      "type": "domain-theory",
+      "title": "Reorder-level, replenishment and demand-signal theory",
+      "reliability": "medium",
+      "topic": "replenishment"
+    }
+  ]
+}

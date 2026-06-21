@@ -111,6 +111,7 @@ if (generated.Count > 0)
     Write(target, "src/LafErp.Services/CatalogCrudService.cs", GenCatalogService(), emitted, "LAF_GENERATED");
     Write(target, "src/LafErp.Web/Controllers/CatalogController.cs", GenCatalogController(generated), emitted, "LAF_GENERATED");
     Write(target, "src/LafErp.Web/Views/Catalog/Index.cshtml", GenCatalogView(), emitted, "LAF_GENERATED");
+    Write(target, "src/LafErp.Web/Views/Catalog/Create.cshtml", GenCatalogCreateView(), emitted, "LAF_GENERATED");
 }
 Write(target, "tests/LafErp.Tests/GenerationProvenanceTests.cs", GenProvenanceTests(generated), emitted, "LAF_GENERATED");
 
@@ -440,15 +441,19 @@ static string GenCatalogController(List<CatalogEntity> cat)
     return $$"""
 using LafErp.Core;
 using LafErp.Data;
+using LafErp.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LafErp.Web.Controllers;
 
+// Generated controller: a catalog overview + a generic reflection-driven CREATE form for every generated
+// module (the create/edit UI capability V4 lacked). Records are persisted via the DbContext with an audit event.
 public class CatalogController : Controller
 {
+    private static readonly HashSet<string> Skip = new() { "Id", "CreatedUtc", "UpdatedUtc", "CreatedBy", "UpdatedBy", "IsDeleted", "RowVersion" };
     private readonly ErpDbContext _db;
-    public CatalogController(ErpDbContext db) => _db = db;
+    private readonly AuditService _audit;
+    public CatalogController(ErpDbContext db, AuditService audit) { _db = db; _audit = audit; }
 
     public IActionResult Index()
     {
@@ -456,25 +461,80 @@ public class CatalogController : Controller
 {{rows.ToString().TrimEnd()}}
         return View(rows);
     }
+
+    [HttpGet]
+    public IActionResult Create(string entity)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        ViewBag.Entity = entity;
+        return View("Create", Fields(t));
+    }
+
+    [HttpPost]
+    public IActionResult Create(string entity, IFormCollection form)
+    {
+        var t = Resolve(entity);
+        if (t == null) return NotFound();
+        var obj = Activator.CreateInstance(t)!;
+        foreach (var p in t.GetProperties().Where(Editable))
+        {
+            if (!form.TryGetValue(p.Name, out var v) || string.IsNullOrWhiteSpace(v)) continue;
+            try { var pt = Nullable.GetUnderlyingType(p.PropertyType) ?? p.PropertyType; p.SetValue(obj, Convert.ChangeType(v.ToString(), pt)); } catch { }
+        }
+        var nameProp = t.GetProperty("Name");
+        if (nameProp != null && string.IsNullOrWhiteSpace(nameProp.GetValue(obj) as string))
+        { ViewBag.Entity = entity; ViewBag.Error = "Name is required."; return View("Create", Fields(t)); }
+        _db.Add(obj);
+        _audit.Record(entity, 0, "Create", "via UI form");
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
+    private static Type? Resolve(string entity) => typeof(EntityBase).Assembly.GetType("LafErp.Core." + entity);
+    private static bool Editable(System.Reflection.PropertyInfo p) =>
+        p.CanWrite && !Skip.Contains(p.Name) &&
+        (p.PropertyType == typeof(string) || p.PropertyType == typeof(int) || p.PropertyType == typeof(int?) ||
+         p.PropertyType == typeof(decimal) || p.PropertyType == typeof(decimal?) || p.PropertyType == typeof(bool) ||
+         p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+    private static List<CatalogField> Fields(Type t) =>
+        t.GetProperties().Where(Editable).Select(p => new CatalogField(p.Name, p.PropertyType.Name)).ToList();
 }
 
 public record CatalogRow(string EntityType, int Count);
+public record CatalogField(string Name, string Type);
 """;
 }
 
 static string GenCatalogView() => """
 @model List<LafErp.Web.Controllers.CatalogRow>
 @{ ViewData["Title"] = "Catalog (generated modules)"; }
-<p style="font-size:14px;color:#6b7280">These master/catalog modules were generated from a governed local-LLM proposal.</p>
+<p style="font-size:14px;color:#6b7280">Generated CRUD modules (spec-driven + governed local-LLM). Each has a create form.</p>
 <table data-testid="catalog-table">
-    <thead><tr><th>Entity</th><th>Rows</th></tr></thead>
+    <thead><tr><th>Entity</th><th>Rows</th><th></th></tr></thead>
     <tbody>
     @foreach (var r in Model)
     {
-        <tr><td>@r.EntityType</td><td>@r.Count</td></tr>
+        <tr><td>@r.EntityType</td><td>@r.Count</td><td><a href="/Catalog/Create?entity=@r.EntityType" data-testid="create-@r.EntityType">+ Create</a></td></tr>
     }
     </tbody>
 </table>
+""";
+
+static string GenCatalogCreateView() => """
+@model List<LafErp.Web.Controllers.CatalogField>
+@{ ViewData["Title"] = "Create " + (string)ViewBag.Entity; }
+<h3>Create @ViewBag.Entity</h3>
+@if (ViewBag.Error != null) { <p style="color:#b91c1c" data-testid="form-error">@ViewBag.Error</p> }
+<form method="post" action="/Catalog/Create?entity=@ViewBag.Entity" data-testid="create-form">
+@foreach (var f in Model)
+{
+    <p><label style="display:inline-block;width:180px">@f.Name (@f.Type)</label>
+    <input name="@f.Name" data-testid="field-@f.Name" /></p>
+}
+    <button type="submit" data-testid="create-submit">Create</button>
+</form>
+<p><a href="/Catalog">Back to catalog</a></p>
 """;
 
 static string GenTestsFile(List<CatalogEntity> cat, string className)

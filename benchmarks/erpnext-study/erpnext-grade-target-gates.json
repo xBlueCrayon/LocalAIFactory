@@ -1,0 +1,29 @@
+{
+  "kind": "erpnext-grade-target-gates",
+  "generated": "2026-06-21",
+  "product": "LAF Enterprise ERP V5",
+  "note": "Target gates for an ERPNext-grade FREE ERP. status reflects V5. local=achievable locally; external=operator/external-owned.",
+  "gates": [
+    { "id": "G-setup", "area": "Core setup (company/fiscal/currency/tax/numbering/roles/perms/audit)", "local": true, "status": "PASS", "evidence": "engine entities + seed + RBAC + AuditEvent" },
+    { "id": "G-acct", "area": "Accounting (CoA/JE/Payment/GL/TB/P&L/BalanceSheet/AR/AP)", "local": true, "status": "PASS", "evidence": "AccountingService + AccountingReportsTests" },
+    { "id": "G-stock", "area": "Stock (item/warehouse/ledger/balance/transfer/adjustment/valuation)", "local": true, "status": "PARTIAL", "evidence": "stock ledger + valuation + StockTransfer/StockReconciliation modules", "gap": "batch/serial, reorder" },
+    { "id": "G-sell", "area": "Selling (lead/opp/customer/quotation/SO/delivery/SI/payment/credit-note)", "local": true, "status": "PARTIAL", "evidence": "Sales engine + Quotation/DeliveryNote/CreditNote modules", "gap": "returns posting, pricing rules" },
+    { "id": "G-buy", "area": "Buying (supplier/PO/receipt/PI/payment/debit-note)", "local": true, "status": "PARTIAL", "evidence": "Purchase engine + PurchaseReceipt/MaterialRequest/DebitNote modules", "gap": "RFQ, returns posting" },
+    { "id": "G-mfg", "area": "Manufacturing (BOM/work order/job card/quality)", "local": true, "status": "SCAFFOLD", "evidence": "BOM/WorkOrder/JobCard/QualityInspection CRUD modules", "gap": "full MRP scheduling" },
+    { "id": "G-hr", "area": "HR/Payroll (employee/attendance/leave/salary/payroll)", "local": true, "status": "SCAFFOLD", "evidence": "Employee/Attendance/LeaveApplication/SalaryComponent modules", "gap": "statutory payroll" },
+    { "id": "G-pos", "area": "POS/eCommerce", "local": true, "status": "SCAFFOLD", "evidence": "PosProfile/WebProduct modules", "gap": "terminal/storefront" },
+    { "id": "G-crm", "area": "CRM/Projects/Support/Assets", "local": true, "status": "PASS", "evidence": "engine entities + Timesheet + tests" },
+    { "id": "G-wf", "area": "Workflow (maker/checker/threshold/reject-reason/immutable/reversal/audit)", "local": true, "status": "PASS", "evidence": "WorkflowService + WorkflowTests + scenario" },
+    { "id": "G-rbac", "area": "RBAC + audit", "local": true, "status": "PASS", "evidence": "RolePermission matrix + AuditEvent + tests" },
+    { "id": "G-api", "area": "REST APIs", "local": true, "status": "PASS", "evidence": "ApiTests + per-module endpoints" },
+    { "id": "G-ui", "area": "UI create/edit/list/detail + search/filter/sort/pagination", "local": true, "status": "PARTIAL", "evidence": "list pages + generated CREATE forms (V5, Playwright-proven)", "gap": "edit/delete/detail, search/pagination" },
+    { "id": "G-report", "area": "Reports + dashboard", "local": true, "status": "PARTIAL", "evidence": "GL/TB/P&L/BS/AR/AP/Stock Balance + dashboard", "gap": "report builder, aging" },
+    { "id": "G-deploy", "area": "MSSQL/SQL Express + EF migrations + seed + backup/restore + deploy docs", "local": true, "status": "PARTIAL", "evidence": "SQLite/MSSQL-compatible + publish script + runs + seed", "gap": "EF migrations, backup/restore drill" },
+    { "id": "G-test", "area": "Tests + Playwright + scenarios + perf smoke", "local": true, "status": "PASS", "evidence": "134 xUnit + 14 Playwright + scenario test" },
+    { "id": "G-auth", "area": "Authentication", "local": false, "status": "BLOCKED_EXTERNAL", "evidence": "operator Windows/SSO/OIDC" },
+    { "id": "G-tls", "area": "TLS / HTTPS", "local": false, "status": "BLOCKED_EXTERNAL", "evidence": "CA cert + reverse proxy" },
+    { "id": "G-sec", "area": "External security review", "local": false, "status": "BLOCKED_EXTERNAL", "evidence": "external firm" },
+    { "id": "G-accept", "area": "Customer acceptance / business signoff", "local": false, "status": "BLOCKED_CUSTOMER", "evidence": "signed pilot" }
+  ],
+  "summary": { "pass": 8, "partial": 6, "scaffold": 3, "blockedExternal": 3, "blockedCustomer": 1, "classification": "ERP_PILOT_READY" }
+}

@@ -1,0 +1,12 @@
+@model List<LafErp.Services.GLRow>
+@{ ViewData["Title"] = "General Ledger"; }
+<table data-testid="gl-table">
+    <thead><tr><th>Date</th><th>Account</th><th>Debit</th><th>Credit</th><th>Voucher</th><th>Party</th></tr></thead>
+    <tbody>
+    @foreach (var r in Model)
+    {
+        <tr><td>@r.PostingDate.ToString("yyyy-MM-dd")</td><td>@r.Account</td><td>@r.Debit.ToString("N2")</td><td>@r.Credit.ToString("N2")</td><td>@r.VoucherType @r.VoucherNo</td><td>@r.Party</td></tr>
+    }
+    </tbody>
+    <tfoot><tr><th>Total</th><th></th><th>@Model.Sum(x => x.Debit).ToString("N2")</th><th>@Model.Sum(x => x.Credit).ToString("N2")</th><th colspan="2"></th></tr></tfoot>
+</table>
